@@ -1542,21 +1542,25 @@ select {
 .event-meta-row { display: flex; gap: 12px; align-items: center; font-size: 0.9rem; color: var(--mid-gray); }
 
 /* ===== EMAIL CAPTURE ===== */
-.email-capture-section { background: var(--cobalt); padding: 80px 0; }
+.email-capture-section { background: var(--off-white); padding: 80px 0; border-top: 1px solid var(--light-gray); border-bottom: 1px solid var(--light-gray); }
 .email-capture-inner { max-width: 680px; margin: 0 auto; text-align: center; }
 .email-capture-form { display: flex; flex-direction: column; gap: 16px; max-width: 540px; margin: 0 auto; }
 .email-capture-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .email-capture-input {
   padding: 14px 18px;
-  border: none;
+  border: 2px solid var(--light-gray);
   border-radius: 8px;
   font-size: 0.95rem;
   font-family: var(--font-sans);
   outline: none;
   width: 100%;
+  background: var(--white);
+  color: var(--charcoal);
 }
+.email-capture-input:focus { border-color: var(--cobalt); }
 .email-capture-interests {
-  background: rgba(255,255,255,0.1);
+  background: var(--white);
+  border: 1px solid var(--light-gray);
   border-radius: 10px;
   padding: 20px;
   text-align: left;
@@ -1565,7 +1569,7 @@ select {
   display: flex;
   align-items: center;
   gap: 10px;
-  color: rgba(255,255,255,0.9);
+  color: var(--charcoal);
   font-size: 0.88rem;
   cursor: pointer;
   margin-bottom: 10px;
@@ -1575,9 +1579,9 @@ select {
   display: none;
   text-align: center;
   padding: 32px;
-  background: rgba(255,255,255,0.1);
+  background: rgba(27,108,168,0.06);
   border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.2);
+  border: 1px solid rgba(27,108,168,0.2);
   margin-top: 16px;
 }
 
