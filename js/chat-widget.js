@@ -137,6 +137,78 @@
       align-self: flex-end;
       border-bottom-right-radius: 4px;
     }
+    .sai-bot-block {
+      align-self: flex-start;
+      max-width: 90%;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .sai-cta-wrap {
+      display: flex; flex-direction: column; gap: 6px;
+      margin-top: 2px;
+    }
+    .sai-cta {
+      display: inline-flex; align-items: center; justify-content: space-between;
+      gap: 10px;
+      padding: 11px 16px;
+      background: #fff;
+      border: 1.5px solid #1B6CA8;
+      color: #1B6CA8;
+      border-radius: 12px;
+      font-size: 0.86rem; font-weight: 700;
+      text-decoration: none;
+      transition: all 0.18s ease;
+      cursor: pointer;
+    }
+    .sai-cta::after {
+      content: '→';
+      font-weight: 700;
+      transition: transform 0.18s;
+    }
+    .sai-cta:hover {
+      background: #1B6CA8;
+      color: #fff;
+      transform: translateX(2px);
+      box-shadow: 0 4px 14px rgba(27,108,168,0.25);
+    }
+    .sai-cta:hover::after { transform: translateX(2px); }
+    .sai-testimonial {
+      display: flex; gap: 12px; align-items: center;
+      padding: 12px 14px;
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+      text-decoration: none;
+      color: #2C2C2C;
+      transition: all 0.18s ease;
+      border: 1px solid #eef1f5;
+    }
+    .sai-testimonial:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+      border-color: #1B6CA8;
+    }
+    .sai-testimonial-thumb {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #1B6CA8, #00B4D8);
+      color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+    .sai-testimonial-content { flex: 1; min-width: 0; }
+    .sai-testimonial-quote {
+      font-size: 0.84rem;
+      line-height: 1.45;
+      color: #2C2C2C;
+      margin-bottom: 3px;
+      font-style: italic;
+    }
+    .sai-testimonial-name {
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: #1B6CA8;
+    }
     .sai-typing {
       align-self: flex-start;
       display: flex; gap: 4px;
@@ -291,6 +363,26 @@
     if (raw) history = JSON.parse(raw);
   } catch (_) {}
 
+  const CTAS = {
+    'free-chapter':   { label: 'Get the First 30 Pages — Free',     href: 'free-chapter.html' },
+    'book':           { label: 'Get the Book — $29',                href: 'https://starjessetaylor.bio/shop/51c9e967-da06-4c5a-adf3-5d79d32e30da', external: true },
+    'courses':        { label: 'Browse Self-Paced Courses',         href: 'courses.html' },
+    'intensive':      { label: 'Join the Intensive — $97',          href: 'services.html#intensive' },
+    'cohort':         { label: 'Join the 10-Week Cohort Waitlist',  href: 'services.html#cohort' },
+    'clarity':        { label: 'Book a Clarity Session — $500',     href: 'https://buy.stripe.com/28E28q0VNc3rgxqeR3cMM16', external: true },
+    'apply':          { label: 'Apply for 1-on-1 Coaching',         href: 'apply.html' },
+    'quiz':           { label: 'Take the Find My Path Quiz',        href: 'quiz.html' },
+    'ask-star':       { label: 'Ask Star Directly (Voice Memo)',    href: 'services.html' }
+  };
+
+  const TESTIMONIALS = {
+    'annabelle':         { name: 'Annabelle', context: 'Group Coaching',         quote: 'Got over depression for the first time in 30 years.',                        video: 'https://youtube.com/shorts/rkUe3mAxhhI' },
+    'janice':            { name: 'Janice',    context: 'Coaching',               quote: 'A real coaching transformation.',                                              video: 'https://youtube.com/shorts/yAfmECWvSQ0' },
+    'mana':              { name: 'Mana',      context: 'Group Coaching',         quote: 'Got over depression for the first time in 30 years.',                        video: 'https://youtube.com/shorts/GJIQ0UlFeXQ' },
+    'kristina':          { name: 'Kristina',  context: 'Coaching',               quote: 'Got an answer in coaching that other coaches couldn\'t give for years.',     video: 'https://youtube.com/shorts/DUX2n8on2LA' },
+    'annabelle-course':  { name: 'Annabelle', context: 'Breakthrough Blueprint', quote: 'The course changed how she relates to her own brain.',                        video: 'https://youtube.com/shorts/0-BmhU8e1XA' }
+  };
+
   const SUGGESTIONS = [
     "What's Emotional Fitness?",
     "What's the Value Garden?",
@@ -305,12 +397,96 @@
     } catch (_) {}
   }
 
-  function addMessage(role, text) {
+  function stripMarkdown(t) {
+    return t
+      .replace(/\*\*([^*\n]+)\*\*/g, '$1')
+      .replace(/\*([^*\n]+)\*/g, '$1')
+      .replace(/__([^_\n]+)__/g, '$1')
+      .replace(/_([^_\n]+)_/g, '$1')
+      .replace(/^#{1,6}\s+/gm, '')
+      .replace(/^[\s]*[-*]\s+/gm, '• ');
+  }
+
+  function addUserMessage(text) {
     const div = document.createElement('div');
-    div.className = 'sai-msg ' + (role === 'user' ? 'sai-msg-user' : 'sai-msg-bot');
+    div.className = 'sai-msg sai-msg-user';
     div.textContent = text;
     messagesEl.appendChild(div);
     messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  function addBotMessage(rawText) {
+    const ctaKeys = [];
+    const testKeys = [];
+
+    const ctaRe = /\[CTA:([a-z\-]+)\]/gi;
+    let m;
+    while ((m = ctaRe.exec(rawText)) !== null) {
+      const k = m[1].toLowerCase();
+      if (CTAS[k] && ctaKeys.indexOf(k) === -1) ctaKeys.push(k);
+    }
+
+    const testRe = /\[TESTIMONIAL:([a-z\-]+)\]/gi;
+    while ((m = testRe.exec(rawText)) !== null) {
+      const k = m[1].toLowerCase();
+      if (TESTIMONIALS[k] && testKeys.indexOf(k) === -1) testKeys.push(k);
+    }
+
+    let cleanText = rawText
+      .replace(/\[CTA:[a-z\-]+\]/gi, '')
+      .replace(/\[TESTIMONIAL:[a-z\-]+\]/gi, '')
+      .replace(/\n{3,}/g, '\n\n')
+      .trim();
+    cleanText = stripMarkdown(cleanText);
+
+    const block = document.createElement('div');
+    block.className = 'sai-bot-block';
+
+    if (cleanText) {
+      const msg = document.createElement('div');
+      msg.className = 'sai-msg sai-msg-bot';
+      msg.textContent = cleanText;
+      block.appendChild(msg);
+    }
+
+    testKeys.forEach(k => {
+      const t = TESTIMONIALS[k];
+      const card = document.createElement('a');
+      card.className = 'sai-testimonial';
+      card.href = t.video;
+      card.target = '_blank';
+      card.rel = 'noopener';
+      card.innerHTML =
+        '<div class="sai-testimonial-thumb">▶</div>' +
+        '<div class="sai-testimonial-content">' +
+          '<div class="sai-testimonial-quote">"' + t.quote.replace(/"/g, '&quot;') + '"</div>' +
+          '<div class="sai-testimonial-name">' + t.name + ' · ' + t.context + '</div>' +
+        '</div>';
+      block.appendChild(card);
+    });
+
+    if (ctaKeys.length > 0) {
+      const ctaWrap = document.createElement('div');
+      ctaWrap.className = 'sai-cta-wrap';
+      ctaKeys.forEach(k => {
+        const c = CTAS[k];
+        const a = document.createElement('a');
+        a.className = 'sai-cta';
+        a.href = c.href;
+        if (c.external) { a.target = '_blank'; a.rel = 'noopener'; }
+        a.textContent = c.label;
+        ctaWrap.appendChild(a);
+      });
+      block.appendChild(ctaWrap);
+    }
+
+    messagesEl.appendChild(block);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  function addMessage(role, text) {
+    if (role === 'user') addUserMessage(text);
+    else addBotMessage(text);
   }
 
   function showTyping() {
