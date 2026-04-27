@@ -90,10 +90,10 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const AC_KEY = process.env.ACTIVECAMPAIGN_API_KEY;
-  const AC_URL = process.env.ACTIVECAMPAIGN_API_URL;
-  if (!AC_KEY || !AC_URL) return res.status(500).json({ error: 'Server configuration error' });
+  const AC_URL = (process.env.ACTIVECAMPAIGN_API_URL || 'https://starjessetaylor92181.api-us1.com').replace(/\/$/, '');
+  if (!AC_KEY) return res.status(500).json({ error: 'Server configuration error: ACTIVECAMPAIGN_API_KEY not set' });
 
-  const baseUrl = AC_URL.replace(/\/$/, '');
+  const baseUrl = AC_URL;
   const { firstName, email, answers, score, tier } = req.body || {};
   if (!email) return res.status(400).json({ error: 'Email required' });
 
