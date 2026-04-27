@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YouTube Strategy Agent</title>
+  <meta name="robots" content="noindex" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cobalt: #1B6CA8;
+      --cobalt-dark: #155a8a;
+      --turquoise: #00B4D8;
+      --charcoal: #2C2C2C;
+      --white: #ffffff;
+      --off-white: #F8F9FB;
+      --light-gray: #eef1f5;
+      --mid-gray: #6b7280;
+    }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      color: var(--charcoal);
+      background: linear-gradient(160deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+      min-height: 100vh;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    .yt-wrap {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 32px 20px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .yt-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 24px;
+      padding: 18px 24px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      backdrop-filter: blur(14px);
+    }
+    .yt-header-left { display: flex; align-items: center; gap: 14px; }
+    .yt-avatar {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ff0000, #ff6b6b);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+    .yt-title {
+      color: var(--white);
+      font-weight: 800;
+      font-size: 1.05rem;
+      line-height: 1.2;
+    }
+    .yt-subtitle {
+      color: rgba(255,255,255,0.6);
+      font-size: 0.78rem;
+      margin-top: 2px;
+    }
+    .yt-clear {
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.7);
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 8px 14px;
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.18s;
+    }
+    .yt-clear:hover {
+      background: rgba(255,255,255,0.14);
+      color: var(--white);
+    }
+
+    /* PASSWORD GATE */
+    .yt-gate {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+    .yt-gate-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 20px;
+      padding: 48px 40px;
+      max-width: 400px;
+      width: 100%;
+      backdrop-filter: blur(14px);
+      text-align: center;
+    }
+    .yt-gate-card h1 {
+      color: var(--white);
+      font-size: 1.4rem;
+      margin-bottom: 8px;
+    }
+    .yt-gate-card p {
+      color: rgba(255,255,255,0.6);
+      font-size: 0.92rem;
+      margin-bottom: 24px;
+    }
+    .yt-gate-input {
+      width: 100%;
+      padding: 14px 18px;
+      background: rgba(255,255,255,0.08);
+      border: 2px solid rgba(255,255,255,0.12);
+      border-radius: 10px;
+      color: var(--white);
+      font-size: 1rem;
+      font-family: inherit;
+      outline: none;
+      margin-bottom: 14px;
+      transition: border-color 0.2s;
+    }
+    .yt-gate-input:focus { border-color: var(--turquoise); }
+    .yt-gate-input::placeholder { color: rgba(255,255,255,0.4); }
+    .yt-gate-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--cobalt);
+      color: var(--white);
+      border: none;
+      border-radius: 50px;
+      font-size: 0.98rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+    .yt-gate-btn:hover { background: var(--cobalt-dark); transform: translateY(-1px); }
+    .yt-gate-error {
+      color: #ff6b6b;
+      font-size: 0.84rem;
+      margin-top: 12px;
+      display: none;
+    }
+    .yt-gate-error.show { display: block; }
+
+    /* CHAT */
+    .yt-chat {
+      flex: 1;
+      display: none;
+      flex-direction: column;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      overflow: hidden;
+      min-height: 600px;
+    }
+    .yt-chat.active { display: flex; }
+    .yt-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 28px 28px 12px;
+      display: flex; flex-direction: column;
+      gap: 14px;
+    }
+    .yt-msg {
+      max-width: 90%;
+      padding: 14px 18px;
+      border-radius: 16px;
+      font-size: 0.95rem;
+      line-height: 1.65;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+    .yt-msg-user {
+      background: var(--cobalt);
+      color: var(--white);
+      align-self: flex-end;
+      border-bottom-right-radius: 5px;
+    }
+    .yt-msg-bot {
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.92);
+      align-self: flex-start;
+      border-bottom-left-radius: 5px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .yt-typing {
+      align-self: flex-start;
+      display: flex; gap: 5px;
+      padding: 16px 20px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 16px;
+      border-bottom-left-radius: 5px;
+    }
+    .yt-typing span {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.5);
+      animation: yt-typing 1.2s infinite;
+    }
+    .yt-typing span:nth-child(2) { animation-delay: 0.18s; }
+    .yt-typing span:nth-child(3) { animation-delay: 0.36s; }
+    @keyframes yt-typing {
+      0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+      30% { transform: translateY(-5px); opacity: 1; }
+    }
+    .yt-suggestions {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      padding: 12px 28px 0;
+    }
+    .yt-suggest {
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.85);
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 9px 16px;
+      border-radius: 50px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+    .yt-suggest:hover {
+      background: var(--cobalt);
+      color: var(--white);
+      border-color: var(--cobalt);
+    }
+    .yt-input-row {
+      display: flex; gap: 12px;
+      padding: 18px 22px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      background: rgba(0,0,0,0.2);
+    }
+    .yt-input {
+      flex: 1;
+      padding: 14px 18px;
+      background: rgba(255,255,255,0.08);
+      border: 1.5px solid rgba(255,255,255,0.14);
+      border-radius: 14px;
+      color: var(--white);
+      font-size: 0.96rem;
+      font-family: inherit;
+      outline: none;
+      resize: none;
+      min-height: 50px;
+      max-height: 160px;
+      line-height: 1.5;
+      transition: border-color 0.18s;
+    }
+    .yt-input:focus { border-color: var(--turquoise); }
+    .yt-input::placeholder { color: rgba(255,255,255,0.4); }
+    .yt-send {
+      background: var(--cobalt);
+      color: var(--white);
+      border: none;
+      width: 50px; height: 50px;
+      border-radius: 50%;
+      cursor: pointer;
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s;
+    }
+    .yt-send:hover:not(:disabled) {
+      background: var(--cobalt-dark);
+      transform: scale(1.05);
+    }
+    .yt-send:disabled { opacity: 0.4; cursor: not-allowed; }
+    .yt-send svg { width: 20px; height: 20px; }
+    @media (max-width: 600px) {
+      .yt-wrap { padding: 16px 12px; }
+      .yt-header { padding: 14px 16px; }
+      .yt-messages { padding: 18px 18px 8px; }
+      .yt-input-row { padding: 14px 14px; }
+      .yt-suggestions { padding: 8px 18px 0; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="yt-wrap">
+
+  <!-- PASSWORD GATE -->
+  <div class="yt-gate" id="ytGate">
+    <div class="yt-gate-card">
+      <h1>YouTube Strategy Agent</h1>
+      <p>Private tool. Enter password to continue.</p>
+      <input type="password" id="ytPassword" class="yt-gate-input" placeholder="Password" autofocus />
+      <button class="yt-gate-btn" id="ytPasswordBtn">Enter</button>
+      <div class="yt-gate-error" id="ytGateError">Wrong password. Try again.</div>
+    </div>
+  </div>
+
+  <!-- HEADER (visible after auth) -->
+  <div class="yt-header" id="ytHeader" style="display:none;">
+    <div class="yt-header-left">
+      <div class="yt-avatar">▶</div>
+      <div>
+        <div class="yt-title">YouTube Strategy Agent</div>
+        <div class="yt-subtitle">Private · Powered by Claude · For Star only</div>
+      </div>
+    </div>
+    <button class="yt-clear" id="ytClear">Clear chat</button>
+  </div>
+
+  <!-- CHAT -->
+  <div class="yt-chat" id="ytChat">
+    <div class="yt-messages" id="ytMessages"></div>
+    <div class="yt-suggestions" id="ytSuggestions"></div>
+    <div class="yt-input-row">
+      <textarea class="yt-input" id="ytInput" placeholder="Ask for titles, hooks, video ideas, performance analysis..." rows="1"></textarea>
+      <button class="yt-send" id="ytSend" aria-label="Send">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const STORAGE_KEY = 'ytAgent_history';
+  const PW_KEY = 'ytAgent_auth';
+
+  const gate = document.getElementById('ytGate');
+  const header = document.getElementById('ytHeader');
+  const chat = document.getElementById('ytChat');
+  const passwordInput = document.getElementById('ytPassword');
+  const passwordBtn = document.getElementById('ytPasswordBtn');
+  const gateError = document.getElementById('ytGateError');
+  const messagesEl = document.getElementById('ytMessages');
+  const suggestionsEl = document.getElementById('ytSuggestions');
+  const inputEl = document.getElementById('ytInput');
+  const sendEl = document.getElementById('ytSend');
+  const clearBtn = document.getElementById('ytClear');
+
+  let password = sessionStorage.getItem(PW_KEY) || '';
+  let history = [];
+  try { const raw = sessionStorage.getItem(STORAGE_KEY); if (raw) history = JSON.parse(raw); } catch (_) {}
+
+  const SUGGESTIONS = [
+    "Generate 5 titles for an OCD video",
+    "Write a hook for intrusive thoughts video",
+    "Should I start a new channel?",
+    "Plan my first 10 videos",
+    "Thumbnail concept for 'I Beat OCD'"
+  ];
+
+  function showChat() {
+    gate.style.display = 'none';
+    header.style.display = 'flex';
+    chat.classList.add('active');
+    renderHistory();
+    setTimeout(() => inputEl.focus(), 100);
+  }
+
+  function unlock() {
+    password = passwordInput.value;
+    sessionStorage.setItem(PW_KEY, password);
+    showChat();
+  }
+
+  passwordBtn.addEventListener('click', unlock);
+  passwordInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') unlock(); });
+
+  if (password) showChat();
+
+  function saveHistory() {
+    try { sessionStorage.setItem(STORAGE_KEY, JSON.stringify(history.slice(-40))); } catch (_) {}
+  }
+
+  function stripMarkdown(t) {
+    return t
+      .replace(/\*\*([^*\n]+)\*\*/g, '$1')
+      .replace(/\*([^*\n]+)\*/g, '$1')
+      .replace(/__([^_\n]+)__/g, '$1')
+      .replace(/_([^_\n]+)_/g, '$1')
+      .replace(/^#{1,6}\s+/gm, '');
+  }
+
+  function addMessage(role, text) {
+    const div = document.createElement('div');
+    div.className = 'yt-msg ' + (role === 'user' ? 'yt-msg-user' : 'yt-msg-bot');
+    div.textContent = role === 'assistant' ? stripMarkdown(text) : text;
+    messagesEl.appendChild(div);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+  function showTyping() {
+    const div = document.createElement('div');
+    div.className = 'yt-typing';
+    div.id = 'ytTyping';
+    div.innerHTML = '<span></span><span></span><span></span>';
+    messagesEl.appendChild(div);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+  function hideTyping() { const t = document.getElementById('ytTyping'); if (t) t.remove(); }
+
+  function renderSuggestions() {
+    suggestionsEl.innerHTML = '';
+    if (history.length > 1) return;
+    SUGGESTIONS.forEach(s => {
+      const btn = document.createElement('button');
+      btn.className = 'yt-suggest';
+      btn.textContent = s;
+      btn.addEventListener('click', () => { inputEl.value = s; sendMessage(); });
+      suggestionsEl.appendChild(btn);
+    });
+  }
+
+  function renderHistory() {
+    messagesEl.innerHTML = '';
+    if (history.length === 0) {
+      const greeting = "Star, I'm your YouTube Strategy Agent. Ready to plan videos, generate titles and hooks, design thumbnails, and architect the new channel that finally cracks YouTube. What's the first move?";
+      addMessage('assistant', greeting);
+      history.push({ role: 'assistant', content: greeting });
+      saveHistory();
+    } else {
+      history.forEach(m => addMessage(m.role, m.content));
+    }
+    renderSuggestions();
+  }
+
+  async function sendMessage() {
+    const text = inputEl.value.trim();
+    if (!text || sendEl.disabled) return;
+    inputEl.value = '';
+    inputEl.style.height = 'auto';
+    sendEl.disabled = true;
+
+    addMessage('user', text);
+    history.push({ role: 'user', content: text });
+    saveHistory();
+    suggestionsEl.innerHTML = '';
+    showTyping();
+
+    try {
+      const res = await fetch('/api/yt-agent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: history, password })
+      });
+      hideTyping();
+      if (res.status === 401) {
+        addMessage('assistant', "Wrong password. Refresh and try again.");
+        sessionStorage.removeItem(PW_KEY);
+        sendEl.disabled = false;
+        return;
+      }
+      if (!res.ok) {
+        addMessage('assistant', "Connection issue. Try again in a moment.");
+        sendEl.disabled = false;
+        return;
+      }
+      const data = await res.json();
+      const reply = (data && data.reply) || "Something went wrong. Try again.";
+      addMessage('assistant', reply);
+      history.push({ role: 'assistant', content: reply });
+      saveHistory();
+    } catch (err) {
+      hideTyping();
+      addMessage('assistant', "Connection issue. Check your internet.");
+    }
+    sendEl.disabled = false;
+    inputEl.focus();
+  }
+
+  inputEl.addEventListener('input', () => {
+    inputEl.style.height = 'auto';
+    inputEl.style.height = Math.min(inputEl.scrollHeight, 160) + 'px';
+  });
+  inputEl.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+  });
+  sendEl.addEventListener('click', sendMessage);
+  clearBtn.addEventListener('click', () => {
+    if (confirm('Clear the chat history?')) {
+      history = [];
+      sessionStorage.removeItem(STORAGE_KEY);
+      renderHistory();
+    }
+  });
+</script>
+</body>
+</html>
