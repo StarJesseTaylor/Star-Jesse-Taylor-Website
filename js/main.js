@@ -177,7 +177,7 @@ if (waitlistForm) {
   });
 }
 
-// ===== EMAIL CAPTURE FORM =====
+// ===== EMAIL CAPTURE FORM — ActiveCampaign =====
 const emailCaptureForm = document.getElementById('emailCaptureForm');
 const emailCaptureConfirmation = document.getElementById('emailCaptureConfirmation');
 
@@ -186,33 +186,28 @@ if (emailCaptureForm) {
     e.preventDefault();
     const submitBtn = emailCaptureForm.querySelector('button[type="submit"]');
     submitBtn.disabled = true;
-    submitBtn.textContent = 'Sending...';
+    submitBtn.textContent = 'Adding you...';
 
     const data = new FormData(emailCaptureForm);
     const firstName = data.get('first_name') || '';
     const email = data.get('subscriber_email') || '';
-    const interests = data.getAll('interests').join(', ') || 'Not specified';
-    const body = `New Email Subscriber\n\nName: ${firstName}\nEmail: ${email}\nInterested in: ${interests}`;
+    const interests = data.getAll('interests');
 
-    // CONNECT TO ACTIVECAMPAIGN API HERE
     try {
-      if (typeof emailjs !== 'undefined') {
-        await emailjs.send('service_emotfit', 'template_application', {
-          to_email: 'starjessetaylor@gmail.com',
-          subject: 'New Email Subscriber',
-          applicant_name: firstName,
-          message: body,
-          reply_to: email,
-        });
-      } else {
-        const mailto = `mailto:starjessetaylor@gmail.com?subject=New%20Email%20Subscriber&body=${encodeURIComponent(body)}`;
-        window.open(mailto);
-      }
+      const res = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, firstName, interests })
+      });
+
+      if (!res.ok) throw new Error('Subscribe failed');
+
       emailCaptureForm.style.display = 'none';
       if (emailCaptureConfirmation) emailCaptureConfirmation.style.display = 'block';
     } catch (err) {
-      const mailto = `mailto:starjessetaylor@gmail.com?subject=New%20Email%20Subscriber&body=${encodeURIComponent(body)}`;
-      window.open(mailto);
+      // Fallback: send via email client
+      const body = `New Email Subscriber\n\nName: ${firstName}\nEmail: ${email}\nInterested in: ${interests.join(', ') || 'Not specified'}`;
+      window.open('mailto:starjessetaylor@gmail.com?subject=New%20Email%20Subscriber&body=' + encodeURIComponent(body));
       emailCaptureForm.style.display = 'none';
       if (emailCaptureConfirmation) emailCaptureConfirmation.style.display = 'block';
     }
