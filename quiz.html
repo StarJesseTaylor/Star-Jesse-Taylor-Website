@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Find Your Starting Point | Star Jesse Taylor Emotional Fitness</title>
+  <meta name="description" content="Answer 4 questions to find the best Emotional Fitness resource for exactly where you are right now." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <!-- Google Analytics GA4 — replace G-XXXXXXXXXX with your Measurement ID from analytics.google.com -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+  <style>
+    .quiz-wrap {
+      min-height: 100vh;
+      padding-top: calc(var(--nav-height) + 60px);
+      padding-bottom: 80px;
+      background: var(--off-white);
+    }
+    .quiz-container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .quiz-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .quiz-header h1 {
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      margin-bottom: 12px;
+    }
+    .quiz-header p {
+      color: var(--mid-gray);
+      font-size: 1.05rem;
+    }
+    /* Progress */
+    .quiz-progress {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 36px;
+    }
+    .quiz-progress-bar {
+      flex: 1;
+      height: 6px;
+      background: var(--light-gray);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .quiz-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--cobalt), var(--turquoise));
+      border-radius: 10px;
+      transition: width 0.5s ease;
+    }
+    .quiz-progress-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--mid-gray);
+      white-space: nowrap;
+    }
+    /* Question card */
+    .quiz-card {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 48px 40px;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.08);
+      display: none;
+    }
+    .quiz-card.active { display: block; }
+    .quiz-question {
+      font-size: clamp(1.2rem, 2.5vw, 1.55rem);
+      font-weight: 800;
+      color: var(--charcoal);
+      margin-bottom: 32px;
+      line-height: 1.3;
+    }
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .quiz-option {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 20px 24px;
+      background: var(--off-white);
+      border: 2px solid var(--light-gray);
+      border-radius: 14px;
+      cursor: pointer;
+      transition: all 0.22s ease;
+      text-align: left;
+    }
+    .quiz-option:hover {
+      border-color: var(--cobalt);
+      background: rgba(27,108,168,0.04);
+      transform: translateX(4px);
+    }
+    .quiz-option.selected {
+      border-color: var(--cobalt);
+      background: rgba(27,108,168,0.06);
+    }
+    .quiz-option-icon {
+      font-size: 1.5rem;
+      line-height: 1;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .quiz-option-text {
+      flex: 1;
+    }
+    .quiz-option-title {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--charcoal);
+      margin-bottom: 2px;
+    }
+    .quiz-option-desc {
+      font-size: 0.875rem;
+      color: var(--mid-gray);
+      line-height: 1.5;
+    }
+    /* Result */
+    .quiz-result {
+      display: none;
+      text-align: center;
+    }
+    .quiz-result.active { display: block; }
+    .result-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, rgba(27,108,168,0.1), rgba(0,180,216,0.1));
+      color: var(--cobalt);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 8px 20px;
+      border-radius: 50px;
+      border: 1px solid rgba(27,108,168,0.2);
+      margin-bottom: 24px;
+    }
+    .result-card {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 48px 40px;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.08);
+      margin-bottom: 24px;
+    }
+    .result-emoji {
+      font-size: 3.5rem;
+      margin-bottom: 20px;
+      display: block;
+    }
+    .result-title {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 800;
+      color: var(--charcoal);
+      margin-bottom: 16px;
+    }
+    .result-desc {
+      font-size: 1.05rem;
+      color: var(--mid-gray);
+      line-height: 1.75;
+      max-width: 560px;
+      margin: 0 auto 32px;
+    }
+    .result-cta-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px 44px;
+      background: var(--cobalt);
+      color: var(--white);
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      transition: var(--transition);
+      margin-bottom: 12px;
+      border: 2px solid var(--cobalt);
+      width: 100%;
+      max-width: 360px;
+    }
+    .result-cta-primary:hover {
+      background: var(--cobalt-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+    }
+    .result-also {
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px solid var(--light-gray);
+    }
+    .result-also p {
+      font-size: 0.875rem;
+      color: var(--mid-gray);
+      margin-bottom: 10px;
+    }
+    .result-also a {
+      font-size: 0.9rem;
+      color: var(--cobalt);
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .quiz-retake {
+      font-size: 0.875rem;
+      color: var(--mid-gray);
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      background: none;
+      border: none;
+      font-family: inherit;
+      margin-top: 16px;
+    }
+    .quiz-retake:hover { color: var(--cobalt); }
+    @media (max-width: 600px) {
+      .quiz-card { padding: 32px 24px; }
+      .result-card { padding: 32px 24px; }
+      .quiz-option { padding: 16px 18px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav class="nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <span class="nav-logo-name">Star Jesse Taylor</span>
+        <span class="nav-logo-sub">Emotional Fitness</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="services.html">Work With Me</a></li>
+        <li><a href="courses.html">Courses</a></li>
+        <li><a href="quiz.html">Find My Path</a></li>
+        <li><a href="index.html#book">Book</a></li>
+      </ul>
+      <a href="apply.html" class="btn btn-primary btn-sm nav-cta">Apply</a>
+      <button class="nav-hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- MOBILE NAV -->
+<div class="nav-mobile">
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="services.html">Work With Me</a>
+  <a href="courses.html">Courses</a>
+  <a href="quiz.html">Find My Path</a>
+  <a href="index.html#book">Book</a>
+  <a href="apply.html">Apply for Coaching</a>
+</div>
+
+<!-- QUIZ -->
+<div class="quiz-wrap">
+  <div class="quiz-container">
+
+    <div class="quiz-header">
+      <span class="section-label">2-Minute Quiz</span>
+      <h1>Find Your Starting Point</h1>
+      <p>Answer 4 questions. Get a personalized recommendation for exactly where you are right now.</p>
+    </div>
+
+    <!-- PROGRESS BAR -->
+    <div class="quiz-progress" id="quizProgress">
+      <div class="quiz-progress-bar">
+        <div class="quiz-progress-fill" id="progressFill" style="width:0%"></div>
+      </div>
+      <span class="quiz-progress-label" id="progressLabel">Question 1 of 4</span>
+    </div>
+
+    <!-- QUESTION 1 -->
+    <div class="quiz-card active" id="q1">
+      <div class="quiz-question">What is the main thing you are dealing with right now?</div>
+      <div class="quiz-options">
+        <div class="quiz-option" data-q="1" data-scores='{"intensive":2,"coaching":1}'>
+          <span class="quiz-option-icon">🌀</span>
+          <div class="quiz-option-text">
+            <div class="quiz-option-title">Anxiety, OCD, or intrusive thoughts</div>
+            <div class="quiz-option-desc">My brain won't quiet down. I'm stuck in loops and need specific tools.</div>
+          </div>
+        </div>
+        <div class="quiz-option" data-q="1" data-scores='{"cohort":2,"coaching":2}'>
+          <span class="quiz-option-icon">🌫️</span>
+          <div class="quiz-option-text">
+            <div class="quiz-option-title">Feeling stuck, lost, or like I'm not living up to my potential</div>
+            <div class="quiz-option-desc">Something is off but I can't put my finger on what. I need real clarity.</div>
+          </div>
+        </div>
+        <div class="quiz-option" data-q="1" data-scores='{"courses":2,"cohort":1}'>
+          <span class="quiz-option-icon">🌱</span>
+          <div class="quiz-option-text">
+            <div class="quiz-option-title">Building self-worth, confidence, or taking consistent action</div>
+            <div class="quiz-option-desc">I know what I want but keep getting in my own way.</div>
+          </div>
+        </div>
+        <div class="quiz-option" data-q="1" data-scores='{"book":2,"courses":1}'>
+          <span class="quiz-option-icon">🌅</span>
+          <div class="quiz-option-text">
+            <div class="quiz-option-title">I'm new to this and just starting to explore</div>
+            <div class="quiz-option-desc">I want to understand what Emotional Fitness even is and where to begin.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUESTION 2 -->
+    <div class="quiz-card" id="q2">
+      <div class="quiz-question">What have you already tried?</div>
+      <div class="quiz-options">
+        <div class="quiz-option" data-q="2" data-scores='{"book":2,"courses":1}'>
+          <span class="quiz-option-icon">✨</span>
+          <div class="quiz-option-text">
+            <div class="quiz-option-title">Nothing yet — this is brand new to me</div>
+            <div class="quiz-option-desc">I want to start at the beginning and build a real foundation.</div>
+          </div>
+        </div>
+        <div class="quiz-option" data-q="2" data-scores='{"cohort":2,"intensive":1}'>
+          <span class="quiz-option-icon">🧩</span>
+          <div class="quiz-option-text">
+            <div class="quiz-option-title">Therapy or coaching — it helped a little but not enough</div>
+            <div class="quiz-option-desc">I made progress but something is still missing. I need a different approach.</div>
+          </div>
+        </div>
+        <div class="quiz-option" data-q="2" data-scores='{"coaching":3}'>
+          <span class="quiz-option-icon">🔥</span>
+          <div class="quiz-option-text">
+            <div class="quiz-option-title">Everything — and nothing has really stuck</div>
+            <div class="quiz-option-desc">I've done the work. I need someone to meet me where I actually am.</div>
+          </div>
+        </div>
+        <div class="quiz-option" data-q="2" data-scores='{"intensive":2,"cohort":1}'>
+          <span class="quiz-option-icon">📚</span>
+          <div class="quiz-option-text">
+            <div class="quiz-option-title">Self-help books, podcasts, courses — lots of it</div>
+            <div class="quiz-option-desc">I love learning but I need something that actually makes me do the work.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUESTION 3 -->
+    <div class="quiz-card" id="q3">
+      <div class="quiz-question">How do you learn and grow best?</div>
+      <div class="quiz-options">
+        <div class="quiz-option" data-q="3" data-scores='{"book":3}'>
+          <span class="quiz-option-icon">📖</span>
+          <div class="quiz-option-text">
+            <div class="quiz-option-title">On my own, reading and reflecting at my own pace</div>
+            <div class="quiz-option-desc">I want to go deep with a framework I can return to over and over.</div>
+          </div>
+        </div>
+        <div class="quiz-option" data-q="3" data-scores='{"courses":3}'>
+          <span class="quiz-option-icon">💻</span>
+          <div class="quiz-option-text">
+            <div class="quiz-option-title">Self-paced video content — structured but on my schedule</div>
+            <div class="quiz-option-desc">I want tools and practices I can work through whenever I have time.</div>
+          </div>
+        </div>
+        <div class="quiz-option" data-q="3" data-scores='{"intensive":3}'>
+          <span class="quiz-option-icon">⚡</span>
+          <div class="quiz-option-text">
+            <div class="quiz-option-title">A live intensive — I want a real breakthrough in a short time</div>
+            <div class="quiz-option-desc">I need momentum now. Give me a focused, high-energy experience.</div>
+          </div>
+        </div>
+        <div class="quiz-option" data-q="3" data-scores='{"cohort":2,"coaching":2}'>
+          <span class="quiz-option-icon">🤝</span>
+          <div class="quiz-option-text">
+            <div class="quiz-option-title">With accountability and real guidance — not alone</div>
+            <div class="quiz-option-desc">I do best when someone is in my corner and holds me to a higher standard.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUESTION 4 -->
+    <div class="quiz-card" id="q4">
+      <div class="quiz-question">What feels right for where you are right now?</div>
+      <div class="quiz-options">
+        <div class="quiz-option" data-q="4" data-scores='{"book":3}'>
+          <span class="quiz-option-icon">📗</span>
+          <div class="quiz-option-text">
+            <div class="quiz-option-title">$29 — I want to start with the book and see what this is about</div>
+            <div class="quiz-option-desc">Low barrier, high value. The book has changed thousands of lives.</div>
+          </div>
+        </div>
+        <div class="quiz-option" data-q="4" data-scores='{"courses":3}'>
+          <span class="quiz-option-icon">🎓</span>
+          <div class="quiz-option-text">
+            <div class="quiz-option-title">$97–$197 — I'm ready for a structured course</div>
+            <div class="quiz-option-desc">Self-paced tools I can actually use without a big coaching commitment.</div>
+          </div>
+        </div>
+        <div class="quiz-option" data-q="4" data-scores='{"intensive":2,"cohort":1}'>
+          <span class="quiz-option-icon">🚀</span>
+          <div class="quiz-option-text">
+            <div class="quiz-option-title">~$97 — I want a live experience without a large investment yet</div>
+            <div class="quiz-option-desc">The Intensive. Real results, real Star — one transformative session.</div>
+          </div>
+        </div>
+        <div class="quiz-option" data-q="4" data-scores='{"cohort":3,"coaching":1}'>
+          <span class="quiz-option-icon">🏆</span>
+          <div class="quiz-option-text">
+            <div class="quiz-option-title">$2,000–$3,500 — I'm ready for a real program</div>
+            <div class="quiz-option-desc">The 10-Week Cohort. Full framework, live coaching, lasting change.</div>
+          </div>
+        </div>
+        <div class="quiz-option" data-q="4" data-scores='{"coaching":3}'>
+          <span class="quiz-option-icon">💎</span>
+          <div class="quiz-option-text">
+            <div class="quiz-option-title">Whatever it takes — results are the only thing that matters to me</div>
+            <div class="quiz-option-desc">1-on-1 is the fastest path to the deepest change. I'm ready.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULT -->
+    <div class="quiz-result" id="quizResult">
+      <div class="result-card">
+        <span class="result-emoji" id="resultEmoji">✨</span>
+        <div class="result-badge" id="resultBadge">Your Result</div>
+        <div class="result-title" id="resultTitle">Your Result</div>
+        <div class="result-desc" id="resultDesc"></div>
+        <a href="#" class="result-cta-primary" id="resultCTA">See Recommendation</a>
+        <div class="result-also" id="resultAlso"></div>
+      </div>
+      <button class="quiz-retake" onclick="retakeQuiz()">Retake the quiz</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div>
+          <div class="footer-brand-name">Star Jesse Taylor</div>
+          <div class="footer-brand-sub">Emotional Fitness</div>
+        </div>
+        <p class="footer-brand-desc">Emotional Fitness Coach, Author, and Speaker based in Los Angeles. Helping thousands build resilience from the inside out.</p>
+        <div class="social-links">
+          <a href="https://www.instagram.com/starjessetaylor" class="social-link" aria-label="Instagram" target="_blank" rel="noopener">IG</a>
+          <a href="https://www.tiktok.com/@starjessetaylor" class="social-link" aria-label="TikTok" target="_blank" rel="noopener">TK</a>
+          <a href="#" class="social-link" aria-label="YouTube">YT</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="services.html">Work With Me</a></li>
+          <li><a href="courses.html">Courses</a></li>
+          <li><a href="quiz.html">Find My Path</a></li>
+          <li><a href="apply.html">Apply</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Work Together</h4>
+        <ul class="footer-links">
+          <li><a href="services.html">1-on-1 Coaching</a></li>
+          <li><a href="services.html">10-Week Cohort (Waitlist)</a></li>
+          <li><a href="services.html">Trial Session ($97)</a></li>
+          <li><a href="courses.html">Courses</a></li>
+          <li><a href="https://starjessetaylor.bio/shop/51c9e967-da06-4c5a-adf3-5d79d32e30da" target="_blank" rel="noopener">The Book ($29)</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul class="footer-links">
+          <li><a href="mailto:starjessetaylor@gmail.com">starjessetaylor@gmail.com</a></li>
+          <li><a href="mailto:starjessetaylor@gmail.com">Speaking Inquiries</a></li>
+          <li><a href="https://www.instagram.com/starjessetaylor" target="_blank" rel="noopener">Instagram @starjessetaylor</a></li>
+          <li><a href="https://www.tiktok.com/@starjessetaylor" target="_blank" rel="noopener">TikTok @starjessetaylor</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Star Jesse Taylor Emotional Fitness. All rights reserved.</span>
+      <div class="footer-legal">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+  const scores = { book: 0, courses: 0, intensive: 0, cohort: 0, coaching: 0 };
+  const answers = {};
+  let currentQ = 1;
+  const totalQ = 4;
+
+  const results = {
+    book: {
+      emoji: '📗',
+      badge: 'Your Best Starting Point',
+      title: 'Start With the Book',
+      desc: 'The book is where everything Star teaches begins. It\'s the foundation of the Emotional Fitness framework — the Value Garden, the No Brain Method, and the daily practice that has changed thousands of lives. At $29, it\'s the highest-leverage thing you can do right now.',
+      cta: 'Get the Book — $29',
+      ctaUrl: 'https://starjessetaylor.bio/shop/51c9e967-da06-4c5a-adf3-5d79d32e30da',
+      also: '<p>Want to go deeper right away?</p><a href="courses.html">Browse self-paced courses starting at $97 →</a>'
+    },
+    courses: {
+      emoji: '🎓',
+      badge: 'Your Best Next Step',
+      title: 'The Self-Paced Courses',
+      desc: 'You\'re ready to learn, and you want to go at your own pace. The Emotional Fitness courses give you real tools, real practices, and real structure — without a coaching commitment. Pick the course that matches where you are, and start today.',
+      cta: 'Browse the Courses',
+      ctaUrl: 'courses.html',
+      also: '<p>Also worth seeing:</p><a href="free-chapter.html">Get the first 30 pages of the book free →</a>'
+    },
+    intensive: {
+      emoji: '⚡',
+      badge: 'Your Best Starting Point',
+      title: 'The Emotional Fitness Intensive',
+      desc: 'You need momentum, and you need it now. The Intensive is a live, focused experience with Star — designed to give you a real breakthrough in a short time. This is for people who are done theorizing and ready to actually feel it shift.',
+      cta: 'Join the Intensive — $97',
+      ctaUrl: 'services.html#intensive',
+      also: '<p>Ready to go even deeper?</p><a href="apply.html">Apply for 1-on-1 coaching →</a>'
+    },
+    cohort: {
+      emoji: '🤝',
+      badge: 'Your Best Match',
+      title: 'The 10-Week Cohort',
+      desc: 'You\'re ready for a full program — structured, live, with others who are doing the real work. The 10-Week Cohort is Star\'s most comprehensive group experience. Built-in accountability, the full framework, and the kind of community that actually accelerates your growth.',
+      cta: 'Join the Waitlist',
+      ctaUrl: 'services.html#cohort',
+      also: '<p>Want to move faster with 1-on-1 support?</p><a href="apply.html">Apply for private coaching →</a>'
+    },
+    coaching: {
+      emoji: '💎',
+      badge: 'Your Best Path',
+      title: '1-on-1 Coaching With Star',
+      desc: 'You\'re not here for a general solution — you\'re here for the real thing. 1-on-1 coaching is the fastest path to the deepest change. Star works with a small number of private clients, giving each person exactly what they need. If you\'re ready to do the work, apply.',
+      cta: 'Apply for Coaching',
+      ctaUrl: 'apply.html',
+      also: '<p>Not ready to apply yet? Start here:</p><a href="services.html">Book a Clarity Session ($500) →</a>'
+    }
+  };
+
+  document.querySelectorAll('.quiz-option').forEach(opt => {
+    opt.addEventListener('click', () => {
+      const q = opt.dataset.q;
+      const optScores = JSON.parse(opt.dataset.scores);
+
+      // Deselect if this Q was already answered, remove old scores
+      if (answers[q]) {
+        const old = JSON.parse(answers[q]);
+        Object.entries(old).forEach(([k, v]) => { scores[k] -= v; });
+      }
+
+      // Mark selected in UI
+      document.querySelectorAll(`.quiz-option[data-q="${q}"]`).forEach(o => o.classList.remove('selected'));
+      opt.classList.add('selected');
+
+      // Add new scores
+      Object.entries(optScores).forEach(([k, v]) => { scores[k] += v; });
+      answers[q] = opt.dataset.scores;
+
+      // Advance after short delay
+      setTimeout(() => advanceQuiz(parseInt(q)), 320);
+    });
+  });
+
+  function advanceQuiz(q) {
+    if (q < totalQ) {
+      document.getElementById('q' + q).classList.remove('active');
+      currentQ = q + 1;
+      document.getElementById('q' + currentQ).classList.add('active');
+      updateProgress(currentQ);
+    } else {
+      showResult();
+    }
+  }
+
+  function updateProgress(q) {
+    const pct = ((q - 1) / totalQ) * 100;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressLabel').textContent = 'Question ' + q + ' of ' + totalQ;
+  }
+
+  function showResult() {
+    // Hide all questions and progress
+    document.querySelectorAll('.quiz-card').forEach(c => c.classList.remove('active'));
+    document.getElementById('quizProgress').style.display = 'none';
+    document.getElementById('progressFill').style.width = '100%';
+
+    // Find top score
+    const winner = Object.entries(scores).sort((a, b) => b[1] - a[1])[0][0];
+    const r = results[winner];
+
+    document.getElementById('resultEmoji').textContent = r.emoji;
+    document.getElementById('resultBadge').textContent = r.badge;
+    document.getElementById('resultTitle').textContent = r.title;
+    document.getElementById('resultDesc').textContent = r.desc;
+
+    const cta = document.getElementById('resultCTA');
+    cta.textContent = r.cta;
+    cta.href = r.ctaUrl;
+
+    document.getElementById('resultAlso').innerHTML = r.also;
+
+    document.getElementById('quizResult').classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function retakeQuiz() {
+    // Reset scores
+    Object.keys(scores).forEach(k => { scores[k] = 0; });
+    Object.keys(answers).forEach(k => { delete answers[k]; });
+    currentQ = 1;
+
+    document.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected'));
+    document.getElementById('quizResult').classList.remove('active');
+    document.getElementById('quizProgress').style.display = 'flex';
+    document.getElementById('q1').classList.add('active');
+    updateProgress(1);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  updateProgress(1);
+</script>
+</body>
+</html>

@@ -9,6 +9,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/styles.css" />
+  <!-- Google Analytics GA4 — replace G-XXXXXXXXXX with your Measurement ID from analytics.google.com -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
 </head>
 <body>
 
@@ -25,8 +33,7 @@
         <li><a href="about.html">About</a></li>
         <li><a href="services.html">Work With Me</a></li>
         <li><a href="courses.html">Courses</a></li>
-        <li><a href="#events">Events</a></li>
-        <li><a href="#speaker">Speaker</a></li>
+        <li><a href="quiz.html">Find My Path</a></li>
         <li><a href="#book">Book</a></li>
       </ul>
       <a href="apply.html" class="btn btn-primary btn-sm nav-cta">Apply</a>
@@ -43,8 +50,7 @@
   <a href="about.html">About</a>
   <a href="services.html">Work With Me</a>
   <a href="courses.html">Courses</a>
-  <a href="#events">Events</a>
-  <a href="#speaker">Speaker</a>
+  <a href="quiz.html">Find My Path</a>
   <a href="#book">Book</a>
   <a href="apply.html">Apply for Coaching</a>
 </div>
@@ -65,6 +71,7 @@
       <a href="apply.html" class="btn btn-primary btn-lg">Apply for Coaching</a>
       <a href="services.html" class="btn btn-outline btn-lg">Work With Me</a>
     </div>
+    <p style="margin-top:20px;font-size:0.9rem;color:var(--mid-gray);" class="fade-up fade-up-delay-3">Not sure where to start? <a href="quiz.html" style="color:var(--cobalt);font-weight:700;text-decoration:underline;text-underline-offset:3px;">Take the 2-minute quiz →</a></p>
     <div class="hero-scroll-indicator fade-up fade-up-delay-3">
       <div class="scroll-line"></div>
       <span>Scroll</span>
@@ -688,21 +695,20 @@
   </div>
 </section>
 
-<!-- EMAIL CAPTURE — STAY CONNECTED -->
+<!-- EMAIL CAPTURE — FREE CHAPTER LEAD MAGNET -->
 <section id="stay-connected" class="email-capture-section">
   <div class="container">
     <div class="email-capture-inner fade-up">
-      <span class="section-label">Stay Connected</span>
-      <h2 style="color:var(--charcoal);margin-bottom:16px;">Stay Connected</h2>
-      <p style="color:var(--mid-gray);font-size:1.05rem;line-height:1.7;margin-bottom:36px;">Get the daily win and be first to know when coaching spots and events open.</p>
-      <!-- CONNECT TO ACTIVECAMPAIGN API HERE -->
+      <div style="display:inline-block;background:linear-gradient(135deg,rgba(27,108,168,0.12),rgba(0,180,216,0.12));color:var(--cobalt);font-size:0.78rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;padding:8px 20px;border-radius:50px;border:1px solid rgba(27,108,168,0.2);margin-bottom:20px;">Free Download</div>
+      <h2 style="color:var(--charcoal);margin-bottom:16px;">Get the First 30 Pages<br>of the Book — Free</h2>
+      <p style="color:var(--mid-gray);font-size:1.05rem;line-height:1.7;margin-bottom:32px;">Enter your name and email below. We'll send you the first 30 pages of the Emotional Fitness book — the framework, the Value Garden, and the first shift that changes everything. No cost. No catch.</p>
       <form id="emailCaptureForm" class="email-capture-form">
         <div class="email-capture-row">
           <input type="text" name="first_name" placeholder="First Name" required class="email-capture-input" />
           <input type="email" name="subscriber_email" placeholder="Email Address" required class="email-capture-input" />
         </div>
         <div class="email-capture-interests">
-          <p style="color:var(--charcoal);font-weight:600;font-size:0.9rem;margin-bottom:14px;">What are you most interested in?</p>
+          <p style="color:var(--charcoal);font-weight:600;font-size:0.9rem;margin-bottom:14px;">Also interested in: (optional)</p>
           <label class="interest-label"><input type="checkbox" name="interests" value="Daily wins and free content" style="width:16px;height:16px;flex-shrink:0;" /> Daily wins and free content</label>
           <label class="interest-label"><input type="checkbox" name="interests" value="Group coaching trial session" style="width:16px;height:16px;flex-shrink:0;" /> Group coaching trial session</label>
           <label class="interest-label"><input type="checkbox" name="interests" value="10 week cohort waitlist" style="width:16px;height:16px;flex-shrink:0;" /> 10-week cohort waitlist</label>
@@ -710,10 +716,11 @@
           <label class="interest-label"><input type="checkbox" name="interests" value="Speaking and events" style="width:16px;height:16px;flex-shrink:0;" /> Speaking and events</label>
           <label class="interest-label"><input type="checkbox" name="interests" value="The book and courses" style="width:16px;height:16px;flex-shrink:0;" /> The book and courses</label>
         </div>
-        <button type="submit" class="btn btn-primary" style="width:100%;font-size:1rem;cursor:pointer;border:none;">Stay Connected</button>
+        <button type="submit" class="btn btn-primary" style="width:100%;font-size:1rem;cursor:pointer;border:none;">Send Me the Free Chapter</button>
       </form>
+      <p style="font-size:0.8rem;color:var(--mid-gray);margin-top:12px;">No spam, ever. Unsubscribe anytime.</p>
       <div id="emailCaptureConfirmation" class="email-capture-confirmation">
-        <p style="color:var(--cobalt);font-size:1.1rem;font-weight:600;margin:0;">You are in. Check your inbox — something good is coming.</p>
+        <p style="color:var(--cobalt);font-size:1.1rem;font-weight:600;margin:0;">Check your inbox — the first 30 pages are on their way to you.</p>
       </div>
     </div>
   </div>
@@ -778,8 +785,8 @@
     <div class="footer-bottom">
       <span>&copy; 2026 Star Jesse Taylor Emotional Fitness. All rights reserved.</span>
       <div class="footer-legal">
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms of Service</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
       </div>
     </div>
   </div>

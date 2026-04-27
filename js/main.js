@@ -177,7 +177,7 @@ if (waitlistForm) {
   });
 }
 
-// ===== EMAIL CAPTURE FORM — ActiveCampaign =====
+// ===== EMAIL CAPTURE FORM — Free Chapter Lead Magnet =====
 const emailCaptureForm = document.getElementById('emailCaptureForm');
 const emailCaptureConfirmation = document.getElementById('emailCaptureConfirmation');
 
@@ -186,7 +186,7 @@ if (emailCaptureForm) {
     e.preventDefault();
     const submitBtn = emailCaptureForm.querySelector('button[type="submit"]');
     submitBtn.disabled = true;
-    submitBtn.textContent = 'Adding you...';
+    submitBtn.textContent = 'Sending...';
 
     const data = new FormData(emailCaptureForm);
     const firstName = data.get('first_name') || '';
@@ -194,23 +194,18 @@ if (emailCaptureForm) {
     const interests = data.getAll('interests');
 
     try {
-      const res = await fetch('/api/subscribe', {
+      const res = await fetch('/api/free-chapter', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, firstName, interests })
       });
-
       if (!res.ok) throw new Error('Subscribe failed');
-
-      emailCaptureForm.style.display = 'none';
-      if (emailCaptureConfirmation) emailCaptureConfirmation.style.display = 'block';
     } catch (err) {
-      // Fallback: send via email client
-      const body = `New Email Subscriber\n\nName: ${firstName}\nEmail: ${email}\nInterested in: ${interests.join(', ') || 'Not specified'}`;
-      window.open('mailto:starjessetaylor@gmail.com?subject=New%20Email%20Subscriber&body=' + encodeURIComponent(body));
-      emailCaptureForm.style.display = 'none';
-      if (emailCaptureConfirmation) emailCaptureConfirmation.style.display = 'block';
+      console.warn('Email capture error:', err);
     }
+
+    emailCaptureForm.style.display = 'none';
+    if (emailCaptureConfirmation) emailCaptureConfirmation.style.display = 'block';
   });
 }
 
