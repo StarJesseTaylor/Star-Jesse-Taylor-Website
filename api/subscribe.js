@@ -1,4 +1,3 @@
-const AC_URL = 'https://starjessetaylor92181.api-us1.com';
 const LIST_ID = '3'; // Master Contact List
 
 export default async function handler(req, res) {
@@ -10,6 +9,7 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const AC_KEY = process.env.ACTIVECAMPAIGN_API_KEY;
+  const AC_URL = (process.env.ACTIVECAMPAIGN_API_URL || 'https://starjessetaylor92181.api-us1.com').replace(/\/$/, '');
   if (!AC_KEY) return res.status(500).json({ error: 'Server configuration error' });
 
   const { email, firstName, interests } = req.body || {};

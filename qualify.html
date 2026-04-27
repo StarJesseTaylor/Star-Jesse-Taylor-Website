@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Find Your Path with Star | Star Jesse Taylor Emotional Fitness</title>
+  <meta name="description" content="Answer 6 quick questions and get a personalized recommendation from Star Jesse Taylor's Emotional Fitness practice." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <!-- Google Analytics GA4 — replace G-XXXXXXXXXX with your Measurement ID from analytics.google.com -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+  <style>
+    .qualify-wrap {
+      min-height: 100vh;
+      padding-top: calc(var(--nav-height) + 60px);
+      padding-bottom: 80px;
+      background: linear-gradient(160deg, #ffffff 0%, #e8f0f7 100%);
+    }
+    .qualify-container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .qualify-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .qualify-header h1 {
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      margin-bottom: 12px;
+      color: var(--cobalt);
+    }
+    .qualify-header p {
+      color: var(--mid-gray);
+      font-size: 1.05rem;
+    }
+    .qualify-progress {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 32px;
+    }
+    .qualify-progress-bar {
+      flex: 1;
+      height: 6px;
+      background: rgba(27,108,168,0.12);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .qualify-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--cobalt), var(--turquoise));
+      border-radius: 10px;
+      transition: width 0.5s ease;
+      width: 0%;
+    }
+    .qualify-progress-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--cobalt);
+      white-space: nowrap;
+    }
+    .qualify-card {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 44px 40px;
+      box-shadow: 0 4px 32px rgba(27,108,168,0.1);
+      display: none;
+      animation: qualify-in 0.34s ease;
+    }
+    .qualify-card.active { display: block; }
+    @keyframes qualify-in {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .qualify-question {
+      font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+      font-weight: 800;
+      color: var(--charcoal);
+      margin-bottom: 28px;
+      line-height: 1.3;
+    }
+    .qualify-options {
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .qualify-option {
+      display: flex; align-items: center; gap: 14px;
+      padding: 18px 22px;
+      background: #f8f9fb;
+      border: 2px solid #eef1f5;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      text-align: left;
+      font-size: 0.98rem;
+      font-weight: 600;
+      color: var(--charcoal);
+      width: 100%;
+      font-family: inherit;
+    }
+    .qualify-option:hover {
+      border-color: var(--cobalt);
+      background: rgba(27,108,168,0.04);
+      transform: translateX(4px);
+    }
+    .qualify-option.selected {
+      border-color: var(--cobalt);
+      background: rgba(27,108,168,0.08);
+    }
+    .qualify-input {
+      width: 100%;
+      padding: 16px 20px;
+      border: 2px solid #eef1f5;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-family: inherit;
+      color: var(--charcoal);
+      background: #f8f9fb;
+      outline: none;
+      transition: border-color 0.18s, background 0.18s;
+      margin-bottom: 14px;
+    }
+    .qualify-input:focus { border-color: var(--cobalt); background: var(--white); }
+    .qualify-submit {
+      width: 100%;
+      padding: 18px;
+      background: var(--cobalt);
+      color: var(--white);
+      border: none;
+      border-radius: 50px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s;
+      margin-top: 8px;
+    }
+    .qualify-submit:hover {
+      background: var(--cobalt-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(27,108,168,0.35);
+    }
+    .qualify-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+    .qualify-fine {
+      font-size: 0.78rem;
+      color: var(--mid-gray);
+      text-align: center;
+      margin-top: 14px;
+    }
+    .qualify-result {
+      display: none;
+      background: var(--white);
+      border-radius: 20px;
+      padding: 52px 44px;
+      box-shadow: 0 8px 48px rgba(27,108,168,0.14);
+      text-align: center;
+    }
+    .qualify-result.active { display: block; animation: qualify-in 0.34s ease; }
+    .qualify-result-emoji { font-size: 3.5rem; margin-bottom: 18px; }
+    .qualify-result-tier {
+      display: inline-block;
+      background: linear-gradient(135deg, rgba(27,108,168,0.12), rgba(0,180,216,0.12));
+      color: var(--cobalt);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 8px 20px;
+      border-radius: 50px;
+      border: 1px solid rgba(27,108,168,0.2);
+      margin-bottom: 22px;
+    }
+    .qualify-result h2 {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      color: var(--charcoal);
+      margin-bottom: 16px;
+    }
+    .qualify-result p {
+      color: var(--mid-gray);
+      font-size: 1.02rem;
+      line-height: 1.75;
+      margin-bottom: 28px;
+      max-width: 540px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .qualify-cta {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 18px 40px;
+      background: var(--cobalt);
+      color: var(--white);
+      border-radius: 50px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      transition: all 0.2s;
+      margin-bottom: 14px;
+    }
+    .qualify-cta:hover {
+      background: var(--cobalt-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(27,108,168,0.35);
+    }
+    .qualify-secondary {
+      display: block;
+      font-size: 0.92rem;
+      color: var(--cobalt);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      margin-top: 8px;
+    }
+    @media (max-width: 600px) {
+      .qualify-card, .qualify-result { padding: 30px 22px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav class="nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <span class="nav-logo-name">Star Jesse Taylor</span>
+        <span class="nav-logo-sub">Emotional Fitness</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="services.html">Work With Me</a></li>
+        <li><a href="courses.html">Courses</a></li>
+        <li><a href="quiz.html">Find My Path</a></li>
+        <li><a href="index.html#book">Book</a></li>
+      </ul>
+      <a href="apply.html" class="btn btn-primary btn-sm nav-cta">Apply</a>
+      <button class="nav-hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="nav-mobile">
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="services.html">Work With Me</a>
+  <a href="courses.html">Courses</a>
+  <a href="quiz.html">Find My Path</a>
+  <a href="index.html#book">Book</a>
+  <a href="apply.html">Apply for Coaching</a>
+</div>
+
+<div class="qualify-wrap">
+  <div class="qualify-container">
+
+    <div class="qualify-header">
+      <h1>Find Your Path with Star</h1>
+      <p>Six quick questions. A personalized recommendation. Tools to start today.</p>
+    </div>
+
+    <div class="qualify-progress" id="qualifyProgress">
+      <div class="qualify-progress-bar"><div class="qualify-progress-fill" id="qualifyFill"></div></div>
+      <span class="qualify-progress-label" id="qualifyLabel">Question 1 of 7</span>
+    </div>
+
+    <!-- Q1 -->
+    <div class="qualify-card active" data-step="1">
+      <div class="qualify-question">What are you looking for?</div>
+      <div class="qualify-options">
+        <button class="qualify-option" data-q="q1" data-value="1on1-coaching">1-on-1 coaching with Star</button>
+        <button class="qualify-option" data-q="q1" data-value="group-cohort">Group coaching or cohort</button>
+        <button class="qualify-option" data-q="q1" data-value="courses-self-study">Courses and self study</button>
+        <button class="qualify-option" data-q="q1" data-value="live-events">Live events and seminars</button>
+        <button class="qualify-option" data-q="q1" data-value="free-resources">Free resources</button>
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="qualify-card" data-step="2">
+      <div class="qualify-question">Have you done therapy or coaching before?</div>
+      <div class="qualify-options">
+        <button class="qualify-option" data-q="q2" data-value="yes-therapy">Yes, therapy</button>
+        <button class="qualify-option" data-q="q2" data-value="yes-coaching">Yes, coaching</button>
+        <button class="qualify-option" data-q="q2" data-value="yes-both">Yes, both</button>
+        <button class="qualify-option" data-q="q2" data-value="no-ready">No, but I am ready to start</button>
+        <button class="qualify-option" data-q="q2" data-value="no-self-guided">No, I prefer self guided learning</button>
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="qualify-card" data-step="3">
+      <div class="qualify-question">Have you attended self help or spiritual seminars before?</div>
+      <div class="qualify-options">
+        <button class="qualify-option" data-q="q3" data-value="yes-regularly">Yes, regularly</button>
+        <button class="qualify-option" data-q="q3" data-value="yes-few-times">Yes, a few times</button>
+        <button class="qualify-option" data-q="q3" data-value="no-want-to">No, but I want to</button>
+        <button class="qualify-option" data-q="q3" data-value="no-not-my-thing">No, not my thing</button>
+      </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="qualify-card" data-step="4">
+      <div class="qualify-question">Have you read the Emotional Fitness book or taken any of Star's courses?</div>
+      <div class="qualify-options">
+        <button class="qualify-option" data-q="q4" data-value="yes-book">Yes, the book</button>
+        <button class="qualify-option" data-q="q4" data-value="yes-course">Yes, a course</button>
+        <button class="qualify-option" data-q="q4" data-value="yes-both">Yes, both</button>
+        <button class="qualify-option" data-q="q4" data-value="not-yet">Not yet but I am interested</button>
+      </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="qualify-card" data-step="5">
+      <div class="qualify-question">Where are you located?</div>
+      <div class="qualify-options">
+        <button class="qualify-option" data-q="q5" data-value="usa-west">USA West Coast</button>
+        <button class="qualify-option" data-q="q5" data-value="usa-east">USA East Coast</button>
+        <button class="qualify-option" data-q="q5" data-value="usa-central">USA Central</button>
+        <button class="qualify-option" data-q="q5" data-value="europe">Europe</button>
+        <button class="qualify-option" data-q="q5" data-value="anz">Australia / New Zealand</button>
+        <button class="qualify-option" data-q="q5" data-value="asia">Asia</button>
+        <button class="qualify-option" data-q="q5" data-value="latam">Latin America</button>
+        <button class="qualify-option" data-q="q5" data-value="other">Other</button>
+      </div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="qualify-card" data-step="6">
+      <div class="qualify-question">How did you find Star?</div>
+      <div class="qualify-options">
+        <button class="qualify-option" data-q="q6" data-value="tiktok">TikTok</button>
+        <button class="qualify-option" data-q="q6" data-value="instagram">Instagram</button>
+        <button class="qualify-option" data-q="q6" data-value="youtube">YouTube</button>
+        <button class="qualify-option" data-q="q6" data-value="google">Google</button>
+        <button class="qualify-option" data-q="q6" data-value="referral">Someone referred me</button>
+      </div>
+    </div>
+
+    <!-- Email step -->
+    <div class="qualify-card" data-step="7">
+      <div class="qualify-question">Where should we send your personalized recommendation?</div>
+      <form id="qualifyForm">
+        <input type="text" name="firstName" placeholder="First name" required autocomplete="given-name" class="qualify-input" />
+        <input type="email" name="email" placeholder="Email address" required autocomplete="email" class="qualify-input" />
+        <button type="submit" class="qualify-submit">Get My Recommendation</button>
+        <p class="qualify-fine">No spam ever. You can unsubscribe anytime.</p>
+      </form>
+    </div>
+
+    <!-- Result -->
+    <div class="qualify-result" id="qualifyResult"></div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-bottom">
+      <span>&copy; 2026 Star Jesse Taylor Emotional Fitness. All rights reserved.</span>
+      <div class="footer-legal">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/chat-widget.js"></script>
+<script>
+  const answers = {};
+  const totalSteps = 7;
+  let currentStep = 1;
+  const fill = document.getElementById('qualifyFill');
+  const label = document.getElementById('qualifyLabel');
+  const cards = document.querySelectorAll('.qualify-card');
+  const resultEl = document.getElementById('qualifyResult');
+  const progressEl = document.getElementById('qualifyProgress');
+
+  function setProgress(step) {
+    const pct = ((step - 1) / totalSteps) * 100;
+    fill.style.width = pct + '%';
+    label.textContent = 'Question ' + Math.min(step, totalSteps) + ' of ' + totalSteps;
+  }
+  setProgress(1);
+
+  function showStep(step) {
+    cards.forEach(c => c.classList.remove('active'));
+    const target = document.querySelector('.qualify-card[data-step="' + step + '"]');
+    if (target) target.classList.add('active');
+    setProgress(step);
+    currentStep = step;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  document.querySelectorAll('.qualify-option').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const q = btn.dataset.q;
+      const v = btn.dataset.value;
+      answers[q] = v;
+      document.querySelectorAll('.qualify-option[data-q="' + q + '"]').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      setTimeout(() => showStep(currentStep + 1), 280);
+    });
+  });
+
+  function calcScore(a) {
+    let s = 0;
+    if (a.q1 === '1on1-coaching') s += 3;
+    if (['yes-therapy','yes-coaching','yes-both'].indexOf(a.q2) !== -1) s += 2;
+    if (['yes-regularly','yes-few-times'].indexOf(a.q3) !== -1) s += 2;
+    if (['yes-book','yes-course','yes-both'].indexOf(a.q4) !== -1) s += 2;
+    if (['usa-west','usa-east','usa-central'].indexOf(a.q5) !== -1) s += 1;
+    return s;
+  }
+  function tierFor(score) {
+    if (score >= 7) return 'hot-lead';
+    if (score >= 4) return 'warm-lead';
+    return 'nurture';
+  }
+
+  const RESULTS = {
+    'hot-lead': {
+      emoji: '🔥',
+      label: 'You are ready',
+      title: 'You are ready for the deepest work.',
+      desc: 'Based on what you shared, your best next step is a Clarity Session with Star. It is a single live session, $500, fully credited toward any coaching package if you continue. This is for people who are done waiting and ready to go.',
+      cta: 'Book a Clarity Session — $500',
+      ctaUrl: 'https://buy.stripe.com/28E28q0VNc3rgxqeR3cMM16',
+      ctaExternal: true,
+      secondary: 'Or apply for the full 1-on-1 package →',
+      secondaryUrl: 'apply.html'
+    },
+    'warm-lead': {
+      emoji: '⚡',
+      label: 'Start with momentum',
+      title: 'Start with the Intensive.',
+      desc: 'Based on what you shared, the Unlock Your Highest Self Intensive is the right next step. $97. A live experience with Star designed to give you a real breakthrough. The $97 is credited toward the cohort if you continue.',
+      cta: 'Join the Intensive — $97',
+      ctaUrl: 'services.html#intensive',
+      secondary: 'Or take the full Find My Path quiz →',
+      secondaryUrl: 'quiz.html'
+    },
+    'nurture': {
+      emoji: '📗',
+      label: 'Start with the foundation',
+      title: 'The book is your starting point.',
+      desc: 'Based on what you shared, the foundation is exactly where to begin. Get the first 30 pages free now and we will send you the framework over the next few weeks. No pressure. Just real tools.',
+      cta: 'Get the First 30 Pages Free',
+      ctaUrl: 'free-chapter.html',
+      secondary: 'Or get the full book — $29 →',
+      secondaryUrl: 'https://starjessetaylor.bio/shop/51c9e967-da06-4c5a-adf3-5d79d32e30da',
+      secondaryExternal: true
+    }
+  };
+
+  function showResult(tier) {
+    cards.forEach(c => c.classList.remove('active'));
+    progressEl.style.display = 'none';
+    fill.style.width = '100%';
+    const r = RESULTS[tier];
+    const sec = r.secondaryExternal ? 'target="_blank" rel="noopener"' : '';
+    const ext = r.ctaExternal ? 'target="_blank" rel="noopener"' : '';
+    resultEl.innerHTML =
+      '<div class="qualify-result-emoji">' + r.emoji + '</div>' +
+      '<div class="qualify-result-tier">' + r.label + '</div>' +
+      '<h2>' + r.title + '</h2>' +
+      '<p>' + r.desc + '</p>' +
+      '<a href="' + r.ctaUrl + '" class="qualify-cta" ' + ext + '>' + r.cta + '</a>' +
+      '<a href="' + r.secondaryUrl + '" class="qualify-secondary" ' + sec + '>' + r.secondary + '</a>';
+    resultEl.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  document.getElementById('qualifyForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const firstName = String(fd.get('firstName') || '').trim();
+    const email = String(fd.get('email') || '').trim();
+    const score = calcScore(answers);
+    const tier = tierFor(score);
+
+    const btn = e.target.querySelector('.qualify-submit');
+    btn.disabled = true;
+    btn.textContent = 'Sending...';
+
+    try {
+      await fetch('/api/qualify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ firstName, email, answers, score, tier })
+      });
+    } catch (err) {
+      console.warn('Qualify API error:', err);
+    }
+
+    showResult(tier);
+  });
+</script>
+</body>
+</html>
