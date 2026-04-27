@@ -219,6 +219,37 @@ if (emailCaptureForm) {
   });
 }
 
+// ===== INTENSIVE WAITLIST FORMS =====
+['intensiveWaitlist', 'intensiveWaitlistServices'].forEach(function(id) {
+  var f = document.getElementById(id);
+  if (!f) return;
+  f.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    var data = new FormData(f);
+    var name = data.get('intensive_name') || '';
+    var email = data.get('intensive_email') || '';
+    var body = 'Intensive Waitlist\n\nName: ' + name + '\nEmail: ' + email;
+    try {
+      if (typeof emailjs !== 'undefined') {
+        await emailjs.send('service_emotfit', 'template_application', {
+          to_email: 'starjessetaylor@gmail.com',
+          subject: 'Intensive Waitlist',
+          applicant_name: name,
+          message: body,
+          reply_to: email,
+        });
+      } else {
+        window.open('mailto:starjessetaylor@gmail.com?subject=Intensive%20Waitlist&body=' + encodeURIComponent(body));
+      }
+    } catch(err) {
+      window.open('mailto:starjessetaylor@gmail.com?subject=Intensive%20Waitlist&body=' + encodeURIComponent(body));
+    }
+    f.style.display = 'none';
+    var confirm = document.getElementById(id + 'Confirm');
+    if (confirm) confirm.style.display = 'block';
+  });
+});
+
 // ===== SMOOTH SCROLL FOR ANCHOR LINKS =====
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', e => {
