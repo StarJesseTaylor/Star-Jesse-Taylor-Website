@@ -1,0 +1,17 @@
+# Star's IP — keep private
+images/My Book/
+STAR_KNOWLEDGE_BASE.md
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Node
+node_modules/
+.env
+.env.local
+
+# Vercel
+.vercel
