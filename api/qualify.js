@@ -40,6 +40,21 @@ const SEMINAR_TAGS = {
   'no-not-my-thing': 'Seminars: No'
 };
 
+const CHALLENGE_TAGS = {
+  'intrusive-thoughts': 'Challenge: Intrusive Thoughts',
+  'rumination':         'Challenge: Rumination',
+  'anxiety':            'Challenge: Anxiety',
+  'panic-attacks':      'Challenge: Panic Attacks',
+  'dpdr':               'Challenge: DPDR',
+  'ocd':                'Challenge: OCD',
+  'relationship-ocd':   'Challenge: Relationship OCD',
+  'adhd':               'Challenge: ADHD',
+  'depression':         'Challenge: Depression',
+  'self-worth':         'Challenge: Self-Worth',
+  'trauma':             'Challenge: Trauma',
+  'other':              'Challenge: Other'
+};
+
 async function getOrCreateTag(tagName, headers, baseUrl) {
   const search = await fetch(`${baseUrl}/api/3/tags?search=${encodeURIComponent(tagName)}`, { headers });
   if (search.ok) {
@@ -111,11 +126,12 @@ export default async function handler(req, res) {
     const a = answers || {};
     const tagsToApply = [];
 
-    if (LOCATION_TAGS[a.q5])  tagsToApply.push(LOCATION_TAGS[a.q5]);
-    if (INTEREST_TAGS[a.q1])  tagsToApply.push(INTEREST_TAGS[a.q1]);
-    if (SOURCE_TAGS[a.q6])    tagsToApply.push(SOURCE_TAGS[a.q6]);
-    if (TIER_TAGS[tier])      tagsToApply.push(TIER_TAGS[tier]);
-    if (SEMINAR_TAGS[a.q3])   tagsToApply.push(SEMINAR_TAGS[a.q3]);
+    if (LOCATION_TAGS[a.q5])           tagsToApply.push(LOCATION_TAGS[a.q5]);
+    if (INTEREST_TAGS[a.q1])           tagsToApply.push(INTEREST_TAGS[a.q1]);
+    if (SOURCE_TAGS[a.q6])             tagsToApply.push(SOURCE_TAGS[a.q6]);
+    if (TIER_TAGS[tier])               tagsToApply.push(TIER_TAGS[tier]);
+    if (SEMINAR_TAGS[a.q3])            tagsToApply.push(SEMINAR_TAGS[a.q3]);
+    if (CHALLENGE_TAGS[a.q_challenge]) tagsToApply.push(CHALLENGE_TAGS[a.q_challenge]);
 
     // Book buyer / past client / therapy history
     if (['yes-book','yes-both'].indexOf(a.q4) !== -1)        tagsToApply.push('Book Buyer');
@@ -130,12 +146,16 @@ export default async function handler(req, res) {
     await Promise.all(tagIds.map(id => applyTag(contactId, id, headers, baseUrl)));
 
     // 5. Save score and qualification details as a note
+    const challengeLine = a.q_challenge === 'other' && a.q_challenge_text
+      ? `Challenge (write-in): "${String(a.q_challenge_text).slice(0, 500)}"`
+      : `Challenge: ${a.q_challenge || 'not provided'}`;
+
     await fetch(`${baseUrl}/api/3/notes`, {
       method: 'POST',
       headers,
       body: JSON.stringify({
         note: {
-          note: `Find Your Path submission. Score: ${score}/10. Tier: ${tier}. Answers: Q1=${a.q1}, Q2=${a.q2}, Q3=${a.q3}, Q4=${a.q4}, Q5=${a.q5}, Q6=${a.q6}`,
+          note: `Find Your Path submission.\nScore: ${score}/10. Tier: ${tier}.\n${challengeLine}\nAnswers: Looking for=${a.q1}, Therapy/coaching=${a.q2}, Seminars=${a.q3}, Book/courses=${a.q4}, Location=${a.q5}, Source=${a.q6}`,
           relid: contactId,
           reltype: 'Subscriber'
         }
