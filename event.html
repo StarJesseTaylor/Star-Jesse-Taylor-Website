@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stop the Mental Loop · Live in Los Angeles · May 30, 2026 | Star Jesse Taylor</title>
+  <meta name="description" content="A live coaching workshop in Los Angeles for people stuck in intrusive thoughts, rumination, anxiety, and OCD. Saturday May 30, 2026. Only 30 seats. From $97." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Stop the Mental Loop · Live Workshop in Los Angeles · May 30, 2026" />
+  <meta property="og:description" content="A live coaching workshop with Star Jesse Taylor for people stuck in intrusive thoughts, rumination, anxiety, and OCD. Only 30 seats." />
+  <meta property="og:type" content="event" />
+  <meta property="og:image" content="images/Pictures of Star/Star Headshot.JPEG" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+
+  <!-- Google Analytics GA4 — replace G-XXXXXXXXXX with your Measurement ID -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+
+  <style>
+    /* ============================================================
+       EVENT PAGE — focused conversion styles
+       ============================================================ */
+
+    .event-announcement-bar {
+      background: linear-gradient(90deg, var(--cobalt), var(--turquoise));
+      color: var(--white);
+      padding: 10px 16px;
+      text-align: center;
+      font-size: 0.86rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      position: relative;
+      z-index: 100;
+    }
+    .event-announcement-bar a { text-decoration: underline; text-underline-offset: 3px; }
+
+    .event-hero {
+      padding: 72px 0 80px;
+      background: linear-gradient(160deg, #ffffff 0%, #e8f0f7 60%, #d8e7f1 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .event-hero-inner {
+      max-width: 980px;
+      margin: 0 auto;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+    .event-pre-headline {
+      display: inline-block;
+      background: rgba(27,108,168,0.1);
+      color: var(--cobalt);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 8px 18px;
+      border-radius: 50px;
+      border: 1px solid rgba(27,108,168,0.22);
+      margin-bottom: 22px;
+    }
+    .event-headline {
+      font-size: clamp(2.2rem, 5.2vw, 3.8rem);
+      font-weight: 900;
+      line-height: 1.08;
+      color: var(--charcoal);
+      margin-bottom: 20px;
+      letter-spacing: -0.01em;
+    }
+    .event-headline em {
+      color: var(--cobalt);
+      font-style: normal;
+    }
+    .event-sub-headline {
+      font-size: clamp(1.05rem, 2vw, 1.25rem);
+      color: var(--mid-gray);
+      line-height: 1.6;
+      max-width: 720px;
+      margin: 0 auto 32px;
+    }
+    .event-meta-row {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+      font-size: 0.92rem;
+      color: var(--charcoal);
+      font-weight: 600;
+    }
+    .event-meta-row span {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--white);
+      padding: 10px 18px;
+      border-radius: 50px;
+      box-shadow: 0 4px 14px rgba(27,108,168,0.08);
+      border: 1px solid rgba(27,108,168,0.1);
+    }
+    .event-cta-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: center;
+      margin-top: 8px;
+    }
+    .event-cta-btn {
+      background: var(--cobalt);
+      color: var(--white);
+      padding: 22px 56px;
+      font-size: 1.1rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 8px 28px rgba(27,108,168,0.32);
+      transition: all 0.24s;
+      text-decoration: none;
+    }
+    .event-cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 36px rgba(27,108,168,0.45);
+      background: var(--cobalt-dark);
+    }
+    .event-cta-trust {
+      font-size: 0.8rem;
+      color: var(--mid-gray);
+    }
+
+    /* COUNTDOWN */
+    .event-countdown {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      margin: 26px 0 8px;
+      flex-wrap: wrap;
+    }
+    .countdown-block {
+      background: var(--white);
+      border-radius: 14px;
+      padding: 14px 18px;
+      min-width: 76px;
+      box-shadow: 0 6px 22px rgba(27,108,168,0.12);
+      border: 1px solid rgba(27,108,168,0.1);
+    }
+    .countdown-num {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--cobalt);
+      line-height: 1;
+    }
+    .countdown-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mid-gray);
+      margin-top: 4px;
+    }
+
+    /* AUTHORITY BAR */
+    .authority-bar {
+      background: var(--white);
+      padding: 28px 0;
+      border-top: 1px solid var(--light-gray);
+      border-bottom: 1px solid var(--light-gray);
+    }
+    .authority-bar-inner {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 32px;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .authority-label {
+      font-size: 0.74rem;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--mid-gray);
+      width: 100%;
+      text-align: center;
+      margin-bottom: 4px;
+    }
+    .authority-item {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--charcoal);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .authority-item strong {
+      color: var(--cobalt);
+      font-weight: 900;
+    }
+
+    /* PAIN AGITATION */
+    .pain-section {
+      padding: 90px 0;
+      background: var(--white);
+    }
+    .pain-checklist {
+      max-width: 720px;
+      margin: 32px auto 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px 24px;
+    }
+    .pain-checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 1rem;
+      color: var(--charcoal);
+      line-height: 1.55;
+    }
+    .pain-checklist li::before {
+      content: "✓";
+      color: var(--cobalt);
+      font-weight: 900;
+      flex-shrink: 0;
+    }
+    @media (max-width: 600px) {
+      .pain-checklist { grid-template-columns: 1fr; }
+    }
+
+    /* AGENDA */
+    .agenda-section {
+      background: var(--off-white);
+      padding: 90px 0;
+    }
+    .agenda-list {
+      max-width: 760px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .agenda-item {
+      background: var(--white);
+      border-radius: 14px;
+      padding: 22px 26px;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 22px;
+      align-items: start;
+      box-shadow: 0 4px 18px rgba(27,108,168,0.06);
+      border-left: 4px solid var(--cobalt);
+    }
+    .agenda-time {
+      font-weight: 900;
+      color: var(--cobalt);
+      font-size: 1.05rem;
+      min-width: 86px;
+    }
+    .agenda-title {
+      font-weight: 800;
+      color: var(--charcoal);
+      font-size: 1.05rem;
+      margin-bottom: 4px;
+    }
+    .agenda-desc {
+      font-size: 0.95rem;
+      color: var(--mid-gray);
+      line-height: 1.6;
+    }
+
+    /* VALUE STACK */
+    .stack-section { padding: 100px 0; background: var(--white); }
+    .stack-card {
+      max-width: 740px;
+      margin: 0 auto;
+      background: linear-gradient(160deg, #ffffff 0%, #f0f6fb 100%);
+      border-radius: 20px;
+      padding: 44px 40px;
+      box-shadow: 0 8px 40px rgba(27,108,168,0.12);
+      border: 1px solid rgba(27,108,168,0.14);
+    }
+    .stack-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    .stack-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 16px;
+      padding: 14px 0;
+      border-bottom: 1px dashed rgba(27,108,168,0.18);
+    }
+    .stack-row:last-child { border-bottom: none; }
+    .stack-name { font-weight: 700; color: var(--charcoal); flex: 1; }
+    .stack-name small { display: block; font-weight: 500; font-size: 0.85rem; color: var(--mid-gray); margin-top: 4px; }
+    .stack-value { font-weight: 800; color: var(--cobalt); white-space: nowrap; }
+    .stack-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 22px;
+      border-top: 2px solid var(--cobalt);
+      margin-top: 10px;
+    }
+    .stack-total-label { font-weight: 800; font-size: 1.1rem; color: var(--charcoal); }
+    .stack-total-value { font-weight: 900; font-size: 1.6rem; color: var(--cobalt); }
+    .stack-investment {
+      background: linear-gradient(135deg, var(--cobalt), var(--turquoise));
+      color: var(--white);
+      border-radius: 14px;
+      padding: 22px 26px;
+      margin-top: 18px;
+      text-align: center;
+    }
+    .stack-investment-label {
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      opacity: 0.9;
+    }
+    .stack-investment-price {
+      font-size: 2.4rem;
+      font-weight: 900;
+      margin: 4px 0 6px;
+    }
+    .stack-investment-note {
+      font-size: 0.88rem;
+      opacity: 0.92;
+    }
+
+    /* TIERS */
+    .tiers-section {
+      background: linear-gradient(180deg, var(--off-white) 0%, #ffffff 100%);
+      padding: 100px 0;
+    }
+    .tiers-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 28px;
+      max-width: 920px;
+      margin: 0 auto;
+    }
+    .tier-card {
+      background: var(--white);
+      border: 2px solid var(--light-gray);
+      border-radius: 20px;
+      padding: 36px 32px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.04);
+      transition: all 0.24s;
+      position: relative;
+    }
+    .tier-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(27,108,168,0.18);
+    }
+    .tier-card.featured {
+      border-color: var(--cobalt);
+      box-shadow: 0 12px 40px rgba(27,108,168,0.18);
+      transform: scale(1.02);
+    }
+    .tier-badge {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--cobalt);
+      color: var(--white);
+      font-size: 0.74rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 6px 18px;
+      border-radius: 50px;
+      box-shadow: 0 6px 16px rgba(27,108,168,0.32);
+    }
+    .tier-name {
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--cobalt);
+      margin-bottom: 10px;
+    }
+    .tier-title {
+      font-size: 1.4rem;
+      font-weight: 900;
+      color: var(--charcoal);
+      margin-bottom: 10px;
+    }
+    .tier-price {
+      font-size: 2.6rem;
+      font-weight: 900;
+      color: var(--charcoal);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .tier-price-sub {
+      font-size: 0.86rem;
+      color: var(--mid-gray);
+      margin-bottom: 18px;
+    }
+    .tier-scarcity {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(220, 38, 38, 0.07);
+      color: #b91c1c;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      padding: 6px 12px;
+      border-radius: 50px;
+      border: 1px solid rgba(220, 38, 38, 0.18);
+      margin-bottom: 20px;
+      width: fit-content;
+    }
+    .tier-features {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+    }
+    .tier-features li {
+      font-size: 0.94rem;
+      color: var(--charcoal);
+      line-height: 1.6;
+      padding-left: 24px;
+      position: relative;
+    }
+    .tier-features li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: var(--cobalt);
+      font-weight: 900;
+    }
+    .tier-cta {
+      display: block;
+      text-align: center;
+      padding: 16px;
+      border-radius: 50px;
+      font-weight: 800;
+      font-size: 0.96rem;
+      transition: all 0.24s;
+      background: var(--cobalt);
+      color: var(--white);
+      text-decoration: none;
+    }
+    .tier-cta:hover {
+      background: var(--cobalt-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(27,108,168,0.32);
+    }
+    .tier-card:not(.featured) .tier-cta {
+      background: var(--white);
+      color: var(--cobalt);
+      border: 2px solid var(--cobalt);
+    }
+    .tier-card:not(.featured) .tier-cta:hover {
+      background: var(--cobalt);
+      color: var(--white);
+    }
+    @media (max-width: 880px) {
+      .tiers-grid { grid-template-columns: 1fr; gap: 28px; }
+      .tier-card.featured { transform: none; }
+    }
+
+    /* GUARANTEE */
+    .guarantee-section {
+      background: var(--white);
+      padding: 90px 0;
+    }
+    .guarantee-card {
+      max-width: 760px;
+      margin: 0 auto;
+      background: linear-gradient(135deg, rgba(27,108,168,0.06), rgba(0,180,216,0.06));
+      border: 2px solid var(--cobalt);
+      border-radius: 20px;
+      padding: 44px 40px;
+      text-align: center;
+      position: relative;
+    }
+    .guarantee-shield {
+      width: 72px;
+      height: 72px;
+      background: var(--cobalt);
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.4rem;
+      margin: 0 auto 22px;
+      box-shadow: 0 8px 24px rgba(27,108,168,0.32);
+    }
+    .guarantee-title {
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: var(--charcoal);
+      margin-bottom: 14px;
+    }
+    .guarantee-body {
+      font-size: 1.04rem;
+      color: var(--charcoal);
+      line-height: 1.75;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* WHO IT IS / IS NOT FOR */
+    .fitlists-section {
+      background: var(--off-white);
+      padding: 90px 0;
+    }
+    .fitlists-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      max-width: 980px;
+      margin: 0 auto;
+    }
+    .fitlist {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 32px 28px;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.05);
+    }
+    .fitlist-title {
+      font-size: 1.15rem;
+      font-weight: 900;
+      margin-bottom: 18px;
+    }
+    .fitlist-yes { border-top: 4px solid var(--cobalt); }
+    .fitlist-no { border-top: 4px solid #d1d5db; }
+    .fitlist-yes .fitlist-title { color: var(--cobalt); }
+    .fitlist-no .fitlist-title { color: var(--mid-gray); }
+    .fitlist ul { display: flex; flex-direction: column; gap: 12px; }
+    .fitlist li {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--charcoal);
+      padding-left: 26px;
+      position: relative;
+    }
+    .fitlist-yes li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: var(--cobalt);
+      font-weight: 900;
+    }
+    .fitlist-no li::before {
+      content: "✕";
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: #9ca3af;
+      font-weight: 900;
+    }
+    @media (max-width: 760px) {
+      .fitlists-grid { grid-template-columns: 1fr; }
+    }
+
+    /* LOGISTICS */
+    .logistics-section {
+      background: var(--white);
+      padding: 90px 0;
+    }
+    .logistics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      max-width: 980px;
+      margin: 0 auto;
+    }
+    .logistics-card {
+      background: var(--off-white);
+      border-radius: 16px;
+      padding: 28px 24px;
+      text-align: center;
+    }
+    .logistics-icon {
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+    }
+    .logistics-label {
+      font-size: 0.74rem;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--cobalt);
+      margin-bottom: 6px;
+    }
+    .logistics-value {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--charcoal);
+      line-height: 1.4;
+    }
+    .logistics-detail {
+      font-size: 0.86rem;
+      color: var(--mid-gray);
+      margin-top: 6px;
+    }
+    @media (max-width: 760px) {
+      .logistics-grid { grid-template-columns: 1fr; }
+    }
+
+    /* FAQ */
+    .faq-section { background: var(--off-white); padding: 90px 0; }
+    .faq-list { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+    .faq-item {
+      background: var(--white);
+      border-radius: 14px;
+      padding: 22px 26px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.05);
+      cursor: pointer;
+    }
+    .faq-q {
+      font-weight: 800;
+      color: var(--charcoal);
+      font-size: 1.02rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .faq-q::after {
+      content: "+";
+      color: var(--cobalt);
+      font-size: 1.5rem;
+      font-weight: 900;
+      transition: transform 0.24s;
+    }
+    .faq-item.open .faq-q::after { transform: rotate(45deg); }
+    .faq-a {
+      font-size: 0.96rem;
+      color: var(--mid-gray);
+      line-height: 1.7;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.32s ease, padding 0.32s ease;
+    }
+    .faq-item.open .faq-a {
+      max-height: 600px;
+      padding-top: 14px;
+    }
+
+    /* FINAL CTA */
+    .final-cta-section {
+      background: linear-gradient(135deg, var(--cobalt), var(--cobalt-dark));
+      color: var(--white);
+      padding: 100px 0;
+      text-align: center;
+    }
+    .final-cta-section h2 {
+      color: var(--white);
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      margin-bottom: 18px;
+      max-width: 760px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .final-cta-section p {
+      font-size: 1.1rem;
+      opacity: 0.92;
+      max-width: 620px;
+      margin: 0 auto 36px;
+      line-height: 1.7;
+    }
+    .final-cta-btn {
+      display: inline-block;
+      background: var(--white);
+      color: var(--cobalt);
+      padding: 22px 56px;
+      font-size: 1.1rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      border-radius: 50px;
+      text-decoration: none;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.18);
+      transition: all 0.24s;
+    }
+    .final-cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 44px rgba(0,0,0,0.28);
+    }
+
+    /* STICKY MOBILE CTA */
+    .sticky-cta {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--white);
+      box-shadow: 0 -6px 24px rgba(0,0,0,0.12);
+      padding: 12px 16px;
+      display: none;
+      z-index: 90;
+      border-top: 1px solid var(--light-gray);
+    }
+    .sticky-cta a {
+      display: block;
+      background: var(--cobalt);
+      color: var(--white);
+      padding: 16px;
+      border-radius: 50px;
+      text-align: center;
+      font-weight: 800;
+      font-size: 1rem;
+      text-decoration: none;
+    }
+    @media (max-width: 760px) {
+      .sticky-cta { display: block; }
+      body { padding-bottom: 80px; }
+    }
+
+    /* SOCIAL PROOF MID-PAGE */
+    .midproof-section {
+      background: var(--white);
+      padding: 80px 0;
+    }
+    .midproof-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      max-width: 980px;
+      margin: 0 auto;
+    }
+    .midproof-card {
+      background: var(--off-white);
+      border-radius: 16px;
+      padding: 28px 26px;
+      border-left: 4px solid var(--cobalt);
+    }
+    .midproof-quote {
+      font-size: 1rem;
+      color: var(--charcoal);
+      line-height: 1.75;
+      margin-bottom: 14px;
+      font-style: italic;
+    }
+    .midproof-name { font-weight: 800; color: var(--charcoal); }
+    .midproof-detail { font-size: 0.84rem; color: var(--mid-gray); }
+    @media (max-width: 760px) { .midproof-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+<!-- ANNOUNCEMENT BAR -->
+<div class="event-announcement-bar">
+  Limited to 30 seats · Saturday May 30, 2026 · Los Angeles · <a href="#tiers">Reserve Yours →</a>
+</div>
+
+<!-- NAVIGATION -->
+<nav class="nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <span class="nav-logo-name">Star Jesse Taylor</span>
+        <span class="nav-logo-sub">Emotional Fitness</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="services.html">Work With Me</a></li>
+        <li><a href="event.html" style="color:var(--cobalt);font-weight:800;">LA Event</a></li>
+        <li><a href="quiz.html">Find My Path</a></li>
+        <li><a href="index.html#book">Book</a></li>
+      </ul>
+      <a href="#tiers" class="btn btn-primary btn-sm nav-cta">Reserve Seat</a>
+      <button class="nav-hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="nav-mobile">
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="services.html">Work With Me</a>
+  <a href="event.html">LA Event · May 30</a>
+  <a href="quiz.html">Find My Path</a>
+  <a href="index.html#book">Book</a>
+  <a href="#tiers">Reserve a Seat</a>
+</div>
+
+<!-- HERO -->
+<section class="event-hero">
+  <div class="container">
+    <div class="event-hero-inner">
+      <div class="event-pre-headline">Live in Los Angeles · May 30, 2026 · 30 Seats Only</div>
+
+      <h1 class="event-headline">Stop the Mental Loop.<br><em>Live, in One Afternoon.</em></h1>
+
+      <p class="event-sub-headline">A live coaching workshop for people stuck in intrusive thoughts, rumination, anxiety, OCD, and the patterns that keep your mind running you. Five hours in the room with Star. Real teaching. Live coaching demos. Deep work exercises. Walk out with the tools and the shift.</p>
+
+      <div class="event-meta-row">
+        <span>📅 Saturday, May 30, 2026</span>
+        <span>⏰ 1:30 PM – 6:00 PM</span>
+        <span>📍 Sawtelle, Los Angeles</span>
+      </div>
+
+      <div class="event-countdown" id="countdown">
+        <div class="countdown-block"><div class="countdown-num" id="cd-days">--</div><div class="countdown-label">Days</div></div>
+        <div class="countdown-block"><div class="countdown-num" id="cd-hours">--</div><div class="countdown-label">Hours</div></div>
+        <div class="countdown-block"><div class="countdown-num" id="cd-mins">--</div><div class="countdown-label">Minutes</div></div>
+        <div class="countdown-block"><div class="countdown-num" id="cd-secs">--</div><div class="countdown-label">Seconds</div></div>
+      </div>
+
+      <div class="event-cta-stack">
+        <a href="#tiers" class="event-cta-btn">Reserve Your Seat — From $97</a>
+        <p class="event-cta-trust">No registration fees. Money-back walk-out guarantee. 90% of seats expected to sell in 14 days.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AUTHORITY BAR -->
+<section class="authority-bar">
+  <div class="authority-bar-inner">
+    <div class="authority-label">As Featured On / Endorsed By</div>
+    <div class="authority-item"><strong>Shanina Shaik Podcast</strong> · 3.3M followers</div>
+    <div class="authority-item"><strong>Jon Prince</strong> · Hay House Author</div>
+    <div class="authority-item"><strong>1B+ Views</strong> · TikTok &amp; Instagram</div>
+    <div class="authority-item"><strong>10,000+ Lives Changed</strong></div>
+  </div>
+</section>
+
+<!-- PAIN AGITATION -->
+<section class="pain-section">
+  <div class="container">
+    <div class="text-center fade-up" style="margin-bottom:18px;">
+      <span class="section-label">Why You Are Here</span>
+      <h2 class="section-title">If Any of This Sounds Like You,<br>This Workshop Was Built for You.</h2>
+      <p style="color:var(--mid-gray);max-width:680px;margin:0 auto;font-size:1.05rem;">You don't need another book. You don't need another therapist who tells you to "sit with the feeling." You need to be in a room with someone who has been where you are and built a way out.</p>
+    </div>
+
+    <ul class="pain-checklist">
+      <li>Intrusive thoughts that hijack your day and won't stop</li>
+      <li>Rumination loops that play the same scene on repeat</li>
+      <li>Anxiety that lives in your chest before your eyes open</li>
+      <li>OCD or ROCD compulsions running your relationships</li>
+      <li>Panic attacks that ambush you out of nowhere</li>
+      <li>Depersonalization or derealization that makes life feel fake</li>
+      <li>Years of therapy that felt like it went nowhere</li>
+      <li>Knowing exactly what you need to do and not doing it</li>
+    </ul>
+
+    <p style="text-align:center;font-size:1.08rem;color:var(--charcoal);font-weight:700;margin-top:46px;max-width:720px;margin-left:auto;margin-right:auto;line-height:1.7;">You have read about the tools. You have watched the videos. The thing that finally moves the needle is being in the room with someone who lived it and is coaching it in real time. That is what this is.</p>
+  </div>
+</section>
+
+<!-- AGENDA -->
+<section class="agenda-section">
+  <div class="container">
+    <div class="text-center fade-up" style="margin-bottom:48px;">
+      <span class="section-label">What You Will Experience</span>
+      <h2 class="section-title">Five Hours That Change Your Relationship<br>With Your Own Mind.</h2>
+    </div>
+
+    <div class="agenda-list">
+      <div class="agenda-item">
+        <div class="agenda-time">1:00 PM</div>
+        <div>
+          <div class="agenda-title">Doors Open. Coffee. Settle In.</div>
+          <div class="agenda-desc">Arrive early, meet the room, get grounded. The space is set up so you can find your seat and take a breath before we start.</div>
+        </div>
+      </div>
+
+      <div class="agenda-item">
+        <div class="agenda-time">1:30 PM</div>
+        <div>
+          <div class="agenda-title">Welcome &amp; The Story Behind the Framework</div>
+          <div class="agenda-desc">14 years of OCD. The night I almost ended it. How I built the framework I will teach you, and why nothing else worked first. This sets the entire room.</div>
+        </div>
+      </div>
+
+      <div class="agenda-item">
+        <div class="agenda-time">2:00 PM</div>
+        <div>
+          <div class="agenda-title">Cognitive Defusion. Live and Practical.</div>
+          <div class="agenda-desc">The exact 30-second technique that stops intrusive thoughts in their tracks. We do it together as a room. You leave with this in your body, not just your notes.</div>
+        </div>
+      </div>
+
+      <div class="agenda-item">
+        <div class="agenda-time">2:45 PM</div>
+        <div>
+          <div class="agenda-title">Break · Water · Movement</div>
+          <div class="agenda-desc">15 minutes to integrate. Stretch. Talk to the people next to you who are walking the same path.</div>
+        </div>
+      </div>
+
+      <div class="agenda-item">
+        <div class="agenda-time">3:00 PM</div>
+        <div>
+          <div class="agenda-title">Live Coaching Demo · Volunteer From the Audience</div>
+          <div class="agenda-desc">A brave attendee comes up. We work through what is keeping them stuck. The room watches the breakthrough happen in real time. This is the part you cannot get from a book.</div>
+        </div>
+      </div>
+
+      <div class="agenda-item">
+        <div class="agenda-time">3:45 PM</div>
+        <div>
+          <div class="agenda-title">The No Brain Method</div>
+          <div class="agenda-desc">The single most powerful tool for getting out of your head and into your life. The exact mechanism. Why it works. How to use it on a Tuesday at 3 PM when nothing feels right.</div>
+        </div>
+      </div>
+
+      <div class="agenda-item">
+        <div class="agenda-time">4:30 PM</div>
+        <div>
+          <div class="agenda-title">Break · Water · Movement</div>
+          <div class="agenda-desc">15 minutes. Process what you just learned. Connect with the room.</div>
+        </div>
+      </div>
+
+      <div class="agenda-item">
+        <div class="agenda-time">4:45 PM</div>
+        <div>
+          <div class="agenda-title">Second Live Coaching Demo + The Value Garden</div>
+          <div class="agenda-desc">A second volunteer with a different challenge. Then we move into the Value Garden exercise as a room. You leave knowing exactly which seeds you are watering and which ones you are starving.</div>
+        </div>
+      </div>
+
+      <div class="agenda-item">
+        <div class="agenda-time">5:30 PM</div>
+        <div>
+          <div class="agenda-title">Open Q&amp;A With Star</div>
+          <div class="agenda-desc">Whatever is on your mind. No off-limits questions. This is your time to get the answer to the thing nobody has answered for you yet.</div>
+        </div>
+      </div>
+
+      <div class="agenda-item">
+        <div class="agenda-time">6:00 PM</div>
+        <div>
+          <div class="agenda-title">Close · Photos · Networking</div>
+          <div class="agenda-desc">Group photo, time to talk to Star, time to connect with the people in the room. VIP members stay for a 30-minute private Q&amp;A circle. Networking until 7 PM.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIVED IT VS STUDIED IT -->
+<section style="background:var(--white);padding:100px 0;">
+  <div class="container">
+    <div style="max-width:780px;margin:0 auto;">
+      <div class="text-center fade-up" style="margin-bottom:36px;">
+        <span class="section-label">Why This Is Different</span>
+        <h2 class="section-title">Most Therapists Read About It.<br>I Lived It for 14 Years.</h2>
+      </div>
+      <div class="fade-up">
+        <p style="font-size:1.05rem;color:var(--charcoal);line-height:1.85;margin-bottom:20px;">Most of the mental health industry is built on people who learned about anxiety, OCD, and depression in a classroom. They have the degree. They have the textbook. Most of them never actually transformed their own brain.</p>
+        <p style="font-size:1.05rem;color:var(--charcoal);line-height:1.85;margin-bottom:20px;">That's like a gym trainer who only read books about lifting and never put a single weight on the bar. They can quote the muscle groups. They can't build them.</p>
+        <div style="background:linear-gradient(135deg,rgba(27,108,168,0.07),rgba(0,180,216,0.07));border-left:5px solid var(--cobalt);border-radius:12px;padding:28px 32px;margin:30px 0;">
+          <p style="font-size:1.04rem;color:var(--charcoal);line-height:1.85;margin-bottom:0;">I had OCD for 14 years. I lived in the loop. I built the framework I teach because I needed it to survive. Every tool I give you on May 30 is something I tested on myself first. I know what it feels like at 3am when your brain won't quiet down. I know what it takes to walk through that and come out the other side.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOCIAL PROOF MID-PAGE -->
+<section class="midproof-section">
+  <div class="container">
+    <div class="text-center fade-up" style="margin-bottom:42px;">
+      <span class="section-label">What Past Clients Say</span>
+      <h2 class="section-title">When You Do Star's Work, Things Move.</h2>
+    </div>
+    <div class="midproof-grid">
+      <div class="midproof-card fade-up">
+        <p class="midproof-quote">"Hands down, Star has been one of the biggest catalysts for change in my life. My emotions no longer rule my life. I can't recommend him enough to ANYONE who wants their life to finally be peaceful."</p>
+        <div class="midproof-name">Lara Kinslow</div>
+        <div class="midproof-detail">1:1 Coaching Client</div>
+      </div>
+      <div class="midproof-card fade-up">
+        <p class="midproof-quote">"I had spent so many years with my psychotherapist going nowhere. You talked about valued actions. These were something completely new for me. So I trusted you. I followed. Day by day, I got better."</p>
+        <div class="midproof-name">Anna Lana</div>
+        <div class="midproof-detail">Community Member</div>
+      </div>
+      <div class="midproof-card fade-up">
+        <p class="midproof-quote">"You changed my life. I had problems with swallowing for 2 years. No doctor could help me. I did your method and it's GONE. I will never doubt you."</p>
+        <div class="midproof-name">Pinky</div>
+        <div class="midproof-detail">Community Member</div>
+      </div>
+      <div class="midproof-card fade-up">
+        <p class="midproof-quote">"It's the most actionable advice I've ever received or seen on the internet. And once followed, progress is so easy to see."</p>
+        <div class="midproof-name">Karina Marshall</div>
+        <div class="midproof-detail">1:1 Coaching Client</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- JON PRINCE ENDORSEMENT -->
+<section style="background:linear-gradient(160deg, #ffffff 0%, #f0f6fb 100%);padding:90px 0;">
+  <div class="container">
+    <div class="text-center fade-up" style="margin-bottom:40px;">
+      <span class="section-label">Featured Endorsement</span>
+      <h2 style="font-size:clamp(1.6rem,3.2vw,2.1rem);color:var(--charcoal);">From a Fellow Coach Who Walks This Path</h2>
+    </div>
+
+    <div style="max-width:1080px;margin:0 auto;display:grid;grid-template-columns:1.15fr 1fr;gap:44px;align-items:center;" class="featured-endorsement-grid fade-up">
+
+      <div style="position:relative;width:100%;padding-bottom:56.25%;border-radius:16px;overflow:hidden;box-shadow:0 16px 56px rgba(27,108,168,0.22);">
+        <iframe
+          src="https://www.youtube.com/embed/av0ln_4dOok"
+          style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen
+          title="Jon Prince Testimonial for Star Jesse Taylor"
+        ></iframe>
+      </div>
+
+      <div>
+        <div style="font-size:3.2rem;color:var(--cobalt);line-height:0.8;margin-bottom:12px;font-family:Georgia,serif;">&ldquo;</div>
+        <p style="font-size:1.02rem;line-height:1.8;color:var(--charcoal);margin-bottom:16px;">Star Taylor isn't just a coach, he's a rare force. There truly is no one else like him.</p>
+        <p style="font-size:1.02rem;line-height:1.8;color:var(--charcoal);margin-bottom:16px;">If you ever get the opportunity to work with him, take it. It's the kind of decision that changes the direction of your life.</p>
+
+        <div style="margin-top:24px;padding-top:20px;border-top:1px solid rgba(27,108,168,0.18);">
+          <div style="font-weight:800;color:var(--charcoal);font-size:1.1rem;">Jon Prince</div>
+          <div style="font-size:0.9rem;color:var(--cobalt);font-weight:700;margin-top:3px;">The Perception Coach</div>
+          <div style="font-size:0.84rem;color:var(--mid-gray);margin-top:3px;font-style:italic;">Author of <em>Start Before You're Ready</em> (Hay House)</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <style>
+    @media (max-width: 820px) {
+      .featured-endorsement-grid { grid-template-columns: 1fr !important; gap: 28px !important; }
+    }
+  </style>
+</section>
+
+<!-- VALUE STACK -->
+<section class="stack-section">
+  <div class="container">
+    <div class="text-center fade-up" style="margin-bottom:40px;">
+      <span class="section-label">What You Are Getting</span>
+      <h2 class="section-title">Everything Included With Your Seat.</h2>
+    </div>
+
+    <div class="stack-card fade-up">
+      <div class="stack-list">
+        <div class="stack-row">
+          <div class="stack-name">Star Jesse Taylor's complete framework, taught live<small>5 hours of teaching, demos, deep work, and Q&amp;A in the room</small></div>
+          <div class="stack-value">$2,000</div>
+        </div>
+        <div class="stack-row">
+          <div class="stack-name">Two live coaching demos with audience volunteers<small>Watch the breakthroughs happen in real time</small></div>
+          <div class="stack-value">$500</div>
+        </div>
+        <div class="stack-row">
+          <div class="stack-name">The Value Garden exercise as a room<small>Map exactly which seeds you are watering and which ones you are starving</small></div>
+          <div class="stack-value">$300</div>
+        </div>
+        <div class="stack-row">
+          <div class="stack-name">Open Q&amp;A directly with Star<small>Your specific question, answered in the room</small></div>
+          <div class="stack-value">$300</div>
+        </div>
+        <div class="stack-row">
+          <div class="stack-name">14-day replay access to the full event<small>Watch it back as many times as you need</small></div>
+          <div class="stack-value">$197</div>
+        </div>
+        <div class="stack-row">
+          <div class="stack-name">The "Stop the Mental Loop" Workbook (PDF)<small>Every exercise from the room, ready to use the day after</small></div>
+          <div class="stack-value">$97</div>
+        </div>
+        <div class="stack-row">
+          <div class="stack-name">Bonus · 7-day daily integration email series<small>One short audio from Star every morning for 7 days post-event</small></div>
+          <div class="stack-value">$97</div>
+        </div>
+        <div class="stack-row">
+          <div class="stack-name">Bonus · Private community channel for 30 days<small>Stay in the conversation with the people in the room</small></div>
+          <div class="stack-value">$97</div>
+        </div>
+      </div>
+
+      <div class="stack-total">
+        <div class="stack-total-label">Total Real Value</div>
+        <div class="stack-total-value">$3,588</div>
+      </div>
+
+      <div class="stack-investment">
+        <div class="stack-investment-label">Your Investment Today</div>
+        <div class="stack-investment-price">From $97</div>
+        <div class="stack-investment-note">A fraction of one therapy session. A whole new relationship with your mind.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING TIERS -->
+<section class="tiers-section" id="tiers">
+  <div class="container">
+    <div class="text-center fade-up" style="margin-bottom:48px;">
+      <span class="section-label">Two Ways In</span>
+      <h2 class="section-title">Pick the Experience That Fits You.</h2>
+      <p style="color:var(--mid-gray);max-width:600px;margin:0 auto;font-size:1.05rem;">Both tiers include the full workshop, the workbook, the 14-day replay, the daily email series, and the community channel. VIP adds a private Clarity Session with Star.</p>
+    </div>
+
+    <div class="tiers-grid">
+
+      <!-- GA -->
+      <div class="tier-card fade-up">
+        <div class="tier-name">General Admission</div>
+        <div class="tier-title">A Seat in the Room</div>
+        <div class="tier-price">$97</div>
+        <div class="tier-price-sub">Per person</div>
+        <div class="tier-scarcity">🔥 22 of 22 GA seats remaining</div>
+        <ul class="tier-features">
+          <li>Full 5-hour live workshop</li>
+          <li>Two live coaching demos</li>
+          <li>The Value Garden exercise as a room</li>
+          <li>Open Q&amp;A with Star</li>
+          <li>14-day replay access</li>
+          <li>"Stop the Mental Loop" workbook</li>
+          <li>7-day daily email series</li>
+          <li>30-day private community channel</li>
+        </ul>
+        <a href="https://buy.stripe.com/REPLACE_WITH_GA_LINK" class="tier-cta" target="_blank" rel="noopener">Reserve a GA Seat — $97</a>
+      </div>
+
+      <!-- VIP (FEATURED) -->
+      <div class="tier-card featured fade-up">
+        <div class="tier-badge">Best Value</div>
+        <div class="tier-name">VIP</div>
+        <div class="tier-title">Front Row + Private Clarity Session</div>
+        <div class="tier-price">$347</div>
+        <div class="tier-price-sub">Per person · A $597 value</div>
+        <div class="tier-scarcity">⚡ 8 of 8 VIP seats remaining</div>
+        <ul class="tier-features">
+          <li>Everything in General Admission</li>
+          <li>Private 50-minute Clarity Session with Star via Zoom (scheduled within 2 weeks of the event · normally $500 standalone)</li>
+          <li>Front 2 rows · best seats in the house</li>
+          <li>30-minute private Q&amp;A circle with Star after the event</li>
+          <li>Photo with Star</li>
+          <li>Priority entry · skip the line at doors</li>
+        </ul>
+        <a href="https://buy.stripe.com/REPLACE_WITH_VIP_LINK" class="tier-cta" target="_blank" rel="noopener">Reserve a VIP Seat — $347</a>
+      </div>
+
+    </div>
+
+    <p style="text-align:center;font-size:0.9rem;color:var(--mid-gray);margin-top:36px;max-width:620px;margin-left:auto;margin-right:auto;">All purchases include a media release authorizing Star Jesse Taylor to record and use event footage for educational and promotional purposes. The room will be filmed.</p>
+  </div>
+</section>
+
+<!-- GUARANTEE -->
+<section class="guarantee-section">
+  <div class="container">
+    <div class="guarantee-card fade-up">
+      <div class="guarantee-shield">🛡️</div>
+      <h2 class="guarantee-title">The Walk-Out Promise</h2>
+      <p class="guarantee-body">If you sit in the room for the first 90 minutes and you do not feel one real shift in your relationship with your own mind, walk out. Tell the door staff. We refund your ticket on the spot, no questions asked.</p>
+      <p class="guarantee-body" style="margin-top:14px;font-weight:700;color:var(--cobalt);">That is how confident I am in what is going to happen in that room.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHO IT IS / IS NOT FOR -->
+<section class="fitlists-section">
+  <div class="container">
+    <div class="text-center fade-up" style="margin-bottom:42px;">
+      <span class="section-label">Be Honest</span>
+      <h2 class="section-title">Is This for You?</h2>
+    </div>
+
+    <div class="fitlists-grid">
+      <div class="fitlist fitlist-yes fade-up">
+        <div class="fitlist-title">Come if you are…</div>
+        <ul>
+          <li>Done waiting and ready to do the work</li>
+          <li>Stuck in a mental loop you cannot think your way out of</li>
+          <li>Local to LA or willing to travel for one weekend</li>
+          <li>Open to being coached publicly if you volunteer</li>
+          <li>Tired of intellectual understanding without real change</li>
+          <li>Looking for a community of people walking the same path</li>
+          <li>Willing to take action, not just take notes</li>
+        </ul>
+      </div>
+      <div class="fitlist fitlist-no fade-up">
+        <div class="fitlist-title">Don't come if you…</div>
+        <ul>
+          <li>Are in immediate crisis. Please call 988 first.</li>
+          <li>Want to debate or argue the framework instead of try it</li>
+          <li>Are hoping for a passive seminar where you take notes and leave</li>
+          <li>Need a clinical setting. This is coaching, not therapy.</li>
+          <li>Want to record or distribute the event for your own use</li>
+          <li>Are not willing to be present and uncomfortable for a few hours</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOGISTICS -->
+<section class="logistics-section">
+  <div class="container">
+    <div class="text-center fade-up" style="margin-bottom:42px;">
+      <span class="section-label">The Details</span>
+      <h2 class="section-title">Date, Time, Place.</h2>
+    </div>
+
+    <div class="logistics-grid">
+      <div class="logistics-card fade-up">
+        <div class="logistics-icon">📅</div>
+        <div class="logistics-label">Date</div>
+        <div class="logistics-value">Saturday, May 30, 2026</div>
+        <div class="logistics-detail">Doors at 1:00 PM</div>
+      </div>
+      <div class="logistics-card fade-up">
+        <div class="logistics-icon">⏰</div>
+        <div class="logistics-label">Time</div>
+        <div class="logistics-value">1:30 PM – 6:00 PM</div>
+        <div class="logistics-detail">VIP Q&amp;A circle until 6:30 PM · networking until 7</div>
+      </div>
+      <div class="logistics-card fade-up">
+        <div class="logistics-icon">📍</div>
+        <div class="logistics-label">Location</div>
+        <div class="logistics-value">Sawtelle, Los Angeles</div>
+        <div class="logistics-detail">Exact address sent after ticket purchase</div>
+      </div>
+    </div>
+
+    <p style="text-align:center;margin-top:32px;font-size:0.95rem;color:var(--mid-gray);max-width:680px;margin-left:auto;margin-right:auto;line-height:1.7;">The venue is in West LA, near the 405/10 freeways and Santa Monica. Easy access for everyone in LA County. Free street parking available, plus a paid lot adjacent to the building.</p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <div class="container">
+    <div class="text-center fade-up" style="margin-bottom:42px;">
+      <span class="section-label">FAQ</span>
+      <h2 class="section-title">The Questions People Ask.</h2>
+    </div>
+
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q">What if I have never done in-person coaching before?</div>
+        <div class="faq-a">This is built for first-timers. You don't need to volunteer. You don't need to share. You can sit in the back, listen, take notes, and leave with the entire framework. The volunteers come from people who self-select. The teaching applies to everyone in the room equally.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Will the event be recorded? Can I get the replay if I can't attend?</div>
+        <div class="faq-a">Yes. The full event will be professionally filmed. Every ticket holder gets 14 days of replay access starting the Monday after the event. The teaching translates well to video so the replay is genuinely useful, but the room experience is irreplaceable.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What if I can't make it after I buy a ticket?</div>
+        <div class="faq-a">Tickets are non-refundable but fully transferable up until 48 hours before the event. If something comes up, gift your ticket to someone you love who needs to be in the room. We'll update the name on your behalf.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Is there a payment plan available?</div>
+        <div class="faq-a">For VIP tickets, yes. Reach out to <a href="mailto:starjessetaylor@gmail.com" style="color:var(--cobalt);font-weight:700;">starjessetaylor@gmail.com</a> and we will set up a 2-payment split. General Admission at $97 is paid in full at checkout.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">I have OCD / DPDR / panic attacks. Will the workshop trigger me?</div>
+        <div class="faq-a">The work is designed for people who experience exactly these patterns. Star teaches with care for the room. You can step out at any time. If you're worried about a specific situation, email us before booking and Star will reply personally.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Can I bring a friend or partner?</div>
+        <div class="faq-a">Yes. Each person needs their own ticket. If you're bringing someone, book your seats together so we can put you next to each other. Two GA seats next to each other is one of the most common bookings.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Will I be on camera?</div>
+        <div class="faq-a">The room will be filmed. By purchasing a ticket you authorize use of the footage for educational and promotional purposes. If you have concerns about being on camera, email us and we will seat you in a non-filmed section.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What is the difference between this event and your 1-on-1 coaching?</div>
+        <div class="faq-a">1-on-1 coaching is a 6 to 10 week journey through your specific patterns at $3,497 to $4,997. This event is a single afternoon of foundational teaching plus live demos at $97 to $347. Many attendees use this event as their first taste of working with Star and decide afterwards if they want to go deeper.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Will tickets be available at the door?</div>
+        <div class="faq-a">No. The room is capped at 30 seats. Once we sell out, the event is closed. Past events have sold out 7 to 14 days before the date.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta-section">
+  <div class="container">
+    <div class="fade-up">
+      <h2>The Room Is Small. The Shift Is Real.</h2>
+      <p>Saturday May 30 happens once. The room fits 30 people. Reserve your seat now or watch the recap on YouTube wishing you had been there.</p>
+      <a href="#tiers" class="final-cta-btn">Reserve Your Seat — From $97</a>
+      <p style="margin-top:24px;font-size:0.86rem;opacity:0.78;">Walk-out guarantee · Tickets transferable · Limited to 30 attendees</p>
+    </div>
+  </div>
+</section>
+
+<!-- STICKY MOBILE CTA -->
+<div class="sticky-cta">
+  <a href="#tiers">Reserve Your Seat — From $97</a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div>
+          <div class="footer-brand-name">Star Jesse Taylor</div>
+          <div class="footer-brand-sub">Emotional Fitness</div>
+        </div>
+        <p class="footer-brand-desc">Emotional Fitness Coach, Author, and Speaker based in Los Angeles.</p>
+        <div class="social-links">
+          <a href="https://www.instagram.com/starjessetaylor" class="social-link" aria-label="Instagram" target="_blank" rel="noopener">IG</a>
+          <a href="https://www.tiktok.com/@starjessetaylor" class="social-link" aria-label="TikTok" target="_blank" rel="noopener">TK</a>
+          <a href="#" class="social-link" aria-label="YouTube">YT</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="services.html">Work With Me</a></li>
+          <li><a href="event.html">LA Event · May 30</a></li>
+          <li><a href="apply.html">Apply</a></li>
+          <li><a href="index.html#book">Book</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Work Together</h4>
+        <ul class="footer-links">
+          <li><a href="services.html">1-on-1 Coaching</a></li>
+          <li><a href="services.html">10-Week Cohort (Waitlist)</a></li>
+          <li><a href="event.html">Live Workshop ($97+)</a></li>
+          <li><a href="courses.html">Courses</a></li>
+          <li><a href="https://starjessetaylor.bio/shop/51c9e967-da06-4c5a-adf3-5d79d32e30da" target="_blank" rel="noopener">The Book ($29)</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul class="footer-links">
+          <li><a href="mailto:starjessetaylor@gmail.com">starjessetaylor@gmail.com</a></li>
+          <li><a href="https://www.instagram.com/starjessetaylor" target="_blank" rel="noopener">Instagram @starjessetaylor</a></li>
+          <li><a href="https://www.tiktok.com/@starjessetaylor" target="_blank" rel="noopener">TikTok @starjessetaylor</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Star Jesse Taylor Emotional Fitness. All rights reserved.</span>
+      <div class="footer-legal">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/chat-widget.js"></script>
+
+<script>
+  // FAQ accordion
+  document.querySelectorAll('.faq-item').forEach(item => {
+    item.addEventListener('click', () => item.classList.toggle('open'));
+  });
+
+  // Live countdown to May 30, 2026 1:30 PM PST
+  (function() {
+    const target = new Date('2026-05-30T13:30:00-07:00').getTime();
+    const dEl = document.getElementById('cd-days');
+    const hEl = document.getElementById('cd-hours');
+    const mEl = document.getElementById('cd-mins');
+    const sEl = document.getElementById('cd-secs');
+    if (!dEl) return;
+
+    function tick() {
+      const now = Date.now();
+      const diff = target - now;
+      if (diff <= 0) {
+        dEl.textContent = '0'; hEl.textContent = '0';
+        mEl.textContent = '0'; sEl.textContent = '0';
+        return;
+      }
+      const days = Math.floor(diff / 86400000);
+      const hours = Math.floor((diff % 86400000) / 3600000);
+      const mins = Math.floor((diff % 3600000) / 60000);
+      const secs = Math.floor((diff % 60000) / 1000);
+      dEl.textContent = days;
+      hEl.textContent = String(hours).padStart(2, '0');
+      mEl.textContent = String(mins).padStart(2, '0');
+      sEl.textContent = String(secs).padStart(2, '0');
+    }
+    tick();
+    setInterval(tick, 1000);
+  })();
+</script>
+
+</body>
+</html>

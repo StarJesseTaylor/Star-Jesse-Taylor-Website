@@ -499,6 +499,16 @@
   };
 
   const RESULTS = {
+    'la-event': {
+      emoji: '🌟',
+      label: 'Live in LA · May 30',
+      title: 'You are local. Come to the live workshop.',
+      desc: 'Based on what you shared{challenge}, your best next step is meeting Star in person. He is hosting a live coaching workshop in Sawtelle, Los Angeles on Saturday, May 30, 2026. 3.5 hours in the room. Two live coaching demos. Walk-out guarantee. Only 33 seats.',
+      cta: 'See the LA Event — From $97',
+      ctaUrl: 'event.html',
+      secondary: 'Or apply for 1-on-1 coaching →',
+      secondaryUrl: 'apply.html'
+    },
     'hot-lead': {
       emoji: '🔥',
       label: 'You are ready',
@@ -532,6 +542,15 @@
       secondaryExternal: true
     }
   };
+
+  // LA-area hot/warm leads OR anyone wanting live events get pushed to the live event
+  function getRecommendation(answers, tier) {
+    const isLA = answers.q5 === 'usa-west';
+    const wantsEvents = answers.q1 === 'live-events';
+    if (wantsEvents) return 'la-event';
+    if (isLA && (tier === 'hot-lead' || tier === 'warm-lead')) return 'la-event';
+    return tier;
+  }
 
   function showResult(tier) {
     cards.forEach(c => c.classList.remove('active'));
@@ -576,7 +595,7 @@
       console.warn('Qualify API error:', err);
     }
 
-    showResult(tier);
+    showResult(getRecommendation(answers, tier));
   });
 </script>
 </body>
