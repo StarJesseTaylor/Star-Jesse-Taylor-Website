@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/blue/daily-cron",
+      "schedule": "0 15 * * *"
+    }
+  ]
+}
