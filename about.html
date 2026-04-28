@@ -210,20 +210,39 @@
   </div>
 </section>
 
-<!-- FEATURED ON -->
-<section class="featured-section section-pad-sm">
-  <div class="container text-center">
-    <span class="section-label fade-up">As Seen In</span>
-    <h3 class="section-title fade-up fade-up-delay-1" style="font-size:1.4rem;">Featured On</h3>
-    <div class="featured-logos fade-up fade-up-delay-2">
-      <div class="featured-logo">Podcast Name</div>
-      <div class="featured-logo">Media Outlet</div>
-      <div class="featured-logo">Publication</div>
-      <div class="featured-logo">Platform</div>
-      <div class="featured-logo">Show Name</div>
+<!-- SPEAKING & FEATURED APPEARANCES -->
+<section class="featured-section section-pad-sm" style="background:var(--off-white);">
+  <div class="container">
+    <div class="text-center" style="margin-bottom:36px;">
+      <span class="section-label fade-up">Speaking & Featured Appearances</span>
+      <h3 class="fade-up fade-up-delay-1" style="font-size:clamp(1.4rem,2.8vw,1.9rem);color:var(--charcoal);margin-bottom:8px;">Where Star Has Been Featured</h3>
     </div>
-    <p style="font-size:0.85rem;color:var(--mid-gray);margin-top:24px;" class="fade-up">Replace placeholders with your actual media logos</p>
+
+    <div style="max-width:880px;margin:0 auto;" class="fade-up">
+      <div style="background:var(--white);border-radius:16px;padding:28px;box-shadow:0 4px 28px rgba(0,0,0,0.08);display:grid;grid-template-columns:240px 1fr;gap:28px;align-items:center;" class="featured-podcast-card">
+        <div style="position:relative;width:100%;padding-bottom:56.25%;border-radius:12px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,0.15);">
+          <iframe
+            src="https://www.youtube.com/embed/PAT7hP0l75I"
+            style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+            title="Star Jesse Taylor in conversation with Shanina Shaik"
+          ></iframe>
+        </div>
+        <div>
+          <div style="font-size:0.74rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--cobalt);margin-bottom:8px;">Featured Guest</div>
+          <div style="font-weight:800;color:var(--charcoal);font-size:1.15rem;line-height:1.3;margin-bottom:6px;">In conversation with Shanina Shaik</div>
+          <div style="font-size:0.92rem;color:var(--mid-gray);line-height:1.6;">Victoria's Secret model · 3.3M+ audience<br>Star teaches Emotional Fitness · 1h 35m</div>
+        </div>
+      </div>
+    </div>
+
   </div>
+  <style>
+    @media (max-width: 720px) {
+      .featured-podcast-card { grid-template-columns: 1fr !important; padding: 22px !important; }
+    }
+  </style>
 </section>
 
 <!-- VALUES SECTION -->
