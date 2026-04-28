@@ -3,6 +3,10 @@
     {
       "path": "/api/blue/daily-cron",
       "schedule": "0 15 * * *"
+    },
+    {
+      "path": "/api/blue/morning-checkin",
+      "schedule": "0 14 * * 1-5"
     }
   ]
 }
