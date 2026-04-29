@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Star Dashboard · Live</title>
+  <style>
+    :root {
+      --cobalt: #1B6CA8;
+      --cobalt-dark: #155a8a;
+      --turquoise: #00B4D8;
+      --charcoal: #2C2C2C;
+      --off-white: #F8F9FB;
+      --light-gray: #eef1f5;
+      --mid-gray: #6b7280;
+      --green: #16a34a;
+      --red: #dc2626;
+      --amber: #d97706;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: var(--off-white);
+      color: var(--charcoal);
+      padding: 20px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    h1 { font-size: 1.4rem; margin-bottom: 4px; }
+    .subtitle { color: var(--mid-gray); font-size: 0.9rem; margin-bottom: 24px; }
+    .auth-prompt {
+      background: white; border-radius: 12px; padding: 32px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06); max-width: 480px; margin: 60px auto;
+      text-align: center;
+    }
+    .auth-prompt input {
+      width: 100%; padding: 14px; border: 2px solid var(--light-gray); border-radius: 8px;
+      font-size: 1rem; margin: 12px 0; font-family: monospace;
+    }
+    .auth-prompt button {
+      background: var(--cobalt); color: white; border: none; padding: 14px 32px;
+      border-radius: 50px; font-size: 1rem; font-weight: 700; cursor: pointer;
+    }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 24px; }
+    .card { background: white; border-radius: 14px; padding: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); }
+    .card-label { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cobalt); margin-bottom: 8px; }
+    .card-value { font-size: 1.8rem; font-weight: 900; color: var(--charcoal); line-height: 1.1; }
+    .card-sub { font-size: 0.84rem; color: var(--mid-gray); margin-top: 4px; }
+    .progress-bar {
+      width: 100%; height: 8px; background: var(--light-gray); border-radius: 4px; overflow: hidden;
+      margin-top: 12px;
+    }
+    .progress-fill {
+      height: 100%; background: linear-gradient(90deg, var(--cobalt), var(--turquoise)); transition: width 0.4s;
+    }
+    .section-title {
+      font-size: 1.1rem; font-weight: 800; margin: 32px 0 14px; color: var(--charcoal);
+    }
+    table { width: 100%; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.05); border-collapse: collapse; }
+    th, td { padding: 12px 16px; text-align: left; font-size: 0.9rem; }
+    th { background: var(--light-gray); font-weight: 700; font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--mid-gray); }
+    tr:not(:last-child) td { border-bottom: 1px solid var(--light-gray); }
+    .tier-ga { color: var(--cobalt); font-weight: 700; }
+    .tier-vip { color: var(--turquoise); font-weight: 700; }
+    .status-on-track { color: var(--green); font-weight: 700; }
+    .status-behind { color: var(--red); font-weight: 700; }
+    .status-pace { color: var(--amber); font-weight: 700; }
+    .refresh-time { color: var(--mid-gray); font-size: 0.78rem; text-align: right; margin-top: 24px; }
+    .error { background: #fee; border-left: 4px solid var(--red); padding: 16px; border-radius: 8px; color: var(--red); }
+    @media (max-width: 600px) {
+      .card-value { font-size: 1.5rem; }
+      table { font-size: 0.84rem; }
+      th, td { padding: 10px 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="authView" class="auth-prompt" style="display:none;">
+  <h1>Star Dashboard</h1>
+  <p class="subtitle">Enter your access key to view live data</p>
+  <input id="keyInput" type="password" placeholder="Access key" autofocus />
+  <button onclick="login()">View Dashboard</button>
+  <p id="authError" style="color:var(--red);font-size:0.9rem;margin-top:12px;display:none;">Wrong key. Try again.</p>
+</div>
+
+<div id="loadingView" style="display:none;text-align:center;padding:60px 0;">
+  <p style="color:var(--mid-gray);">Loading live data...</p>
+</div>
+
+<div id="dashboardView" style="display:none;">
+  <h1>Star Dashboard</h1>
+  <p class="subtitle" id="eventInfo"></p>
+
+  <div class="grid">
+    <div class="card">
+      <div class="card-label">Tickets Sold</div>
+      <div class="card-value" id="ticketsTotal">0 / 30</div>
+      <div class="card-sub" id="ticketsBreakdown">0 GA · 0 VIP</div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-label">Revenue (Tickets)</div>
+      <div class="card-value" id="ticketsRevenue">$0</div>
+      <div class="card-sub" id="lastSale">No sales yet</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Days Until Event</div>
+      <div class="card-value" id="daysUntil">-</div>
+      <div class="card-sub" id="projectedFill"></div>
+    </div>
+    <div class="card">
+      <div class="card-label">Run Rate</div>
+      <div class="card-value" id="runRate">-</div>
+      <div class="card-sub" id="paceStatus"></div>
+    </div>
+  </div>
+
+  <h2 class="section-title">This Week</h2>
+  <div class="grid">
+    <div class="card">
+      <div class="card-label">Tickets This Week</div>
+      <div class="card-value" id="weekTickets">0</div>
+      <div class="card-sub" id="weekRevenue">$0</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Tickets Today</div>
+      <div class="card-value" id="todayTickets">0</div>
+      <div class="card-sub" id="todayRevenue">$0</div>
+    </div>
+    <div class="card">
+      <div class="card-label">All Sales (30 days)</div>
+      <div class="card-value" id="thirtyTotalRevenue">$0</div>
+      <div class="card-sub" id="thirtyTotalCount">0 transactions</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Seats Remaining</div>
+      <div class="card-value" id="seatsRemaining">30</div>
+      <div class="card-sub" id="seatsBreakdown">22 GA · 8 VIP</div>
+    </div>
+  </div>
+
+  <h2 class="section-title">Recent Sales</h2>
+  <table>
+    <thead>
+      <tr><th>Date</th><th>Tier</th><th>Amount</th><th>Customer</th></tr>
+    </thead>
+    <tbody id="salesTableBody">
+      <tr><td colspan="4" style="text-align:center;color:var(--mid-gray);padding:32px;">No sales yet. Once people buy tickets, they will appear here.</td></tr>
+    </tbody>
+  </table>
+
+  <p class="refresh-time" id="refreshTime"></p>
+</div>
+
+<div id="errorView" style="display:none;" class="error"></div>
+
+<script>
+const STORAGE_KEY = 'star_dash_key';
+
+window.addEventListener('DOMContentLoaded', () => {
+  // Check for ?key= in URL
+  const params = new URLSearchParams(window.location.search);
+  const urlKey = params.get('key');
+  if (urlKey) {
+    sessionStorage.setItem(STORAGE_KEY, urlKey);
+    // Remove key from URL for security
+    window.history.replaceState({}, '', window.location.pathname);
+  }
+
+  const stored = sessionStorage.getItem(STORAGE_KEY);
+  if (stored) {
+    loadDashboard(stored);
+  } else {
+    showView('authView');
+  }
+});
+
+function showView(view) {
+  ['authView', 'loadingView', 'dashboardView', 'errorView'].forEach(v => {
+    document.getElementById(v).style.display = 'none';
+  });
+  document.getElementById(view).style.display = 'block';
+}
+
+function login() {
+  const key = document.getElementById('keyInput').value.trim();
+  if (!key) return;
+  sessionStorage.setItem(STORAGE_KEY, key);
+  loadDashboard(key);
+}
+
+async function loadDashboard(key) {
+  showView('loadingView');
+  try {
+    const res = await fetch(`/api/admin/dashboard?key=${encodeURIComponent(key)}`);
+    if (res.status === 401) {
+      sessionStorage.removeItem(STORAGE_KEY);
+      document.getElementById('authError').style.display = 'block';
+      showView('authView');
+      return;
+    }
+    if (!res.ok) {
+      const err = await res.text();
+      document.getElementById('errorView').textContent = `Error: ${err}`;
+      showView('errorView');
+      return;
+    }
+    const data = await res.json();
+    renderDashboard(data);
+    showView('dashboardView');
+    // Auto-refresh every 60 seconds
+    setTimeout(() => loadDashboard(key), 60000);
+  } catch (err) {
+    document.getElementById('errorView').textContent = `Failed to load: ${err.message}`;
+    showView('errorView');
+  }
+}
+
+function renderDashboard(d) {
+  const fmt = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+  const eventDateFmt = new Date(d.event.date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+
+  document.getElementById('eventInfo').textContent = `${d.event.name} · ${eventDateFmt}`;
+
+  // Top row
+  document.getElementById('ticketsTotal').textContent = `${d.sold.total} / ${d.capacity.total}`;
+  document.getElementById('ticketsBreakdown').textContent = `${d.sold.ga} GA · ${d.sold.vip} VIP`;
+  document.getElementById('progressFill').style.width = `${(d.sold.total / d.capacity.total) * 100}%`;
+
+  document.getElementById('ticketsRevenue').textContent = fmt.format(d.sold.revenue);
+  if (d.recentSales.length > 0) {
+    const last = d.recentSales[0];
+    const ago = timeAgo(last.date);
+    document.getElementById('lastSale').textContent = `Last sale: ${last.tier} ${ago}`;
+  }
+
+  document.getElementById('daysUntil').textContent = d.event.daysUntil;
+  if (d.pace.projectedFillDate) {
+    const status = d.pace.onTrackToFill ? 'On track' : 'Behind pace';
+    document.getElementById('projectedFill').textContent = `Projected fill: ${d.pace.projectedFillDate}`;
+  } else {
+    document.getElementById('projectedFill').textContent = `Projection: needs more data`;
+  }
+
+  document.getElementById('runRate').textContent = `${d.pace.runRateNeeded}/day`;
+  const pace = d.pace.last7DaysVelocity;
+  let paceStatusEl = document.getElementById('paceStatus');
+  if (pace >= d.pace.runRateNeeded) {
+    paceStatusEl.innerHTML = `<span class="status-on-track">On track at ${pace}/day</span>`;
+  } else if (pace > 0) {
+    paceStatusEl.innerHTML = `<span class="status-behind">Behind at ${pace}/day</span>`;
+  } else {
+    paceStatusEl.innerHTML = `<span class="status-pace">No sales last 7 days</span>`;
+  }
+
+  // Week row
+  document.getElementById('weekTickets').textContent = d.windows.last7Days.tickets;
+  document.getElementById('weekRevenue').textContent = `${fmt.format(d.windows.last7Days.revenue)} in ticket sales`;
+  document.getElementById('todayTickets').textContent = d.windows.today.tickets;
+  document.getElementById('todayRevenue').textContent = `${fmt.format(d.windows.today.revenue)} today`;
+  document.getElementById('thirtyTotalRevenue').textContent = fmt.format(d.windows.last30Days.totalRevenue);
+  document.getElementById('thirtyTotalCount').textContent = `${d.windows.last30Days.totalCharges} transactions all products`;
+  document.getElementById('seatsRemaining').textContent = d.remaining.total;
+  document.getElementById('seatsBreakdown').textContent = `${d.remaining.ga} GA · ${d.remaining.vip} VIP`;
+
+  // Recent sales table
+  const tbody = document.getElementById('salesTableBody');
+  if (d.recentSales.length > 0) {
+    tbody.innerHTML = d.recentSales.map(s => `
+      <tr>
+        <td>${timeAgo(s.date)}</td>
+        <td><span class="tier-${s.tier.toLowerCase()}">${s.tier}</span></td>
+        <td>${fmt.format(s.amount)}</td>
+        <td>${s.customerName} · ${s.customerEmail}</td>
+      </tr>
+    `).join('');
+  }
+
+  document.getElementById('refreshTime').textContent = `Last updated: ${new Date(d.generated).toLocaleString()} · auto-refreshes every 60 seconds`;
+}
+
+function timeAgo(isoDate) {
+  const seconds = Math.floor((Date.now() - new Date(isoDate)) / 1000);
+  if (seconds < 60) return `${seconds}s ago`;
+  if (seconds < 3600) return `${Math.floor(seconds/60)}m ago`;
+  if (seconds < 86400) return `${Math.floor(seconds/3600)}h ago`;
+  return `${Math.floor(seconds/86400)}d ago`;
+}
+</script>
+
+</body>
+</html>

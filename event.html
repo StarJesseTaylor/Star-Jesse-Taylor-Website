@@ -1386,6 +1386,77 @@
     item.addEventListener('click', () => item.classList.toggle('open'));
   });
 
+  // ============================================================
+  // EVENT TRACKING (GA4 custom events for the funnel)
+  // ============================================================
+  function trackEvent(eventName, params = {}) {
+    if (typeof gtag === 'function') {
+      gtag('event', eventName, params);
+    }
+    // Also send to our internal logger if needed in the future
+  }
+
+  // Track that someone landed on the event page
+  trackEvent('event_page_view', {
+    page_title: document.title,
+    page_location: window.location.href,
+    page_referrer: document.referrer
+  });
+
+  // Track tier CTA clicks (the in-page Reserve buttons that scroll to tiers)
+  document.querySelectorAll('a[href="#tiers"]').forEach(link => {
+    link.addEventListener('click', () => {
+      trackEvent('cta_view_pricing_clicked', { source: link.textContent.trim().slice(0, 50) });
+    });
+  });
+
+  // Track Stripe checkout clicks (actual buy intent)
+  document.querySelectorAll('a[href*="buy.stripe.com"]').forEach(link => {
+    link.addEventListener('click', () => {
+      const isVIP = link.href.includes('00w4gy1ZRc3r1Cw6kxcMM19');
+      trackEvent('stripe_checkout_click', {
+        tier: isVIP ? 'VIP' : 'GA',
+        amount: isVIP ? 347 : 97,
+        link: link.href
+      });
+    });
+  });
+
+  // Track scroll depth (25, 50, 75, 100%)
+  (function() {
+    const milestones = [25, 50, 75, 100];
+    const fired = new Set();
+    function getScrollPct() {
+      const docH = document.documentElement.scrollHeight - window.innerHeight;
+      if (docH <= 0) return 100;
+      return Math.round((window.scrollY / docH) * 100);
+    }
+    window.addEventListener('scroll', () => {
+      const pct = getScrollPct();
+      milestones.forEach(m => {
+        if (pct >= m && !fired.has(m)) {
+          fired.add(m);
+          trackEvent('scroll_depth', { depth: m });
+        }
+      });
+    }, { passive: true });
+  })();
+
+  // Track time on page (engagement signal)
+  (function() {
+    const startTime = Date.now();
+    function reportTime() {
+      const seconds = Math.round((Date.now() - startTime) / 1000);
+      trackEvent('time_on_page', { seconds });
+    }
+    // Report at 30s, 60s, 120s
+    setTimeout(() => trackEvent('engaged_30s'), 30000);
+    setTimeout(() => trackEvent('engaged_60s'), 60000);
+    setTimeout(() => trackEvent('engaged_120s'), 120000);
+    // And on leaving
+    window.addEventListener('beforeunload', reportTime);
+  })();
+
   // Live countdown to May 30, 2026 1:30 PM PST
   (function() {
     const target = new Date('2026-05-30T13:30:00-07:00').getTime();
