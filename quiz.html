@@ -77,6 +77,77 @@
       display: none;
     }
     .quiz-card.active { display: block; }
+    .quiz-input, .quiz-textarea {
+      width: 100%;
+      padding: 16px 20px;
+      border: 2px solid var(--light-gray);
+      border-radius: 12px;
+      font-size: 1.05rem;
+      font-family: inherit;
+      color: var(--charcoal);
+      outline: none;
+      transition: border-color 0.2s ease;
+      background: var(--white);
+    }
+    .quiz-textarea {
+      min-height: 120px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+    .quiz-input:focus, .quiz-textarea:focus { border-color: var(--cobalt); }
+    .quiz-form-stack { display: flex; flex-direction: column; gap: 14px; }
+    .quiz-cta-row { display: flex; gap: 14px; align-items: center; margin-top: 22px; flex-wrap: wrap; }
+    .quiz-submit-btn {
+      background: linear-gradient(90deg, var(--cobalt), var(--turquoise));
+      color: #fff;
+      border: none;
+      padding: 16px 36px;
+      border-radius: 12px;
+      font-size: 1.05rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+      box-shadow: 0 8px 24px rgba(27,108,168,0.22);
+    }
+    .quiz-submit-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(27,108,168,0.28); }
+    .quiz-submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+    .quiz-skip-link {
+      background: none;
+      border: none;
+      color: var(--mid-gray);
+      cursor: pointer;
+      font-size: 0.92rem;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      padding: 6px 10px;
+      font-family: inherit;
+    }
+    .quiz-skip-link:hover { color: var(--cobalt); }
+    .quiz-trust-line {
+      font-size: 0.86rem;
+      color: var(--mid-gray);
+      margin-top: 18px;
+      text-align: center;
+    }
+    .quiz-loading {
+      display: none;
+      text-align: center;
+      padding: 20px 0;
+      color: var(--mid-gray);
+      font-size: 0.95rem;
+    }
+    .quiz-loading.active { display: block; }
+    .quiz-error {
+      background: rgba(220, 53, 69, 0.08);
+      color: #b02a37;
+      border: 1px solid rgba(220, 53, 69, 0.3);
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 0.9rem;
+      margin-top: 14px;
+      display: none;
+    }
+    .quiz-error.active { display: block; }
     .quiz-question {
       font-size: clamp(1.2rem, 2.5vw, 1.55rem);
       font-weight: 800;
@@ -275,43 +346,55 @@
     <div class="quiz-header">
       <span class="section-label">2-Minute Quiz</span>
       <h1>Find Your Starting Point</h1>
-      <p>Answer 4 questions. Get a personalized recommendation for exactly where you are right now.</p>
+      <p>Answer 6 questions. Get a personalized recommendation for exactly where you are right now.</p>
     </div>
 
     <!-- PROGRESS BAR -->
-    <div class="quiz-progress" id="quizProgress">
+    <div class="quiz-progress" id="quizProgress" style="display:none;">
       <div class="quiz-progress-bar">
         <div class="quiz-progress-fill" id="progressFill" style="width:0%"></div>
       </div>
-      <span class="quiz-progress-label" id="progressLabel">Question 1 of 4</span>
+      <span class="quiz-progress-label" id="progressLabel">Question 1 of 6</span>
+    </div>
+
+    <!-- NAME CAPTURE -->
+    <div class="quiz-card active" id="qName">
+      <div class="quiz-question">Quick. What should I call you?</div>
+      <div class="quiz-form-stack">
+        <input type="text" id="qNameInput" class="quiz-input" placeholder="First name" autocomplete="given-name" />
+      </div>
+      <div class="quiz-cta-row">
+        <button class="quiz-submit-btn" id="qNameContinue" disabled>Continue</button>
+        <button class="quiz-skip-link" id="qNameSkip">Skip</button>
+      </div>
     </div>
 
     <!-- QUESTION 1 -->
-    <div class="quiz-card active" id="q1">
+    <div class="quiz-card" id="q1">
       <div class="quiz-question">What is the main thing you are dealing with right now?</div>
       <div class="quiz-options">
-        <div class="quiz-option" data-q="1" data-scores='{"intensive":2,"coaching":1}'>
+        <div class="quiz-option" data-q="1" data-symptom="anxiety_ocd" data-scores='{"intensive":2,"coaching":1}'>
           <span class="quiz-option-icon">🌀</span>
           <div class="quiz-option-text">
             <div class="quiz-option-title">Anxiety, OCD, or intrusive thoughts</div>
             <div class="quiz-option-desc">My brain won't quiet down. I'm stuck in loops and need specific tools.</div>
           </div>
         </div>
-        <div class="quiz-option" data-q="1" data-scores='{"cohort":2,"coaching":2}'>
+        <div class="quiz-option" data-q="1" data-symptom="stuck" data-scores='{"cohort":2,"coaching":2}'>
           <span class="quiz-option-icon">🌫️</span>
           <div class="quiz-option-text">
             <div class="quiz-option-title">Feeling stuck, lost, or like I'm not living up to my potential</div>
             <div class="quiz-option-desc">Something is off but I can't put my finger on what. I need real clarity.</div>
           </div>
         </div>
-        <div class="quiz-option" data-q="1" data-scores='{"courses":2,"cohort":1}'>
+        <div class="quiz-option" data-q="1" data-symptom="self_worth" data-scores='{"courses":2,"cohort":1}'>
           <span class="quiz-option-icon">🌱</span>
           <div class="quiz-option-text">
             <div class="quiz-option-title">Building self-worth, confidence, or taking consistent action</div>
             <div class="quiz-option-desc">I know what I want but keep getting in my own way.</div>
           </div>
         </div>
-        <div class="quiz-option" data-q="1" data-scores='{"book":2,"courses":1}'>
+        <div class="quiz-option" data-q="1" data-symptom="new" data-scores='{"book":2,"courses":1}'>
           <span class="quiz-option-icon">🌅</span>
           <div class="quiz-option-text">
             <div class="quiz-option-title">I'm new to this and just starting to explore</div>
@@ -433,6 +516,70 @@
       </div>
     </div>
 
+    <!-- QUESTION 5 · PAIN INTENSITY -->
+    <div class="quiz-card" id="q5">
+      <div class="quiz-question">How much is this costing you right now?</div>
+      <div class="quiz-options">
+        <div class="quiz-option" data-q="5" data-pain="2">
+          <span class="quiz-option-icon">🌤️</span>
+          <div class="quiz-option-text">
+            <div class="quiz-option-title">It's annoying but I'm functional</div>
+            <div class="quiz-option-desc">I can mostly handle it. I want to grow, not survive.</div>
+          </div>
+        </div>
+        <div class="quiz-option" data-q="5" data-pain="5">
+          <span class="quiz-option-icon">⛅</span>
+          <div class="quiz-option-text">
+            <div class="quiz-option-title">It's affecting my work, relationships, or sleep</div>
+            <div class="quiz-option-desc">Real costs are showing up. I cannot keep ignoring this.</div>
+          </div>
+        </div>
+        <div class="quiz-option" data-q="5" data-pain="8">
+          <span class="quiz-option-icon">🌧️</span>
+          <div class="quiz-option-text">
+            <div class="quiz-option-title">It's running my life and I feel stuck</div>
+            <div class="quiz-option-desc">Most days revolve around managing this. I want my life back.</div>
+          </div>
+        </div>
+        <div class="quiz-option" data-q="5" data-pain="10">
+          <span class="quiz-option-icon">⛈️</span>
+          <div class="quiz-option-text">
+            <div class="quiz-option-title">I cannot keep living this way</div>
+            <div class="quiz-option-desc">Something has to change. I am ready to do whatever it takes.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUESTION 6 · STAKES -->
+    <div class="quiz-card" id="q6">
+      <div class="quiz-question">What changes for you if you solve this in the next 90 days?</div>
+      <p style="color:var(--mid-gray);font-size:0.95rem;line-height:1.6;margin-top:-18px;margin-bottom:24px;">One sentence is enough. Skip if you'd rather not say.</p>
+      <div class="quiz-form-stack">
+        <textarea id="qStakesInput" class="quiz-textarea" placeholder="If I solved this in 90 days, I would feel..."></textarea>
+      </div>
+      <div class="quiz-cta-row">
+        <button class="quiz-submit-btn" id="qStakesContinue">Continue</button>
+        <button class="quiz-skip-link" id="qStakesSkip">Skip</button>
+      </div>
+    </div>
+
+    <!-- EMAIL GATE -->
+    <div class="quiz-card" id="qEmail">
+      <div class="quiz-question" id="qEmailHeadline">Your path is ready.</div>
+      <p style="color:var(--mid-gray);font-size:0.98rem;line-height:1.7;margin-top:-18px;margin-bottom:24px;">Where should I send your personalized recommendation, your 1-page action plan, and the first 30 pages of the book?</p>
+      <div class="quiz-form-stack">
+        <input type="email" id="qEmailInput" class="quiz-input" placeholder="Your email" autocomplete="email" required />
+        <input type="tel" id="qPhoneInput" class="quiz-input" placeholder="Phone (optional, if you'd like a quick personal note)" autocomplete="tel" />
+      </div>
+      <div class="quiz-cta-row">
+        <button class="quiz-submit-btn" id="qEmailSubmit">Show My Path →</button>
+      </div>
+      <div class="quiz-error" id="qEmailError"></div>
+      <div class="quiz-loading" id="qEmailLoading">Saving your answers...</div>
+      <p class="quiz-trust-line">No spam. Unsubscribe any time. Your data is private.</p>
+    </div>
+
     <!-- RESULT -->
     <div class="quiz-result" id="quizResult">
       <div class="result-card">
@@ -511,8 +658,17 @@
 <script>
   const scores = { book: 0, courses: 0, intensive: 0, cohort: 0, coaching: 0 };
   const answers = {};
+  const state = {
+    name: '',
+    email: '',
+    phone: '',
+    symptom: null,
+    painScore: null,
+    stakes: '',
+    result: null
+  };
   let currentQ = 1;
-  const totalQ = 4;
+  const totalQ = 6; // q1..q6
 
   const results = {
     book: {
@@ -562,60 +718,177 @@
     }
   };
 
+  // NAME CAPTURE
+  const nameInput = document.getElementById('qNameInput');
+  const nameContinue = document.getElementById('qNameContinue');
+  const nameSkip = document.getElementById('qNameSkip');
+
+  nameInput.addEventListener('input', () => {
+    nameContinue.disabled = nameInput.value.trim().length < 2;
+  });
+  nameInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !nameContinue.disabled) { e.preventDefault(); nameContinue.click(); }
+  });
+  nameContinue.addEventListener('click', () => {
+    state.name = nameInput.value.trim();
+    goToQuestion(1);
+  });
+  nameSkip.addEventListener('click', () => {
+    state.name = '';
+    goToQuestion(1);
+  });
+
+  // QUIZ OPTIONS (q1-q5)
   document.querySelectorAll('.quiz-option').forEach(opt => {
     opt.addEventListener('click', () => {
       const q = opt.dataset.q;
+
+      // Pain question (q5) is special: store score, no path scoring
+      if (q === '5') {
+        state.painScore = parseInt(opt.dataset.pain, 10);
+        document.querySelectorAll('.quiz-option[data-q="5"]').forEach(o => o.classList.remove('selected'));
+        opt.classList.add('selected');
+        setTimeout(() => goToQuestion(6), 320);
+        return;
+      }
+
+      // Q1 stores symptom tag
+      if (q === '1' && opt.dataset.symptom) {
+        state.symptom = opt.dataset.symptom;
+      }
+
+      // Path-scoring questions (q1-q4)
+      if (!opt.dataset.scores) return;
       const optScores = JSON.parse(opt.dataset.scores);
 
-      // Deselect if this Q was already answered, remove old scores
       if (answers[q]) {
         const old = JSON.parse(answers[q]);
         Object.entries(old).forEach(([k, v]) => { scores[k] -= v; });
       }
 
-      // Mark selected in UI
       document.querySelectorAll(`.quiz-option[data-q="${q}"]`).forEach(o => o.classList.remove('selected'));
       opt.classList.add('selected');
 
-      // Add new scores
       Object.entries(optScores).forEach(([k, v]) => { scores[k] += v; });
       answers[q] = opt.dataset.scores;
 
-      // Advance after short delay
-      setTimeout(() => advanceQuiz(parseInt(q)), 320);
+      setTimeout(() => goToQuestion(parseInt(q) + 1), 320);
     });
   });
 
-  function advanceQuiz(q) {
-    if (q < totalQ) {
-      document.getElementById('q' + q).classList.remove('active');
-      currentQ = q + 1;
-      document.getElementById('q' + currentQ).classList.add('active');
-      updateProgress(currentQ);
-    } else {
-      showResult();
+  // STAKES (q6)
+  const stakesInput = document.getElementById('qStakesInput');
+  document.getElementById('qStakesContinue').addEventListener('click', () => {
+    state.stakes = stakesInput.value.trim();
+    goToEmail();
+  });
+  document.getElementById('qStakesSkip').addEventListener('click', () => {
+    state.stakes = '';
+    goToEmail();
+  });
+
+  // EMAIL GATE
+  const emailInput = document.getElementById('qEmailInput');
+  const phoneInput = document.getElementById('qPhoneInput');
+  const emailSubmit = document.getElementById('qEmailSubmit');
+  const emailError = document.getElementById('qEmailError');
+  const emailLoading = document.getElementById('qEmailLoading');
+
+  emailInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); emailSubmit.click(); }
+  });
+
+  emailSubmit.addEventListener('click', async () => {
+    const email = emailInput.value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      emailError.textContent = 'Please enter a valid email.';
+      emailError.classList.add('active');
+      return;
     }
+    emailError.classList.remove('active');
+    state.email = email;
+    state.phone = phoneInput.value.trim();
+
+    // Compute the result winner
+    const winner = Object.entries(scores).sort((a, b) => b[1] - a[1])[0][0];
+    state.result = winner;
+
+    emailSubmit.disabled = true;
+    emailLoading.classList.add('active');
+
+    try {
+      await fetch('/api/quiz-submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: state.name,
+          email: state.email,
+          phone: state.phone,
+          result: state.result,
+          symptom: state.symptom,
+          painScore: state.painScore,
+          stakes: state.stakes,
+          answers: answers
+        })
+      });
+    } catch (err) {
+      console.error('Quiz submit failed', err);
+      // Still show result; we don't want to block the user on a backend hiccup
+    }
+
+    // Fire conversion events on every connected pixel
+    if (typeof window.starTrack === 'function') {
+      window.starTrack('quiz_completed', {
+        result_path: state.result,
+        symptom: state.symptom,
+        pain_score: state.painScore
+      });
+    }
+
+    emailLoading.classList.remove('active');
+    showResult();
+  });
+
+  function goToQuestion(num) {
+    document.querySelectorAll('.quiz-card').forEach(c => c.classList.remove('active'));
+    document.getElementById('quizProgress').style.display = 'flex';
+    if (num === 6) {
+      document.getElementById('q6').classList.add('active');
+    } else if (num >= 1 && num <= 5) {
+      document.getElementById('q' + num).classList.add('active');
+    }
+    updateProgress(num);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function goToEmail() {
+    document.querySelectorAll('.quiz-card').forEach(c => c.classList.remove('active'));
+    document.getElementById('qEmail').classList.add('active');
+    if (state.name) {
+      document.getElementById('qEmailHeadline').textContent = state.name + ', your path is ready.';
+    }
+    document.getElementById('progressFill').style.width = '100%';
+    document.getElementById('progressLabel').textContent = 'Almost done';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => emailInput.focus(), 200);
   }
 
   function updateProgress(q) {
-    const pct = ((q - 1) / totalQ) * 100;
+    const pct = Math.min(((q - 1) / totalQ) * 100, 100);
     document.getElementById('progressFill').style.width = pct + '%';
     document.getElementById('progressLabel').textContent = 'Question ' + q + ' of ' + totalQ;
   }
 
   function showResult() {
-    // Hide all questions and progress
     document.querySelectorAll('.quiz-card').forEach(c => c.classList.remove('active'));
     document.getElementById('quizProgress').style.display = 'none';
-    document.getElementById('progressFill').style.width = '100%';
 
-    // Find top score
-    const winner = Object.entries(scores).sort((a, b) => b[1] - a[1])[0][0];
-    const r = results[winner];
+    const r = results[state.result];
 
     document.getElementById('resultEmoji').textContent = r.emoji;
     document.getElementById('resultBadge').textContent = r.badge;
-    document.getElementById('resultTitle').textContent = r.title;
+    const titleEl = document.getElementById('resultTitle');
+    titleEl.textContent = state.name ? (state.name + ', ' + r.title.toLowerCase()) : r.title;
     document.getElementById('resultDesc').textContent = r.desc;
 
     const cta = document.getElementById('resultCTA');
@@ -629,20 +902,22 @@
   }
 
   function retakeQuiz() {
-    // Reset scores
     Object.keys(scores).forEach(k => { scores[k] = 0; });
     Object.keys(answers).forEach(k => { delete answers[k]; });
-    currentQ = 1;
+    state.name = ''; state.email = ''; state.phone = '';
+    state.symptom = null; state.painScore = null; state.stakes = ''; state.result = null;
+    nameInput.value = ''; emailInput.value = ''; phoneInput.value = ''; stakesInput.value = '';
+    nameContinue.disabled = true;
+    emailSubmit.disabled = false;
+    emailError.classList.remove('active');
 
     document.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected'));
     document.getElementById('quizResult').classList.remove('active');
-    document.getElementById('quizProgress').style.display = 'flex';
-    document.getElementById('q1').classList.add('active');
-    updateProgress(1);
+    document.getElementById('quizProgress').style.display = 'none';
+    document.querySelectorAll('.quiz-card').forEach(c => c.classList.remove('active'));
+    document.getElementById('qName').classList.add('active');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
-
-  updateProgress(1);
 </script>
 </body>
 </html>
