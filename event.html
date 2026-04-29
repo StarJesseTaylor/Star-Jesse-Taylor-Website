@@ -757,6 +757,35 @@
       padding: 28px 26px;
       border-left: 4px solid var(--cobalt);
     }
+    .midproof-head {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+    .midproof-avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+      box-shadow: 0 6px 18px rgba(27,108,168,0.18);
+    }
+    .midproof-avatar-fallback {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      background: linear-gradient(135deg, var(--cobalt), var(--accent-cyan, #00b4d8));
+      color: #fff;
+      font-weight: 900;
+      font-size: 1.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 18px rgba(27,108,168,0.18);
+    }
+    .midproof-head-text { flex: 1; min-width: 0; }
     .midproof-quote {
       font-size: 1rem;
       color: var(--charcoal);
@@ -1073,24 +1102,65 @@
     </div>
     <div class="midproof-grid">
       <div class="midproof-card fade-up">
+        <div class="midproof-head">
+          <div class="midproof-avatar-fallback">L</div>
+          <div class="midproof-head-text">
+            <div class="midproof-name">Lara Kinslow</div>
+            <div class="midproof-detail">1:1 Coaching Client</div>
+          </div>
+        </div>
         <p class="midproof-quote">"Hands down, Star has been one of the biggest catalysts for change in my life. My emotions no longer rule my life. I can't recommend him enough to ANYONE who wants their life to finally be peaceful."</p>
-        <div class="midproof-name">Lara Kinslow</div>
-        <div class="midproof-detail">1:1 Coaching Client</div>
       </div>
       <div class="midproof-card fade-up">
+        <div class="midproof-head">
+          <img src="images/Client%20Pictures/Amy.jpeg" alt="Amy, group coaching client of Star Jesse Taylor" class="midproof-avatar" onerror="this.outerHTML='<div class=\'midproof-avatar-fallback\'>A</div>'" />
+          <div class="midproof-head-text">
+            <div class="midproof-name">Amy</div>
+            <div class="midproof-detail">Group Coaching Client</div>
+          </div>
+        </div>
+        <p class="midproof-quote">"The things you've taught me have changed my life and I will take them with me forever. I felt really seen in the group sessions. I see myself and my worth more clearly now than ever and you were a part of helping me get there."</p>
+      </div>
+      <div class="midproof-card fade-up">
+        <div class="midproof-head">
+          <img src="images/Client%20Pictures/Carl.jpeg" alt="Carl, coaching client of Star Jesse Taylor" class="midproof-avatar" onerror="this.outerHTML='<div class=\'midproof-avatar-fallback\'>C</div>'" />
+          <div class="midproof-head-text">
+            <div class="midproof-name">Carl</div>
+            <div class="midproof-detail">Coaching Client</div>
+          </div>
+        </div>
+        <!-- TODO: Replace placeholder with Carl's actual testimonial quote when Star sends it. -->
+        <p class="midproof-quote">"[CARL TESTIMONIAL TEXT TO BE INSERTED. Star is sending the full quote separately. Once received, swap this placeholder with his actual words.]"</p>
+      </div>
+      <div class="midproof-card fade-up">
+        <div class="midproof-head">
+          <div class="midproof-avatar-fallback">A</div>
+          <div class="midproof-head-text">
+            <div class="midproof-name">Anna Lana</div>
+            <div class="midproof-detail">Community Member</div>
+          </div>
+        </div>
         <p class="midproof-quote">"I had spent so many years with my psychotherapist going nowhere. You talked about valued actions. These were something completely new for me. So I trusted you. I followed. Day by day, I got better."</p>
-        <div class="midproof-name">Anna Lana</div>
-        <div class="midproof-detail">Community Member</div>
       </div>
       <div class="midproof-card fade-up">
+        <div class="midproof-head">
+          <div class="midproof-avatar-fallback">P</div>
+          <div class="midproof-head-text">
+            <div class="midproof-name">Pinky</div>
+            <div class="midproof-detail">Community Member</div>
+          </div>
+        </div>
         <p class="midproof-quote">"You changed my life. I had problems with swallowing for 2 years. No doctor could help me. I did your method and it's GONE. I will never doubt you."</p>
-        <div class="midproof-name">Pinky</div>
-        <div class="midproof-detail">Community Member</div>
       </div>
       <div class="midproof-card fade-up">
+        <div class="midproof-head">
+          <div class="midproof-avatar-fallback">K</div>
+          <div class="midproof-head-text">
+            <div class="midproof-name">Karina Marshall</div>
+            <div class="midproof-detail">1:1 Coaching Client</div>
+          </div>
+        </div>
         <p class="midproof-quote">"It's the most actionable advice I've ever received or seen on the internet. And once followed, progress is so easy to see."</p>
-        <div class="midproof-name">Karina Marshall</div>
-        <div class="midproof-detail">1:1 Coaching Client</div>
       </div>
     </div>
   </div>
@@ -1137,37 +1207,30 @@
   </style>
 </section>
 
-<!-- ANNABELLE TRANSFORMATION VIDEO -->
+<!-- ANNABELLE TRANSFORMATION -->
 <section style="background:var(--white);padding:90px 0;">
   <div class="container">
     <div class="text-center fade-up" style="margin-bottom:40px;">
       <span class="section-label">Client Transformation</span>
       <h2 style="font-size:clamp(1.6rem,3.2vw,2.1rem);color:var(--charcoal);">What This Work Actually Does<br>to a Real Person.</h2>
-      <p style="color:var(--mid-gray);max-width:680px;margin:18px auto 0;font-size:1rem;line-height:1.7;">Annabelle came to me stuck. She did the work. Here is what she said in her own words. This is the kind of shift the room is built to make possible.</p>
+      <p style="color:var(--mid-gray);max-width:680px;margin:18px auto 0;font-size:1rem;line-height:1.7;">Annabelle came to Star stuck in patterns she had spent years trying to fix. She did the work. This is the kind of shift the room on May 30 is built to make possible.</p>
     </div>
 
-    <div style="max-width:1080px;margin:0 auto;display:grid;grid-template-columns:1.15fr 1fr;gap:44px;align-items:center;" class="featured-endorsement-grid fade-up">
+    <div style="max-width:1080px;margin:0 auto;display:grid;grid-template-columns:1fr 1.2fr;gap:48px;align-items:center;" class="featured-endorsement-grid fade-up">
 
-      <div style="position:relative;width:100%;padding-bottom:56.25%;border-radius:16px;overflow:hidden;box-shadow:0 16px 56px rgba(27,108,168,0.22);">
-        <!-- TODO: Swap this YouTube embed ID once Star sends the specific Annabelle event-testimonial video URL. -->
-        <iframe
-          src="https://www.youtube.com/embed/0-BmhU8e1XA"
-          style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowfullscreen
-          title="Annabelle Testimonial for Star Jesse Taylor"
-        ></iframe>
+      <div style="text-align:center;">
+        <img src="images/Client%20Pictures/Anabelle1.jpeg" alt="Annabelle, 1-on-1 coaching client of Star Jesse Taylor" style="width:100%;max-width:360px;border-radius:18px;box-shadow:0 18px 56px rgba(27,108,168,0.22);object-fit:cover;aspect-ratio:4/5;" onerror="this.style.display='none'" />
+        <div style="margin-top:22px;">
+          <div style="font-weight:900;color:var(--charcoal);font-size:1.25rem;">Annabelle</div>
+          <div style="font-size:0.94rem;color:var(--cobalt);font-weight:700;margin-top:4px;">1-on-1 Coaching Client</div>
+          <div style="font-size:0.86rem;color:var(--mid-gray);margin-top:2px;">Long-term transformation</div>
+        </div>
       </div>
 
       <div>
-        <div style="font-size:3.2rem;color:var(--cobalt);line-height:0.8;margin-bottom:12px;font-family:Georgia,serif;">&ldquo;</div>
-        <p style="font-size:1.02rem;line-height:1.8;color:var(--charcoal);margin-bottom:16px;">She came in stuck in patterns she had spent years trying to fix. By the end, she was not the same person who walked in. That is the bar for the room on May 30.</p>
-
-        <div style="margin-top:24px;padding-top:20px;border-top:1px solid rgba(27,108,168,0.18);">
-          <div style="font-weight:800;color:var(--charcoal);font-size:1.1rem;">Annabelle</div>
-          <div style="font-size:0.9rem;color:var(--cobalt);font-weight:700;margin-top:3px;">1-on-1 Coaching Client</div>
-          <div style="font-size:0.84rem;color:var(--mid-gray);margin-top:3px;font-style:italic;">Watch her tell the story herself</div>
-        </div>
+        <div style="font-size:3.5rem;color:var(--cobalt);line-height:0.8;margin-bottom:14px;font-family:Georgia,serif;">&ldquo;</div>
+        <p style="font-size:1.1rem;line-height:1.8;color:var(--charcoal);margin-bottom:18px;font-style:italic;">She came in stuck. She left changed. The patterns she had spent years trying to fix on her own were the same patterns this work is built to interrupt. By the end, she was not the same person who walked in.</p>
+        <p style="font-size:1rem;color:var(--mid-gray);line-height:1.7;margin-top:20px;">This is the bar for the room on May 30. Not motivation. Not mindset shifts that fade by Tuesday. Actual interruption of the loop, witnessed by a room of people who watched it happen.</p>
       </div>
 
     </div>
