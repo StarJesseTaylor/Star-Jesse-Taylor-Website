@@ -137,7 +137,7 @@ if (form) {
   });
 }
 
-// ===== WAITLIST FORM =====
+// ===== COHORT WAITLIST FORM =====
 const waitlistForm = document.getElementById('waitlistForm');
 const waitlistConfirmation = document.getElementById('waitlistConfirmation');
 
@@ -151,29 +151,23 @@ if (waitlistForm) {
     const data = new FormData(waitlistForm);
     const name = data.get('waitlist_name') || '';
     const email = data.get('waitlist_email') || '';
-    const body = `New Cohort Waitlist Signup\n\nName: ${name}\nEmail: ${email}`;
 
     try {
-      if (typeof emailjs !== 'undefined') {
-        await emailjs.send('service_emotfit', 'template_application', {
-          to_email: 'starjessetaylor@gmail.com',
-          subject: 'New Cohort Waitlist Signup',
-          applicant_name: name,
-          message: body,
-          reply_to: email,
-        });
-      } else {
-        const mailto = `mailto:starjessetaylor@gmail.com?subject=New%20Cohort%20Waitlist%20Signup&body=${encodeURIComponent(body)}`;
-        window.open(mailto);
+      await fetch('/api/cohort-waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email })
+      });
+      if (typeof window.starTrack === 'function') {
+        window.starTrack('cohort_waitlist_signup', { value: 0 });
       }
-      waitlistForm.style.display = 'none';
-      if (waitlistConfirmation) waitlistConfirmation.style.display = 'block';
     } catch (err) {
-      const mailto = `mailto:starjessetaylor@gmail.com?subject=New%20Cohort%20Waitlist%20Signup&body=${encodeURIComponent(body)}`;
-      window.open(mailto);
-      waitlistForm.style.display = 'none';
-      if (waitlistConfirmation) waitlistConfirmation.style.display = 'block';
+      console.warn('Cohort waitlist API error:', err);
+      // Continue to confirmation either way; we don't want to block the UX
     }
+
+    waitlistForm.style.display = 'none';
+    if (waitlistConfirmation) waitlistConfirmation.style.display = 'block';
   });
 }
 
