@@ -11,7 +11,7 @@
  *   pain:high (8-10), pain:medium (5-7), pain:low (1-4)
  */
 
-const LIST_ID = '3'; // Master Contact List
+const LIST_ID = '4'; // Quiz Funnel List
 
 const SYMPTOM_TAGS = {
   anxiety_ocd: 'symptom:anxiety_ocd',
