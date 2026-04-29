@@ -190,10 +190,17 @@ export async function fetchTotalEventTicketSales() {
 // ============================================================
 
 export function isAuthorizedCron(req) {
+  const expected = process.env.CRON_SECRET;
+  if (!expected) return false;
+
   // Vercel cron sends Authorization: Bearer ${CRON_SECRET}
   const authHeader = req.headers['authorization'] || req.headers['Authorization'];
-  const expected = `Bearer ${process.env.CRON_SECRET}`;
-  return authHeader === expected;
+  if (authHeader === `Bearer ${expected}`) return true;
+
+  // Allow ?key= query param too (for manual browser testing)
+  if (req.query?.key === expected) return true;
+
+  return false;
 }
 
 // ============================================================

@@ -26,7 +26,12 @@ export default async function handler(req, res) {
 
     // Decide what to send today
     let emailType = null;
-    if (isSunday) {
+
+    // Allow ?force=sunday_letter|countdown|intervention for manual testing
+    const forceType = req.query?.force;
+    if (forceType && ['sunday_letter', 'countdown', 'intervention'].includes(forceType)) {
+      emailType = forceType;
+    } else if (isSunday) {
       emailType = 'sunday_letter';
     } else if (BLUE_CONFIG.countdownDays.includes(days)) {
       emailType = 'countdown';
