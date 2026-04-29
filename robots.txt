@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin/
+Disallow: /api/
+Disallow: /thank-you.html
+
+Sitemap: https://starjessetaylor.com/sitemap.xml
