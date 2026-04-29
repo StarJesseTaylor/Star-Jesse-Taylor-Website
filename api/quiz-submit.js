@@ -138,12 +138,15 @@ export default async function handler(req, res) {
       })
     }).catch(err => console.error('List add error:', err));
 
-    // 3. Apply tags (path, symptom, pain bucket)
+    // 3. Apply tags (path, symptom, pain bucket, plus Free Chapter Download
+    //    to trigger Star's existing AC automation that emails the first 30
+    //    pages of the book)
     const tagsToApply = [];
     if (result && PATH_TAGS[result]) tagsToApply.push(PATH_TAGS[result]);
     if (symptom && SYMPTOM_TAGS[symptom]) tagsToApply.push(SYMPTOM_TAGS[symptom]);
     if (painScore) tagsToApply.push(painBucket(painScore));
     tagsToApply.push('source:quiz');
+    tagsToApply.push('Free Chapter Download');
 
     await Promise.all(tagsToApply.map(tag => applyTag(AC_URL, headers, contactId, tag)));
 
