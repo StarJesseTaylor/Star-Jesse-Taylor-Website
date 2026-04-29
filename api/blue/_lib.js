@@ -8,7 +8,7 @@
 export const BLUE_CONFIG = {
   recipient: 'starjessetaylor@gmail.com',
   fromName: 'Blue',
-  fromEmail: 'onboarding@resend.dev', // Resend's testing sender. Swap to blue@starjessetaylor.com after domain verification.
+  fromEmail: 'blue@starjessetaylor.com',
   eventDate: '2026-05-30T13:30:00-07:00',
   eventName: 'Stop the Mental Loop · LA Live Workshop',
   totalSeats: 30,

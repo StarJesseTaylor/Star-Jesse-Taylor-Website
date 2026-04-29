@@ -118,8 +118,9 @@ async function sendWelcomeEmail(toEmail, name, result) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        from: 'Star Jesse Taylor <onboarding@resend.dev>',
+        from: 'Star Jesse Taylor <hello@starjessetaylor.com>',
         to: [toEmail],
+        reply_to: 'starjessetaylor@gmail.com',
         subject: name ? `${name}, your Emotional Fitness path is here` : 'Your Emotional Fitness path is here',
         html,
         text
