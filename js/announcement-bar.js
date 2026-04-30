@@ -76,7 +76,7 @@
       +   '<span class="sjt-ann-dot sjt-ann-d">·</span>'
       +   '<span class="sjt-ann-date">May 30, 2026</span>'
       +   '<span class="sjt-ann-dot sjt-ann-d">·</span>'
-      +   '<span class="sjt-ann-spots">First 10 Get $500 Course Free</span>'
+      +   '<span class="sjt-ann-spots">Only 20 Spots Left</span>'
       +   '<span class="sjt-ann-dot sjt-ann-d">·</span>'
       +   '<span class="sjt-ann-countdown">' + daysText + '</span>'
       +   '<span class="sjt-ann-dot">·</span>'
