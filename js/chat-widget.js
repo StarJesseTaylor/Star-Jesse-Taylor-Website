@@ -1,5 +1,12 @@
 // Star AI — Chat widget. Adds a floating bubble + chat panel to any page that loads this script.
 (function () {
+  // ===== KILL SWITCH =====
+  // Set ENABLED to true to turn the AI chat back on across the site.
+  // Star is testing the chat behavior privately before exposing it; widget
+  // is loaded everywhere but does not render until this flag flips.
+  const ENABLED = false;
+  if (!ENABLED) return;
+
   if (window.__starAILoaded) return;
   window.__starAILoaded = true;
 
