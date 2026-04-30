@@ -852,7 +852,7 @@
 
       <div class="event-cta-stack">
         <a href="#tiers" class="event-cta-btn">Reserve Your Seat · From $97</a>
-        <p class="event-cta-trust">20 seats. One day. If it doesn't help you, money back on the spot.</p>
+        <p class="event-cta-trust">First 10 buyers get my $500 Breakthrough Blueprint course free. If the workshop doesn't help you, money back on the spot.</p>
       </div>
 
       <div style="max-width:820px;margin:44px auto 0;padding:28px 30px;background:rgba(27,108,168,0.05);border-left:4px solid var(--cobalt);border-radius:10px;text-align:left;display:grid;grid-template-columns:240px 1fr;gap:30px;align-items:center;" class="fade-up event-hero-testimonial">
@@ -1203,8 +1203,34 @@
       <h2 class="section-title">Two Ways In.</h2>
     </div>
 
-    <div style="text-align:center;margin:0 auto 32px;" class="fade-up">
+    <div style="text-align:center;margin:0 auto 28px;" class="fade-up">
       <div id="seatCounter" class="seat-counter"></div>
+    </div>
+
+    <!-- EARLY BIRD BONUS BANNER -->
+    <div class="fade-up" id="bonusBanner" style="max-width:920px;margin:0 auto 40px;">
+      <div style="position:relative;background:linear-gradient(135deg,#fff8eb 0%,#fffdf6 100%);border:2px solid #d97706;border-radius:18px;padding:34px 36px 32px;box-shadow:0 14px 44px rgba(217,119,6,0.16);overflow:hidden;">
+        <div style="position:absolute;top:0;left:0;right:0;height:6px;background:linear-gradient(90deg,#d97706,#f59e0b);"></div>
+
+        <div style="text-align:center;margin-bottom:18px;">
+          <div style="display:inline-block;background:linear-gradient(90deg,#d97706,#f59e0b);color:#fff;font-size:0.74rem;font-weight:900;letter-spacing:0.22em;text-transform:uppercase;padding:8px 22px;border-radius:50px;box-shadow:0 6px 18px rgba(217,119,6,0.3);">★ Early Bird Bonus · First 10 Tickets</div>
+        </div>
+
+        <h3 style="font-size:clamp(1.4rem,2.8vw,1.95rem);color:var(--charcoal);font-weight:900;line-height:1.25;text-align:center;margin:0 0 14px;letter-spacing:-0.01em;">Your $97 Ticket. Plus My $500 Course.<br>Free for the First 10 Buyers.</h3>
+
+        <p style="font-size:1.02rem;color:var(--charcoal);line-height:1.75;text-align:center;margin:0 0 22px;max-width:680px;margin-left:auto;margin-right:auto;">Reserve in the first 10 seats and I am including the <strong>Breakthrough Blueprint</strong> course free. A live Zoom seminar with a small group of 10. Inside: the Value Garden exercise, cognitive defusion, the practices for getting out of your head, every foundational tool I teach my one-on-one clients. Yours the moment you book.</p>
+
+        <div style="background:#fff;border:1px solid rgba(217,119,6,0.25);border-radius:12px;padding:18px 24px;max-width:520px;margin:0 auto 22px;font-size:0.96rem;">
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px;color:var(--charcoal);"><span>The Workshop · GA seat</span><span>$97</span></div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px;color:var(--charcoal);"><span>Breakthrough Blueprint course</span><span>$500</span></div>
+          <div style="display:flex;justify-content:space-between;padding-top:10px;margin-top:10px;border-top:1px solid rgba(217,119,6,0.25);font-weight:900;color:var(--charcoal);"><span>Total value</span><span>$597</span></div>
+          <div style="display:flex;justify-content:space-between;margin-top:8px;color:#d97706;font-weight:900;font-size:1.08rem;"><span>You pay</span><span>$97</span></div>
+        </div>
+
+        <div style="text-align:center;">
+          <div id="bonusCounter" style="display:inline-block;background:rgba(217,119,6,0.12);color:#9a4d00;border:1px solid rgba(217,119,6,0.4);padding:9px 20px;border-radius:50px;font-weight:700;font-size:0.94rem;letter-spacing:0.01em;">🎁 10 bonus spots available</div>
+        </div>
+      </div>
     </div>
     <style>
       .seat-counter {
@@ -1247,11 +1273,13 @@
 
       <!-- GA -->
       <div class="tier-card fade-up">
+        <div id="gaBonusBadge" style="position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:linear-gradient(90deg,#d97706,#f59e0b);color:#fff;font-size:0.72rem;font-weight:800;letter-spacing:0.16em;text-transform:uppercase;padding:6px 18px;border-radius:50px;white-space:nowrap;box-shadow:0 6px 18px rgba(217,119,6,0.32);">★ + $500 Course (First 10)</div>
         <div class="tier-name">General Admission</div>
         <div class="tier-title">A Seat in the Room</div>
         <div class="tier-price">$97</div>
         <div class="tier-price-sub">Per person</div>
         <ul class="tier-features">
+          <li id="gaBonusBullet" style="color:#9a4d00;font-weight:700;"><strong>★ Breakthrough Blueprint course included</strong> ($500 value, first 10 buyers)</li>
           <li>5-hour live workshop with Star (includes meal break)</li>
           <li>Two live coaching demos</li>
           <li>The complete Emotional Fitness framework</li>
@@ -1390,6 +1418,10 @@
 
     <div class="faq-list">
       <div class="faq-item">
+        <div class="faq-q">What is the early bird bonus and how do I get it?</div>
+        <div class="faq-a">The first 10 buyers get my Breakthrough Blueprint course included free. It is normally $500. The course is a recorded live Zoom seminar I did with a small group of 10. Inside: the Value Garden exercise, cognitive defusion, the practices for spending time outside your head, the foundational tools I teach my one-on-one clients. Yours the moment you reserve your seat. After the first 10 tickets, the bonus is gone and the course goes back to $500.</div>
+      </div>
+      <div class="faq-item">
         <div class="faq-q">Why is this only $97? Is there a catch?</div>
         <div class="faq-a">Because I want the room full of people who actually need to be there. This is intentionally accessible. The teaching does not change because the price is lower. Same framework, same five hours, same room of 20. If you are reading this and wondering whether to come, the answer is yes.</div>
       </div>
@@ -1500,11 +1532,15 @@
   });
 
   // ============================================================
-  // SEAT COUNTER (live Stripe-fed scarcity, tiered display)
+  // SEAT COUNTER + EARLY BIRD BONUS (live Stripe-fed)
   // ============================================================
   (function () {
     var counter = document.getElementById('seatCounter');
-    if (!counter) return;
+    var bonusBanner = document.getElementById('bonusBanner');
+    var bonusCounter = document.getElementById('bonusCounter');
+    var gaBonusBadge = document.getElementById('gaBonusBadge');
+    var gaBonusBullet = document.getElementById('gaBonusBullet');
+    var BONUS_LIMIT = 10;
 
     fetch('/api/event-seats')
       .then(function (r) { return r.json(); })
@@ -1512,9 +1548,26 @@
         var sold = data && typeof data.sold === 'number' ? data.sold : 0;
         var remaining = data && typeof data.remaining === 'number' ? data.remaining : (20 - sold);
         var total = data && typeof data.total === 'number' ? data.total : 20;
+        var bonusLeft = Math.max(0, BONUS_LIMIT - sold);
 
-        // Below 3 sold: hide entirely (avoid empty-restaurant signal)
-        if (sold < 3) return;
+        // ----- Bonus visibility -----
+        if (bonusLeft === 0) {
+          if (bonusBanner) bonusBanner.style.display = 'none';
+          if (gaBonusBadge) gaBonusBadge.style.display = 'none';
+          if (gaBonusBullet) gaBonusBullet.style.display = 'none';
+        } else if (bonusCounter) {
+          if (bonusLeft === BONUS_LIMIT) {
+            bonusCounter.textContent = '🎁 ' + BONUS_LIMIT + ' bonus spots available';
+          } else if (bonusLeft <= 3) {
+            bonusCounter.textContent = '🔥 Only ' + bonusLeft + ' bonus spot' + (bonusLeft === 1 ? '' : 's') + ' left';
+          } else {
+            bonusCounter.textContent = '🎁 ' + bonusLeft + ' of ' + BONUS_LIMIT + ' bonus spots remaining';
+          }
+        }
+
+        // ----- Seat counter -----
+        if (!counter) return;
+        if (sold < 3) return; // Hide entirely below 3 to avoid empty-restaurant signal
 
         var text = '';
         var cls = '';
