@@ -76,7 +76,7 @@
       +   '<span class="sjt-ann-dot sjt-ann-d">·</span>'
       +   '<span class="sjt-ann-date">May 30, 2026</span>'
       +   '<span class="sjt-ann-dot sjt-ann-d">·</span>'
-      +   '<span class="sjt-ann-spots">Only 30 Spots</span>'
+      +   '<span class="sjt-ann-spots">Only 20 Spots</span>'
       +   '<span class="sjt-ann-dot sjt-ann-d">·</span>'
       +   '<span class="sjt-ann-countdown">' + daysText + '</span>'
       +   '<span class="sjt-ann-dot">·</span>'
