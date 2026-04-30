@@ -53,11 +53,61 @@
       overflow: hidden;
     }
     .event-hero-inner {
-      max-width: 980px;
+      max-width: 1180px;
       margin: 0 auto;
       text-align: center;
       position: relative;
       z-index: 2;
+    }
+    .event-hero-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr;
+      gap: 56px;
+      align-items: center;
+      text-align: left;
+    }
+    .event-hero-grid .event-headline,
+    .event-hero-grid .event-sub-headline {
+      text-align: left;
+    }
+    .event-hero-grid .event-meta-row {
+      justify-content: flex-start;
+    }
+    .event-hero-grid .event-cta-stack {
+      align-items: flex-start;
+    }
+    .event-hero-photo-wrap {
+      display: flex;
+      justify-content: center;
+    }
+    .event-hero-photo {
+      width: 100%;
+      max-width: 400px;
+      aspect-ratio: 9/16;
+      object-fit: cover;
+      border-radius: 22px;
+      box-shadow: 0 24px 64px rgba(27,108,168,0.28);
+      display: block;
+    }
+    @media (max-width: 880px) {
+      .event-hero-grid {
+        grid-template-columns: 1fr;
+        gap: 36px;
+        text-align: center;
+      }
+      .event-hero-grid .event-headline,
+      .event-hero-grid .event-sub-headline {
+        text-align: center;
+      }
+      .event-hero-grid .event-meta-row {
+        justify-content: center;
+      }
+      .event-hero-grid .event-cta-stack {
+        align-items: center;
+      }
+      .event-hero-photo {
+        max-width: 280px;
+      }
     }
     .event-pre-headline {
       display: inline-block;
@@ -838,21 +888,29 @@
 <section class="event-hero">
   <div class="container">
     <div class="event-hero-inner">
-      <div class="event-pre-headline">Live in Los Angeles · Saturday May 30, 2026 · 20 Seats Only</div>
+      <div class="event-hero-grid">
+        <div>
+          <div class="event-pre-headline">Live in Los Angeles · Saturday May 30, 2026 · 20 Seats Only</div>
 
-      <h1 class="event-headline">Stop the Mental Loop.<br>Stop the Searching.<br><em>One Day. Real Change.</em></h1>
+          <h1 class="event-headline">Stop the Mental Loop.<br>Stop the Searching.<br><em>One Day. Real Change.</em></h1>
 
-      <p class="event-sub-headline">One afternoon in a room of 20, with the framework that actually quiets the mental loop. Taught by someone who spent 18 years practicing every modality, changed his own brain, and built what actually worked.</p>
+          <p class="event-sub-headline">One afternoon in a room of 20, with the framework that actually quiets the mental loop. Taught by someone who spent 18 years practicing every modality, changed his own brain, and built what actually worked.</p>
 
-      <div class="event-meta-row">
-        <span>📅 Saturday, May 30, 2026</span>
-        <span>⏰ 3:00 PM to 8:00 PM</span>
-        <span>📍 Sawtelle, Los Angeles</span>
-      </div>
+          <div class="event-meta-row">
+            <span>📅 Saturday, May 30, 2026</span>
+            <span>⏰ 3:00 PM to 8:00 PM</span>
+            <span>📍 Sawtelle, Los Angeles</span>
+          </div>
 
-      <div class="event-cta-stack">
-        <a href="#tiers" class="event-cta-btn">Reserve Your Seat · From $97</a>
-        <p class="event-cta-trust">First 10 buyers get my $500 Breakthrough Blueprint course free. If the workshop doesn't help you, money back on the spot.</p>
+          <div class="event-cta-stack">
+            <a href="#tiers" class="event-cta-btn">Reserve Your Seat · From $97</a>
+            <p class="event-cta-trust">First 10 buyers get my $500 Breakthrough Blueprint course free. If the workshop doesn't help you, money back on the spot.</p>
+          </div>
+        </div>
+
+        <div class="event-hero-photo-wrap">
+          <img src="images/Star%20LA%20Background/Best.png" alt="Star Jesse Taylor walking at Venice Beach, Los Angeles at golden hour" class="event-hero-photo" />
+        </div>
       </div>
 
       <div style="max-width:820px;margin:44px auto 0;padding:28px 30px;background:rgba(27,108,168,0.05);border-left:4px solid var(--cobalt);border-radius:10px;text-align:left;display:grid;grid-template-columns:240px 1fr;gap:30px;align-items:center;" class="fade-up event-hero-testimonial">
