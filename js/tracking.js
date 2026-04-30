@@ -11,7 +11,7 @@
   'use strict';
 
   var PIXELS = {
-    meta:     'YOUR_META_PIXEL_ID',     // e.g. '1234567890123456'  (Facebook + Instagram)
+    meta:     '1385602039742216',       // Star Jesse Taylor Meta Pixel (Facebook + Instagram)
     tiktok:   'YOUR_TIKTOK_PIXEL_ID',   // e.g. 'C1234ABCD5678EFGH'
     googleAds:'YOUR_GOOGLE_ADS_ID',     // e.g. 'AW-1234567890'     (covers Google + YouTube)
     linkedin: 'YOUR_LINKEDIN_PARTNER_ID',// e.g. '1234567'
@@ -95,11 +95,28 @@
     window.twq('config', PIXELS.twitter);
   }
 
+  // Standard Meta event names. These get fired with fbq('track',...) so they
+  // appear as standard events in Meta Ads Manager. Anything else is sent
+  // through fbq('trackCustom',...).
+  var META_STANDARD_EVENTS = {
+    PageView: 1, ViewContent: 1, Search: 1, AddToCart: 1, AddToWishlist: 1,
+    InitiateCheckout: 1, AddPaymentInfo: 1, Purchase: 1, Lead: 1,
+    CompleteRegistration: 1, Contact: 1, Schedule: 1, Subscribe: 1, StartTrial: 1
+  };
+
   // Helper for site code to fire conversion events on every connected platform at once.
-  // Usage: window.starTrack('quiz_completed', { value: 0, currency: 'USD' })
+  // Usage:
+  //   window.starTrack('Lead', { content_name: 'quiz_complete' })
+  //   window.starTrack('InitiateCheckout', { value: 97, currency: 'USD', content_name: 'LA Event GA' })
+  //   window.starTrack('Purchase', { value: 347, currency: 'USD', content_name: 'LA Event VIP' })
   window.starTrack = function (eventName, params) {
     params = params || {};
-    try { if (window.fbq && isReal(PIXELS.meta)) window.fbq('trackCustom', eventName, params); } catch (e) {}
+    try {
+      if (window.fbq && isReal(PIXELS.meta)) {
+        var fbqMethod = META_STANDARD_EVENTS[eventName] ? 'track' : 'trackCustom';
+        window.fbq(fbqMethod, eventName, params);
+      }
+    } catch (e) {}
     try { if (window.ttq && isReal(PIXELS.tiktok)) window.ttq.track(eventName, params); } catch (e) {}
     try { if (window.gtag) window.gtag('event', eventName, params); } catch (e) {}
     try { if (window.lintrk && isReal(PIXELS.linkedin)) window.lintrk('track', { conversion_id: params.linkedin_conversion_id }); } catch (e) {}

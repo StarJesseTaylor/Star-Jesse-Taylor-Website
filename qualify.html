@@ -237,6 +237,8 @@
   </style>
 </head>
 <body>
+<!-- Meta Pixel noscript fallback -->
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1385602039742216&ev=PageView&noscript=1"/></noscript>
 
 <!-- NAVIGATION -->
 <nav class="nav">
@@ -585,6 +587,17 @@
     const btn = e.target.querySelector('.qualify-submit');
     btn.disabled = true;
     btn.textContent = 'Sending...';
+
+    if (window.starTrack) {
+      window.starTrack('Lead', {
+        content_name: 'qualify_form',
+        content_category: 'qualification',
+        value: 0,
+        currency: 'USD',
+        lead_tier: tier,
+        lead_score: score
+      });
+    }
 
     try {
       await fetch('/api/qualify', {
