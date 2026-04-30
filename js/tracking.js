@@ -12,7 +12,7 @@
 
   var PIXELS = {
     meta:     '1385602039742216',       // Star Jesse Taylor Meta Pixel (Facebook + Instagram)
-    tiktok:   'YOUR_TIKTOK_PIXEL_ID',   // e.g. 'C1234ABCD5678EFGH'
+    tiktok:   'D7PGC4BC77U9KU0AH660', // Star Jesse Taylor TikTok Pixel
     googleAds:'YOUR_GOOGLE_ADS_ID',     // e.g. 'AW-1234567890'     (covers Google + YouTube)
     linkedin: 'YOUR_LINKEDIN_PARTNER_ID',// e.g. '1234567'
     pinterest:'YOUR_PINTEREST_TAG_ID',  // e.g. '2612345678901'
