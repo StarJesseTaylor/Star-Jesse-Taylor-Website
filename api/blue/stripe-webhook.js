@@ -67,14 +67,14 @@ export default async function handler(req, res) {
       : `Blue · Milestone · ${total} of ${BLUE_CONFIG.totalSeats} tickets sold`;
 
     const userPrompt = isSellout
-      ? `The May 30 LA event just SOLD OUT. ${total} of 30 seats filled. ${days} days until the event.
+      ? `The May 30 LA event just SOLD OUT. ${total} of ${BLUE_CONFIG.totalSeats} seats filled. ${days} days until the event.
 
 Write Star a celebratory but tactical email. Structure:
 1. Mark the moment. He should feel this.
 2. Name what this proves about the model (cohort close potential, content authority, footage upside).
 3. Recommend the ONE thing to focus on now that selling is done (preparation, content prep, cohort close prep).
 4. Sign Blue.`
-      : `The May 30 LA event just hit ${total} of 30 tickets sold. ${ticketSales.ga} GA and ${ticketSales.vip} VIP.
+      : `The May 30 LA event just hit ${total} of ${BLUE_CONFIG.totalSeats} tickets sold. ${ticketSales.ga} GA and ${ticketSales.vip} VIP.
 
 ${days} days until event. ${BLUE_CONFIG.totalSeats - total} seats remaining.
 

@@ -98,12 +98,12 @@ function buildEmailRequest(type, ctx) {
       userPrompt: `It is Sunday. Write Star his weekly Strategic Letter.
 
 THIS WEEK'S DATA:
-- Tickets sold all-time: ${ctx.ticketSales.total} of 30 (${ctx.ticketSales.ga} GA, ${ctx.ticketSales.vip} VIP)
+- Tickets sold all-time: ${ctx.ticketSales.total} of ${BLUE_CONFIG.totalSeats} (${ctx.ticketSales.ga} GA, ${ctx.ticketSales.vip} VIP)
 - Revenue from tickets all-time: $${ctx.ticketSales.revenue.toFixed(2)}
 - Tickets sold this past week: ${ctx.weekSales.charges.filter(c => c.amount === 9700 || c.amount === 34700).length}
 - Total revenue this past week (all products): $${ctx.weekSales.revenue.toFixed(2)}
 - Days until May 30 LA event: ${ctx.daysUntilEvent}
-- Seats remaining: ${ctx.seatsRemaining} of 30 (${ctx.gaRemaining} GA, ${ctx.vipRemaining} VIP)
+- Seats remaining: ${ctx.seatsRemaining} of ${BLUE_CONFIG.totalSeats} (${ctx.gaRemaining} GA, ${ctx.vipRemaining} VIP)
 
 Write the Sunday Letter as you described in your system prompt. Structure:
 1. Open with one honest observation about where Star is in the campaign
@@ -123,8 +123,8 @@ Be a mentor. Warm but firm. Tell the truth. Compress.`
       userPrompt: `It is ${ctx.daysUntilEvent} days before the May 30 LA event. Write Star a countdown email.
 
 CURRENT STATE:
-- Tickets sold: ${ctx.ticketSales.total} of 30 (${ctx.ticketSales.ga} GA, ${ctx.ticketSales.vip} VIP)
-- Seats remaining: ${ctx.seatsRemaining} of 30
+- Tickets sold: ${ctx.ticketSales.total} of ${BLUE_CONFIG.totalSeats} (${ctx.ticketSales.ga} GA, ${ctx.ticketSales.vip} VIP)
+- Seats remaining: ${ctx.seatsRemaining} of ${BLUE_CONFIG.totalSeats}
 - Days until event: ${ctx.daysUntilEvent}
 
 Tone: ${tone}.
@@ -146,7 +146,7 @@ Be specific to where the numbers actually are. If sales are ahead, say so. If be
 
 CURRENT STATE:
 - Days since last sale: 3+
-- Tickets sold so far: ${ctx.ticketSales.total} of 30
+- Tickets sold so far: ${ctx.ticketSales.total} of ${BLUE_CONFIG.totalSeats}
 - Days until May 30 event: ${ctx.daysUntilEvent}
 - Run rate needed to fill: ${(ctx.seatsRemaining / Math.max(1, ctx.daysUntilEvent)).toFixed(2)} per day
 

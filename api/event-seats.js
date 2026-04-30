@@ -3,8 +3,8 @@
  *
  * Returns the current LA Intensive ticket sales pulled from Stripe.
  * Used by event.html to render a live seat counter with tiered messaging
- * (hidden below 5 sold, "Filling up" 5-14, count display 15-24,
- * "Almost full" 25-29, "Sold out" at 30).
+ * (hidden below 3 sold, "Filling up" 3-9, count display 10-15,
+ * "Almost full" 16-19, "Sold out" at 20).
  *
  * Module-level cache lasts 5 minutes per warm function instance to limit
  * Stripe load. Edge Cache-Control header lets Vercel serve repeats from
@@ -14,8 +14,8 @@
 import { fetchTotalEventTicketSales } from './blue/_lib.js';
 
 const TTL_MS = 5 * 60 * 1000;
-const TOTAL_SEATS = 30;
-const GA_TOTAL = 22;
+const TOTAL_SEATS = 20;
+const GA_TOTAL = 12;
 const VIP_TOTAL = 8;
 
 let cache = null;

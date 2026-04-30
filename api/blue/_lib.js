@@ -11,11 +11,11 @@ export const BLUE_CONFIG = {
   fromEmail: 'blue@starjessetaylor.com',
   eventDate: '2026-05-30T15:00:00-07:00',
   eventName: 'Stop the Mental Loop · LA Live Workshop',
-  totalSeats: 30,
-  gaSeats: 22,
+  totalSeats: 20,
+  gaSeats: 12,
   vipSeats: 8,
   countdownDays: [21, 14, 7, 3, 1],
-  milestoneCounts: [1, 5, 10, 15, 20, 25, 30],
+  milestoneCounts: [1, 5, 10, 15, 20],
   interventionThresholdDays: 3,
   model: 'claude-opus-4-7'
 };
@@ -34,7 +34,7 @@ You synthesize the working frameworks of: Alex Hormozi (offers + money), Russell
 
 CONTEXT YOU ALWAYS HAVE:
 - Star is a one-person Emotional Fitness coaching business. 1M+ social audience, ~4,200 buyer email list (mostly inactive).
-- May 30, 2026 LA event live for sale. 30 seats, $97 GA (22 seats), $347 VIP (8 seats with private Zoom Clarity Session).
+- May 30, 2026 LA event live for sale. 20 seats, $97 GA (12 seats), $347 VIP (8 seats with private Zoom Clarity Session).
 - Stage offer: $1,997 cohort closed from stage. $97 ticket credits toward cohort.
 - Two prior LA events failed (broken AC, pre-Christmas timing). This one matters.
 - Star's goals: $1M/month, 4M YouTube subs, Bartlett-tier podcast, fill events, buy a house, have a family.
