@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book Star Jesse Taylor to Speak | Emotional Fitness Keynotes &amp; Workshops</title>
+  <meta name="description" content="Book Star Jesse Taylor to speak at your conference, company, retreat, or event. Direct, practical, transformational keynotes on emotional fitness, anxiety, intrusive thoughts, and resilience." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-T0T1Z0VBT8"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-T0T1Z0VBT8');
+  </script>
+  <script src="js/tracking.js" async></script>
+  <script src="js/announcement-bar.js" defer></script>
+  <style>
+    .speak-hero {
+      background: linear-gradient(135deg, #0b2848 0%, #1B6CA8 100%);
+      color: var(--white);
+      padding: 110px 0 90px;
+      position: relative;
+      overflow: hidden;
+    }
+    .speak-hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at top right, rgba(0,180,216,0.18) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .speak-hero-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 56px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+    .speak-hero-eyebrow {
+      display: inline-block;
+      background: rgba(0,180,216,0.18);
+      color: #b5edff;
+      font-size: 0.78rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 800;
+      padding: 8px 18px;
+      border-radius: 50px;
+      margin-bottom: 22px;
+      border: 1px solid rgba(0,180,216,0.35);
+    }
+    .speak-hero h1 {
+      font-size: clamp(2.1rem, 4.6vw, 3.3rem);
+      line-height: 1.1;
+      color: var(--white);
+      margin-bottom: 22px;
+    }
+    .speak-hero h1 em {
+      color: var(--turquoise);
+      font-style: normal;
+    }
+    .speak-hero-sub {
+      font-size: 1.15rem;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.65;
+      margin-bottom: 34px;
+      max-width: 560px;
+    }
+    .speak-hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      max-width: 540px;
+      margin-bottom: 34px;
+    }
+    .speak-stat {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 14px;
+      padding: 18px 16px;
+      text-align: center;
+    }
+    .speak-stat-num {
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--turquoise);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .speak-stat-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      font-weight: 600;
+    }
+    .speak-hero-cta {
+      background: var(--turquoise);
+      color: #0a2840;
+      padding: 18px 36px;
+      border-radius: 50px;
+      font-weight: 800;
+      font-size: 1.05rem;
+      display: inline-block;
+      transition: var(--transition);
+    }
+    .speak-hero-cta:hover {
+      background: #6ddff5;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(0,180,216,0.35);
+    }
+    .speak-hero-photo {
+      position: relative;
+    }
+    .speak-hero-photo img {
+      width: 100%;
+      max-width: 380px;
+      border-radius: 18px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+      display: block;
+      margin: 0 auto;
+    }
+
+    .topics-section {
+      padding: 90px 0;
+      background: var(--white);
+    }
+    .topics-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin-top: 48px;
+    }
+    .topic-card {
+      background: var(--off-white);
+      border-left: 4px solid var(--cobalt);
+      border-radius: var(--radius);
+      padding: 32px 30px;
+      transition: var(--transition);
+    }
+    .topic-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-hover);
+    }
+    .topic-card h3 {
+      font-size: 1.2rem;
+      color: var(--cobalt);
+      margin-bottom: 12px;
+    }
+    .topic-card p {
+      font-size: 0.95rem;
+      color: var(--mid-gray);
+      line-height: 1.7;
+      margin-bottom: 0;
+    }
+    .topic-card .topic-meta {
+      display: inline-block;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--turquoise-dark, #0099b8);
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .audiences-section {
+      background: linear-gradient(160deg, rgba(27,108,168,0.04) 0%, rgba(0,180,216,0.03) 100%);
+      padding: 80px 0;
+    }
+    .audiences-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-top: 40px;
+    }
+    .audience-pill {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 22px 18px;
+      text-align: center;
+      box-shadow: var(--shadow);
+      border-top: 3px solid var(--turquoise);
+    }
+    .audience-pill-name {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--cobalt);
+      margin-bottom: 4px;
+    }
+    .audience-pill-sub {
+      font-size: 0.78rem;
+      color: var(--mid-gray);
+    }
+
+    .takeaway-section {
+      padding: 90px 0;
+      background: var(--white);
+    }
+    .takeaway-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      margin-top: 44px;
+    }
+    .takeaway-card {
+      text-align: center;
+      padding: 12px 8px;
+    }
+    .takeaway-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--cobalt);
+      color: var(--white);
+      font-weight: 900;
+      font-size: 1.4rem;
+      margin: 0 auto 18px;
+    }
+    .takeaway-card h3 {
+      font-size: 1.1rem;
+      color: var(--cobalt);
+      margin-bottom: 10px;
+    }
+    .takeaway-card p {
+      font-size: 0.95rem;
+      color: var(--mid-gray);
+      line-height: 1.7;
+    }
+
+    .stage-photos {
+      padding: 80px 0;
+      background: var(--off-white);
+    }
+    .stage-photos-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 40px;
+    }
+    .stage-photo {
+      aspect-ratio: 4/3;
+      background: linear-gradient(135deg, rgba(27,108,168,0.08), rgba(0,180,216,0.08));
+      border: 2px dashed rgba(27,108,168,0.25);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--cobalt);
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 0.05em;
+      text-align: center;
+      padding: 16px;
+    }
+
+    .inquiry-section {
+      background: linear-gradient(160deg, var(--off-white) 0%, #e8f0f7 100%);
+      padding: 90px 0;
+    }
+    .inquiry-card {
+      max-width: 720px;
+      margin: 0 auto;
+      background: var(--white);
+      border-radius: 24px;
+      padding: 56px 48px;
+      box-shadow: 0 12px 48px rgba(27,108,168,0.12);
+    }
+    .inquiry-card h2 {
+      font-size: clamp(1.7rem, 3.4vw, 2.4rem);
+      margin-bottom: 12px;
+      text-align: center;
+    }
+    .inquiry-card .inquiry-sub {
+      text-align: center;
+      color: var(--mid-gray);
+      font-size: 1.02rem;
+      margin-bottom: 36px;
+      line-height: 1.65;
+    }
+    .inquiry-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .inquiry-form .full {
+      grid-column: 1 / -1;
+    }
+    .inquiry-form label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--cobalt);
+      margin-bottom: 6px;
+    }
+    .inquiry-form input,
+    .inquiry-form select,
+    .inquiry-form textarea {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid var(--light-gray);
+      border-radius: 10px;
+      font-size: 0.98rem;
+      font-family: inherit;
+      color: var(--charcoal);
+      background: var(--off-white);
+      transition: border-color 0.2s, background 0.2s;
+      outline: none;
+    }
+    .inquiry-form input:focus,
+    .inquiry-form select:focus,
+    .inquiry-form textarea:focus {
+      border-color: var(--cobalt);
+      background: var(--white);
+    }
+    .inquiry-form textarea {
+      min-height: 130px;
+      resize: vertical;
+      font-family: inherit;
+    }
+    .inquiry-submit {
+      grid-column: 1 / -1;
+      padding: 18px;
+      background: var(--cobalt);
+      color: var(--white);
+      border: none;
+      border-radius: 50px;
+      font-size: 1.05rem;
+      font-weight: 800;
+      cursor: pointer;
+      font-family: inherit;
+      transition: var(--transition);
+      margin-top: 8px;
+    }
+    .inquiry-submit:hover {
+      background: var(--cobalt-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+    }
+    .inquiry-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .inquiry-fine {
+      grid-column: 1 / -1;
+      font-size: 0.82rem;
+      color: var(--mid-gray);
+      text-align: center;
+      margin-top: 6px;
+      line-height: 1.6;
+    }
+    .inquiry-confirm {
+      display: none;
+      text-align: center;
+      padding: 24px 0;
+    }
+    .inquiry-confirm h2 {
+      color: var(--cobalt);
+      font-size: 1.7rem;
+      margin-bottom: 14px;
+    }
+    .inquiry-confirm p {
+      color: var(--mid-gray);
+      font-size: 1.02rem;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 900px) {
+      .speak-hero-grid { grid-template-columns: 1fr; gap: 40px; }
+      .speak-hero-photo img { max-width: 280px; }
+      .topics-grid { grid-template-columns: 1fr; }
+      .audiences-grid { grid-template-columns: repeat(2, 1fr); }
+      .takeaway-grid { grid-template-columns: 1fr; gap: 32px; }
+      .stage-photos-grid { grid-template-columns: 1fr 1fr; }
+      .inquiry-card { padding: 40px 28px; }
+      .inquiry-form { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1385602039742216&ev=PageView&noscript=1"/></noscript>
+
+<!-- NAVIGATION -->
+<nav class="nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <span class="nav-logo-name">Star Jesse Taylor</span>
+        <span class="nav-logo-sub">Emotional Fitness</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="book.html">Book</a></li>
+        <li><a href="event.html">Events</a></li>
+        <li><a href="speak.html" style="color:var(--cobalt);font-weight:800;">Speaking</a></li>
+        <li><a href="services.html">Work With Me</a></li>
+      </ul>
+      <a href="#inquiry" class="btn btn-primary btn-sm nav-cta">Book Star</a>
+      <button class="nav-hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- MOBILE NAV -->
+<div class="nav-mobile">
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="book.html">Book</a>
+  <a href="event.html">Events</a>
+  <a href="speak.html">Speaking</a>
+  <a href="services.html">Work With Me</a>
+  <a href="#inquiry">Book Star to Speak</a>
+</div>
+
+<!-- HERO -->
+<section class="speak-hero">
+  <div class="container">
+    <div class="speak-hero-grid">
+      <div class="fade-up">
+        <span class="speak-hero-eyebrow">Speaking · Keynotes · Workshops</span>
+        <h1>Bring Star to Your <em>Stage</em></h1>
+        <p class="speak-hero-sub">Direct, practical, transformational. Star speaks on emotional fitness, anxiety, intrusive thoughts, surrender, and what it actually takes to stop reacting to your brain and start acting on your values. Your audience leaves with tools they can use the same day.</p>
+        <div class="speak-hero-stats">
+          <div class="speak-stat">
+            <div class="speak-stat-num">1B+</div>
+            <div class="speak-stat-label">Views</div>
+          </div>
+          <div class="speak-stat">
+            <div class="speak-stat-num">1M+</div>
+            <div class="speak-stat-label">Followers</div>
+          </div>
+          <div class="speak-stat">
+            <div class="speak-stat-num">18</div>
+            <div class="speak-stat-label">Years Practice</div>
+          </div>
+        </div>
+        <a href="#inquiry" class="speak-hero-cta">Submit a Booking Inquiry →</a>
+      </div>
+      <div class="speak-hero-photo fade-up fade-up-delay-1">
+        <img src="images/Pictures of Star/Star Headshot.JPEG" alt="Star Jesse Taylor, speaker and emotional fitness coach" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TOPICS -->
+<section class="topics-section">
+  <div class="container">
+    <div class="text-center fade-up">
+      <span class="section-label">Signature Talks</span>
+      <h2 class="section-title">What Star Speaks About</h2>
+      <p class="section-subtitle" style="max-width:680px;margin:16px auto 0;">Every talk can be delivered as a keynote, a half day workshop, or a full day intensive. Custom topics built for your audience on request.</p>
+    </div>
+    <div class="topics-grid">
+
+      <div class="topic-card fade-up">
+        <span class="topic-meta">Keynote · 45 to 75 min</span>
+        <h3>Stop Reacting to Your Brain. Start Acting on Your Values.</h3>
+        <p>The core emotional fitness talk. The framework that has helped thousands stop being run by anxiety, intrusive thoughts, and overthinking, and start choosing how to respond.</p>
+      </div>
+
+      <div class="topic-card fade-up fade-up-delay-1">
+        <span class="topic-meta">Keynote · 45 to 60 min</span>
+        <h3>The Truth About Anxiety, Intrusive Thoughts, and Why Most Advice Fails</h3>
+        <p>An honest look at what is actually going on inside the anxious mind, why most coping strategies make it worse, and what works instead. Built from 18 years of personal practice.</p>
+      </div>
+
+      <div class="topic-card fade-up">
+        <span class="topic-meta">Workshop · 90 min to half day</span>
+        <h3>The Value Garden: A Practice for Living on Purpose</h3>
+        <p>An interactive workshop where every attendee builds their own Value Garden in the room. Teams leave with a tool they actually use, not a slide deck they forget.</p>
+      </div>
+
+      <div class="topic-card fade-up fade-up-delay-1">
+        <span class="topic-meta">Corporate · 60 to 90 min</span>
+        <h3>Resilience That Actually Works at Work</h3>
+        <p>For companies tired of meditation app subscriptions that no one uses. Real, practical emotional fitness for high pressure environments. Designed for leadership teams, sales floors, and burnout prone roles.</p>
+      </div>
+
+      <div class="topic-card fade-up">
+        <span class="topic-meta">Retreat · Half day to full day</span>
+        <h3>How to Be Your Own Best Coach</h3>
+        <p>A deep, immersive day of practice. Attendees walk in carrying their own brain and walk out with the tools to coach themselves through whatever shows up next.</p>
+      </div>
+
+      <div class="topic-card fade-up fade-up-delay-1">
+        <span class="topic-meta">Custom · Built for your audience</span>
+        <h3>Your Topic, Your Audience, Your Outcome</h3>
+        <p>Tell Star what your audience is struggling with and what you want them to walk away with. He builds the talk around your goal, not a recycled slide deck.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- AUDIENCES -->
+<section class="audiences-section">
+  <div class="container">
+    <div class="text-center fade-up">
+      <span class="section-label">Where Star Speaks</span>
+      <h2 class="section-title">Built for Real Rooms</h2>
+    </div>
+    <div class="audiences-grid">
+      <div class="audience-pill fade-up">
+        <div class="audience-pill-name">Companies</div>
+        <div class="audience-pill-sub">Mental health, leadership, burnout</div>
+      </div>
+      <div class="audience-pill fade-up fade-up-delay-1">
+        <div class="audience-pill-name">Conferences</div>
+        <div class="audience-pill-sub">Wellness, personal growth, mental health</div>
+      </div>
+      <div class="audience-pill fade-up fade-up-delay-2">
+        <div class="audience-pill-name">Retreats</div>
+        <div class="audience-pill-sub">Half day &amp; full day intensives</div>
+      </div>
+      <div class="audience-pill fade-up">
+        <div class="audience-pill-name">Universities</div>
+        <div class="audience-pill-sub">Student mental health programming</div>
+      </div>
+      <div class="audience-pill fade-up fade-up-delay-1">
+        <div class="audience-pill-name">Podcasts</div>
+        <div class="audience-pill-sub">Long form &amp; interview</div>
+      </div>
+      <div class="audience-pill fade-up fade-up-delay-2">
+        <div class="audience-pill-name">Online Events</div>
+        <div class="audience-pill-sub">Webinars, summits, virtual keynotes</div>
+      </div>
+      <div class="audience-pill fade-up">
+        <div class="audience-pill-name">Sales Teams</div>
+        <div class="audience-pill-sub">Pressure, rejection, performance</div>
+      </div>
+      <div class="audience-pill fade-up fade-up-delay-1">
+        <div class="audience-pill-name">Founders &amp; Execs</div>
+        <div class="audience-pill-sub">Private leadership offsites</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TAKEAWAYS -->
+<section class="takeaway-section">
+  <div class="container">
+    <div class="text-center fade-up">
+      <span class="section-label">What Your Audience Walks Away With</span>
+      <h2 class="section-title">Tools, Not Theory</h2>
+      <p class="section-subtitle" style="max-width:680px;margin:16px auto 0;">Star does not give talks people forget by Monday. Every audience leaves with something they can use the same day.</p>
+    </div>
+    <div class="takeaway-grid">
+      <div class="takeaway-card fade-up">
+        <div class="takeaway-num">1</div>
+        <h3>A Practice They Can Use Today</h3>
+        <p>Not a concept. A tool. The Value Garden, the No Brain Method, or a simple shift they can apply the moment they leave the room.</p>
+      </div>
+      <div class="takeaway-card fade-up fade-up-delay-1">
+        <div class="takeaway-num">2</div>
+        <h3>A New Relationship to Their Brain</h3>
+        <p>The single shift that changes everything. They stop being controlled by their thoughts and emotions, and start using them as information.</p>
+      </div>
+      <div class="takeaway-card fade-up fade-up-delay-2">
+        <div class="takeaway-num">3</div>
+        <h3>The Confidence to Coach Themselves</h3>
+        <p>The point is not for them to need Star. The point is for them to walk out knowing they can do this on their own.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STAGE PHOTOS PLACEHOLDER -->
+<section class="stage-photos">
+  <div class="container">
+    <div class="text-center fade-up">
+      <span class="section-label">On Stage</span>
+      <h2 class="section-title">Recent Stages</h2>
+      <p class="section-subtitle" style="max-width:680px;margin:16px auto 0;">Photos and clips from Star's LA Intensive and upcoming corporate engagements.</p>
+    </div>
+    <div class="stage-photos-grid">
+      <div class="stage-photo">Photo from LA Intensive · May 30, 2026</div>
+      <div class="stage-photo">Photo from LA Intensive · May 30, 2026</div>
+      <div class="stage-photo">Photo from LA Intensive · May 30, 2026</div>
+    </div>
+  </div>
+</section>
+
+<!-- INQUIRY FORM -->
+<section class="inquiry-section" id="inquiry">
+  <div class="container">
+    <div class="inquiry-card">
+      <div id="inquiry-default">
+        <h2>Tell Star About Your Event</h2>
+        <p class="inquiry-sub">Fill in what you know. Star reads every inquiry personally and responds within 2 business days.</p>
+
+        <form class="inquiry-form" id="speakingForm">
+          <div>
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" name="firstName" required autocomplete="given-name" />
+          </div>
+          <div>
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" name="lastName" required autocomplete="family-name" />
+          </div>
+          <div>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required autocomplete="email" />
+          </div>
+          <div>
+            <label for="phone">Phone (optional)</label>
+            <input type="tel" id="phone" name="phone" autocomplete="tel" />
+          </div>
+          <div>
+            <label for="organization">Organization / Company</label>
+            <input type="text" id="organization" name="organization" required />
+          </div>
+          <div>
+            <label for="role">Your Role</label>
+            <input type="text" id="role" name="role" placeholder="e.g. Head of People, Event Producer" />
+          </div>
+          <div class="full">
+            <label for="eventName">Event or Engagement Name</label>
+            <input type="text" id="eventName" name="eventName" placeholder="e.g. Q3 All Hands, Annual Conference, Leadership Offsite" />
+          </div>
+          <div>
+            <label for="eventDate">Event Date (or window)</label>
+            <input type="text" id="eventDate" name="eventDate" placeholder="e.g. October 2026, or TBD" />
+          </div>
+          <div>
+            <label for="eventLocation">Location</label>
+            <input type="text" id="eventLocation" name="eventLocation" placeholder="City, virtual, hybrid" />
+          </div>
+          <div>
+            <label for="audienceSize">Audience Size</label>
+            <select id="audienceSize" name="audienceSize">
+              <option value="">Select</option>
+              <option>Under 50</option>
+              <option>50 to 200</option>
+              <option>200 to 500</option>
+              <option>500 to 1,000</option>
+              <option>1,000+</option>
+            </select>
+          </div>
+          <div>
+            <label for="audienceType">Audience Type</label>
+            <select id="audienceType" name="audienceType">
+              <option value="">Select</option>
+              <option>Corporate / employees</option>
+              <option>Leadership / executives</option>
+              <option>Sales team</option>
+              <option>Conference attendees</option>
+              <option>University students</option>
+              <option>Retreat / wellness</option>
+              <option>Podcast audience</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div>
+            <label for="topic">Topic Interest</label>
+            <select id="topic" name="topic">
+              <option value="">Select</option>
+              <option>Stop Reacting to Your Brain (Core Keynote)</option>
+              <option>Anxiety &amp; Intrusive Thoughts</option>
+              <option>The Value Garden Workshop</option>
+              <option>Resilience That Works at Work</option>
+              <option>How to Be Your Own Best Coach</option>
+              <option>Custom topic for our audience</option>
+              <option>Not sure yet, want to discuss</option>
+            </select>
+          </div>
+          <div>
+            <label for="budget">Speaking Budget Range</label>
+            <select id="budget" name="budget">
+              <option value="">Select</option>
+              <option>Under $5,000</option>
+              <option>$5,000 to $15,000</option>
+              <option>$15,000 to $35,000</option>
+              <option>$35,000+</option>
+              <option>Not sure / need guidance</option>
+            </select>
+          </div>
+          <div class="full">
+            <label for="message">Anything else Star should know?</label>
+            <textarea id="message" name="message" placeholder="What is your audience struggling with? What do you want them to walk away with? Any context that would help."></textarea>
+          </div>
+
+          <button type="submit" class="inquiry-submit">Send Speaking Inquiry</button>
+          <p class="inquiry-fine">You will hear back from Star personally. Inquiries are typically answered within 2 business days.</p>
+        </form>
+      </div>
+
+      <div class="inquiry-confirm" id="inquiry-confirm">
+        <h2>Got it. Star has your inquiry.</h2>
+        <p>You will hear back from Star personally within 2 business days, usually faster. In the meantime, you can read the book at <a href="book.html" style="color:var(--cobalt);font-weight:700;">starjessetaylor.com/book</a> or watch his work on Instagram <a href="https://www.instagram.com/starjessetaylor" target="_blank" rel="noopener" style="color:var(--cobalt);font-weight:700;">@starjessetaylor</a>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div>
+          <div class="footer-brand-name">Star Jesse Taylor</div>
+          <div class="footer-brand-sub">Emotional Fitness</div>
+        </div>
+        <p class="footer-brand-desc">Emotional Fitness Coach, Author, and Speaker based in Los Angeles. Helping thousands build resilience from the inside out.</p>
+        <div class="social-links">
+          <a href="https://www.instagram.com/starjessetaylor" class="social-link" aria-label="Instagram" target="_blank" rel="noopener">IG</a>
+          <a href="https://www.tiktok.com/@starjessetaylor" class="social-link" aria-label="TikTok" target="_blank" rel="noopener">TK</a>
+          <a href="#" class="social-link" aria-label="YouTube">YT</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="book.html">Book</a></li>
+          <li><a href="event.html">Events</a></li>
+          <li><a href="speak.html">Speaking</a></li>
+          <li><a href="services.html">Work With Me</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Work Together</h4>
+        <ul class="footer-links">
+          <li><a href="services.html">1-on-1 Coaching</a></li>
+          <li><a href="event.html">LA Intensive ($97)</a></li>
+          <li><a href="book.html">The Book ($29)</a></li>
+          <li><a href="speak.html">Book Star to Speak</a></li>
+          <li><a href="free-chapter.html">Free Chapter</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul class="footer-links">
+          <li><a href="mailto:starjessetaylor@gmail.com">starjessetaylor@gmail.com</a></li>
+          <li><a href="speak.html">Speaking Inquiries</a></li>
+          <li><a href="https://www.instagram.com/starjessetaylor" target="_blank" rel="noopener">Instagram @starjessetaylor</a></li>
+          <li><a href="https://www.tiktok.com/@starjessetaylor" target="_blank" rel="noopener">TikTok @starjessetaylor</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Star Jesse Taylor Emotional Fitness. All rights reserved.</span>
+      <div class="footer-legal">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/chat-widget.js"></script>
+<script>
+  const speakingForm = document.getElementById('speakingForm');
+  const inquiryDefault = document.getElementById('inquiry-default');
+  const inquiryConfirm = document.getElementById('inquiry-confirm');
+
+  if (speakingForm) {
+    speakingForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = speakingForm.querySelector('.inquiry-submit');
+      btn.disabled = true;
+      btn.textContent = 'Sending...';
+
+      const data = new FormData(speakingForm);
+      const payload = {};
+      for (const [k, v] of data.entries()) payload[k] = v;
+
+      try {
+        const res = await fetch('/api/speaking-inquiry', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) throw new Error('Submission failed');
+
+        if (window.starTrack) {
+          try {
+            window.starTrack('SpeakingInquiry', {
+              content_name: 'Speaking Inquiry',
+              content_category: 'speaking',
+              organization: payload.organization || ''
+            });
+          } catch (err) {}
+        }
+
+        inquiryDefault.style.display = 'none';
+        inquiryConfirm.style.display = 'block';
+        inquiryConfirm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } catch (err) {
+        btn.disabled = false;
+        btn.textContent = 'Send Speaking Inquiry';
+        alert('Something went wrong. Please email starjessetaylor@gmail.com directly.');
+      }
+    });
+  }
+</script>
+</body>
+</html>
