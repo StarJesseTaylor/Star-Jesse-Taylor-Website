@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Emotional Fitness Book by Star Jesse Taylor | $29</title>
+  <meta name="description" content="The book that started it all. The Value Garden, the No Brain Method, and the daily practices that have helped thousands stop reacting to their brain and start acting on their values." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-T0T1Z0VBT8"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-T0T1Z0VBT8');
+  </script>
+  <script src="js/tracking.js" async></script>
+  <script src="js/announcement-bar.js" defer></script>
+  <style>
+    .book-hero {
+      background: linear-gradient(160deg, #f6faff 0%, #e8f0f7 100%);
+      padding: 100px 0 90px;
+      position: relative;
+    }
+    .book-hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 64px;
+      align-items: center;
+    }
+    .book-hero-cover {
+      display: flex;
+      justify-content: center;
+    }
+    .book-hero-cover img {
+      width: 100%;
+      max-width: 340px;
+      border-radius: 10px;
+      box-shadow: -10px 10px 36px rgba(0,0,0,0.22), 10px 10px 36px rgba(0,0,0,0.1);
+      display: block;
+    }
+    .book-hero-eyebrow {
+      display: inline-block;
+      font-size: 0.78rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--cobalt);
+      font-weight: 800;
+      margin-bottom: 20px;
+    }
+    .book-hero h1 {
+      font-size: clamp(2rem, 4.6vw, 3.1rem);
+      line-height: 1.1;
+      margin-bottom: 18px;
+    }
+    .book-hero .book-hero-sub {
+      font-size: 1.15rem;
+      color: var(--mid-gray);
+      line-height: 1.65;
+      margin-bottom: 28px;
+      max-width: 560px;
+    }
+    .book-price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    .book-price {
+      font-size: 2.4rem;
+      font-weight: 900;
+      color: var(--cobalt);
+      line-height: 1;
+    }
+    .book-price-meta {
+      font-size: 0.95rem;
+      color: var(--mid-gray);
+      font-weight: 600;
+    }
+    .book-hero-cta-row {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 22px;
+    }
+    .book-hero-trust {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 0.9rem;
+      color: var(--mid-gray);
+    }
+    .book-hero-trust .stars { color: #f59e0b; letter-spacing: 2px; font-size: 1rem; }
+    .book-hero-trust .trust-divider { color: rgba(0,0,0,0.15); }
+
+    .inside-book {
+      padding: 90px 0;
+      background: var(--white);
+    }
+    .inside-book-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      margin-top: 48px;
+    }
+    .inside-card {
+      background: var(--off-white);
+      border-radius: var(--radius);
+      padding: 32px 28px;
+      border-top: 3px solid var(--cobalt);
+      transition: var(--transition);
+    }
+    .inside-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-hover);
+    }
+    .inside-card h3 {
+      font-size: 1.15rem;
+      color: var(--cobalt);
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+    .inside-card p {
+      font-size: 0.95rem;
+      color: var(--mid-gray);
+      line-height: 1.7;
+    }
+
+    .book-author-note {
+      background: linear-gradient(160deg, rgba(27,108,168,0.04) 0%, rgba(0,180,216,0.03) 100%);
+      padding: 80px 0;
+    }
+    .author-note-card {
+      max-width: 760px;
+      margin: 0 auto;
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 48px 44px;
+      box-shadow: var(--shadow);
+      border-left: 4px solid var(--cobalt);
+    }
+    .author-note-card p {
+      font-size: 1.05rem;
+      color: var(--charcoal);
+      line-height: 1.8;
+      margin-bottom: 18px;
+    }
+    .author-note-card p:last-of-type { margin-bottom: 0; }
+    .author-note-signature {
+      margin-top: 24px;
+      font-weight: 800;
+      color: var(--cobalt);
+      font-size: 1rem;
+      letter-spacing: 0.04em;
+    }
+
+    .book-final-cta {
+      background: linear-gradient(135deg, var(--cobalt), #0f5290);
+      padding: 90px 0;
+      text-align: center;
+      color: var(--white);
+    }
+    .book-final-cta h2 {
+      color: var(--white);
+      font-size: clamp(1.8rem, 3.6vw, 2.5rem);
+      margin-bottom: 16px;
+      line-height: 1.2;
+    }
+    .book-final-cta p {
+      color: rgba(255,255,255,0.85);
+      font-size: 1.1rem;
+      max-width: 560px;
+      margin: 0 auto 32px;
+      line-height: 1.65;
+    }
+    .book-final-cta .btn-primary {
+      background: var(--white);
+      color: var(--cobalt);
+    }
+    .book-final-cta .btn-primary:hover {
+      background: var(--turquoise-light);
+      color: var(--cobalt);
+    }
+    .book-final-cta .secondary-link {
+      display: block;
+      margin-top: 18px;
+      font-size: 0.92rem;
+      color: rgba(255,255,255,0.85);
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+
+    @media (max-width: 900px) {
+      .book-hero-grid { grid-template-columns: 1fr; gap: 36px; }
+      .book-hero-cover img { max-width: 260px; }
+      .inside-book-grid { grid-template-columns: 1fr; }
+      .author-note-card { padding: 36px 28px; }
+    }
+  </style>
+</head>
+<body>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1385602039742216&ev=PageView&noscript=1"/></noscript>
+
+<!-- NAVIGATION -->
+<nav class="nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <span class="nav-logo-name">Star Jesse Taylor</span>
+        <span class="nav-logo-sub">Emotional Fitness</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="book.html" style="color:var(--cobalt);font-weight:800;">Book</a></li>
+        <li><a href="event.html">Events</a></li>
+        <li><a href="services.html">Work With Me</a></li>
+      </ul>
+      <a href="apply.html" class="btn btn-primary btn-sm nav-cta">Apply</a>
+      <button class="nav-hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- MOBILE NAV -->
+<div class="nav-mobile">
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="book.html">Book</a>
+  <a href="event.html">Events</a>
+  <a href="services.html">Work With Me</a>
+  <a href="apply.html">Apply for Coaching</a>
+</div>
+
+<!-- HERO -->
+<section class="book-hero">
+  <div class="container">
+    <div class="book-hero-grid">
+      <div class="book-hero-cover fade-up">
+        <img src="images/book-cover.PNG" alt="How to Build Emotional Fitness by Star Jesse Taylor" />
+      </div>
+      <div class="fade-up fade-up-delay-1">
+        <span class="book-hero-eyebrow">The Book</span>
+        <h1>How to Build Emotional Fitness</h1>
+        <p class="book-hero-sub">The framework that has helped thousands of readers stop reacting to their brain and start acting on their values. Everything Star teaches starts here.</p>
+        <div class="book-price-row">
+          <div class="book-price">$29</div>
+          <div class="book-price-meta">Paperback &amp; eBook</div>
+        </div>
+        <div class="book-hero-cta-row">
+          <a href="https://starjessetaylor.bio/shop/51c9e967-da06-4c5a-adf3-5d79d32e30da" class="btn btn-primary btn-lg" target="_blank" rel="noopener">Get the Book · $29</a>
+          <a href="free-chapter.html" class="btn btn-outline btn-lg">Read 30 Pages Free</a>
+        </div>
+        <div class="book-hero-trust">
+          <span class="stars">★★★★★</span>
+          <span><strong style="color:var(--cobalt);font-weight:800;">1,945 copies sold</strong> &amp; counting</span>
+          <span class="trust-divider">|</span>
+          <span>Verified reader reviews</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INSIDE THE BOOK -->
+<section class="inside-book">
+  <div class="container">
+    <div class="text-center fade-up">
+      <span class="section-label">What's Inside</span>
+      <h2 class="section-title">The Foundation of Everything Star Teaches</h2>
+      <p class="section-subtitle" style="max-width:680px;margin:16px auto 0;">No fluff. No filler. The exact tools and shifts that take you from reacting to your brain to acting on your values.</p>
+    </div>
+    <div class="inside-book-grid">
+      <div class="inside-card fade-up">
+        <h3>The Value Garden</h3>
+        <p>The core practice. You learn to identify what you actually value, plant those values, and water them with daily action. The single most important shift in the entire book.</p>
+      </div>
+      <div class="inside-card fade-up fade-up-delay-1">
+        <h3>The No Brain Method</h3>
+        <p>Your brain is not the problem. Reacting to your brain is. You learn to notice your thoughts without obeying them, so you stop being run by anxiety, intrusive thoughts, and overthinking.</p>
+      </div>
+      <div class="inside-card fade-up fade-up-delay-2">
+        <h3>The Daily Practices</h3>
+        <p>Simple, repeatable practices you can do every day. No 30 minute morning routines. Real tools that fit into a real life and actually move the needle.</p>
+      </div>
+      <div class="inside-card fade-up">
+        <h3>How to Surrender</h3>
+        <p>The misunderstood skill that changes everything. You learn the difference between giving up and letting go, and how to stop fighting your own life.</p>
+      </div>
+      <div class="inside-card fade-up fade-up-delay-1">
+        <h3>From Reacting to Acting</h3>
+        <p>The full framework. You stop being a passenger to your emotions and become the person who chooses how to respond, even in the hardest moments.</p>
+      </div>
+      <div class="inside-card fade-up fade-up-delay-2">
+        <h3>How to Be Your Own Coach</h3>
+        <p>Nobody is coming to save you. The book teaches you the exact way Star coaches himself every single day, so you can do it for yourself.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AUTHOR NOTE -->
+<section class="book-author-note">
+  <div class="container">
+    <div class="author-note-card fade-up">
+      <p>I wrote this book in the middle of my own transformation. Before any of the audience, before the coaching practice, when the only person I was accountable to was myself.</p>
+      <p>It is the distilled result of 18 years of practicing every major framework for human change, testing all of it, and discovering what actually works when you are alone in your own head at 3am.</p>
+      <p>Almost 2,000 people have started here. Many of them never needed coaching. The book did the work.</p>
+      <p>If you are tired of self help that sounds smart but does nothing, this is the one I would put in your hands.</p>
+      <div class="author-note-signature">— Star Jesse Taylor</div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOK REVIEWS -->
+<section class="book-reviews-section">
+  <div class="container">
+    <div class="text-center fade-up">
+      <span class="section-label">Reader Reviews</span>
+      <h2 class="section-title">What Readers Are Saying</h2>
+      <p class="section-subtitle">Real people. Real results. From the first page to the last.</p>
+    </div>
+    <div class="book-reviews-grid">
+
+      <div class="book-review-card fade-up">
+        <div class="book-review-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <div class="book-review-headline">"I've read so many self-help books. This was what actually changed me."</div>
+        <p class="book-review-body">I finished your book two days ago, and I can confidently say it changed the way I view the thoughts that come into my mind and my emotions. I've read so many self-help books and listened to countless podcasts, but your book was what ultimately changed my perspective, because of how simple you made it. I don't listen to my emotions or the thoughts anymore. I focus on my valued actions. I'm grateful.</p>
+        <div class="book-review-author">Arely &nbsp;<span class="verified-badge">✓ Verified Reader</span></div>
+      </div>
+
+      <div class="book-review-card fade-up fade-up-delay-1">
+        <div class="book-review-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <div class="book-review-headline">"I'm on page 18 and I know my life will never be the same."</div>
+        <p class="book-review-body">Where were you all these years!!! I finally GET it now! I know what to do and I don't feel like there's anything badly wrong with me anymore! You're incredible! Thank you so much!</p>
+        <div class="book-review-author">k.blossfey &nbsp;<span class="verified-badge">✓ Verified Reader</span></div>
+      </div>
+
+      <div class="book-review-card fade-up fade-up-delay-2">
+        <div class="book-review-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <div class="book-review-headline">"If you suffer with debilitating anxiety, this book is for you."</div>
+        <p class="book-review-body">If you suffer with debilitating anxiety, then this book is for you. Absolutely amazing. This should be taught to everyone. Thank you Star, you're pure genius!</p>
+        <div class="book-review-author">Verified Reader &nbsp;<span class="verified-badge">✓ Verified Purchase</span></div>
+      </div>
+
+      <div class="book-review-card fade-up">
+        <div class="book-review-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <div class="book-review-headline">"This book is like a blueprint."</div>
+        <p class="book-review-body">This book is like a blueprint for grounding yourself. The teachings have seeped into every little area of my life and given me so much more stability instead of being led by my emotions and anxiety. Highly recommend everyone read this. It is applicable for everyone.</p>
+        <div class="book-review-author">Verified Reader &nbsp;<span class="verified-badge">✓ Verified Purchase</span></div>
+      </div>
+
+      <div class="book-review-card fade-up fade-up-delay-1">
+        <div class="book-review-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <div class="book-review-headline">"No need to spend years in therapy."</div>
+        <p class="book-review-body">Nothing short of amazing. Packed with practical things to apply. No need to spend years in therapy. This book gives you the tools right now.</p>
+        <div class="book-review-author">Verified Reader &nbsp;<span class="verified-badge">✓ Verified Purchase</span></div>
+      </div>
+
+      <div class="book-review-card fade-up fade-up-delay-2">
+        <div class="book-review-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <div class="book-review-headline">"It's life changing. I talk about it every single day."</div>
+        <p class="book-review-body">It's life changing! I'm talking about it every day to people AND integrating the teachings, watering my garden with actions. I love your style in the book! I would love to give you a hug of gratitude for helping me help myself. Keep shining and being YOU.</p>
+        <div class="book-review-author">harmonieyogasaar &nbsp;<span class="verified-badge">✓ Verified Reader</span></div>
+      </div>
+
+      <div class="book-review-card fade-up">
+        <div class="book-review-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <div class="book-review-headline">"Healed me more than most things I've tried."</div>
+        <p class="book-review-body">I've read your Emotional Fitness book and started meditating. Honestly the book and your content healed me more than most other things I've tried and give me hope. I'm going to keep working on being more outside of my head.</p>
+        <div class="book-review-author">Bettina &nbsp;<span class="verified-badge">✓ Verified Reader</span></div>
+      </div>
+
+      <div class="book-review-card fade-up fade-up-delay-1">
+        <div class="book-review-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <div class="book-review-headline">"Helping me take action, stay organized, and keep my promises."</div>
+        <p class="book-review-body">Very practical, step by step, easy to understand, fun to read. It is helping me a lot to practice the tools. I feel less anxiety and stress. My inner dialogue is transforming to a more present and positive one.</p>
+        <div class="book-review-author">Verified Reader &nbsp;<span class="verified-badge">✓ Verified Purchase</span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="book-final-cta">
+  <div class="container">
+    <h2>Start Where Everyone Else Started</h2>
+    <p>The book that started the entire emotional fitness movement. Read it tonight. Watch your relationship to your own brain change.</p>
+    <a href="https://starjessetaylor.bio/shop/51c9e967-da06-4c5a-adf3-5d79d32e30da" class="btn btn-primary btn-lg" target="_blank" rel="noopener">Get the Book · $29</a>
+    <a href="free-chapter.html" class="secondary-link">Or read the first 30 pages free →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div>
+          <div class="footer-brand-name">Star Jesse Taylor</div>
+          <div class="footer-brand-sub">Emotional Fitness</div>
+        </div>
+        <p class="footer-brand-desc">Emotional Fitness Coach, Author, and Speaker based in Los Angeles. Helping thousands build resilience from the inside out.</p>
+        <div class="social-links">
+          <a href="https://www.instagram.com/starjessetaylor" class="social-link" aria-label="Instagram" target="_blank" rel="noopener">IG</a>
+          <a href="https://www.tiktok.com/@starjessetaylor" class="social-link" aria-label="TikTok" target="_blank" rel="noopener">TK</a>
+          <a href="#" class="social-link" aria-label="YouTube">YT</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="book.html">Book</a></li>
+          <li><a href="event.html">Events</a></li>
+          <li><a href="services.html">Work With Me</a></li>
+          <li><a href="apply.html">Apply</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Work Together</h4>
+        <ul class="footer-links">
+          <li><a href="services.html">1-on-1 Coaching</a></li>
+          <li><a href="services.html">10-Week Cohort (Waitlist)</a></li>
+          <li><a href="event.html">LA Intensive ($97)</a></li>
+          <li><a href="book.html">The Book ($29)</a></li>
+          <li><a href="free-chapter.html">Free Chapter</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul class="footer-links">
+          <li><a href="mailto:starjessetaylor@gmail.com">starjessetaylor@gmail.com</a></li>
+          <li><a href="mailto:starjessetaylor@gmail.com">Speaking Inquiries</a></li>
+          <li><a href="https://www.instagram.com/starjessetaylor" target="_blank" rel="noopener">Instagram @starjessetaylor</a></li>
+          <li><a href="https://www.tiktok.com/@starjessetaylor" target="_blank" rel="noopener">TikTok @starjessetaylor</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Star Jesse Taylor Emotional Fitness. All rights reserved.</span>
+      <div class="footer-legal">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/chat-widget.js"></script>
+</body>
+</html>
