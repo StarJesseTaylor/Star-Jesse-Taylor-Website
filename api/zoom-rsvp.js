@@ -5,8 +5,10 @@ const BASE_TAGS = ['Zoom RSVP May 5 2026', 'Virtual Event Interested'];
 const CONNECTION_TAG_MAP = {
   'book': 'Book Reader',
   'course': 'Course Student',
-  'both': 'Both Book and Course',
-  'neither': 'Lead Only'
+  '1on1': '1-on-1 Coaching Client',
+  'group': 'Group Coaching Client',
+  'neither': 'Lead Only',
+  'free_only': 'Free Content Only'
 };
 
 const INTENT_TAG_MAP = {
@@ -31,13 +33,26 @@ export default async function handler(req, res) {
 
   if (!firstName) return res.status(400).json({ error: 'First name is required' });
   if (!email) return res.status(400).json({ error: 'Email is required' });
-  if (!connection) return res.status(400).json({ error: 'Connection is required' });
+  if (!Array.isArray(connection) || connection.length === 0) {
+    return res.status(400).json({ error: 'At least one connection option is required' });
+  }
   if (!intent) return res.status(400).json({ error: 'Intent is required' });
 
   const headers = { 'Api-Token': AC_KEY, 'Content-Type': 'application/json' };
 
+  // Build tags. If free_only is selected, only apply that connection tag (defensive against contradictory data).
   const tagsToApply = [...BASE_TAGS];
-  if (CONNECTION_TAG_MAP[connection]) tagsToApply.push(CONNECTION_TAG_MAP[connection]);
+
+  if (connection.includes('free_only')) {
+    tagsToApply.push(CONNECTION_TAG_MAP['free_only']);
+  } else {
+    for (const conn of connection) {
+      if (CONNECTION_TAG_MAP[conn]) {
+        tagsToApply.push(CONNECTION_TAG_MAP[conn]);
+      }
+    }
+  }
+
   if (INTENT_TAG_MAP[intent]) tagsToApply.push(INTENT_TAG_MAP[intent]);
 
   try {
@@ -97,7 +112,7 @@ export default async function handler(req, res) {
       const noteText = [
         'ZOOM RSVP: May 5, 2026',
         '',
-        `Connection: ${connection}`,
+        `Connection: ${connection.join(', ')}`,
         `Intent: ${intent}`,
         '',
         'What they want covered on the call:',

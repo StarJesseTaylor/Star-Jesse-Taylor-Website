@@ -241,6 +241,64 @@
       resize: vertical;
       font-family: inherit;
     }
+    .ve-connection-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 6px;
+    }
+    .ve-checkbox-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 13px 16px;
+      border: 2px solid var(--light-gray);
+      border-radius: 10px;
+      background: var(--off-white);
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--charcoal);
+      text-transform: none;
+      letter-spacing: 0;
+      margin: 0;
+      line-height: 1.4;
+    }
+    .ve-checkbox-row:hover {
+      border-color: var(--cobalt);
+      background: var(--white);
+    }
+    .ve-checkbox-row input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      margin-top: 1px;
+      flex-shrink: 0;
+      cursor: pointer;
+      accent-color: var(--cobalt);
+      padding: 0;
+      border: 0;
+      background: none;
+    }
+    .ve-checkbox-row input[type="checkbox"]:focus {
+      outline: 2px solid var(--cobalt);
+    }
+    .ve-checkbox-row.checked {
+      border-color: var(--cobalt);
+      background: rgba(27,108,168,0.06);
+      font-weight: 700;
+      color: var(--cobalt);
+    }
+    .ve-checkbox-divider {
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--mid-gray);
+      font-style: italic;
+      margin: 4px 0;
+    }
+    .ve-free-only-row {
+      font-size: 0.92rem;
+    }
     .ve-intent-buttons {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -473,14 +531,34 @@
             <input type="email" id="email" name="email" required autocomplete="email" />
           </div>
           <div>
-            <label for="connection">How are you connected to my work?</label>
-            <select id="connection" name="connection" required>
-              <option value="">Select one</option>
-              <option value="book">I have read the Emotional Fitness book</option>
-              <option value="course">I have taken one of your courses</option>
-              <option value="both">Both</option>
-              <option value="neither">Neither yet, just curious</option>
-            </select>
+            <label>How are you connected to my work? <span style="text-transform:none;letter-spacing:0;font-weight:500;color:var(--mid-gray);">(check all that apply)</span></label>
+            <div class="ve-connection-group">
+              <label class="ve-checkbox-row">
+                <input type="checkbox" name="connection" value="book" />
+                <span>I have read the Emotional Fitness book</span>
+              </label>
+              <label class="ve-checkbox-row">
+                <input type="checkbox" name="connection" value="course" />
+                <span>I have taken one of your courses</span>
+              </label>
+              <label class="ve-checkbox-row">
+                <input type="checkbox" name="connection" value="1on1" />
+                <span>I have done 1-on-1 coaching with Star</span>
+              </label>
+              <label class="ve-checkbox-row">
+                <input type="checkbox" name="connection" value="group" />
+                <span>I have done group coaching with Star</span>
+              </label>
+              <label class="ve-checkbox-row">
+                <input type="checkbox" name="connection" value="neither" />
+                <span>Neither yet, just curious</span>
+              </label>
+              <div class="ve-checkbox-divider">— or —</div>
+              <label class="ve-checkbox-row ve-free-only-row">
+                <input type="checkbox" name="connection" value="free_only" />
+                <span>Free content only, please skip me on paid offers</span>
+              </label>
+            </div>
           </div>
           <div>
             <label>How serious are you about improving your mental fitness right now?</label>
@@ -587,6 +665,35 @@
     });
   });
 
+  // Connection checkboxes with mutual exclusion
+  const connectionCheckboxes = document.querySelectorAll('input[name="connection"]');
+  const paidOptions = ['book', 'course', '1on1', 'group', 'neither'];
+  connectionCheckboxes.forEach(cb => {
+    cb.addEventListener('change', () => {
+      // Update visual state of the row
+      const row = cb.closest('.ve-checkbox-row');
+      if (row) row.classList.toggle('checked', cb.checked);
+
+      // Mutual exclusion: free_only vs everything else
+      if (cb.value === 'free_only' && cb.checked) {
+        connectionCheckboxes.forEach(other => {
+          if (other !== cb && other.checked) {
+            other.checked = false;
+            const otherRow = other.closest('.ve-checkbox-row');
+            if (otherRow) otherRow.classList.remove('checked');
+          }
+        });
+      } else if (paidOptions.includes(cb.value) && cb.checked) {
+        const freeOnly = document.querySelector('input[name="connection"][value="free_only"]');
+        if (freeOnly && freeOnly.checked) {
+          freeOnly.checked = false;
+          const freeRow = freeOnly.closest('.ve-checkbox-row');
+          if (freeRow) freeRow.classList.remove('checked');
+        }
+      }
+    });
+  });
+
   // Form submission
   const zoomForm = document.getElementById('zoomRsvpForm');
   const veDefault = document.getElementById('ve-default');
@@ -595,6 +702,12 @@
   if (zoomForm) {
     zoomForm.addEventListener('submit', async (e) => {
       e.preventDefault();
+
+      const checkedConnections = document.querySelectorAll('input[name="connection"]:checked');
+      if (checkedConnections.length === 0) {
+        alert('Please tell me how you are connected to my work. Check at least one box.');
+        return;
+      }
 
       if (!intentInput.value) {
         alert('Please select how serious you are about improving your mental fitness right now.');
@@ -606,9 +719,13 @@
       btn.textContent = 'Sending...';
 
       const data = new FormData(zoomForm);
-      const payload = {};
-      for (const [k, v] of data.entries()) payload[k] = v;
-      payload.intent = intentInput.value;
+      const payload = {
+        firstName: data.get('firstName'),
+        email: data.get('email'),
+        message: data.get('message') || '',
+        intent: intentInput.value,
+        connection: Array.from(checkedConnections).map(cb => cb.value)
+      };
 
       try {
         const res = await fetch('/api/zoom-rsvp', {
