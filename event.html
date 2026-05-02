@@ -1597,7 +1597,7 @@
 
         // ----- Seat counter -----
         if (!counter) return;
-        if (sold < 3) return; // Hide entirely below 3 to avoid empty-restaurant signal
+        if (sold < 1) return; // Show from first sale onward to signal momentum
 
         var text = '';
         var cls = '';
