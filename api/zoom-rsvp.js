@@ -7,8 +7,7 @@ const CONNECTION_TAG_MAP = {
   'course': 'Course Student',
   '1on1': '1-on-1 Coaching Client',
   'group': 'Group Coaching Client',
-  'neither': 'Lead Only',
-  'free_only': 'Free Content Only'
+  'neither': 'Lead Only'
 };
 
 const INTENT_TAG_MAP = {
@@ -40,16 +39,11 @@ export default async function handler(req, res) {
 
   const headers = { 'Api-Token': AC_KEY, 'Content-Type': 'application/json' };
 
-  // Build tags. If free_only is selected, only apply that connection tag (defensive against contradictory data).
   const tagsToApply = [...BASE_TAGS];
 
-  if (connection.includes('free_only')) {
-    tagsToApply.push(CONNECTION_TAG_MAP['free_only']);
-  } else {
-    for (const conn of connection) {
-      if (CONNECTION_TAG_MAP[conn]) {
-        tagsToApply.push(CONNECTION_TAG_MAP[conn]);
-      }
+  for (const conn of connection) {
+    if (CONNECTION_TAG_MAP[conn]) {
+      tagsToApply.push(CONNECTION_TAG_MAP[conn]);
     }
   }
 

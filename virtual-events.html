@@ -289,16 +289,6 @@
       font-weight: 700;
       color: var(--cobalt);
     }
-    .ve-checkbox-divider {
-      text-align: center;
-      font-size: 0.78rem;
-      color: var(--mid-gray);
-      font-style: italic;
-      margin: 4px 0;
-    }
-    .ve-free-only-row {
-      font-size: 0.92rem;
-    }
     .ve-intent-buttons {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -553,11 +543,6 @@
                 <input type="checkbox" name="connection" value="neither" />
                 <span>Neither yet, just curious</span>
               </label>
-              <div class="ve-checkbox-divider">— or —</div>
-              <label class="ve-checkbox-row ve-free-only-row">
-                <input type="checkbox" name="connection" value="free_only" />
-                <span>Free content only, please skip me on paid offers</span>
-              </label>
             </div>
           </div>
           <div>
@@ -665,32 +650,12 @@
     });
   });
 
-  // Connection checkboxes with mutual exclusion
+  // Connection checkboxes — toggle visual state on change
   const connectionCheckboxes = document.querySelectorAll('input[name="connection"]');
-  const paidOptions = ['book', 'course', '1on1', 'group', 'neither'];
   connectionCheckboxes.forEach(cb => {
     cb.addEventListener('change', () => {
-      // Update visual state of the row
       const row = cb.closest('.ve-checkbox-row');
       if (row) row.classList.toggle('checked', cb.checked);
-
-      // Mutual exclusion: free_only vs everything else
-      if (cb.value === 'free_only' && cb.checked) {
-        connectionCheckboxes.forEach(other => {
-          if (other !== cb && other.checked) {
-            other.checked = false;
-            const otherRow = other.closest('.ve-checkbox-row');
-            if (otherRow) otherRow.classList.remove('checked');
-          }
-        });
-      } else if (paidOptions.includes(cb.value) && cb.checked) {
-        const freeOnly = document.querySelector('input[name="connection"][value="free_only"]');
-        if (freeOnly && freeOnly.checked) {
-          freeOnly.checked = false;
-          const freeRow = freeOnly.closest('.ve-checkbox-row');
-          if (freeRow) freeRow.classList.remove('checked');
-        }
-      }
     });
   });
 
