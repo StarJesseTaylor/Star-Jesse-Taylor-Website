@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to LA · May 30, 2026 | Star Jesse Taylor</title>
+  <meta name="description" content="You are in. Tell Star what you want to walk away with on May 30 in Los Angeles." />
+  <meta name="robots" content="noindex" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-T0T1Z0VBT8"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-T0T1Z0VBT8');
+  </script>
+  <script src="js/tracking.js" async></script>
+  <script src="js/announcement-bar.js" defer></script>
+  <style>
+    .ww-hero {
+      background: linear-gradient(135deg, #0b2848 0%, #1B6CA8 100%);
+      color: var(--white);
+      padding: calc(var(--nav-height) + 80px) 0 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    .ww-hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at top right, rgba(0,180,216,0.18) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .ww-hero-inner {
+      max-width: 760px;
+      margin: 0 auto;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      padding: 0 24px;
+    }
+    .ww-eyebrow {
+      display: inline-block;
+      background: rgba(0,180,216,0.18);
+      color: #b5edff;
+      font-size: 0.78rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 800;
+      padding: 7px 16px;
+      border-radius: 999px;
+      margin-bottom: 24px;
+    }
+    .ww-hero h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      line-height: 1.15;
+      font-weight: 900;
+      margin-bottom: 20px;
+    }
+    .ww-hero h1 span { color: #b5edff; }
+    .ww-hero p {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.9);
+      max-width: 620px;
+      margin: 0 auto;
+    }
+    .ww-meta {
+      display: flex;
+      gap: 28px;
+      justify-content: center;
+      margin-top: 32px;
+      flex-wrap: wrap;
+    }
+    .ww-meta-item {
+      font-size: 0.92rem;
+      color: rgba(255,255,255,0.85);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .ww-meta-item strong {
+      color: var(--white);
+      font-weight: 700;
+    }
+
+    .ww-form-wrap {
+      background: linear-gradient(160deg, var(--off-white) 0%, #e8f0f7 100%);
+      padding: 80px 0 100px;
+    }
+    .ww-form-card {
+      max-width: 720px;
+      margin: 0 auto;
+      background: var(--white);
+      border-radius: 24px;
+      padding: 56px 48px;
+      box-shadow: 0 8px 48px rgba(27,108,168,0.12);
+    }
+    .ww-form-intro {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .ww-form-intro h2 {
+      font-size: clamp(1.5rem, 3vw, 1.9rem);
+      margin-bottom: 14px;
+    }
+    .ww-form-intro p {
+      color: var(--mid-gray);
+      font-size: 1.02rem;
+      line-height: 1.7;
+    }
+    .ww-form-intro .ww-personal-note {
+      display: inline-block;
+      margin-top: 18px;
+      padding: 12px 20px;
+      background: rgba(27,108,168,0.06);
+      border-left: 3px solid var(--cobalt);
+      color: var(--charcoal);
+      font-size: 0.95rem;
+      font-style: italic;
+      text-align: left;
+      border-radius: 4px;
+    }
+    .ww-field {
+      margin-bottom: 26px;
+    }
+    .ww-field label {
+      display: block;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--charcoal);
+      margin-bottom: 8px;
+    }
+    .ww-field .ww-helper {
+      font-size: 0.82rem;
+      color: var(--mid-gray);
+      margin-bottom: 10px;
+      font-weight: 400;
+    }
+    .ww-field input,
+    .ww-field textarea,
+    .ww-field select {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1.5px solid var(--light-gray);
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 1rem;
+      color: var(--charcoal);
+      background: var(--white);
+      transition: border-color 0.18s ease;
+    }
+    .ww-field input:focus,
+    .ww-field textarea:focus,
+    .ww-field select:focus {
+      outline: none;
+      border-color: var(--cobalt);
+    }
+    .ww-field textarea {
+      min-height: 100px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+    .ww-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    @media (max-width: 540px) {
+      .ww-row { grid-template-columns: 1fr; }
+      .ww-form-card { padding: 36px 24px; }
+    }
+    .ww-submit {
+      width: 100%;
+      padding: 18px;
+      background: var(--cobalt);
+      color: var(--white);
+      border: none;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      cursor: pointer;
+      transition: var(--transition);
+      margin-top: 12px;
+    }
+    .ww-submit:hover {
+      background: var(--cobalt-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+    }
+    .ww-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .ww-success {
+      display: none;
+      text-align: center;
+      padding: 40px 0;
+    }
+    .ww-success.active { display: block; }
+    .ww-success-icon {
+      font-size: 4rem;
+      margin-bottom: 20px;
+    }
+    .ww-success h2 {
+      font-size: clamp(1.6rem, 3.5vw, 2.1rem);
+      margin-bottom: 16px;
+    }
+    .ww-success h2 span { color: var(--cobalt); }
+    .ww-success p {
+      font-size: 1.05rem;
+      color: var(--mid-gray);
+      line-height: 1.75;
+      max-width: 520px;
+      margin: 0 auto 28px;
+    }
+    .ww-error {
+      display: none;
+      background: #fef2f2;
+      border-left: 4px solid #dc2626;
+      color: #991b1b;
+      padding: 14px 18px;
+      border-radius: 8px;
+      margin-top: 16px;
+      font-size: 0.92rem;
+    }
+    .ww-error.active { display: block; }
+  </style>
+</head>
+<body>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1385602039742216&ev=PageView&noscript=1"/></noscript>
+
+<!-- NAVIGATION -->
+<nav class="nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <span class="nav-logo-name">Star Jesse Taylor</span>
+        <span class="nav-logo-sub">Emotional Fitness</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="services.html">Work With Star</a></li>
+        <li><a href="book.html">Star's Book</a></li>
+        <li><a href="event.html">Events</a></li>
+        <li><a href="speak.html">Speaking</a></li>
+        <li><a href="virtual-events.html">Virtual Events</a></li>
+      </ul>
+      <a href="apply.html" class="btn btn-primary btn-sm nav-cta">Apply for Coaching</a>
+      <button class="nav-hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="nav-mobile">
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="services.html">Work With Star</a>
+  <a href="book.html">Star's Book</a>
+  <a href="event.html">Events</a>
+  <a href="speak.html">Speaking</a>
+  <a href="virtual-events.html">Virtual Events</a>
+  <a href="apply.html">Apply for Coaching</a>
+</div>
+
+<!-- HERO -->
+<section class="ww-hero">
+  <div class="ww-hero-inner">
+    <span class="ww-eyebrow">You Are In</span>
+    <h1>Welcome to <span>LA, May 30</span>.</h1>
+    <p>Your seat is confirmed. Before we meet in person, I want to know what you actually need from this day so I can build the workshop around the people in the room.</p>
+    <div class="ww-meta">
+      <div class="ww-meta-item">📅 <strong>Saturday, May 30, 2026</strong></div>
+      <div class="ww-meta-item">📍 <strong>Los Angeles</strong></div>
+      <div class="ww-meta-item">⏱ <strong>Full Day Intensive</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- FORM -->
+<section class="ww-form-wrap">
+  <div class="container">
+    <div class="ww-form-card">
+
+      <div id="formView">
+        <div class="ww-form-intro">
+          <h2>Tell me what you want to walk away with.</h2>
+          <p>Five quick questions. Takes about 3 minutes. I read every single one personally.</p>
+          <div class="ww-personal-note">"I am not running this workshop for a generic audience. I am running it for the people who paid to be in the room. Your answers shape the day." — Star</div>
+        </div>
+
+        <form id="workshopForm" novalidate>
+          <div class="ww-row">
+            <div class="ww-field">
+              <label for="firstName">First name</label>
+              <input type="text" id="firstName" name="firstName" required autocomplete="given-name" />
+            </div>
+            <div class="ww-field">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" required autocomplete="email" />
+            </div>
+          </div>
+
+          <div class="ww-field">
+            <label for="tier">Which ticket did you buy?</label>
+            <select id="tier" name="tier">
+              <option value="">Select one</option>
+              <option value="ga">General Admission ($97)</option>
+              <option value="vip">VIP ($347)</option>
+            </select>
+          </div>
+
+          <div class="ww-field">
+            <label for="walkAway">What do you most want to walk away with on May 30?</label>
+            <div class="ww-helper">One sentence is fine. Be honest, not impressive.</div>
+            <textarea id="walkAway" name="walkAway" required></textarea>
+          </div>
+
+          <div class="ww-field">
+            <label for="biggestChallenge">What is the biggest challenge you are facing right now?</label>
+            <div class="ww-helper">In your work, your relationships, your inner life. Whatever is loudest.</div>
+            <textarea id="biggestChallenge" name="biggestChallenge" required></textarea>
+          </div>
+
+          <div class="ww-field">
+            <label for="feelStuck">Where do you feel most stuck?</label>
+            <div class="ww-helper">The thing you keep circling back to and can't seem to move through.</div>
+            <textarea id="feelStuck" name="feelStuck"></textarea>
+          </div>
+
+          <div class="ww-field">
+            <label for="askStar">If we had 5 minutes alone, what would you ask me?</label>
+            <div class="ww-helper">Optional. But the answers I get to this question often shape what I teach that day.</div>
+            <textarea id="askStar" name="askStar"></textarea>
+          </div>
+
+          <button type="submit" class="ww-submit" id="submitBtn">Send to Star</button>
+
+          <div class="ww-error" id="errorMsg"></div>
+        </form>
+      </div>
+
+      <div class="ww-success" id="successView">
+        <div class="ww-success-icon">🙏</div>
+        <h2>Thank you. <span>I have it.</span></h2>
+        <p>I will read your answers personally before May 30. If anything in there needs a direct response from me, you will hear from me at the email you gave above.</p>
+        <p style="font-size:0.95rem;">See you in LA.<br><strong style="color:var(--charcoal);">Star</strong></p>
+        <a href="index.html" class="btn btn-outline" style="margin-top:20px;">Back to home</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-bottom">
+      <span>&copy; 2026 Star Jesse Taylor Emotional Fitness. All rights reserved.</span>
+      <div class="footer-legal">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/chat-widget.js"></script>
+<script>
+(function() {
+  const form = document.getElementById('workshopForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const errorMsg = document.getElementById('errorMsg');
+  const formView = document.getElementById('formView');
+  const successView = document.getElementById('successView');
+
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    errorMsg.classList.remove('active');
+
+    const data = {
+      firstName: document.getElementById('firstName').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      tier: document.getElementById('tier').value,
+      walkAway: document.getElementById('walkAway').value.trim(),
+      biggestChallenge: document.getElementById('biggestChallenge').value.trim(),
+      feelStuck: document.getElementById('feelStuck').value.trim(),
+      askStar: document.getElementById('askStar').value.trim()
+    };
+
+    if (!data.firstName || !data.email) {
+      errorMsg.textContent = 'First name and email are required.';
+      errorMsg.classList.add('active');
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
+
+    try {
+      const res = await fetch('/api/workshop-questionnaire', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.error || 'Submission failed');
+      }
+
+      formView.style.display = 'none';
+      successView.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      if (window.starTrack) {
+        window.starTrack('Lead', { content_name: 'LA Workshop Questionnaire', value: 0, currency: 'USD' });
+      }
+    } catch (err) {
+      console.error(err);
+      errorMsg.textContent = 'Something went wrong. Please email starjessetaylor@gmail.com and we will get your answers manually.';
+      errorMsg.classList.add('active');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send to Star';
+    }
+  });
+})();
+</script>
+</body>
+</html>
