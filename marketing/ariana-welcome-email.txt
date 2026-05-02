@@ -1,49 +1,39 @@
 ================================================================
 PERSONAL EMAIL TO ARIANA (FIRST LA BUYER)
-SEND FROM: your professional email
-SEND: today, ASAP
+SEND FROM: star@starjessetaylor.com (your professional email)
+SEND TIME: Saturday May 2, 2026 at 12:30 PM Pacific
 ================================================================
 
-SUBJECT LINE OPTIONS (pick one):
-1. Welcome to LA, Ariana
-2. First seat in the room
-3. Hey, it's Star
+OPEN THIS FILE IN NOTEPAD TO COPY THE EMAIL TEXT.
+Right click the file > Open with > Notepad.
+
+----------------------------------------------------------------
+SUBJECT
+----------------------------------------------------------------
+
+First seat in the room
 
 ----------------------------------------------------------------
 THE EMAIL
 ----------------------------------------------------------------
 
-Hey Ariana,
+Hey Ariana, it's Star.
 
-It's Star.
-
-I just saw your name come through for May 30 in LA. You are the
-very first person to buy a seat. That means something to me.
+I just saw your purchase come through for May 30 in LA. You are
+the very first person to buy a seat. That means something to me.
 
 Before we meet in person, I want to know what you actually need
-from this day. The workshop is not built for a generic audience.
-It is built for the people who paid to be in the room.
-
-I made a quick page where you can tell me what you want to walk
-away with, what you are working through, and anything you want
-me to know before May 30. Takes 3 minutes.
+from this day. I built a quick page just for the people who will
+be in the room. Takes 3 minutes:
 
 https://starjessetaylor.com/workshop-welcome.html
 
-I read every single one personally before the workshop.
+The page also has the logistics, what to expect, and how the day
+flows. The week of May 30 I will email you the exact address,
+parking notes, and anything else you need. You are not figuring
+any of this out alone.
 
-Because you bought first, you are in the first 10 buyer group,
-which means you get two bonuses included free.
-
-Bonus 1: My Blueprint Breakthrough course ($500 value). Watch it
-here whenever you are ready:
-https://youtu.be/QmU_x5pT-qI
-
-Bonus 2: My Unlock Your Highest Self Intensive ($97 value),
-included free when the next one runs. I will send you those
-details separately when it is scheduled.
-
-Looking forward to meeting you in LA.
+Looking forward to meeting you.
 
 Star
 
@@ -51,16 +41,24 @@ Star
 NOTES:
 ================================================================
 
-- Send from your professional email, not Gmail. This is the
-  exact kind of personal touch that builds your domain reputation
-  before AC bulk sending starts.
+- HEADS UP: This draft mentions "first seat in the room." Earlier
+  you said you did NOT want to mention she is the first buyer.
+  This new draft (from your other Claude conversation) brings it
+  back. Make the call before sending. Either is fine.
 
-- If she replies, reply back personally within 24 hours. First
-  buyers become first evangelists.
+  - If you want to keep it as-is: send as written.
+  - If you want to remove the "first" mention: change "You are
+    the very first person to buy a seat. That means something to
+    me." to "I am really happy you are coming."
 
-- After she fills out the questionnaire she will be tagged in AC
-  as: LA Workshop Buyer + LA Workshop GA Buyer (or VIP) + LA
-  Buyer Questionnaire Submitted + Hot Lead.
+- Send from your professional email, not personal Gmail.
 
-- Her free-text answers will be saved as a contact note you can
-  read directly in AC.
+- Double check the spelling of her name in your Stripe dashboard
+  before sending. Ariana, Arianna, Ariane all exist.
+
+- The bonuses (Blueprint Breakthrough course + Intensive) are NOT
+  in this email anymore. She will discover them on the welcome
+  page after she fills out the questionnaire (the success state
+  shows the Blueprint course link automatically).
+
+- If she replies, reply back personally within 24 hours.
