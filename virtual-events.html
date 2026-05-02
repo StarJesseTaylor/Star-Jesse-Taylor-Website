@@ -363,20 +363,78 @@
       line-height: 1.7;
       margin-bottom: 18px;
     }
-    .ve-confirm .zoom-link {
-      display: inline-block;
+    .ve-zoom-link-box {
+      background: var(--off-white);
+      border: 2px solid var(--cobalt);
+      border-radius: 14px;
+      padding: 20px 22px;
+      margin: 22px 0;
+      text-align: left;
+    }
+    .ve-link-label {
+      font-size: 0.8rem !important;
+      font-weight: 800 !important;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--cobalt) !important;
+      margin: 0 0 10px !important;
+    }
+    .ve-link-row {
+      display: flex;
+      gap: 8px;
+      align-items: stretch;
+    }
+    .ve-link-row input {
+      flex: 1;
+      padding: 12px 14px;
+      border: 1.5px solid var(--light-gray);
+      border-radius: 8px;
+      font-family: 'SF Mono', Consolas, monospace;
+      font-size: 0.88rem;
+      color: var(--charcoal);
+      background: var(--white);
+      min-width: 0;
+    }
+    .ve-link-row input:focus {
+      outline: none;
+      border-color: var(--cobalt);
+    }
+    .ve-copy-btn {
+      padding: 12px 18px;
       background: var(--cobalt);
       color: var(--white);
-      padding: 16px 28px;
-      border-radius: 50px;
-      font-weight: 800;
-      font-size: 1.02rem;
-      margin: 14px 0 18px;
-      text-decoration: none;
-      word-break: break-all;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.92rem;
+      cursor: pointer;
+      transition: background 0.15s ease;
+      white-space: nowrap;
     }
-    .ve-confirm .zoom-link:hover {
+    .ve-copy-btn:hover {
       background: var(--cobalt-dark);
+    }
+    .ve-copy-btn.copied {
+      background: var(--turquoise, #00b4d8);
+    }
+    .ve-calendar-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 22px;
+      background: var(--white);
+      color: var(--cobalt);
+      border: 2px solid var(--cobalt);
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-decoration: none;
+      margin: 6px 0 18px;
+      transition: var(--transition);
+    }
+    .ve-calendar-btn:hover {
+      background: var(--cobalt);
+      color: var(--white);
     }
     .ve-confirm-meta {
       background: var(--off-white);
@@ -564,14 +622,26 @@
       </div>
 
       <div class="ve-confirm" id="ve-confirm">
-        <h2>You are in.</h2>
-        <p><strong>Save the Zoom link below right now.</strong> Add it to your calendar so you do not lose it.</p>
-        <a href="https://us02web.zoom.us/j/83722851866" class="zoom-link" id="zoomLinkButton" target="_blank" rel="noopener">Join the Zoom →</a>
+        <h2>You are in for Tuesday, May 5.</h2>
+
         <div class="ve-confirm-meta">
           <p style="margin:0 0 8px;"><strong>Date:</strong> Tuesday, May 5, 2026</p>
           <p style="margin:0 0 8px;"><strong>Time:</strong> 6:00 PM Pacific (9:00 PM Eastern)</p>
           <p style="margin:0;"><strong>Length:</strong> 60 minutes</p>
         </div>
+
+        <p>I will teach how to change your brain's algorithm and answer live questions. If you have the Emotional Fitness book, bring your practice questions.</p>
+
+        <div class="ve-zoom-link-box">
+          <p class="ve-link-label">Save this Zoom link for Tuesday</p>
+          <div class="ve-link-row">
+            <input type="text" id="zoomLinkText" value="https://us02web.zoom.us/j/83722851866" readonly aria-label="Zoom link" />
+            <button type="button" class="ve-copy-btn" id="copyZoomLink">Copy</button>
+          </div>
+        </div>
+
+        <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Free+Zoom+with+Star+Jesse+Taylor&dates=20260506T010000Z%2F20260506T020000Z&details=Brain+algorithm+talk+plus+live+Q%26A+on+the+Emotional+Fitness+book.+Zoom+link%3A+https%3A%2F%2Fus02web.zoom.us%2Fj%2F83722851866&location=https%3A%2F%2Fus02web.zoom.us%2Fj%2F83722851866" class="ve-calendar-btn" target="_blank" rel="noopener">📅 Add to Google Calendar</a>
+
         <p style="font-size:0.92rem;color:var(--mid-gray);">A reminder email with the link will be sent before the call.</p>
       </div>
     </div>
@@ -658,6 +728,27 @@
       if (row) row.classList.toggle('checked', cb.checked);
     });
   });
+
+  // Copy Zoom link to clipboard
+  const copyBtn = document.getElementById('copyZoomLink');
+  const linkInput = document.getElementById('zoomLinkText');
+  if (copyBtn && linkInput) {
+    copyBtn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(linkInput.value);
+      } catch (err) {
+        linkInput.select();
+        document.execCommand('copy');
+      }
+      copyBtn.textContent = 'Copied!';
+      copyBtn.classList.add('copied');
+      setTimeout(() => {
+        copyBtn.textContent = 'Copy';
+        copyBtn.classList.remove('copied');
+      }, 2000);
+    });
+    linkInput.addEventListener('focus', () => linkInput.select());
+  }
 
   // Form submission
   const zoomForm = document.getElementById('zoomRsvpForm');
