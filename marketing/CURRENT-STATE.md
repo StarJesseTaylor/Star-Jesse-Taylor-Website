@@ -11,8 +11,8 @@ This file is the "where we left off" anchor. Any new Claude session should read 
 | Date | Event |
 |---|---|
 | Sun May 3, 2026 | Email 1 sent (foundation teaching) |
-| **Mon May 4, 2026** | **Tomorrow's full content rollout (see Action Plan below)** |
-| Tue May 5, 2026 | Email 2 send (carpet/hole) at 7 AM Pacific + Free Zoom 1 PM Pacific (CHANGED from 6 PM May 4) |
+| **Mon May 4, 2026 (TODAY)** | **Full content rollout + Free Zoom TONIGHT 7 PM Pacific (moved from Tue May 5)** |
+| Tue May 5, 2026 | Email 2 send (carpet/hole) at 7 AM Pacific. References last night's Zoom recording. |
 | Wed May 6, 2026 | Rest day (no email) |
 | Thu May 7, 2026 | Email 3 send (brain-algorithm) at 7 AM Pacific |
 | **Sat May 30, 2026** | **LA Workshop, Sawtelle, 12304 Santa Monica Blvd** |
