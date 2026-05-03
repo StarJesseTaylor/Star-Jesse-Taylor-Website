@@ -36,6 +36,32 @@ People also remember they went somewhere. They remember they met someone. They r
 
 ---
 
+## SECTION 2.5: WHAT MAKES THIS WORKSHOP DIFFERENT
+
+A few things you cannot get anywhere else. These are the reasons people fly in for one day with me instead of staying home and watching another video.
+
+### My Energy In Full
+
+The same quality, energy, and excitement you have felt in my videos, the work that has reached over a billion views, comes with me into the room. Even bigger, because in person there is no editing, no algorithm, no 60 second cap. You are with the full version of who I am for the entire day.
+
+### The Synthesis Of 18 Years
+
+I did not learn one tradition. I obsessively studied every major teacher I could find. The Landmark Forum. Six years of Acceptance and Commitment Therapy as a client. Eight Abraham Hicks workshops. Four Bashar workshops. Michael Singer. Eckhart Tolle. Thousands of hours of meditation. I filtered all of it through my own life and kept only what actually worked. What you get in the room is the synthesis. The signal, with the noise removed.
+
+### The Practitioner, Not The Theorist
+
+The framework I teach was not invented in a book. It came from a brain that was actually changed. Mine. I started this work because I had to coach myself out of pain. The tools you walk out with were built to save my own life first.
+
+### The Room Itself, Designed Like Unreasonable Hospitality
+
+I am building this day in the spirit of Will Guidara's book Unreasonable Hospitality. Every detail of the room, the timing, the atmosphere, the way you are greeted, the way you are held during the work. All of it designed so you can have an experience that opens you to real change. The day is not just the teaching. It is the room, the people, the rhythm, the care. That is what creates the conditions for things to actually shift.
+
+### Coaching Tailored To Who Is In The Room
+
+I do not deliver a canned curriculum. I read the room. I adapt the teaching to who is in front of me. With 20 people, I can see every face. I can feel every silence. I can adjust in real time. That kind of teaching is not possible at scale. It is only possible at 20.
+
+---
+
 ## SECTION 3: WHAT YOU GET IN THE ROOM
 
 A full day immersive intensive. Not a lecture. A practice container. Here is the structure of the day:
