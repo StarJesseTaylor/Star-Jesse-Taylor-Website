@@ -1,0 +1,243 @@
+================================================================
+YOUTUBE UPLOAD PACKAGE
+Video: Brain as TikTok Algorithm (9 min, vertical, whiteboard)
+================================================================
+
+Open this in Notepad to copy each piece into YouTube Studio.
+
+----------------------------------------------------------------
+TITLE (paste exactly)
+----------------------------------------------------------------
+
+After 18 Years of Obsessively Seeking, This Practice Rewired My Brain
+
+(70 chars, fits on mobile, matches the TikTok hook so the
+thumbnail and the suggested-feed copy reinforce each other.)
+
+ALTERNATIVE TITLES IF YOU WANT TO TEST LATER:
+1. After 18 Years of Seeking, One Practice Rewired My Brain
+2. Your Brain Is a TikTok Algorithm. Here Is How to Rewire It.
+3. The Penguin and the Elephant: How Your Brain Actually Learns
+4. I Tried Everything for 18 Years. Only This Worked.
+
+YouTube lets you A/B test up to 3 titles in Studio if your
+channel has the feature. If yes, run #1 above + alt #2 + alt #4.
+
+----------------------------------------------------------------
+THUMBNAIL STRATEGY
+----------------------------------------------------------------
+
+YOUR INSTINCT IS RIGHT. Use a whiteboard screenshot from the
+video itself. Reasons:
+1. Vertical video + whiteboard screenshot = consistent expectations.
+   When the thumbnail matches the video, watch time goes up because
+   viewers do not feel bait-and-switched.
+2. Polished thumbnails on raw teaching videos can actually hurt
+   trust with your audience. They want the teacher, not the brand.
+3. The whiteboard already does the work. You drew the metaphor.
+   The thumbnail just needs to make people curious about WHY.
+
+HOW TO BUILD IT:
+- Open the video, pause on the moment your whiteboard shows the
+  brain + penguin + elephant clearest (probably mid-video).
+- Screenshot the frame.
+- Open Canva, choose YouTube Thumbnail (1280 x 720).
+- Paste your screenshot as the background.
+- Add ONE line of bold text overlay (cobalt blue or red text on
+  white background box for max contrast on small phone screens).
+
+CURIOSITY TEXT OPTIONS (pick one, or test 2 across the week):
+
+GOLD TIER (highest curiosity, lowest cliche):
+1. "It took me 18 years to figure this out"
+   (Your instinct. Strong. Personal. Implies a payoff.)
+
+2. "Why your brain keeps showing you anxiety"
+   (Reframes the viewer's problem as something the brain is
+   doing TO them. Creates the question: how do I stop it?)
+
+3. "Stop trying to fix anxiety. You are feeding it."
+   (Pattern interrupt. Says the thing nobody else says.
+   Mirrors your subject line for Email 3.)
+
+SOLID TIER (good but more familiar):
+4. "Your brain has an algorithm"
+   (Direct from the slide deck. Punchy.)
+
+5. "The mistake that keeps you stuck"
+   (Curiosity gap. Slightly more clickbait-feeling.)
+
+6. "What 18 years taught me about anxiety"
+   (Authority + curiosity. Less dramatic than #1.)
+
+EXPERIMENTAL TIER (could pop, could flop):
+7. "Your brain is the TikTok algorithm"
+   (Bold claim. Some viewers will instantly want to know what
+   you mean. Others will scroll past thinking they get it.)
+
+8. "I was wrong about anxiety for 18 years"
+   (Vulnerability hook. Strong on YouTube specifically because
+   confession-style thumbnails outperform claim-style.)
+
+MY PICK FOR YOU: #1 ("It took me 18 years to figure this out")
+- It is your voice
+- It promises a payoff
+- It does not feel like marketing
+- It works on a whiteboard screenshot without competing with the drawing
+
+If you want to test 2: pair #1 and #3.
+
+THUMBNAIL TEXT STYLING:
+- Font: Bold sans-serif (Inter Bold, Montserrat Black, or Anton)
+- Size: at least 80pt so it reads on a phone screen
+- Color: White text inside a cobalt blue (#1B6CA8) or red rectangle
+  OR black text on a yellow rectangle (highest contrast on YouTube)
+- Place text in upper-left or lower-third, NOT covering your drawing
+- Optional: a small arrow or circle drawn around the brain on the
+  whiteboard, to draw the eye
+
+----------------------------------------------------------------
+DESCRIPTION (paste this entire block into YouTube Studio)
+----------------------------------------------------------------
+
+After 18 years of obsessively seeking, this is the only practice that rewired my brain.
+
+I tried therapy. I read every self-help book. I tried supplements, retreats, breathwork, journaling, every framework you can name. None of it actually changed how my brain worked.
+
+Then I figured out one thing: your brain is running an algorithm.
+
+Whatever you give attention to, your brain assumes you love. Even if you hate it. Even if you are TRYING to fix it. The intrusive thoughts, the anxiety, the rumination, your brain treats every reaction as a vote to give you more of the same.
+
+In this video I break down:
+
+→ Why "having a bad day" is the wrong frame, and what to use instead
+→ How your brain works exactly like the TikTok algorithm
+→ The "penguin video" problem (and why most mental health advice makes it worse)
+→ The shift from reactive brain to proactive brain
+→ The No Brain Method, a tool you can use tomorrow morning
+
+This is the same teaching I do with my 1-on-1 clients, my group coaching, and at my live workshops.
+
+— TIMESTAMPS —
+
+00:00  You do not have a bad day, you have a bad moment
+00:45  Why your brain keeps giving you anxiety
+01:30  Your brain is the TikTok algorithm
+03:00  The penguin video problem
+04:15  Why trying to fix anxiety makes it worse
+05:30  Switching to elephant videos (valued actions)
+06:45  The No Brain Method
+08:00  Practice this for 24 hours
+
+— RESOURCES —
+
+🎁 Free first chapter of my book Emotional Fitness:
+https://starjessetaylor.com/free-chapter
+
+🎥 Free live Zoom training, Tuesday May 5 at 6 PM Pacific, where I teach this work live and answer questions:
+https://starjessetaylor.com/virtual-events.html
+
+🎟️ LA Workshop, Saturday May 30, 2026. Full day intensive, in person, 20 seats:
+https://starjessetaylor.com/event.html
+
+📖 The full Emotional Fitness book on Amazon:
+(add your Amazon link here)
+
+— FOLLOW —
+
+Instagram: @starjessetaylor
+Website: https://starjessetaylor.com
+
+If this helped, subscribe and comment one word for what kind of penguin video your brain has been playing the most lately. Anxiety. Rumination. Intrusive thoughts. Depression. Whatever is loudest. I read every comment.
+
+#MentalHealth #IntrusiveThoughts #AnxietyRelief #EmotionalFitness #Neuroplasticity #BrainHealth #OCD #Rumination #SelfHelp #Mindfulness
+
+----------------------------------------------------------------
+TAGS (paste into the Tags field, comma-separated)
+----------------------------------------------------------------
+
+mental health, intrusive thoughts, anxiety, anxiety relief, ocd, rocd, rumination, neuroplasticity, brain health, emotional fitness, no brain method, valued actions, mindfulness, self help, depression, how to stop intrusive thoughts, how to rewire your brain, brain algorithm, tiktok algorithm brain, star jesse taylor
+
+(YouTube allows up to 500 characters total in tags. Above is
+about 350 characters, leaving room to add more if you find a
+keyword that is converting.)
+
+----------------------------------------------------------------
+PLAYLIST
+----------------------------------------------------------------
+
+Add this video to a playlist called "The Emotional Fitness
+Method" if you have one. If you do not, create it. Playlists
+boost session watch time, which boosts the algorithm.
+
+Other videos to add to the same playlist:
+- Anything about the No Brain Method
+- Any teaching about valued actions
+- Any teaching about anxiety, OCD, or intrusive thoughts
+
+----------------------------------------------------------------
+PINNED COMMENT (post immediately after upload)
+----------------------------------------------------------------
+
+If this resonated, here is what to do next:
+
+1. Free first chapter of the book (the No Brain Method written out): https://starjessetaylor.com/free-chapter
+
+2. Free live Zoom training Tuesday May 5 at 6 PM Pacific: https://starjessetaylor.com/virtual-events.html
+
+3. LA Workshop May 30, 20 seats, full day intensive in person: https://starjessetaylor.com/event.html
+
+Comment one word for the kind of penguin video your brain plays the most. I read every reply.
+
+----------------------------------------------------------------
+END SCREEN AND CARDS
+----------------------------------------------------------------
+
+END SCREEN (last 20 seconds of the video):
+- Video element 1: "Subscribe" element
+- Video element 2: Link to your most-watched video on the channel
+- Video element 3: Link to your free chapter / lead magnet
+
+CARDS (small "i" icons that pop up during the video):
+- Card 1 at 0:30: link to free Zoom RSVP page
+- Card 2 at 5:00: link to free chapter
+- Card 3 at 7:30: link to LA workshop event page
+
+----------------------------------------------------------------
+WHEN TO PUBLISH
+----------------------------------------------------------------
+
+Best windows for YouTube long-form in 2026:
+- Sunday 2-5 PM Pacific (people relaxing, watching long content)
+- Wednesday/Thursday 5-8 PM Pacific (post-work scroll)
+- Avoid Saturday and Friday afternoon
+
+Today is Sunday May 3. If you upload now, the 2-5 PM Pacific
+window today is open. Otherwise schedule for Wednesday May 6
+at 5 PM Pacific to align with Email 3 dropping the next morning.
+
+----------------------------------------------------------------
+COMMUNITY POST (post on YouTube Community tab if you have it)
+----------------------------------------------------------------
+
+When you publish the video, also post to your YouTube Community:
+
+"New teaching just went up. The reason your anxiety has not gotten better is because you are accidentally feeding it. Your brain is running an algorithm. Watch the full breakdown: [link to video]
+
+Comment below: what kind of penguin video is your brain playing the most? Anxiety, intrusive thoughts, rumination, depression. One word."
+
+----------------------------------------------------------------
+WHAT TO DO IF THE VIDEO HITS
+----------------------------------------------------------------
+
+If the video starts moving (over 1,000 views in 24 hours):
+1. Pin the comment immediately if you have not already
+2. Reply to the first 20 comments personally
+3. Add a card pointing to the LA workshop with higher prominence
+4. Cross-post a 60-second cut as a YouTube Short the next day
+5. Email your list with the video link as the lead
+
+If the video stalls (under 200 views in 48 hours):
+1. The thumbnail is the problem 80% of the time. Swap it.
+2. Try a different title from the alternatives above.
+3. Repost a 60-second cut as a Short and link the long video.

@@ -1,0 +1,107 @@
+================================================================
+GAMMA.APP PROMPT
+For: 8-slide Instagram carousel, Brain as TikTok Algorithm
+================================================================
+
+OPEN THIS IN NOTEPAD. COPY EVERYTHING BETWEEN THE TWO LINES OF
+EQUAL SIGNS BELOW INTO THE GAMMA INPUT FIELD.
+
+================ COPY FROM HERE ================
+
+Create an 8-slide Instagram carousel, square format 1080 x 1080, on the topic: "Your brain has an algorithm, just like TikTok."
+
+Style: White or off-white background. Cobalt blue accent color (#1B6CA8). Bold sans-serif font like Inter, Montserrat, or Anton. Headlines should be huge and centered (60 to 80pt) so they read on a phone screen. Clean, minimal, modern. No clutter. Page numbers in the corner of every slide (1/8, 2/8, etc).
+
+Tone of voice: Direct, warm, teacher-like. The author is Star Jesse Taylor, a mental health coach with 18 years of practice. He teaches that the brain works like the TikTok algorithm: whatever you give attention to grows. Anxiety and intrusive thoughts are "penguin videos" the brain keeps serving you because you keep engaging with them. Valued actions like walking, eating, working, being present are "elephant videos." The shift is from reactivity to proactivity.
+
+Build the 8 slides exactly as follows:
+
+SLIDE 1 (HOOK):
+Visual: A phone screen mockup with a brain icon overlay where the videos would be.
+Headline: "Your brain has an algorithm. (Just like TikTok.)"
+Bottom small text: "Swipe →"
+
+SLIDE 2 (REFRAME):
+Visual: Typographic treatment with the word "DAY" crossed out and replaced with "MOMENT."
+Headline: "You don't have a bad day. You have a bad moment."
+Small text below: "And bad moments can be changed."
+
+SLIDE 3 (CORE INSIGHT):
+Visual: A simple brain illustration with arrows pointing toward it.
+Headline: "Whatever you give attention to grows."
+Small text below: "Your brain learns from what you watch. Just like the algorithm learns from what you scroll."
+
+SLIDE 4 (THE PENGUIN PROBLEM):
+Visual: A phone screen showing several penguin emojis or a penguin illustration.
+Headline: "Penguin videos = anxiety, intrusive thoughts, rumination."
+Body text: "You don't like them. But you give them watch time. Your brain thinks you love them."
+
+SLIDE 5 (THE TRAP):
+Visual: A circular arrow loop graphic, or a phone screen with a comment field.
+Headline: "Trying to fix anxiety gives anxiety more watch time."
+Body text: "It's like commenting on a penguin video to make it stop showing you penguins. The brain doesn't speak our language. It only knows engagement."
+
+SLIDE 6 (THE SHIFT):
+Visual: A phone screen with elephant imagery, or split screen with a faded penguin on the left and a bright elephant on the right.
+Headline: "Switch to elephant videos. Your valued actions."
+Body text: "Walking. Eating. Working. Being fully present in your life. Moment to moment. That is what rewires the brain."
+
+SLIDE 7 (THE PRACTICE):
+Visual: A simple icon representing daily action (walking, eating, brushing teeth). Clean and minimal.
+Headline: "Use the No Brain Method."
+Body text (centered, larger): "No brain, we are walking right now. No brain, we are eating right now. No brain, we are working right now."
+Smaller text below: "When you say 'no brain,' you separate yourself from the pattern. You are not the pattern. You are the one watching it."
+
+SLIDE 8 (THE CTA):
+Visual: A clean text card with no clutter. The date and location should be the largest text on the slide.
+Headline: "May 30. Los Angeles. We do this work in person."
+Body text: "Full day intensive workshop. 20 seats only. Link in bio for details."
+Bottom: "@starjessetaylor"
+
+Make sure every slide reads cleanly on a phone screen. The headline should be the dominant element on each slide. Use the cobalt blue accent sparingly (for highlights, page numbers, and the final CTA), not as a background.
+
+================ COPY ENDS HERE ================
+
+----------------------------------------------------------------
+AFTER GAMMA GENERATES THE DECK
+----------------------------------------------------------------
+
+1. Review each slide. Gamma will sometimes paraphrase. If it
+   changed the wording, paste the original back in (your slide
+   text is in marketing/instagram-slideshow-brain-algorithm.txt).
+
+2. Replace any generic stock images Gamma used for "penguin" or
+   "elephant" with cleaner illustrations. Best free sources:
+   - Canva search: "penguin illustration" or "elephant illustration"
+   - Or generate custom ones at ideogram.ai (prompt: "minimal flat
+     illustration of a penguin, white background, single color")
+
+3. Export as: PNG images, one per slide.
+   In Gamma: Share → Export → Images → PNG
+
+4. Upload to Instagram as a single carousel post (not 8 separate
+   posts). On mobile, tap the multi-image icon when creating a
+   new post and select all 8 PNGs in order.
+
+5. Use the caption from your slideshow text file:
+   marketing/instagram-slideshow-brain-algorithm.txt
+   (scroll to the "CAPTION TO POST WITH THE SLIDESHOW" section)
+
+6. Post the pinned comment immediately after publishing
+   (also in the slideshow text file).
+
+----------------------------------------------------------------
+IF GAMMA DOES NOT NAIL IT
+----------------------------------------------------------------
+
+Gamma is great for the first draft but the visuals can look
+generic. If the output feels off-brand:
+
+- Switch to Canva: open Instagram Post (Square) template, build
+  the slides manually using the same text and visual descriptions.
+  Takes 30 to 45 minutes but you get full control.
+
+- Or generate visuals separately on Ideogram, then drop them into
+  Gamma's slides as image replacements.
+
+The TEXT is what matters most. The visuals are supporting.
