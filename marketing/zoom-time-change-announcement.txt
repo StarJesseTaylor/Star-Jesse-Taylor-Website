@@ -1,37 +1,20 @@
 ================================================================
-ZOOM TIME CHANGE ANNOUNCEMENT (URGENT)
-For: Existing Tuesday Zoom RSVPs
-SEND DATE: Monday May 4, 2026 — SEND IMMEDIATELY
+ZOOM DATE CHANGE ANNOUNCEMENT
+For: Anyone who already RSVPed expecting Tuesday
+SEND DATE: Sunday May 3, 2026 (afternoon/evening) — send today
 ================================================================
 
-The Zoom moved from Tuesday May 5 (6 PM Pacific) to TONIGHT
-Monday May 4 at 7 PM Pacific. Same teaching, same link, ~5 hour
-notice. Send this through every channel as fast as possible.
-
-----------------------------------------------------------------
-HOW TO SEND (DO THIS WITHIN THE NEXT HOUR)
-----------------------------------------------------------------
-
-Channel 1: ActiveCampaign (Zoom RSVP automation list)
-- Send as a one-off broadcast to anyone tagged "Zoom RSVP May 5 2026"
-- Subject: "TONIGHT instead of Tuesday — Zoom moved earlier"
-
-Channel 2: Mailchimp (if any RSVPs went there)
-- Same message, same subject
-
-Channel 3: Instagram broadcast + WhatsApp group
-- Light version below
-
-Channel 4: Instagram + TikTok Story (24h)
-- One sentence card pointing to RSVP page
+The Zoom moved from Tuesday May 5 to TOMORROW Monday May 4 at
+7 PM Pacific. Same teaching, same link, one day earlier. Send
+this through every channel today so RSVPs see it before Monday.
 
 ----------------------------------------------------------------
 EMAIL VERSION (subject + body)
 ----------------------------------------------------------------
 
-SUBJECT: TONIGHT instead of Tuesday — Zoom moved earlier
+SUBJECT: The free Zoom moved one day earlier — Monday at 7 PM Pacific
 
-PRE-HEADER: Same teaching. Same link. Just one day earlier and at 7 PM.
+PRE-HEADER: Same teaching. Same link. Just one day earlier than I said.
 
 BODY:
 
@@ -39,56 +22,58 @@ Hi.
 
 Quick update.
 
-The free Zoom moved from Tuesday to TONIGHT.
+The free Zoom I mentioned in Sunday's email moved one day earlier.
 
-Monday May 4 at 7 PM Pacific.
-(10 PM Eastern, 4 AM Tuesday London)
+It is now Monday May 4 at 7 PM Pacific.
+(10 PM Eastern, Tuesday 4 AM London)
 
-Same Zoom link. Same teaching. Just earlier than planned.
+Same Zoom link. Same teaching. Just one day earlier than originally announced.
 
 starjessetaylor.com/virtual-events.html
 
-If you cannot make it tonight, RSVP anyway and I will send you the full recording tomorrow morning.
+If you cannot make it Monday night, RSVP anyway and I will send you the full recording on Tuesday morning.
 
-I am teaching how your brain runs an algorithm, why anxiety and intrusive thoughts get stronger when you fight them, and the No Brain Method in real practice. Bring your real questions.
+I am teaching how your brain runs an algorithm, why anxiety gets stronger when you fight it, and the No Brain Method in real practice. Bring your real questions.
 
-See you in 5 hours.
+See you Monday.
 
 Star
 
-P.S. Camera on if you can. The room works better when we can see each other.
+P.S. May 30 in Los Angeles. Full day in-person workshop. 20 seats only. starjessetaylor.com/event.html
 
 ----------------------------------------------------------------
-INSTAGRAM BROADCAST + WHATSAPP VERSION (lighter, faster)
+INSTAGRAM BROADCAST + WHATSAPP VERSION (lighter)
 ----------------------------------------------------------------
 
-Quick heads up. The free Zoom moved from Tuesday to TONIGHT.
+Quick heads up. The free Zoom moved from Tuesday to TOMORROW Monday.
 
 Monday May 4 at 7 PM Pacific (10 PM Eastern).
 
-Same link. Same teaching. Just earlier.
+Same link. Same teaching. Just one day earlier.
 
 starjessetaylor.com/virtual-events.html
 
-If you cannot make it tonight, RSVP anyway and I will send the recording tomorrow.
+If you cannot make it Monday, RSVP anyway and I will send the full recording.
 
 Star
 
 ----------------------------------------------------------------
-INSTAGRAM / TIKTOK STORY (post immediately, 24h)
+HOW TO SEND
 ----------------------------------------------------------------
 
-Make a clean text card with this single sentence:
+Channel 1: ActiveCampaign
+- Send to anyone tagged "Zoom RSVP May 5 2026"
+- Subject as above
 
-"Free Zoom is TONIGHT. 7 PM Pacific. Brain algorithm + No Brain Method. Link in bio."
+Channel 2: Mailchimp (cleanest move: send to whole list as a fresh campaign with the new subject)
+- This catches both RSVPs and non-openers in one shot
 
-Cover image: white background, cobalt blue text, your handle in
-the corner. Use Canva, takes 2 minutes.
+Channel 3: Instagram broadcast + WhatsApp group
+- Light version above (or just send the Loom video + caption from
+  marketing/may-4-broadcast-brain-algorithm.txt — the time change
+  is built into the new caption)
 
-----------------------------------------------------------------
-SECOND STORY (post 30 min before, 24h)
-----------------------------------------------------------------
-
-"60 minutes until we go live. 7 PM Pacific. Link in bio."
+Channel 4: Instagram + TikTok Story (24h)
+- "Free Zoom moved to TOMORROW Monday 7 PM Pacific. Link in bio."
 
 ================================================================

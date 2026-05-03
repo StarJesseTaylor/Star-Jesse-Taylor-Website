@@ -1,6 +1,6 @@
 # Current State of the Launch
 
-**Last updated: Sunday May 3, 2026 (night)**
+**Last updated: Sunday May 3, 2026 (afternoon Pacific)**
 
 This file is the "where we left off" anchor. Any new Claude session should read this first to know what's active, what's next, and what was just done. Update it at the end of meaningful work sessions.
 
@@ -10,9 +10,9 @@ This file is the "where we left off" anchor. Any new Claude session should read 
 
 | Date | Event |
 |---|---|
-| Sun May 3, 2026 | Email 1 sent (foundation teaching) |
-| **Mon May 4, 2026 (TODAY)** | **Full content rollout + Free Zoom TONIGHT 7 PM Pacific (moved from Tue May 5)** |
-| Tue May 5, 2026 | Email 2 send (carpet/hole) at 7 AM Pacific. References last night's Zoom recording. |
+| **Sun May 3, 2026 (TODAY)** | **Email 1 sent + content/broadcast push for tomorrow's Zoom** |
+| Mon May 4, 2026 | Free Zoom 7 PM Pacific (moved from original Tue May 5) |
+| Tue May 5, 2026 | Email 2 send (carpet/hole) at 7 AM Pacific. References Monday night's Zoom recording. |
 | Wed May 6, 2026 | Rest day (no email) |
 | Thu May 7, 2026 | Email 3 send (brain-algorithm) at 7 AM Pacific |
 | **Sat May 30, 2026** | **LA Workshop, Sawtelle, 12304 Santa Monica Blvd** |
@@ -29,17 +29,27 @@ This file is the "where we left off" anchor. Any new Claude session should read 
 
 ---
 
-## 📋 Tomorrow Morning Action Plan (Mon May 4)
+## 📋 Today's Action Plan (Sun May 3, afternoon/evening)
 
 In order:
 
-1. **7 AM Pacific** → Mailchimp resend Email 1 to non-openers. Subject: "In case you missed Sunday's email." Body unchanged.
-2. **8 to 9 AM** → Post 9-min brain-algorithm video to Instagram as feed post.
-3. **9 AM** → YouTube auto-publishes (already scheduled).
-4. **9 to 10 AM** → Post 8-slide brain-algorithm carousel to Instagram.
-5. **10 to 11 AM** → Skool community post (auto-emails members). Use brain-algorithm teaching + Zoom + LA CTAs + one-word reply prompt.
-6. **11 to 12 PM** → IG broadcast + WhatsApp message. Copy from `marketing/may-4-broadcast-brain-algorithm.txt`.
-7. **Afternoon** → Plan next 7 days of content.
+1. **Record 60 to 90 sec Loom video** inviting closer-tribe to tomorrow's Zoom (Star already drafted/recorded — see notes if revising).
+2. **5 to 8 PM Pacific (peak Sunday engagement)** → Send Loom video + caption to:
+   - WhatsApp group
+   - Instagram broadcast
+   - Skool community post (auto-emails members)
+   - All copy in `marketing/may-4-broadcast-brain-algorithm.txt`
+3. **Mailchimp blast to whole list** with Loom video embedded. Subject: "Tomorrow at 7 PM Pacific — free Zoom on the brain algorithm." Body in same broadcast file.
+4. **Instagram + TikTok Story** (24h): "Free Zoom TOMORROW at 7 PM Pacific. Link in bio."
+5. **Post the 9-min brain-algorithm video to IG feed** (if not already up).
+6. **Post the 8-slide carousel to IG** (if not already up).
+7. **YouTube video** posts via auto-schedule.
+
+Monday morning (May 4):
+- Second Story: "TODAY at 7 PM Pacific. Last call. Link in bio."
+- Optional IG feed post
+
+Monday 7 PM Pacific: Free Zoom goes live.
 
 ---
 
