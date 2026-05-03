@@ -33,7 +33,7 @@ What to post:
 - 1 slideshow per week on IG (highest organic reach right now)
 - Daily story with countdown to Tuesday Zoom and to LA
 - Email 1 sends Monday May 4 at 8 AM Pacific
-- Free Zoom Tuesday May 5 at 6 PM Pacific (the warm audience hook)
+- Free Zoom Tuesday May 5 at 1 PM Pacific (the warm audience hook)
 
 CTA mix: 70% Free Zoom, 20% LA Workshop, 10% Free Chapter.
 
