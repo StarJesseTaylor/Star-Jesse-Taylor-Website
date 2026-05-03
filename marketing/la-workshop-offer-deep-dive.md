@@ -183,7 +183,7 @@ VIP is for the person who wants the deepest access. GA is for the person who wan
 
 ## SECTION 9: THE SCARCITY (HONEST)
 
-20 seats total. 19 left as of May 3, 2026.
+20 seats total. 18 left as of May 3, 2026.
 
 The room is small on purpose. You cannot do real coaching with 200 people in the back of an auditorium. The cap of 20 is the cap of intimacy. Once it sells out, it sells out.
 
@@ -219,7 +219,7 @@ Use these snippets directly when you need them.
 
 Use when you need the offer in 100 words.
 
-> "20 seats. Full day in person. Los Angeles, May 30. The complete Foundation, No Brain Method, Value Garden, and live coaching. The same work that has gotten my clients out of years of anxiety and depression, concentrated into one day. GA $97 (the price of one therapy session for the whole day). VIP $347 (includes lunch with me + guaranteed hot seat coaching). Recording for life. 19 seats left. starjessetaylor.com/event.html"
+> "20 seats. Full day in person. Los Angeles, May 30. The complete Foundation, No Brain Method, Value Garden, and live coaching. The same work that has gotten my clients out of years of anxiety and depression, concentrated into one day. GA $97 (the price of one therapy session for the whole day). VIP $347 (includes lunch with me + guaranteed hot seat coaching). Recording for life. 18 seats left. starjessetaylor.com/event.html"
 
 ## B. EMAIL SUBJECT LINE OPTIONS
 
@@ -227,7 +227,7 @@ Use when you need the offer in 100 words.
 2. "What you get for the price of one therapy session"
 3. "Why I am doing this in person"
 4. "The room with the wall to wall whiteboard"
-5. "First in person workshop. 19 seats left."
+5. "First in person workshop. 18 seats left."
 6. "If you have read the book, this is the next step"
 
 ## C. INSTAGRAM CAROUSEL (8 SLIDES)
@@ -239,7 +239,7 @@ Use when you need the offer in 100 words.
 - **Slide 5:** A testimonial card (Lara: "My emotions no longer rule my life")
 - **Slide 6:** "GA $97. The price of one therapy session for a full day with me."
 - **Slide 7:** "VIP $347. Lunch with Star. Guaranteed hot seat. Front row."
-- **Slide 8:** "19 seats left. Link in bio."
+- **Slide 8:** "18 seats left. Link in bio."
 
 ## D. ONE LINER FOR STORIES OR SHORT POSTS
 
