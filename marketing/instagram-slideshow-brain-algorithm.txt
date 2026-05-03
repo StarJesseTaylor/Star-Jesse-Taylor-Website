@@ -1,0 +1,240 @@
+================================================================
+INSTAGRAM SLIDESHOW: YOUR BRAIN HAS AN ALGORITHM
+8 slides, square format (1080 x 1080)
+Built from the TikTok script
+================================================================
+
+OPEN THIS FILE IN NOTEPAD TO COPY THE SLIDE TEXT.
+
+----------------------------------------------------------------
+TOOL RECOMMENDATION
+----------------------------------------------------------------
+
+Best tool: CANVA (canva.com)
+- Free
+- Instagram square templates pre-sized
+- Drag and drop, AI suggestions
+- 30-60 minutes to build all 8 slides
+
+Alternatives:
+- Tome.app or Gamma.app (AI-generates whole decks from prompts) — faster but less control
+- Figma (pro tool, overkill for this)
+- Keynote / PowerPoint (basic, ok if you know it)
+
+Claude has Artifacts only on the web version (claude.ai), not in Claude Code. I cannot directly create the visual slide files — but I can give you the EXACT text and visual descriptions and you build the layout in Canva in under an hour.
+
+----------------------------------------------------------------
+DESIGN GUIDELINES (apply across all slides)
+----------------------------------------------------------------
+
+- Format: 1080 x 1080 (Instagram square)
+- Background: white or off-white (clean, modern)
+- Accent color: cobalt blue (your brand color #1B6CA8)
+- Font: Bold sans-serif (Inter, Montserrat, or Canva default)
+- Headline size: HUGE (60-80pt) so it's readable on small phone screens
+- Use page numbers in corner (1/8, 2/8, etc.) so people know to swipe
+- Last slide: include "@starjessetaylor" handle and link-in-bio reminder
+
+----------------------------------------------------------------
+SLIDE 1: THE HOOK
+----------------------------------------------------------------
+
+VISUAL: Mock-up of a phone screen showing the Instagram or TikTok feed.
+The phone is the focal point. Add a small brain emoji or icon
+overlay where you'd see videos.
+
+HEADLINE (large, centered, bold):
+"Your brain has an algorithm.
+(Just like TikTok.)"
+
+BOTTOM TEXT (small):
+"Swipe →"
+
+PURPOSE: Stop the scroll with curiosity. The TikTok analogy is
+familiar to every viewer.
+
+----------------------------------------------------------------
+SLIDE 2: THE REFRAME
+----------------------------------------------------------------
+
+VISUAL: A clock or calendar with a subtle line crossed through "DAY"
+and replaced with "MOMENT". Or a simple typographic treatment.
+
+HEADLINE (large, centered):
+"You don't have a bad day.
+
+You have a bad moment."
+
+SMALL TEXT BELOW:
+"And bad moments can be changed."
+
+PURPOSE: Pattern interrupt. People expect mental health content to
+validate their bad day. You reframe instantly.
+
+----------------------------------------------------------------
+SLIDE 3: THE CORE INSIGHT
+----------------------------------------------------------------
+
+VISUAL: Brain illustration with arrows pointing toward it.
+Caption underneath the brain image.
+
+HEADLINE (large):
+"Whatever you give attention to grows."
+
+SMALL TEXT BELOW:
+"Your brain learns from what you watch.
+Just like the algorithm learns from what you scroll."
+
+PURPOSE: Set up the metaphor cleanly. This is the foundation of
+the next 4 slides.
+
+----------------------------------------------------------------
+SLIDE 4: THE PENGUIN PROBLEM
+----------------------------------------------------------------
+
+VISUAL: Phone screen with a penguin image (or several penguin
+emoji 🐧) visible. You can use a Canva penguin illustration.
+
+HEADLINE:
+"Penguin videos = anxiety, intrusive thoughts, rumination."
+
+BODY TEXT:
+"You don't like them.
+But you give them watch time.
+
+Your brain thinks you love them."
+
+PURPOSE: Name the problem in metaphor language. Make people
+recognize their own pattern.
+
+----------------------------------------------------------------
+SLIDE 5: THE TRAP
+----------------------------------------------------------------
+
+VISUAL: A circular arrow / loop graphic. Or a phone screen with
+a comment field showing someone typing back at the algorithm.
+
+HEADLINE:
+"Trying to fix anxiety
+gives anxiety more watch time."
+
+BODY TEXT:
+"It's like commenting on a penguin video
+to make it stop showing you penguins.
+
+The brain doesn't speak our language.
+It only knows engagement."
+
+PURPOSE: This is the moment of recognition. People have been doing
+the wrong thing thinking it was the right thing.
+
+----------------------------------------------------------------
+SLIDE 6: THE SHIFT
+----------------------------------------------------------------
+
+VISUAL: Phone screen with elephant imagery. Or split screen with
+penguin on left (faded) and elephant on right (bright).
+
+HEADLINE:
+"Switch to elephant videos.
+
+Your valued actions."
+
+BODY TEXT:
+"Walking. Eating. Working.
+Being fully present in your life.
+
+Moment to moment.
+That is what rewires the brain."
+
+PURPOSE: The solution. Frame it as a SWITCH, not a fight.
+
+----------------------------------------------------------------
+SLIDE 7: THE PRACTICE
+----------------------------------------------------------------
+
+VISUAL: A simple icon or photo representing a daily action
+(brushing teeth, walking, eating). Clean, minimal.
+
+HEADLINE:
+"Use the No Brain Method."
+
+BODY TEXT (centered, larger):
+"No brain, we are walking right now.
+No brain, we are eating right now.
+No brain, we are working right now."
+
+SMALLER TEXT BELOW:
+"When you say 'no brain,' you separate yourself
+from the pattern. You are not the pattern.
+You are the one watching it."
+
+PURPOSE: Give them an actual tool. They walk away with something
+to do tomorrow morning.
+
+----------------------------------------------------------------
+SLIDE 8: THE CTA
+----------------------------------------------------------------
+
+VISUAL: A clean text card. No clutter. The date and location
+should be the largest text.
+
+HEADLINE (large):
+"May 30. Los Angeles.
+
+We do this work in person."
+
+BODY TEXT:
+"Full day intensive workshop.
+20 seats only.
+
+Link in bio for details."
+
+BOTTOM:
+"@starjessetaylor"
+
+PURPOSE: Soft, confident CTA. Doesn't scream. Just states the
+opportunity.
+
+----------------------------------------------------------------
+CAPTION TO POST WITH THE SLIDESHOW
+----------------------------------------------------------------
+
+Paste this as the caption when you publish:
+
+"Your brain has an algorithm.
+
+The penguin videos = anxiety and intrusive thoughts.
+The elephant videos = your valued actions.
+
+Stop trying to fix anxiety. Change the channel.
+
+May 30 in Los Angeles, we do this work in person. 20 seats.
+
+Link in bio.
+
+#MentalHealth #IntrusiveThoughts #AnxietyHelp #EmotionalFitness #BrainHealth"
+
+----------------------------------------------------------------
+WHEN TO POST
+----------------------------------------------------------------
+
+Best windows for Instagram slideshows in 2026:
+- Sunday evening (5-8 PM Pacific) — high engagement window
+- Tuesday/Wednesday/Thursday morning (7-9 AM Pacific)
+- Avoid Saturday night (people out)
+
+Today is Sunday so 5-8 PM Pacific is a strong window.
+
+----------------------------------------------------------------
+PINNED COMMENT (post immediately after the slideshow goes live)
+----------------------------------------------------------------
+
+"Free Zoom Tuesday May 5 at 6 PM Pacific where I teach this live:
+starjessetaylor.com/virtual-events.html
+
+LA Workshop May 30:
+starjessetaylor.com/event.html
+
+Free book chapter:
+starjessetaylor.com/free-chapter"
