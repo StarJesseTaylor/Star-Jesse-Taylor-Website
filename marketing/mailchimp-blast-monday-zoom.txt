@@ -1,0 +1,87 @@
+================================================================
+MAILCHIMP BLAST: FREE ZOOM TOMORROW (MONDAY MAY 4, 7 PM PACIFIC)
+For: WHOLE buyer list (~4,200 contacts, all 3 lists)
+SEND DATE: Sunday May 3, 2026 (afternoon/evening Pacific)
+================================================================
+
+This catches non-openers AND openers AND past Tuesday-RSVPs in
+one shot. Send NOW.
+
+----------------------------------------------------------------
+MAILCHIMP SETUP
+----------------------------------------------------------------
+
+FROM NAME: Star Jesse Taylor
+FROM EMAIL: same as Email 1
+TEMPLATE: Plain text or simplest minimal template
+AUDIENCE: All 3 lists (Mailchimp will dedupe)
+SCHEDULE: Send immediately
+
+----------------------------------------------------------------
+SUBJECT LINE OPTIONS (test 3 in A/B)
+----------------------------------------------------------------
+
+1. Free Zoom tomorrow Monday 7 PM Pacific
+2. The brain algorithm work, live tomorrow
+3. Tomorrow at 7 PM Pacific, free, with me
+
+PRE-HEADER:
+The same teaching that has reached over a billion views, live tomorrow night.
+
+----------------------------------------------------------------
+EMAIL BODY (copy from below this line)
+----------------------------------------------------------------
+
+Hi.
+
+Quick one before tomorrow's free Zoom.
+
+Tomorrow Monday May 4 at 7 PM Pacific I am doing a live Zoom on the brain algorithm work. Free. Open to anyone reading this.
+
+What we will cover:
+
+Your brain runs on an algorithm. Like TikTok. Whatever you give attention to grows, even when you hate it. The anxiety. The intrusive thoughts. The rumination. Your brain reads your engagement as a vote to give you more.
+
+Most people fight harder. That just feeds it.
+
+Tomorrow I am teaching the actual shift. The No Brain Method. The penguin to elephant move. The whole rewiring system. Live, with your real questions in the room.
+
+RSVP: starjessetaylor.com/virtual-events.html
+
+If you cannot make it live, RSVP anyway. I am sending the full recording to everyone who registers, on Tuesday morning.
+
+7 PM Pacific is 10 PM Eastern. 4 AM Tuesday in London.
+
+See you in the room.
+
+Star
+
+P.S. May 30 in Los Angeles. Full day in person workshop. 18 seats left. starjessetaylor.com/event.html
+
+----------------------------------------------------------------
+END EMAIL BODY
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+FORMATTING IN MAILCHIMP
+----------------------------------------------------------------
+
+Bold these lines:
+- "Tomorrow Monday May 4 at 7 PM Pacific I am doing a live Zoom..."
+- "Most people fight harder. That just feeds it."
+- "RSVP: starjessetaylor.com/virtual-events.html"
+- "18 seats left."
+
+Italicize:
+- "What we will cover:"
+
+Make these into hyperlinks:
+- "starjessetaylor.com/virtual-events.html" (both instances)
+- "starjessetaylor.com/event.html"
+
+Make the Zoom RSVP into a BUTTON:
+- Button text: "RSVP for the Free Zoom →"
+- Link: https://starjessetaylor.com/virtual-events.html
+- Place right after "RSVP: starjessetaylor.com/virtual-events.html"
+
+================================================================
