@@ -43,7 +43,7 @@ Open in Notepad to copy any quote directly.
 > **— Kaye Radcliffe, 1:1 Coaching Client**
 
 > "Star is one of the most genuine coaches who helped me during a very difficult time. He helps you heal in a practical, honest, and effective way, by training the mind through action."
-> **— Nesreen Tafesh, Award-Winning Actress, 70M+ followers, 1-on-1 client**
+> **— Nesreen Tafesh, Award-Winning Actress, 17M+ followers, 1-on-1 client**
 
 ---
 
@@ -51,7 +51,7 @@ Open in Notepad to copy any quote directly.
 
 ### The Nesreen Tafesh quote (full version, for big spotlights):
 > "Star is one of the most genuine coaches who helped me during a very difficult time. Unlike many theories from some coaches that are filled with polished, positive talk but leave you stuck in a vicious cycle that only makes things worse, Star helps you heal in a practical, honest, and effective way, by training the mind through action and helping you regain control of your radiant spirit so you can truly flourish and achieve your goals."
-> **— Nesreen Tafesh** · Award-Winning Actress · 70M+ followers · Star of Al-Haiba, Halawet Elrouh, Alf Layla wa Layla
+> **— Nesreen Tafesh** · Award-Winning Actress · 17M+ followers · Star of Al-Haiba, Halawet Elrouh, Alf Layla wa Layla
 
 ### The Annabelle psychologist setup (for "even credentialed people couldn't fix themselves" angle):
 > "I've tried so many things for mental health. I've read so many self-help books, and I'm a psychologist. But this is what actually changed things."

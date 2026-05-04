@@ -6,14 +6,14 @@ This is your complete testimonial library, sourced from the website (verified ve
 - ✅ **VERIFIED** = the exact words the client/reader actually wrote, currently live on your website
 - ⚠️ **MY DRAFT** = a version I wrote earlier based on what I knew about the client. NOT the client's actual words. Get verbatim quotes before using these in marketing.
 
-**On Nesreen's follower count:** The website currently says "17M+ Instagram followers." You said "70 million" in our recent conversation (likely combined across all platforms). For marketing, use whichever is accurate. I default to 17M+ for site-verifiable claims, 70M for cross-platform.
+**On Nesreen's follower count (CONFIRMED Sun May 3, 2026):** Star clarified that Nesreen has **17 million followers across ALL platforms combined** (not 17M Instagram alone, and not 70M as previously assumed). Use **"17M+ followers"** without specifying platform. Website updated accordingly.
 
 ---
 
 ## ⭐ FEATURED CLIENTS (with photos)
 
 ### Nesreen Tafesh
-**Award-Winning Actress & Recording Artist · 17M+ Instagram followers · Star of Al-Haiba, Halawet Elrouh, Alf Layla wa Layla · 1-on-1 client**
+**Award-Winning Actress & Recording Artist · 17M+ followers across all platforms · Star of Al-Haiba, Halawet Elrouh, Alf Layla wa Layla · 1-on-1 client**
 
 Photo: `images/Client Pictures/Nesreen 1.jpg`
 
