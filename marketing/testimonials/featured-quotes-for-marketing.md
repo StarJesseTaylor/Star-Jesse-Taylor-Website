@@ -50,7 +50,7 @@ Open in Notepad to copy any quote directly.
 ## 🏆 AUTHORITY QUOTES (for LA workshop social proof — featured cases)
 
 ### The Nesreen Tafesh quote (full version, for big spotlights):
-> "Star is one of the most genuine coaches who helped me during a very difficult time. Unlike many theories from some coaches that are filled with polished, positive talk but leave you stuck in a vicious cycle that only makes things worse, Star helps you heal in a practical, honest, and effective way, by training the mind through action and helping you regain control of your radiant spirit so you can truly flourish and achieve your goals."
+> "Star is one of the most genuine coaches who helped me during a very difficult time. Unlike many theories from some coaches that are filled with polished, positive talk but leave you stuck in a vicious cycle that only makes things worse, Star helps you heal in a practical, honest, and effective way—by training the mind through action and helping you regain control of your radiant spirit so you can truly flourish and achieve your goals."
 > **— Nesreen Tafesh** · Award-Winning Actress · 17M+ followers · Star of Al-Haiba, Halawet Elrouh, Alf Layla wa Layla
 
 ### The Annabelle psychologist setup (for "even credentialed people couldn't fix themselves" angle):

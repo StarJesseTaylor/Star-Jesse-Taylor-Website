@@ -18,7 +18,9 @@ This is your complete testimonial library, sourced from the website (verified ve
 Photo: `images/Client Pictures/Nesreen 1.jpg`
 
 ✅ **VERIFIED (full quote, from event.html):**
-> "Star is one of the most genuine coaches who helped me during a very difficult time. Unlike many theories from some coaches that are filled with polished, positive talk but leave you stuck in a vicious cycle that only makes things worse, Star helps you heal in a practical, honest, and effective way, by training the mind through action and helping you regain control of your radiant spirit so you can truly flourish and achieve your goals."
+> "Star is one of the most genuine coaches who helped me during a very difficult time. Unlike many theories from some coaches that are filled with polished, positive talk but leave you stuck in a vicious cycle that only makes things worse, Star helps you heal in a practical, honest, and effective way—by training the mind through action and helping you regain control of your radiant spirit so you can truly flourish and achieve your goals."
+
+(NOTE: Star confirmed this is the exact verbatim version Nesreen wrote, with em-dash. Per Star's no-dash style preference for his own marketing copy, the em-dash can be swapped for a comma when used in his materials. The em-dash version above is the canonical original.)
 
 ✅ **VERIFIED (email-friendly excerpt, condensed from above):**
 > "Star is one of the most genuine coaches who helped me during a very difficult time. He helps you heal in a practical, honest, and effective way, by training the mind through action."
