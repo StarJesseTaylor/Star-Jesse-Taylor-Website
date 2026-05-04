@@ -1,6 +1,6 @@
 const LIST_ID = '3';
 
-const BASE_TAGS = ['Zoom RSVP May 5 2026', 'Virtual Event Interested'];
+const BASE_TAGS = ['Zoom RSVP May 4 2026', 'Virtual Event Interested'];
 
 const CONNECTION_TAG_MAP = {
   'book': 'Book Reader',
@@ -104,7 +104,7 @@ export default async function handler(req, res) {
 
     if (message && message.trim().length > 0) {
       const noteText = [
-        'ZOOM RSVP: May 5, 2026',
+        'ZOOM RSVP: May 4, 2026',
         '',
         `Connection: ${connection.join(', ')}`,
         `Intent: ${intent}`,
