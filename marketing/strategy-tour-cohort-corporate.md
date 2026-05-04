@@ -23,13 +23,51 @@ Plus: ten bigger ideas worth considering.
 
 **What it is:** A group coaching program that LA workshop attendees can join immediately after May 30. It's the bridge between "I had a great day in the room" and "I have integrated this into my life."
 
-**Open question: 6 weeks or 10 weeks?**
+**Decision LOCKED IN (Mon May 4): 6 weeks Foundation + optional 6-week Advanced after.**
 
-My recommendation: **6 weeks for the first cohort.** Reasons:
-- Faster commitment, higher conversion (lower buyer fear)
-- 6 weeks matches the natural integration period for new habits
-- You can run TWO 6-week cohorts back-to-back vs ONE 10-week
-- If 6 works, you can extend later. If you start at 10 and it's too long, you've burned time.
+This is a TWO-TIER cohort structure. The full progression:
+
+```
+Tier 1: Foundation Cohort         6 weeks    Open to all post-LA
+Tier 2: Advanced Cohort           6 weeks    Foundation graduates only
+```
+
+**Why 6+6 instead of one 10-week:**
+- Lower commitment threshold for first sale (6 weeks feels doable, 10 weeks scares people away)
+- Built-in upsell path (Foundation grads who want more pay again for Advanced)
+- People who try Foundation and don't want more can opt out cleanly
+- Two payment events vs one (better cash flow + revenue per customer)
+- This is the same model Tony Robbins, Marie Forleo, and most premium personal-development brands use
+
+**Foundation cohort pricing — Hormozi stack:**
+
+```
+6 weeks of live group coaching with Star      ($1,500 value)
+Private Foundation cohort Skool community      ($300 value)
+Weekly Loom Q&A from Star                      ($600 value)
+Recordings of every session                    ($300 value)
+30-day post-cohort integration support         ($300 value)
+                                              -----------------
+                                       Total:  $3,000 value
+
+LA workshop attendees (early bird):    $997
+General public:                       $1,497
+```
+
+**Advanced cohort pricing (Foundation graduates only):**
+
+```
+6 weeks of advanced live coaching              ($2,000 value)
+Smaller group (cap at 12 vs 20)                ($500 value premium)
+Direct Voxer/Loom access to Star               ($1,000 value)
+1 private 1-on-1 session with Star             ($500 value)
+                                              -----------------
+                                       Total:  $4,000 value
+
+Foundation graduates only:           $1,997
+```
+
+Advanced is positioned as "you have the foundation, now we go deeper. Smaller group, more direct access, higher integration."
 
 **Format:**
 - Weekly 90-minute live group call on Zoom
@@ -266,11 +304,119 @@ Above the Annual Corporate Partnership tier, there's a personal version: 8-12 fo
 
 ### 9. Press tour BEFORE the public tour
 
-Before Stop 2 (Austin), spend 30 days doing podcast appearances exclusively. Goal: 30 pods in 30 days. Podcasts are the highest-trust marketing channel for high-ticket consumer offers. Each podcast gives a code/link to grab a tour ticket. By the time Austin opens for sale, you have audience momentum from 30 podcasts pointing to it.
+**What "press tour" means in YOUR space (not Hollywood):**
+
+In the personal development / wellness / business space, "press tour" doesn't mean walking red carpets. It means going on as many podcasts and shows as possible in a focused window. Specifically:
+
+- 25-30 podcasts in 30-45 days
+- Maybe 2-3 local TV/radio appearances if relevant
+- IG Live cross-overs with other creators
+- YouTube guest appearances on bigger channels in your niche
+
+For someone in Star's space, **it's almost ALL podcasts.** That's 30 hours of audio interviews from his home setup, mostly via Riverside or Zoom. Not glamorous. Just volume + focus.
+
+**Examples of personal-development press tours that worked:**
+- Mel Robbins did 100+ podcasts when "The Mel Robbins Podcast" launched
+- James Clear did massive podcast circuit for "Atomic Habits" launch (cited as a major reason it became #1 NYT bestseller)
+- Tim Ferriss does press tours when each book drops
+- Jay Shetty does press tours quarterly
+
+**Why it works:** Listeners hearing Star on multiple shows in the same month creates a "this guy is everywhere" effect. That perception drives traffic + tour ticket sales much more efficiently than ads.
+
+**How to execute:**
+1. Build a list of 100 target podcasts (use ListenNotes, podcastbrowser, podchaser)
+2. Pitch each via DM/email with a specific topic angle
+3. Goal: 30 yes responses
+4. Record 5-7 per week
+5. Each release = a tour ticket sale push from that podcast's audience
+
+I can help build the podcast outreach list and write the pitch template when we're ready.
 
 ### 10. The "What's Your Mental Algorithm?" diagnostic / quiz
 
 A 60-second quiz on your homepage that diagnoses someone's brain algorithm pattern (fight, flee, fix, freeze, ruminate, etc.). At the end, they get a personalized result + an email sequence + a soft pitch to the right offer for them. Quiz funnels are the single highest-converting form of cold-traffic capture for personal development brands. This + the existing quiz funnel could double your leads.
+
+### 11. Book yourself onto OTHER people's events (the speaker circuit)
+
+This is huge and Star explicitly asked about it. Instead of (or in addition to) building your own tour, pitch yourself to events that already exist and already have audiences. They pay you to speak. You don't pay venue, marketing, or promotion. They handle everything. Caleb captures content.
+
+**Types of existing events to target:**
+
+**A) Conferences (wellness, mental health, personal development):**
+- Wisdom 2.0 (mindfulness/tech crossover)
+- SXSW Wellness track
+- ALT Summit (creator/wellness)
+- MindValley events
+- Mind Body Spirit Festival
+- Tony Robbins business events (when he books outside speakers)
+- Women's wellness conferences (Belong Con, etc.)
+
+**B) Corporate conferences (where companies bring outside speakers):**
+- Inbound (Hubspot's annual)
+- SaaStr Annual
+- Forbes Women's Summit
+- Fortune's Most Powerful Women
+- Industry-specific: tech, finance, creative, etc.
+
+**C) Industry trade shows:**
+- APA conventions (psychology)
+- ASCA (counselors)
+- Wellness expos in major cities
+
+**D) Online summits:**
+- These are virtual events with 20-50 speakers each
+- Lower fee but broader reach
+- Examples: MindShare summits, Mindvalley summits, podcast networks running annual summits
+
+**E) Festival speaking slots:**
+- Wanderlust (yoga/wellness festival)
+- Lightning in a Bottle
+- Even Burning Man has speaking slots
+
+**How to find them:**
+- speakerhub.com (database of events looking for speakers)
+- speakerwiki.com
+- Pitch directly to event organizers via LinkedIn/email
+- Sign with a speaker bureau (long-term play — see below)
+
+**How to pitch:**
+
+You need ONE speaker one-pager that includes:
+- Headshot
+- Bio (2-3 sentences)
+- 3 talk topics (titles + 2-sentence descriptions each)
+- Demo reel (90-second video of you speaking — you have 6 yrs of online speaking, plenty of footage)
+- Audience reach numbers (1B+ views, 1M+ followers)
+- Past speaking experience (use your virtual events / TikTok lives / podcasts)
+- Booking contact email
+
+Send this via DM to event organizers, or via their "submit a speaker" form on their website.
+
+**3 talk topics I'd suggest:**
+1. "The Algorithm In Your Brain — Why Your Patterns Repeat And How To Actually Change Them" (general audience)
+2. "Mental Fitness For High-Performance Teams — Reducing Reactivity, Increasing Focus" (corporate audience)
+3. "What 18 Years Of Self-Coaching Taught Me About Anxiety That No Therapist Did" (vulnerable / story-led)
+
+**Speaker bureaus (long-term, after 5-10 paid speaking gigs):**
+
+These take 25-30% of your fee but bring premium gigs at $5K-25K per talk:
+- Harry Walker Agency (top tier, hard to get into)
+- WSB (Washington Speakers Bureau)
+- BigSpeak
+- AAE Speakers Bureau
+- All American Speakers
+- Eagles Talent
+
+Sign with one when you have 10+ paid speaking gigs as social proof. They handle bookings, you focus on showing up.
+
+**Action plan to start NOW:**
+1. This week: build your speaker one-pager (I can help)
+2. Next week: identify 25 target events for the next 12 months
+3. Following week: send 25 pitches via LinkedIn DM or email
+4. Track responses, refine pitch, repeat monthly
+5. Goal by end of 2026: 5-10 paid speaking gigs at existing events ($25K-150K total)
+
+**Caleb at every speaking gig:** he comes, shoots the talk + behind the scenes + audience reactions. Becomes part of the documentary. Becomes content for next pitch.
 
 ---
 
