@@ -1,0 +1,138 @@
+================================================================
+NEW BUYER WELCOME EMAIL TEMPLATE
+For: Anyone who buys a ticket to the May 30 LA workshop
+SEND: Manually within 1 to 4 hours of purchase (until AC
+automation is set up properly — see notes at bottom)
+================================================================
+
+Open in Notepad. Replace [BRACKETED] placeholders. Send from
+your personal Gmail (not Mailchimp) so it lands in their primary
+inbox, not promotions.
+
+----------------------------------------------------------------
+SUBJECT LINE OPTIONS (pick one)
+----------------------------------------------------------------
+
+1. Welcome to May 30, [first name] — everything you need
+2. You are in for the LA workshop, [first name]
+3. [first name], welcome to the room
+
+----------------------------------------------------------------
+EMAIL BODY (copy from below this line, replace placeholders)
+----------------------------------------------------------------
+
+Hi [first name],
+
+You are in for May 30 in Los Angeles. Thank you for trusting me with one of the seats.
+
+Here is everything you need.
+
+THE QUESTIONNAIRE
+
+Please take 3 minutes to fill out the short questionnaire on this page so I can tailor part of the workshop to where you actually are:
+
+starjessetaylor.com/workshop-welcome.html
+
+If you already filled it out, you do not have to do it again. Thank you.
+
+THE BONUS COURSE
+
+As a thank you for being one of the first 10 GA buyers, you get instant access to my Blueprint Breakthrough course. This is the same teaching I do in 1 on 1 coaching, in self paced format you can start tonight:
+
+[INSERT BLUEPRINT BREAKTHROUGH ACCESS LINK HERE]
+
+(For VIP buyers, also include: "And the Intensive Workshop self-paced module: [LINK]")
+
+WHERE WE WILL BE
+
+12304 Santa Monica Blvd, Los Angeles CA 90025
+The Atrium Building, Sawtelle
+
+Doors open: 3:00 PM
+Workshop runs: 3:00 PM to 8:00 PM Pacific
+With a meal break around 5:30 to 6:30 PM (food provided)
+
+Parking: there is street parking on Santa Monica Blvd and on the side streets. I will send walking directions and a few neighborhood food and coffee recommendations the week of the workshop.
+
+WHAT TO BRING
+
+- A notebook and a pen you actually like writing with
+- Comfortable clothes you can sit in for hours
+- An open mind
+- Whatever question or pattern you most want to work on
+
+That is it. Everything else is taken care of.
+
+ONE MORE THING
+
+I want this day to feel less like a workshop and more like a home you are walking into. So if anything comes up between now and May 30 that you want to ask, just hit reply. I read every reply personally.
+
+See you in the room.
+
+Star
+
+P.S. If you are flying in, get to LA the night before if you can. The morning rush from the airport on the day of can take you out of the right state for the work. The Sawtelle area has plenty of small hotels and Airbnb options walking distance to the venue.
+
+----------------------------------------------------------------
+END EMAIL BODY
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+NOTES ON WHY THIS IS BEING SENT MANUALLY (FOR NOW)
+----------------------------------------------------------------
+
+Currently the buyer flow goes:
+
+1. Buyer pays via Stripe ($97 GA or $347 VIP)
+2. Stripe redirects to /workshop-welcome.html
+3. Buyer fills out the questionnaire on that page
+4. Questionnaire POSTs to /api/workshop-questionnaire
+5. That endpoint creates the contact in ActiveCampaign with tags
+
+WHAT IS MISSING:
+
+The email automation in ActiveCampaign that should fire when
+a buyer is tagged. Specifically:
+
+- Email 1 (within 1 hour of purchase): Welcome + venue + bonus
+  course access + what to bring (the email above)
+- Email 2 (3 days before workshop): Final logistics + what to
+  expect + what to wear + parking specifics + day-of contact #
+- Email 3 (morning of workshop): "See you in 5 hours" + Zoom-
+  cant-make-it backup link + Star's mobile for emergencies
+- Email 4 (next day after workshop): Thank you + recording link
+  + the next-step offer (1-on-1 coaching or The Practice
+  membership when it launches in June)
+
+UNTIL THE AUTOMATION IS BUILT:
+
+Send this welcome email manually within 1 to 4 hours of every
+new ticket purchase. It is the difference between a buyer who
+feels held and a buyer who wonders if their payment went through.
+
+----------------------------------------------------------------
+HOW TO BUILD THE AUTOMATION (FOR LATER, AFTER MAY 30)
+----------------------------------------------------------------
+
+In ActiveCampaign:
+
+1. Create a new Automation
+2. Trigger: Tag added "LA Workshop May 30 Buyer"
+3. Action 1 (immediate): Send welcome email (the one above)
+4. Action 2 (wait 27 days from May 3, or "27 days before May 30"):
+   Send Email 2 (final logistics)
+5. Action 3 (wait until morning of May 30, 6 AM Pacific):
+   Send Email 3 (see you in 5 hours)
+6. Action 4 (wait 24 hours after workshop):
+   Send Email 4 (thank you + next step)
+
+The Stripe webhook (api/blue/stripe-webhook.js) needs to add the
+tag "LA Workshop May 30 Buyer" to the contact when payment
+completes. Verify this is happening — if not, that is what is
+breaking the flow.
+
+For full automation including the bonus course delivery, the
+Stripe webhook should also pass GA vs VIP info as a custom field
+so the right bonus links are sent to each tier.
+
+================================================================
