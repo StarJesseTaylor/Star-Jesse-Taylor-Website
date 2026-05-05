@@ -1401,7 +1401,7 @@
         </div>
 
         <div style="text-align:center;">
-          <div id="bonusCounter" style="display:inline-block;background:rgba(217,119,6,0.12);color:#9a4d00;border:1px solid rgba(217,119,6,0.4);padding:9px 20px;border-radius:50px;font-weight:700;font-size:0.94rem;letter-spacing:0.01em;">🎁 10 bonus spots available</div>
+          <div id="bonusCounter" style="display:inline-block;background:rgba(217,119,6,0.12);color:#9a4d00;border:1px solid rgba(217,119,6,0.4);padding:9px 20px;border-radius:50px;font-weight:700;font-size:0.94rem;letter-spacing:0.01em;">🎁 GA bonus included for first 10 buyers</div>
         </div>
       </div>
     </div>
@@ -1730,37 +1730,16 @@
           if (gaBonusBadge) gaBonusBadge.style.display = 'none';
           if (gaBonusBullet) gaBonusBullet.style.display = 'none';
         } else if (bonusCounter) {
-          if (bonusLeft === BONUS_LIMIT) {
-            bonusCounter.textContent = '🎁 ' + BONUS_LIMIT + ' GA bonus spots available';
-          } else if (bonusLeft <= 3) {
-            bonusCounter.textContent = '🔥 Only ' + bonusLeft + ' GA bonus spot' + (bonusLeft === 1 ? '' : 's') + ' left';
-          } else {
-            bonusCounter.textContent = '🎁 ' + bonusLeft + ' of ' + BONUS_LIMIT + ' GA bonus spots remaining';
-          }
+          bonusCounter.textContent = '🎁 GA bonus included for first 10 buyers';
         }
 
         // ----- Seat counter -----
+        // Only show "Sold Out" state. Do not show remaining seat counts.
         if (!counter) return;
-        if (sold < 1) return; // Show from first sale onward to signal momentum
-
-        var text = '';
-        var cls = '';
         if (sold >= 20) {
-          text = 'Sold Out';
-          cls = 'is-sold-out';
-        } else if (sold >= 16) {
-          text = '⚠️ Almost full · only ' + remaining + ' seats left';
-          cls = 'is-low';
-        } else if (sold >= 10) {
-          text = '🔥 ' + sold + ' of ' + total + ' reserved · ' + remaining + ' seats left';
-          cls = 'is-mid';
-        } else {
-          text = '🔥 Filling up · ' + remaining + ' seats left';
-          cls = 'is-filling';
+          counter.textContent = 'Sold Out';
+          counter.classList.add('is-sold-out');
         }
-
-        counter.textContent = text;
-        counter.classList.add(cls);
       })
       .catch(function (err) {
         console.warn('Seat counter fetch failed:', err);

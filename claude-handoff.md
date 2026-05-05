@@ -32,7 +32,7 @@
 - **Format:** Full day, 5-hour live workshop
 - **Tiers:** $97 GA, $347 VIP (VIP includes private 50-min 1-on-1 Zoom with Star within 2 weeks)
 - **Cap:** 20 seats total
-- **Currently sold:** 2 (so 18 seats left)
+- **IMPORTANT (Mon May 5 update):** Star explicitly removed "X seats left" / "X spots remaining" countdown displays from the website. He does not want any "how many tickets left" displayed publicly. The total cap (20 seats) can be mentioned. Specific remaining counts cannot. This applies to website AND new marketing copy going forward.
 - **Money-back guarantee:** CONFIRMED real (refund on the spot, no paperwork)
 - **5-phase day structure** is now on event.html — see "The Day Itself. Five Phases." section
 
