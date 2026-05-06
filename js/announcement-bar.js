@@ -50,7 +50,7 @@
       + 'body.sjt-ann-bar-on .nav{top:' + BAR_HEIGHT_DESKTOP + 'px;}'
       + '@media (max-width:640px){'
       + '.sjt-ann-bar{font-size:12px;padding:8px 36px 8px 10px;}'
-      + '.sjt-ann-d,.sjt-ann-date,.sjt-ann-spots{display:none;}'
+      + '.sjt-ann-d,.sjt-ann-date{display:none;}'
       + 'body.sjt-ann-bar-on{padding-top:' + BAR_HEIGHT_MOBILE + 'px;}'
       + 'body.sjt-ann-bar-on .nav{top:' + BAR_HEIGHT_MOBILE + 'px;}'
       + '}';
@@ -75,8 +75,6 @@
       +   '<span class="sjt-ann-main">LA Intensive</span>'
       +   '<span class="sjt-ann-dot sjt-ann-d">·</span>'
       +   '<span class="sjt-ann-date">May 30, 2026</span>'
-      +   '<span class="sjt-ann-dot sjt-ann-d">·</span>'
-      +   '<span class="sjt-ann-spots">Only 20 Spots Left</span>'
       +   '<span class="sjt-ann-dot sjt-ann-d">·</span>'
       +   '<span class="sjt-ann-countdown">' + daysText + '</span>'
       +   '<span class="sjt-ann-dot">·</span>'
