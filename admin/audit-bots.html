@@ -90,6 +90,7 @@
   <input type="password" id="keyInput" placeholder="Admin key" autocomplete="off" />
   <br>
   <button class="btn" id="authBtn">Load Audit</button>
+  <div id="authStatus" style="margin-top: 16px;"></div>
   <p class="small" style="margin-top: 14px;">This is the same key used for /admin/dashboard.html</p>
 </div>
 
@@ -126,9 +127,18 @@
 
   document.getElementById('authBtn').addEventListener('click', async () => {
     adminKey = document.getElementById('keyInput').value.trim();
-    if (!adminKey) return;
+    if (!adminKey) {
+      setAuthStatus('Please enter your admin key.', 'error');
+      return;
+    }
+    setAuthStatus('Loading...', 'info');
     await loadAudit();
   });
+
+  function setAuthStatus(msg, type) {
+    document.getElementById('authStatus').innerHTML =
+      '<div class="status status-' + type + '">' + escapeHtml(msg) + '</div>';
+  }
 
   document.getElementById('keyInput').addEventListener('keydown', (e) => {
     if (e.key === 'Enter') document.getElementById('authBtn').click();
@@ -142,16 +152,20 @@
   });
 
   async function loadAudit() {
-    setStatus('Loading suspects from ActiveCampaign...', 'info');
+    const onAuthScreen = document.getElementById('authView').style.display !== 'none';
+    const showError = (msg) => onAuthScreen ? setAuthStatus(msg, 'error') : setStatus(msg, 'error');
+    const showInfo = (msg) => onAuthScreen ? setAuthStatus(msg, 'info') : setStatus(msg, 'info');
+
+    showInfo('Loading suspects from ActiveCampaign...');
     try {
       const res = await fetch('/api/admin/audit-bot-signups?key=' + encodeURIComponent(adminKey));
       if (res.status === 401) {
-        setStatus('Wrong admin key. Check CRON_SECRET in Vercel env vars.', 'error');
+        showError('Wrong admin key. Check CRON_SECRET in Vercel env vars.');
         return;
       }
       const data = await res.json();
       if (!res.ok) {
-        setStatus('Error: ' + (data.error || 'Unknown'), 'error');
+        showError('Error: ' + (data.error || 'Unknown'));
         return;
       }
       suspects = data.suspects || [];
@@ -161,7 +175,7 @@
       renderTable();
       clearStatus();
     } catch (err) {
-      setStatus('Network error: ' + err.message, 'error');
+      showError('Network error: ' + err.message);
     }
   }
 
