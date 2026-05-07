@@ -26,11 +26,24 @@ export default async function handler(req, res) {
     walkAway,
     biggestChallenge,
     feelStuck,
-    askStar
+    askStar,
+    website_url
   } = req.body || {};
+
+  // Honeypot
+  if (website_url) {
+    console.log('Bot blocked (honeypot):', { firstName, email });
+    return res.status(200).json({ success: true });
+  }
 
   if (!firstName) return res.status(400).json({ error: 'First name is required' });
   if (!email) return res.status(400).json({ error: 'Email is required' });
+
+  // Bot pattern detector: long alphabetic string, no spaces, mixed case
+  if (firstName && /^[A-Za-z]{15,}$/.test(firstName) && /[A-Z]/.test(firstName) && /[a-z]/.test(firstName)) {
+    console.log('Bot blocked (gibberish name):', { firstName, email });
+    return res.status(200).json({ success: true });
+  }
 
   const headers = { 'Api-Token': AC_KEY, 'Content-Type': 'application/json' };
 

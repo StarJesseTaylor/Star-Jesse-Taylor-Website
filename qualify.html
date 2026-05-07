@@ -390,6 +390,7 @@
     <div class="qualify-card" data-step="8">
       <div class="qualify-question">Where should we send your personalized recommendation?</div>
       <form id="qualifyForm">
+        <div class="hp-field" aria-hidden="true"><label>Website (do not fill): <input type="text" name="website_url" tabindex="-1" autocomplete="off"></label></div>
         <input type="text" name="firstName" placeholder="First name" required autocomplete="given-name" class="qualify-input" />
         <input type="email" name="email" placeholder="Email address" required autocomplete="email" class="qualify-input" />
         <button type="submit" class="qualify-submit">Get My Recommendation</button>
@@ -584,6 +585,7 @@
     const fd = new FormData(e.target);
     const firstName = String(fd.get('firstName') || '').trim();
     const email = String(fd.get('email') || '').trim();
+    const website_url = String(fd.get('website_url') || '');
     const score = calcScore(answers);
     const tier = tierFor(score);
 
@@ -606,7 +608,7 @@
       await fetch('/api/qualify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ firstName, email, answers, score, tier })
+        body: JSON.stringify({ firstName, email, answers, score, tier, website_url })
       });
     } catch (err) {
       console.warn('Qualify API error:', err);

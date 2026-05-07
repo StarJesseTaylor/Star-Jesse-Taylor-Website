@@ -186,10 +186,23 @@ export default async function handler(req, res) {
     symptom,       // 'anxiety_ocd' | 'stuck' | 'self_worth' | 'new'
     painScore,     // 1-10
     stakes,        // free-text: what changes if they solve this
-    answers        // raw answers object for the note { q1, q2, q3, q4 }
+    answers,       // raw answers object for the note { q1, q2, q3, q4 }
+    website_url    // honeypot field
   } = req.body || {};
 
+  // Honeypot
+  if (website_url) {
+    console.log('Bot blocked (honeypot):', { name, email });
+    return res.status(200).json({ success: true });
+  }
+
   if (!email) return res.status(400).json({ error: 'Email is required' });
+
+  // Bot pattern detector: long alphabetic string, no spaces, mixed case
+  if (name && /^[A-Za-z]{15,}$/.test(name) && /[A-Z]/.test(name) && /[a-z]/.test(name)) {
+    console.log('Bot blocked (gibberish name):', { name, email });
+    return res.status(200).json({ success: true });
+  }
 
   // Always log so we have a record even if AC is unreachable
   console.log('Quiz submission:', { name, email, result, symptom, painScore, stakes });

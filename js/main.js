@@ -93,6 +93,15 @@ const confirmation = document.getElementById('formConfirmation');
 if (form) {
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+
+    // Honeypot: silently fake-success if filled
+    const hp = form.querySelector('input[name="website_url"]');
+    if (hp && hp.value) {
+      form.style.display = 'none';
+      if (confirmation) confirmation.classList.add('visible');
+      return;
+    }
+
     const submitBtn = form.querySelector('.btn-submit');
     submitBtn.disabled = true;
     submitBtn.textContent = 'Sending...';
@@ -151,12 +160,13 @@ if (waitlistForm) {
     const data = new FormData(waitlistForm);
     const name = data.get('waitlist_name') || '';
     const email = data.get('waitlist_email') || '';
+    const website_url = data.get('website_url') || '';
 
     try {
       await fetch('/api/cohort-waitlist', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email })
+        body: JSON.stringify({ name, email, website_url })
       });
       if (typeof window.starTrack === 'function') {
         window.starTrack('cohort_waitlist_signup', { value: 0 });
@@ -186,12 +196,13 @@ if (emailCaptureForm) {
     const firstName = data.get('first_name') || '';
     const email = data.get('subscriber_email') || '';
     const interests = data.getAll('interests');
+    const website_url = data.get('website_url') || '';
 
     try {
       const res = await fetch('/api/free-chapter', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, firstName, interests })
+        body: JSON.stringify({ email, firstName, interests, website_url })
       });
       if (!res.ok) throw new Error('Subscribe failed');
     } catch (err) {
@@ -210,6 +221,15 @@ if (emailCaptureForm) {
   f.addEventListener('submit', async function(e) {
     e.preventDefault();
     var data = new FormData(f);
+
+    // Honeypot: silently fake-success if filled
+    if (data.get('website_url')) {
+      f.style.display = 'none';
+      var conf = document.getElementById(id + 'Confirm');
+      if (conf) conf.style.display = 'block';
+      return;
+    }
+
     var name = data.get('intensive_name') || '';
     var email = data.get('intensive_email') || '';
     var body = 'Intensive Waitlist\n\nName: ' + name + '\nEmail: ' + email;

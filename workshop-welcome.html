@@ -343,6 +343,7 @@
         </div>
 
         <form id="workshopForm" novalidate>
+          <div class="hp-field" aria-hidden="true"><label>Website (do not fill): <input type="text" name="website_url" tabindex="-1" autocomplete="off"></label></div>
           <div class="ww-row">
             <div class="ww-field">
               <label for="firstName">First name</label>
@@ -441,6 +442,7 @@
     e.preventDefault();
     errorMsg.classList.remove('active');
 
+    const hpInput = form.querySelector('input[name="website_url"]');
     const data = {
       firstName: document.getElementById('firstName').value.trim(),
       email: document.getElementById('email').value.trim(),
@@ -448,7 +450,8 @@
       walkAway: document.getElementById('walkAway').value.trim(),
       biggestChallenge: document.getElementById('biggestChallenge').value.trim(),
       feelStuck: document.getElementById('feelStuck').value.trim(),
-      askStar: document.getElementById('askStar').value.trim()
+      askStar: document.getElementById('askStar').value.trim(),
+      website_url: hpInput ? hpInput.value : ''
     };
 
     if (!data.firstName || !data.email) {

@@ -254,6 +254,7 @@
 
       <!-- FORM -->
       <form class="lm-form" id="freeChapterForm">
+        <div class="hp-field" aria-hidden="true"><label>Website (do not fill): <input type="text" name="website_url" tabindex="-1" autocomplete="off"></label></div>
         <input type="text" name="first_name" placeholder="Your first name" class="lm-input" required autocomplete="given-name" />
         <input type="email" name="email" placeholder="Your email address" class="lm-input" required autocomplete="email" />
         <button type="submit" class="lm-submit">Send Me the Free Chapter</button>
@@ -365,12 +366,13 @@
       const data = new FormData(freeChapterForm);
       const firstName = data.get('first_name') || '';
       const email = data.get('email') || '';
+      const website_url = data.get('website_url') || '';
 
       try {
         const res = await fetch('/api/free-chapter', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, firstName })
+          body: JSON.stringify({ email, firstName, website_url })
         });
         if (!res.ok) throw new Error('failed');
       } catch (err) {

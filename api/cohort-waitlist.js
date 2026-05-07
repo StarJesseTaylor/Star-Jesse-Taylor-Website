@@ -121,8 +121,22 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const { name, email } = req.body || {};
+  const { name, email, website_url } = req.body || {};
+
+  // Honeypot: silently accept and discard if filled. Real users never see this field.
+  if (website_url) {
+    console.log('Bot blocked (honeypot):', { name, email });
+    return res.status(200).json({ success: true });
+  }
+
   if (!email) return res.status(400).json({ error: 'Email is required' });
+
+  // Bot pattern detector: long alphabetic string, no spaces, mixed case (e.g. "ARhGrIGfhLSpsIvRQtDrze")
+  // Real names virtually never look like this. Real names have spaces or are <15 chars.
+  if (name && /^[A-Za-z]{15,}$/.test(name) && /[A-Z]/.test(name) && /[a-z]/.test(name)) {
+    console.log('Bot blocked (gibberish name):', { name, email });
+    return res.status(200).json({ success: true });
+  }
 
   console.log('Cohort waitlist signup:', { name, email });
 

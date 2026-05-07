@@ -582,6 +582,7 @@
         <p class="ve-form-sub">Fill this out and you will see the Zoom link on the next page. Save it. Takes 30 seconds.</p>
 
         <form class="ve-form" id="zoomRsvpForm">
+          <div class="hp-field" aria-hidden="true"><label>Website (do not fill): <input type="text" name="website_url" tabindex="-1" autocomplete="off"></label></div>
           <div>
             <label for="firstName">First Name</label>
             <input type="text" id="firstName" name="firstName" required autocomplete="given-name" />
@@ -792,7 +793,8 @@
         email: data.get('email'),
         message: data.get('message') || '',
         intent: intentInput.value,
-        connection: Array.from(checkedConnections).map(cb => cb.value)
+        connection: Array.from(checkedConnections).map(cb => cb.value),
+        website_url: data.get('website_url') || ''
       };
 
       try {

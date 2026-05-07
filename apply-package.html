@@ -173,6 +173,7 @@
 
       <!-- THE FORM -->
       <form id="packageApplicationForm" novalidate>
+        <div class="hp-field" aria-hidden="true"><label>Website (do not fill): <input type="text" name="website_url" tabindex="-1" autocomplete="off"></label></div>
 
         <!-- SECTION 1: About You -->
         <div class="form-section fade-up">
@@ -433,6 +434,14 @@
       e.preventDefault();
 
       var data = new FormData(form);
+
+      // Honeypot: silently fake-success if filled
+      if (data.get('website_url')) {
+        form.style.display = 'none';
+        if (confirmation) confirmation.style.display = 'block';
+        return;
+      }
+
       var fields = {};
       data.forEach(function(val, key) { fields[key] = val; });
 

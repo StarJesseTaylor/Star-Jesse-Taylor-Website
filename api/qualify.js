@@ -94,8 +94,21 @@ export default async function handler(req, res) {
   if (!AC_KEY) return res.status(500).json({ error: 'Server configuration error: ACTIVECAMPAIGN_API_KEY not set' });
 
   const baseUrl = AC_URL;
-  const { firstName, email, answers, score, tier } = req.body || {};
+  const { firstName, email, answers, score, tier, website_url } = req.body || {};
+
+  // Honeypot
+  if (website_url) {
+    console.log('Bot blocked (honeypot):', { firstName, email });
+    return res.status(200).json({ success: true });
+  }
+
   if (!email) return res.status(400).json({ error: 'Email required' });
+
+  // Bot pattern detector: long alphabetic string, no spaces, mixed case
+  if (firstName && /^[A-Za-z]{15,}$/.test(firstName) && /[A-Z]/.test(firstName) && /[a-z]/.test(firstName)) {
+    console.log('Bot blocked (gibberish name):', { firstName, email });
+    return res.status(200).json({ success: true });
+  }
 
   const headers = { 'Api-Token': AC_KEY, 'Content-Type': 'application/json' };
 

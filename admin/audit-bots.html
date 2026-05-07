@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Bot Signup Audit · Star Admin</title>
+  <style>
+    :root {
+      --cobalt: #1B6CA8;
+      --cobalt-dark: #155a8a;
+      --charcoal: #2C2C2C;
+      --off-white: #F8F9FB;
+      --light-gray: #eef1f5;
+      --mid-gray: #6b7280;
+      --green: #16a34a;
+      --red: #dc2626;
+      --amber: #d97706;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: var(--off-white);
+      color: var(--charcoal);
+      padding: 20px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    h1 { font-size: 1.5rem; margin-bottom: 4px; }
+    .subtitle { color: var(--mid-gray); font-size: 0.92rem; margin-bottom: 28px; }
+    .auth-prompt {
+      background: white; border-radius: 12px; padding: 32px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06); max-width: 480px; margin: 60px auto;
+      text-align: center;
+    }
+    .auth-prompt input {
+      width: 100%; padding: 14px; border: 2px solid var(--light-gray); border-radius: 8px;
+      font-size: 1rem; margin: 12px 0; font-family: monospace;
+    }
+    .btn {
+      background: var(--cobalt); color: white; border: none; padding: 12px 24px;
+      border-radius: 50px; font-size: 0.95rem; font-weight: 700; cursor: pointer;
+    }
+    .btn:hover { background: var(--cobalt-dark); }
+    .btn-danger { background: var(--red); }
+    .btn-danger:hover { background: #b91c1c; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .summary {
+      background: white; border-radius: 12px; padding: 20px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05); margin-bottom: 20px;
+      display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;
+    }
+    .summary-stat strong { font-size: 1.6rem; font-weight: 900; color: var(--cobalt); display: block; }
+    .summary-stat span { font-size: 0.82rem; color: var(--mid-gray); }
+    table {
+      width: 100%; background: white; border-radius: 12px; overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05); border-collapse: collapse;
+    }
+    th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--light-gray); font-size: 0.92rem; }
+    th { background: var(--light-gray); font-weight: 800; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--charcoal); }
+    tr:last-child td { border-bottom: none; }
+    .gibberish { font-family: monospace; color: var(--red); }
+    .empty {
+      text-align: center; background: white; border-radius: 12px; padding: 60px 24px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05); color: var(--mid-gray);
+    }
+    .actions {
+      display: flex; gap: 10px; margin: 20px 0; flex-wrap: wrap;
+    }
+    .toolbar {
+      display: flex; justify-content: space-between; align-items: center; margin: 20px 0; flex-wrap: wrap; gap: 12px;
+    }
+    .status {
+      padding: 10px 16px; border-radius: 8px; margin: 12px 0; font-size: 0.92rem;
+    }
+    .status-success { background: #dcfce7; color: #166534; border: 1px solid #16a34a; }
+    .status-error { background: #fee2e2; color: #991b1b; border: 1px solid #dc2626; }
+    .status-info { background: #dbeafe; color: #1e40af; border: 1px solid #1B6CA8; }
+    .checkbox { transform: scale(1.2); cursor: pointer; }
+    .small { font-size: 0.82rem; color: var(--mid-gray); margin-top: 4px; }
+    a { color: var(--cobalt); text-decoration: none; font-size: 0.85rem; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+<div id="authView" class="auth-prompt">
+  <h1>Bot Signup Audit</h1>
+  <p class="small">Enter your CRON_SECRET to load the bot list.</p>
+  <input type="password" id="keyInput" placeholder="Admin key" autocomplete="off" />
+  <br>
+  <button class="btn" id="authBtn">Load Audit</button>
+  <p class="small" style="margin-top: 14px;">This is the same key used for /admin/dashboard.html</p>
+</div>
+
+<div id="mainView" style="display:none;">
+  <h1>Bot Signup Audit</h1>
+  <p class="subtitle">Cohort waitlist contacts in ActiveCampaign with bot-pattern names. Review, then delete.</p>
+
+  <div class="summary" id="summary"></div>
+
+  <div id="statusArea"></div>
+
+  <div class="toolbar">
+    <div>
+      <input type="checkbox" id="selectAll" class="checkbox" />
+      <label for="selectAll" style="font-weight: 600; margin-left: 6px;">Select all</label>
+      <span id="selectedCount" class="small" style="margin-left: 16px;"></span>
+    </div>
+    <div class="actions">
+      <button class="btn" id="refreshBtn">Refresh List</button>
+      <button class="btn btn-danger" id="deleteBtn" disabled>Delete Selected</button>
+    </div>
+  </div>
+
+  <div id="tableArea"></div>
+
+  <p class="small" style="margin-top: 30px;">
+    <a href="/admin/dashboard.html">← Back to Dashboard</a>
+  </p>
+</div>
+
+<script>
+  let adminKey = '';
+  let suspects = [];
+
+  document.getElementById('authBtn').addEventListener('click', async () => {
+    adminKey = document.getElementById('keyInput').value.trim();
+    if (!adminKey) return;
+    await loadAudit();
+  });
+
+  document.getElementById('keyInput').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') document.getElementById('authBtn').click();
+  });
+
+  document.getElementById('refreshBtn').addEventListener('click', loadAudit);
+  document.getElementById('deleteBtn').addEventListener('click', deleteSelected);
+  document.getElementById('selectAll').addEventListener('change', (e) => {
+    document.querySelectorAll('.suspect-row').forEach(cb => { cb.checked = e.target.checked; });
+    updateSelectedCount();
+  });
+
+  async function loadAudit() {
+    setStatus('Loading suspects from ActiveCampaign...', 'info');
+    try {
+      const res = await fetch('/api/admin/audit-bot-signups?key=' + encodeURIComponent(adminKey));
+      if (res.status === 401) {
+        setStatus('Wrong admin key. Check CRON_SECRET in Vercel env vars.', 'error');
+        return;
+      }
+      const data = await res.json();
+      if (!res.ok) {
+        setStatus('Error: ' + (data.error || 'Unknown'), 'error');
+        return;
+      }
+      suspects = data.suspects || [];
+      document.getElementById('authView').style.display = 'none';
+      document.getElementById('mainView').style.display = 'block';
+      renderSummary(data);
+      renderTable();
+      clearStatus();
+    } catch (err) {
+      setStatus('Network error: ' + err.message, 'error');
+    }
+  }
+
+  function renderSummary(data) {
+    document.getElementById('summary').innerHTML =
+      '<div class="summary-stat"><strong>' + (data.totalContactsWithTag || 0) + '</strong><span>Total cohort:waitlist contacts</span></div>' +
+      '<div class="summary-stat"><strong style="color: var(--red);">' + (data.suspectCount || 0) + '</strong><span>Bot-pattern signups</span></div>' +
+      '<div class="summary-stat"><strong style="color: var(--green);">' + ((data.totalContactsWithTag || 0) - (data.suspectCount || 0)) + '</strong><span>Likely real signups</span></div>';
+  }
+
+  function renderTable() {
+    const area = document.getElementById('tableArea');
+    if (!suspects.length) {
+      area.innerHTML = '<div class="empty">No bot-pattern signups found. Your list is clean.</div>';
+      return;
+    }
+    let html = '<table><thead><tr>' +
+      '<th style="width:40px;"></th>' +
+      '<th>First Name</th>' +
+      '<th>Last Name</th>' +
+      '<th>Email</th>' +
+      '<th>Created</th>' +
+      '<th>AC ID</th>' +
+      '</tr></thead><tbody>';
+    suspects.forEach(s => {
+      html += '<tr>' +
+        '<td><input type="checkbox" class="checkbox suspect-row" data-id="' + s.id + '"></td>' +
+        '<td class="gibberish">' + escapeHtml(s.firstName || '') + '</td>' +
+        '<td>' + escapeHtml(s.lastName || '') + '</td>' +
+        '<td>' + escapeHtml(s.email || '') + '</td>' +
+        '<td class="small">' + (s.createdUtc ? s.createdUtc.split('T')[0] : '') + '</td>' +
+        '<td class="small">' + s.id + '</td>' +
+        '</tr>';
+    });
+    html += '</tbody></table>';
+    area.innerHTML = html;
+    document.querySelectorAll('.suspect-row').forEach(cb => {
+      cb.addEventListener('change', updateSelectedCount);
+    });
+    updateSelectedCount();
+  }
+
+  function updateSelectedCount() {
+    const selected = document.querySelectorAll('.suspect-row:checked').length;
+    document.getElementById('selectedCount').textContent = selected + ' selected';
+    document.getElementById('deleteBtn').disabled = selected === 0;
+  }
+
+  async function deleteSelected() {
+    const ids = Array.from(document.querySelectorAll('.suspect-row:checked')).map(cb => cb.dataset.id);
+    if (!ids.length) return;
+    if (!confirm('Delete ' + ids.length + ' contacts from ActiveCampaign? This cannot be undone.')) return;
+
+    document.getElementById('deleteBtn').disabled = true;
+    setStatus('Deleting ' + ids.length + ' contacts...', 'info');
+
+    try {
+      const res = await fetch('/api/admin/audit-bot-signups?key=' + encodeURIComponent(adminKey), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ids })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setStatus('Error: ' + (data.error || 'Unknown'), 'error');
+        return;
+      }
+      setStatus('Deleted ' + data.deletedCount + ' of ' + ids.length + ' contacts. Refreshing...', 'success');
+      setTimeout(loadAudit, 1500);
+    } catch (err) {
+      setStatus('Network error: ' + err.message, 'error');
+    }
+  }
+
+  function setStatus(msg, type) {
+    document.getElementById('statusArea').innerHTML =
+      '<div class="status status-' + type + '">' + escapeHtml(msg) + '</div>';
+  }
+  function clearStatus() { document.getElementById('statusArea').innerHTML = ''; }
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+</script>
+</body>
+</html>

@@ -1615,3 +1615,16 @@ select {
   .courses-grid { grid-template-columns: 1fr; }
   .events-grid { grid-template-columns: 1fr; }
 }
+
+
+/* ===== HONEYPOT (anti-bot) ===== */
+.hp-field {
+  position: absolute !important;
+  left: -9999px !important;
+  top: -9999px !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}

@@ -12,8 +12,21 @@ export default async function handler(req, res) {
   const AC_URL = (process.env.ACTIVECAMPAIGN_API_URL || 'https://starjessetaylor92181.api-us1.com').replace(/\/$/, '');
   if (!AC_KEY) return res.status(500).json({ error: 'Server configuration error' });
 
-  const { email, firstName, interests } = req.body || {};
+  const { email, firstName, interests, website_url } = req.body || {};
+
+  // Honeypot
+  if (website_url) {
+    console.log('Bot blocked (honeypot):', { email, firstName });
+    return res.status(200).json({ success: true });
+  }
+
   if (!email) return res.status(400).json({ error: 'Email is required' });
+
+  // Bot pattern detector: long alphabetic string, no spaces, mixed case
+  if (firstName && /^[A-Za-z]{15,}$/.test(firstName) && /[A-Z]/.test(firstName) && /[a-z]/.test(firstName)) {
+    console.log('Bot blocked (gibberish name):', { email, firstName });
+    return res.status(200).json({ success: true });
+  }
 
   const headers = { 'Api-Token': AC_KEY, 'Content-Type': 'application/json' };
 

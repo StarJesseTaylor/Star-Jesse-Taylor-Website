@@ -574,6 +574,7 @@
       <div class="quiz-question" id="qEmailHeadline">Your path is ready.</div>
       <p style="color:var(--mid-gray);font-size:0.98rem;line-height:1.7;margin-top:-18px;margin-bottom:24px;">Where should I send your personalized recommendation, your 1-page action plan, and the first 30 pages of the book?</p>
       <div class="quiz-form-stack">
+        <div class="hp-field" aria-hidden="true"><label>Website (do not fill): <input type="text" id="qWebsiteUrl" name="website_url" tabindex="-1" autocomplete="off"></label></div>
         <input type="email" id="qEmailInput" class="quiz-input" placeholder="Your email" autocomplete="email" required />
         <input type="tel" id="qPhoneInput" class="quiz-input" placeholder="Phone (optional, if you'd like a quick personal note)" autocomplete="tel" />
       </div>
@@ -820,6 +821,9 @@
     emailSubmit.disabled = true;
     emailLoading.classList.add('active');
 
+    const honeypotEl = document.getElementById('qWebsiteUrl');
+    const honeypotVal = honeypotEl ? honeypotEl.value : '';
+
     try {
       await fetch('/api/quiz-submit', {
         method: 'POST',
@@ -832,7 +836,8 @@
           symptom: state.symptom,
           painScore: state.painScore,
           stakes: state.stakes,
-          answers: answers
+          answers: answers,
+          website_url: honeypotVal
         })
       });
     } catch (err) {
