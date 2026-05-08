@@ -3,44 +3,32 @@
  *
  * Auth: ?key=CRON_SECRET (matches existing admin/dashboard.js pattern)
  *
- * GET  → returns all contacts with tag `cohort:waitlist` flagged as bot-like
- *        (gibberish first name pattern: 15+ char alphabetic, mixed case, no spaces)
+ * GET  → returns ALL contacts flagged as bot-like across the entire AC list
+ *        (gibberish first OR last name pattern: 12+ char alphabetic, mixed case, no spaces)
  * POST → body { ids: [contactId, ...] } deletes those contacts from AC
  *
  * Bot detection rule:
- *   - firstName matches /^[A-Za-z]{15,}$/ (long unbroken alphabetic string)
+ *   - firstName OR lastName matches /^[A-Za-z]{12,}$/ (long unbroken alphabetic string)
  *   - has both uppercase and lowercase characters (random-looking)
  *   - real human names virtually never look like this
  */
 
-const TARGET_TAG = 'cohort:waitlist';
-
 function isGibberish(name) {
   if (!name) return false;
-  if (!/^[A-Za-z]{15,}$/.test(name)) return false;
+  if (!/^[A-Za-z]{12,}$/.test(name)) return false;
   if (!/[A-Z]/.test(name)) return false;
   if (!/[a-z]/.test(name)) return false;
   return true;
 }
 
-async function getTagId(AC_URL, headers, tagName) {
-  const search = await fetch(`${AC_URL}/api/3/tags?search=${encodeURIComponent(tagName)}`, {
-    method: 'GET',
-    headers
-  });
-  if (!search.ok) return null;
-  const data = await search.json();
-  const match = (data.tags || []).find(t => t.tag === tagName);
-  return match ? match.id : null;
-}
-
-async function getAllContactsForTag(AC_URL, headers, tagId) {
+async function getAllContacts(AC_URL, headers) {
   const all = [];
   let offset = 0;
   const limit = 100;
+  const maxScan = 10000;
 
   while (true) {
-    const url = `${AC_URL}/api/3/contacts?tagid=${tagId}&limit=${limit}&offset=${offset}`;
+    const url = `${AC_URL}/api/3/contacts?limit=${limit}&offset=${offset}`;
     const res = await fetch(url, { method: 'GET', headers });
     if (!res.ok) break;
     const data = await res.json();
@@ -48,7 +36,7 @@ async function getAllContactsForTag(AC_URL, headers, tagId) {
     all.push(...contacts);
     if (contacts.length < limit) break;
     offset += limit;
-    if (offset > 5000) break;
+    if (offset >= maxScan) break;
   }
   return all;
 }
@@ -80,23 +68,20 @@ export default async function handler(req, res) {
 
   try {
     if (req.method === 'GET') {
-      const tagId = await getTagId(AC_URL, headers, TARGET_TAG);
-      if (!tagId) return res.status(200).json({ tagFound: false, suspects: [], total: 0 });
-
-      const contacts = await getAllContactsForTag(AC_URL, headers, tagId);
+      const contacts = await getAllContacts(AC_URL, headers);
       const suspects = contacts
-        .filter(c => isGibberish(c.firstName))
+        .filter(c => isGibberish(c.firstName) || isGibberish(c.lastName))
         .map(c => ({
           id: c.id,
           firstName: c.firstName,
           lastName: c.lastName,
           email: c.email,
-          createdUtc: c.cdate
+          createdUtc: c.cdate,
+          flaggedField: isGibberish(c.firstName) ? 'firstName' : 'lastName'
         }));
 
       return res.status(200).json({
-        tagFound: true,
-        totalContactsWithTag: contacts.length,
+        scannedContacts: contacts.length,
         suspectCount: suspects.length,
         suspects
       });

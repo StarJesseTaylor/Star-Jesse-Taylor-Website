@@ -86,7 +86,7 @@
 
 <div id="authView" class="auth-prompt">
   <h1>Bot Signup Audit</h1>
-  <p class="small">Enter your CRON_SECRET to load the bot list.</p>
+  <p class="small">Enter your CRON_SECRET to load the bot list. Saves locally so you don't have to re-enter.</p>
   <input type="password" id="keyInput" placeholder="Admin key" autocomplete="off" />
   <br>
   <button class="btn" id="authBtn">Load Audit</button>
@@ -96,7 +96,7 @@
 
 <div id="mainView" style="display:none;">
   <h1>Bot Signup Audit</h1>
-  <p class="subtitle">Cohort waitlist contacts in ActiveCampaign with bot-pattern names. Review, then delete.</p>
+  <p class="subtitle">All ActiveCampaign contacts with bot-pattern first OR last names. Review, copy emails for Mailchimp cleanup, then delete.</p>
 
   <div class="summary" id="summary"></div>
 
@@ -109,8 +109,10 @@
       <span id="selectedCount" class="small" style="margin-left: 16px;"></span>
     </div>
     <div class="actions">
-      <button class="btn" id="refreshBtn">Refresh List</button>
-      <button class="btn btn-danger" id="deleteBtn" disabled>Delete Selected</button>
+      <button class="btn" id="copyEmailsBtn">Copy bot emails</button>
+      <button class="btn" id="refreshBtn">Refresh list</button>
+      <button class="btn btn-danger" id="deleteBtn" disabled>Delete from AC</button>
+      <button class="btn" id="logoutBtn" style="background:#6b7280;">Forget key</button>
     </div>
   </div>
 
@@ -122,8 +124,20 @@
 </div>
 
 <script>
+  const STORAGE_KEY = 'star_admin_cron_secret';
   let adminKey = '';
   let suspects = [];
+
+  // Auto-load if we have a saved key
+  window.addEventListener('DOMContentLoaded', () => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      adminKey = saved;
+      document.getElementById('keyInput').value = saved;
+      setAuthStatus('Saved key found, loading...', 'info');
+      loadAudit();
+    }
+  });
 
   document.getElementById('authBtn').addEventListener('click', async () => {
     adminKey = document.getElementById('keyInput').value.trim();
@@ -133,6 +147,26 @@
     }
     setAuthStatus('Loading...', 'info');
     await loadAudit();
+  });
+
+  document.getElementById('logoutBtn').addEventListener('click', () => {
+    if (confirm('Forget the saved key? You will need to enter it again next time.')) {
+      localStorage.removeItem(STORAGE_KEY);
+      location.reload();
+    }
+  });
+
+  document.getElementById('copyEmailsBtn').addEventListener('click', () => {
+    if (!suspects.length) {
+      setStatus('No bot emails to copy.', 'info');
+      return;
+    }
+    const emails = suspects.map(s => s.email).filter(Boolean).join('\n');
+    navigator.clipboard.writeText(emails).then(() => {
+      setStatus('Copied ' + suspects.length + ' bot emails to clipboard. Paste into Mailchimp filter or unsubscribe tool.', 'success');
+    }).catch(err => {
+      setStatus('Copy failed: ' + err.message, 'error');
+    });
   });
 
   function setAuthStatus(msg, type) {
@@ -156,11 +190,12 @@
     const showError = (msg) => onAuthScreen ? setAuthStatus(msg, 'error') : setStatus(msg, 'error');
     const showInfo = (msg) => onAuthScreen ? setAuthStatus(msg, 'info') : setStatus(msg, 'info');
 
-    showInfo('Loading suspects from ActiveCampaign...');
+    showInfo('Scanning ActiveCampaign contacts (this can take 30-60 seconds for large lists)...');
     try {
       const res = await fetch('/api/admin/audit-bot-signups?key=' + encodeURIComponent(adminKey));
       if (res.status === 401) {
         showError('Wrong admin key. Check CRON_SECRET in Vercel env vars.');
+        localStorage.removeItem(STORAGE_KEY);
         return;
       }
       const data = await res.json();
@@ -168,6 +203,8 @@
         showError('Error: ' + (data.error || 'Unknown'));
         return;
       }
+      // Only persist key after a successful auth
+      localStorage.setItem(STORAGE_KEY, adminKey);
       suspects = data.suspects || [];
       document.getElementById('authView').style.display = 'none';
       document.getElementById('mainView').style.display = 'block';
@@ -180,10 +217,12 @@
   }
 
   function renderSummary(data) {
+    const scanned = data.scannedContacts || 0;
+    const bots = data.suspectCount || 0;
     document.getElementById('summary').innerHTML =
-      '<div class="summary-stat"><strong>' + (data.totalContactsWithTag || 0) + '</strong><span>Total cohort:waitlist contacts</span></div>' +
-      '<div class="summary-stat"><strong style="color: var(--red);">' + (data.suspectCount || 0) + '</strong><span>Bot-pattern signups</span></div>' +
-      '<div class="summary-stat"><strong style="color: var(--green);">' + ((data.totalContactsWithTag || 0) - (data.suspectCount || 0)) + '</strong><span>Likely real signups</span></div>';
+      '<div class="summary-stat"><strong>' + scanned + '</strong><span>Total contacts scanned</span></div>' +
+      '<div class="summary-stat"><strong style="color: var(--red);">' + bots + '</strong><span>Bot-pattern signups</span></div>' +
+      '<div class="summary-stat"><strong style="color: var(--green);">' + (scanned - bots) + '</strong><span>Likely real contacts</span></div>';
   }
 
   function renderTable() {
@@ -197,15 +236,20 @@
       '<th>First Name</th>' +
       '<th>Last Name</th>' +
       '<th>Email</th>' +
+      '<th>Flagged</th>' +
       '<th>Created</th>' +
       '<th>AC ID</th>' +
       '</tr></thead><tbody>';
     suspects.forEach(s => {
+      const fName = s.firstName || '';
+      const lName = s.lastName || '';
+      const flag = s.flaggedField || 'firstName';
       html += '<tr>' +
         '<td><input type="checkbox" class="checkbox suspect-row" data-id="' + s.id + '"></td>' +
-        '<td class="gibberish">' + escapeHtml(s.firstName || '') + '</td>' +
-        '<td>' + escapeHtml(s.lastName || '') + '</td>' +
+        '<td' + (flag === 'firstName' ? ' class="gibberish"' : '') + '>' + escapeHtml(fName) + '</td>' +
+        '<td' + (flag === 'lastName' ? ' class="gibberish"' : '') + '>' + escapeHtml(lName) + '</td>' +
         '<td>' + escapeHtml(s.email || '') + '</td>' +
+        '<td class="small">' + flag + '</td>' +
         '<td class="small">' + (s.createdUtc ? s.createdUtc.split('T')[0] : '') + '</td>' +
         '<td class="small">' + s.id + '</td>' +
         '</tr>';
