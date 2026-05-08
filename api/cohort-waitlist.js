@@ -121,7 +121,7 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const { name, email, website_url } = req.body || {};
+  const { name, email, country, website_url } = req.body || {};
 
   // Honeypot: silently accept and discard if filled. Real users never see this field.
   if (website_url) {
@@ -130,10 +130,12 @@ export default async function handler(req, res) {
   }
 
   if (!email) return res.status(400).json({ error: 'Email is required' });
+  if (!name || name.trim().length < 2) return res.status(400).json({ error: 'Name is required' });
+  if (!country || country.trim().length < 2) return res.status(400).json({ error: 'Country is required' });
 
   // Bot pattern detector: long alphabetic string, no spaces, mixed case (e.g. "ARhGrIGfhLSpsIvRQtDrze")
   // Real names virtually never look like this. Real names have spaces or are <15 chars.
-  if (name && /^[A-Za-z]{15,}$/.test(name) && /[A-Z]/.test(name) && /[a-z]/.test(name)) {
+  if (/^[A-Za-z]{12,}$/.test(name) && /[A-Z]/.test(name) && /[a-z]/.test(name)) {
     console.log('Bot blocked (gibberish name):', { name, email });
     return res.status(200).json({ success: true });
   }
@@ -172,11 +174,15 @@ export default async function handler(req, res) {
       body: JSON.stringify({ contactList: { list: LIST_ID, contact: contactId, status: 1 } })
     }).catch(err => console.error('List add error:', err));
 
-    await Promise.all([
+    const tagPromises = [
       applyTag(AC_URL, headers, contactId, 'path:cohort'),
       applyTag(AC_URL, headers, contactId, 'cohort:waitlist'),
       applyTag(AC_URL, headers, contactId, 'source:website')
-    ]);
+    ];
+    if (country && country.trim()) {
+      tagPromises.push(applyTag(AC_URL, headers, contactId, 'country:' + country.trim()));
+    }
+    await Promise.all(tagPromises);
 
     return res.status(200).json({ success: true, contactId });
   } catch (err) {

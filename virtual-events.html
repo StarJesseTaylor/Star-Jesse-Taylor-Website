@@ -585,11 +585,15 @@
           <div class="hp-field" aria-hidden="true"><label>Website (do not fill): <input type="text" name="website_url" tabindex="-1" autocomplete="off"></label></div>
           <div>
             <label for="firstName">First Name</label>
-            <input type="text" id="firstName" name="firstName" required autocomplete="given-name" />
+            <input type="text" id="firstName" name="firstName" required minlength="2" autocomplete="given-name" />
           </div>
           <div>
             <label for="email">Email</label>
             <input type="email" id="email" name="email" required autocomplete="email" />
+          </div>
+          <div>
+            <label for="country">Country</label>
+            <input type="text" id="country" name="country" required list="countries" autocomplete="country-name" />
           </div>
           <div>
             <label>How are you connected to my work? <span style="text-transform:none;letter-spacing:0;font-weight:500;color:var(--mid-gray);">(check all that apply)</span></label>
@@ -790,6 +794,7 @@
       const payload = {
         firstName: data.get('firstName'),
         email: data.get('email'),
+        country: data.get('country') || '',
         message: data.get('message') || '',
         intent: intentInput.value,
         connection: Array.from(checkedConnections).map(cb => cb.value),

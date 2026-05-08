@@ -1,3 +1,28 @@
+// ===== SHARED COUNTRY DATALIST =====
+// Injects a single <datalist id="countries"> into the body so every signup
+// form can use list="countries" for country autocomplete.
+(function injectCountryDatalist() {
+  if (document.getElementById('countries')) return;
+  const COUNTRIES = [
+    'United States','United Kingdom','Canada','Australia','Germany','France','Spain','Italy','Netherlands','Sweden','Norway','Denmark','Finland','Ireland','Belgium','Switzerland','Austria','Portugal','Poland','Greece','Czech Republic','Hungary','Romania','Bulgaria','Croatia','Slovenia','Slovakia','Estonia','Latvia','Lithuania','Iceland','Luxembourg','Malta','Cyprus',
+    'Mexico','Brazil','Argentina','Chile','Colombia','Peru','Venezuela','Uruguay','Ecuador','Bolivia','Paraguay','Costa Rica','Panama','Guatemala','Honduras','Nicaragua','El Salvador','Dominican Republic','Cuba','Puerto Rico',
+    'Japan','China','South Korea','India','Singapore','Hong Kong','Taiwan','Malaysia','Thailand','Vietnam','Philippines','Indonesia','Pakistan','Bangladesh','Sri Lanka','Nepal','Cambodia','Laos','Myanmar','Mongolia','Kazakhstan','Uzbekistan',
+    'United Arab Emirates','Saudi Arabia','Israel','Turkey','Egypt','Jordan','Lebanon','Qatar','Kuwait','Bahrain','Oman','Iran','Iraq','Syria','Yemen','Palestine','Morocco','Tunisia','Algeria','Libya',
+    'South Africa','Nigeria','Kenya','Ghana','Ethiopia','Tanzania','Uganda','Rwanda','Senegal','Cameroon','Ivory Coast','Zimbabwe','Zambia','Botswana','Namibia',
+    'Russia','Ukraine','Belarus','Georgia','Armenia','Azerbaijan','Moldova','Serbia','Bosnia and Herzegovina','Albania','North Macedonia','Montenegro','Kosovo',
+    'New Zealand','Fiji','Papua New Guinea',
+    'Other'
+  ];
+  const dl = document.createElement('datalist');
+  dl.id = 'countries';
+  dl.innerHTML = COUNTRIES.map(c => `<option value="${c}">`).join('');
+  if (document.body) {
+    document.body.appendChild(dl);
+  } else {
+    document.addEventListener('DOMContentLoaded', () => document.body.appendChild(dl));
+  }
+})();
+
 // ===== NAV SCROLL EFFECT =====
 const nav = document.querySelector('.nav');
 const hamburger = document.querySelector('.nav-hamburger');
@@ -160,13 +185,14 @@ if (waitlistForm) {
     const data = new FormData(waitlistForm);
     const name = data.get('waitlist_name') || '';
     const email = data.get('waitlist_email') || '';
+    const country = data.get('waitlist_country') || '';
     const website_url = data.get('website_url') || '';
 
     try {
       await fetch('/api/cohort-waitlist', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, website_url })
+        body: JSON.stringify({ name, email, country, website_url })
       });
       if (typeof window.starTrack === 'function') {
         window.starTrack('cohort_waitlist_signup', { value: 0 });

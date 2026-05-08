@@ -366,11 +366,10 @@
     <div class="quiz-card active" id="qName">
       <div class="quiz-question">Quick. What should I call you?</div>
       <div class="quiz-form-stack">
-        <input type="text" id="qNameInput" class="quiz-input" placeholder="First name" autocomplete="given-name" />
+        <input type="text" id="qNameInput" class="quiz-input" placeholder="First name" autocomplete="given-name" minlength="2" required />
       </div>
       <div class="quiz-cta-row">
         <button class="quiz-submit-btn" id="qNameContinue" disabled>Continue</button>
-        <button class="quiz-skip-link" id="qNameSkip">Skip</button>
       </div>
     </div>
 
@@ -576,6 +575,7 @@
       <div class="quiz-form-stack">
         <div class="hp-field" aria-hidden="true"><label>Website (do not fill): <input type="text" id="qWebsiteUrl" name="website_url" tabindex="-1" autocomplete="off"></label></div>
         <input type="email" id="qEmailInput" class="quiz-input" placeholder="Your email" autocomplete="email" required />
+        <input type="text" id="qCountryInput" class="quiz-input" placeholder="Country" list="countries" autocomplete="country-name" required />
         <input type="tel" id="qPhoneInput" class="quiz-input" placeholder="Phone (optional, if you'd like a quick personal note)" autocomplete="tel" />
       </div>
       <div class="quiz-cta-row">
@@ -726,7 +726,6 @@
   // NAME CAPTURE
   const nameInput = document.getElementById('qNameInput');
   const nameContinue = document.getElementById('qNameContinue');
-  const nameSkip = document.getElementById('qNameSkip');
 
   nameInput.addEventListener('input', () => {
     nameContinue.disabled = nameInput.value.trim().length < 2;
@@ -736,10 +735,6 @@
   });
   nameContinue.addEventListener('click', () => {
     state.name = nameInput.value.trim();
-    goToQuestion(1);
-  });
-  nameSkip.addEventListener('click', () => {
-    state.name = '';
     goToQuestion(1);
   });
 
@@ -794,6 +789,7 @@
 
   // EMAIL GATE
   const emailInput = document.getElementById('qEmailInput');
+  const countryInput = document.getElementById('qCountryInput');
   const phoneInput = document.getElementById('qPhoneInput');
   const emailSubmit = document.getElementById('qEmailSubmit');
   const emailError = document.getElementById('qEmailError');
@@ -805,13 +801,20 @@
 
   emailSubmit.addEventListener('click', async () => {
     const email = emailInput.value.trim();
+    const country = countryInput.value.trim();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       emailError.textContent = 'Please enter a valid email.';
       emailError.classList.add('active');
       return;
     }
+    if (!country || country.length < 2) {
+      emailError.textContent = 'Please enter your country.';
+      emailError.classList.add('active');
+      return;
+    }
     emailError.classList.remove('active');
     state.email = email;
+    state.country = country;
     state.phone = phoneInput.value.trim();
 
     // Compute the result winner
@@ -831,6 +834,7 @@
         body: JSON.stringify({
           name: state.name,
           email: state.email,
+          country: state.country,
           phone: state.phone,
           result: state.result,
           symptom: state.symptom,

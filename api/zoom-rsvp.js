@@ -28,7 +28,7 @@ export default async function handler(req, res) {
   const AC_URL = (process.env.ACTIVECAMPAIGN_API_URL || 'https://starjessetaylor92181.api-us1.com').replace(/\/$/, '');
   if (!AC_KEY) return res.status(500).json({ error: 'Server configuration error' });
 
-  const { firstName, email, connection, intent, message, website_url } = req.body || {};
+  const { firstName, email, country, connection, intent, message, website_url } = req.body || {};
 
   // Honeypot
   if (website_url) {
@@ -36,11 +36,12 @@ export default async function handler(req, res) {
     return res.status(200).json({ success: true });
   }
 
-  if (!firstName) return res.status(400).json({ error: 'First name is required' });
+  if (!firstName || firstName.trim().length < 2) return res.status(400).json({ error: 'First name is required' });
   if (!email) return res.status(400).json({ error: 'Email is required' });
+  if (!country || country.trim().length < 2) return res.status(400).json({ error: 'Country is required' });
 
   // Bot pattern detector: long alphabetic string, no spaces, mixed case
-  if (firstName && /^[A-Za-z]{15,}$/.test(firstName) && /[A-Z]/.test(firstName) && /[a-z]/.test(firstName)) {
+  if (/^[A-Za-z]{12,}$/.test(firstName) && /[A-Z]/.test(firstName) && /[a-z]/.test(firstName)) {
     console.log('Bot blocked (gibberish name):', { firstName, email });
     return res.status(200).json({ success: true });
   }
@@ -60,6 +61,7 @@ export default async function handler(req, res) {
   }
 
   if (INTENT_TAG_MAP[intent]) tagsToApply.push(INTENT_TAG_MAP[intent]);
+  if (country && country.trim()) tagsToApply.push('country:' + country.trim());
 
   try {
     const syncRes = await fetch(`${AC_URL}/api/3/contact/sync`, {

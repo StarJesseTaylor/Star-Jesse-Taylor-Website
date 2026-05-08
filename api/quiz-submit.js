@@ -180,6 +180,7 @@ export default async function handler(req, res) {
   const {
     name,
     email,
+    country,
     phone,
     result,        // 'book' | 'courses' | 'intensive' | 'cohort' | 'coaching'
     symptom,       // 'anxiety_ocd' | 'stuck' | 'self_worth' | 'new'
@@ -196,9 +197,11 @@ export default async function handler(req, res) {
   }
 
   if (!email) return res.status(400).json({ error: 'Email is required' });
+  if (!name || name.trim().length < 2) return res.status(400).json({ error: 'Name is required' });
+  if (!country || country.trim().length < 2) return res.status(400).json({ error: 'Country is required' });
 
   // Bot pattern detector: long alphabetic string, no spaces, mixed case
-  if (name && /^[A-Za-z]{15,}$/.test(name) && /[A-Z]/.test(name) && /[a-z]/.test(name)) {
+  if (/^[A-Za-z]{12,}$/.test(name) && /[A-Z]/.test(name) && /[a-z]/.test(name)) {
     console.log('Bot blocked (gibberish name):', { name, email });
     return res.status(200).json({ success: true });
   }
@@ -253,12 +256,13 @@ export default async function handler(req, res) {
       })
     }).catch(err => console.error('List add error:', err));
 
-    // 3. Apply tags (path, symptom, pain bucket, source)
+    // 3. Apply tags (path, symptom, pain bucket, source, country)
     const tagsToApply = [];
     if (result && PATH_TAGS[result]) tagsToApply.push(PATH_TAGS[result]);
     if (symptom && SYMPTOM_TAGS[symptom]) tagsToApply.push(SYMPTOM_TAGS[symptom]);
     if (painScore) tagsToApply.push(painBucket(painScore));
     tagsToApply.push('source:quiz');
+    if (country && country.trim()) tagsToApply.push('country:' + country.trim());
 
     await Promise.all(tagsToApply.map(tag => applyTag(AC_URL, headers, contactId, tag)));
 
