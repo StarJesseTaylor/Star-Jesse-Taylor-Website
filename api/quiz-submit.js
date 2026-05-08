@@ -13,7 +13,7 @@
  */
 
 const LIST_ID = '4'; // Quiz Funnel List
-const FREE_CHAPTER_URL = 'https://shop.beacons.ai/starjessetaylor/6081c7e3-2b8f-4c18-ae93-c09042c1de4a';
+const BOOK_PURCHASE_URL = 'https://starjessetaylor.bio/shop/51c9e967-da06-4c5a-adf3-5d79d32e30da';
 const SITE_URL = 'https://starjessetaylor.com';
 
 const PATH_DETAILS = {
@@ -92,10 +92,9 @@ async function sendWelcomeEmail(toEmail, name, result) {
     '',
     'Next step: ' + path.cta + ' → ' + path.url,
     '',
-    'And as promised, here are the first 30 pages of the book, free:',
-    FREE_CHAPTER_URL,
+    'If you want the foundation written out, the Emotional Fitness book has the full framework. Read it tonight, start the practice tomorrow.',
     '',
-    'The book is the foundation of everything I teach. Read the first 30 pages, and you will already feel a shift in how you relate to your own mind.',
+    'Get the book ($29): ' + BOOK_PURCHASE_URL,
     '',
     'I am rooting for you.',
     '',
@@ -107,8 +106,8 @@ async function sendWelcomeEmail(toEmail, name, result) {
     return `<p style="margin:0 0 18px;line-height:1.65;color:#2C2C2C;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:15px;">${safeP}</p>`;
   }).join('');
   const ctaButton = `<p style="margin:24px 0;"><a href="${path.url}" style="display:inline-block;background:#1B6CA8;color:#fff;text-decoration:none;padding:14px 28px;border-radius:10px;font-weight:700;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;">${path.cta} →</a></p>`;
-  const chapterButton = `<p style="margin:24px 0;"><a href="${FREE_CHAPTER_URL}" style="display:inline-block;background:#fff;color:#1B6CA8;text-decoration:none;padding:14px 28px;border-radius:10px;font-weight:700;border:2px solid #1B6CA8;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;">Read the First 30 Pages →</a></p>`;
-  const html = `<div style="max-width:620px;margin:0 auto;padding:32px 24px;background:#fff;">${htmlParagraphs}${ctaButton}${chapterButton}</div>`;
+  const bookButton = `<p style="margin:24px 0;"><a href="${BOOK_PURCHASE_URL}" style="display:inline-block;background:#fff;color:#1B6CA8;text-decoration:none;padding:14px 28px;border-radius:10px;font-weight:700;border:2px solid #1B6CA8;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;">Get the Book — $29 →</a></p>`;
+  const html = `<div style="max-width:620px;margin:0 auto;padding:32px 24px;background:#fff;">${htmlParagraphs}${ctaButton}${bookButton}</div>`;
 
   try {
     const res = await fetch('https://api.resend.com/emails', {
@@ -254,15 +253,12 @@ export default async function handler(req, res) {
       })
     }).catch(err => console.error('List add error:', err));
 
-    // 3. Apply tags (path, symptom, pain bucket, plus Free Chapter Download
-    //    to trigger Star's existing AC automation that emails the first 30
-    //    pages of the book)
+    // 3. Apply tags (path, symptom, pain bucket, source)
     const tagsToApply = [];
     if (result && PATH_TAGS[result]) tagsToApply.push(PATH_TAGS[result]);
     if (symptom && SYMPTOM_TAGS[symptom]) tagsToApply.push(SYMPTOM_TAGS[symptom]);
     if (painScore) tagsToApply.push(painBucket(painScore));
     tagsToApply.push('source:quiz');
-    tagsToApply.push('Free Chapter Download');
 
     await Promise.all(tagsToApply.map(tag => applyTag(AC_URL, headers, contactId, tag)));
 

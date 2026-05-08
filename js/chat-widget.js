@@ -371,7 +371,6 @@
   } catch (_) {}
 
   const CTAS = {
-    'free-chapter':   { label: 'Get the First 30 Pages — Free',     href: 'free-chapter.html' },
     'book':           { label: 'Get the Book — $29',                href: 'https://starjessetaylor.bio/shop/51c9e967-da06-4c5a-adf3-5d79d32e30da', external: true },
     'courses':        { label: 'Browse Self-Paced Courses',         href: 'courses.html' },
     'intensive':      { label: 'Join the Intensive — $97',          href: 'services.html#intensive' },
