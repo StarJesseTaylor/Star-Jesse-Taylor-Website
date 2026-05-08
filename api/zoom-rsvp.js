@@ -28,7 +28,7 @@ export default async function handler(req, res) {
   const AC_URL = (process.env.ACTIVECAMPAIGN_API_URL || 'https://starjessetaylor92181.api-us1.com').replace(/\/$/, '');
   if (!AC_KEY) return res.status(500).json({ error: 'Server configuration error' });
 
-  const { firstName, email, country, connection, intent, message, website_url } = req.body || {};
+  const { firstName, lastName, email, country, phone, connection, intent, message, website_url } = req.body || {};
 
   // Honeypot
   if (website_url) {
@@ -37,6 +37,7 @@ export default async function handler(req, res) {
   }
 
   if (!firstName || firstName.trim().length < 2) return res.status(400).json({ error: 'First name is required' });
+  if (!lastName || lastName.trim().length < 1) return res.status(400).json({ error: 'Last name is required' });
   if (!email) return res.status(400).json({ error: 'Email is required' });
   if (!country || country.trim().length < 2) return res.status(400).json({ error: 'Country is required' });
 
@@ -62,12 +63,16 @@ export default async function handler(req, res) {
 
   if (INTENT_TAG_MAP[intent]) tagsToApply.push(INTENT_TAG_MAP[intent]);
   if (country && country.trim()) tagsToApply.push('country:' + country.trim());
+  if (phone && phone.trim()) tagsToApply.push('sms:opted-in');
 
   try {
+    const contactPayload = { email, firstName: firstName || '' };
+    if (lastName) contactPayload.lastName = lastName;
+    if (phone) contactPayload.phone = phone;
     const syncRes = await fetch(`${AC_URL}/api/3/contact/sync`, {
       method: 'POST',
       headers,
-      body: JSON.stringify({ contact: { email, firstName: firstName || '' } })
+      body: JSON.stringify({ contact: contactPayload })
     });
 
     if (!syncRes.ok) {

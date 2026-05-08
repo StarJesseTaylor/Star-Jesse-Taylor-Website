@@ -121,7 +121,7 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const { name, email, country, website_url } = req.body || {};
+  const { name, lastName, email, country, phone, website_url } = req.body || {};
 
   // Honeypot: silently accept and discard if filled. Real users never see this field.
   if (website_url) {
@@ -130,7 +130,8 @@ export default async function handler(req, res) {
   }
 
   if (!email) return res.status(400).json({ error: 'Email is required' });
-  if (!name || name.trim().length < 2) return res.status(400).json({ error: 'Name is required' });
+  if (!name || name.trim().length < 2) return res.status(400).json({ error: 'First name is required' });
+  if (!lastName || lastName.trim().length < 1) return res.status(400).json({ error: 'Last name is required' });
   if (!country || country.trim().length < 2) return res.status(400).json({ error: 'Country is required' });
 
   // Bot pattern detector: long alphabetic string, no spaces, mixed case (e.g. "ARhGrIGfhLSpsIvRQtDrze")
@@ -157,9 +158,12 @@ export default async function handler(req, res) {
   const headers = { 'Api-Token': AC_KEY, 'Content-Type': 'application/json' };
 
   try {
+    const contactPayload = { email, firstName: name || '' };
+    if (lastName) contactPayload.lastName = lastName;
+    if (phone) contactPayload.phone = phone;
     const syncRes = await fetch(`${AC_URL}/api/3/contact/sync`, {
       method: 'POST', headers,
-      body: JSON.stringify({ contact: { email, firstName: name || '' } })
+      body: JSON.stringify({ contact: contactPayload })
     });
     if (!syncRes.ok) {
       console.error('AC sync error:', syncRes.status, await syncRes.text());
@@ -181,6 +185,9 @@ export default async function handler(req, res) {
     ];
     if (country && country.trim()) {
       tagPromises.push(applyTag(AC_URL, headers, contactId, 'country:' + country.trim()));
+    }
+    if (phone && phone.trim()) {
+      tagPromises.push(applyTag(AC_URL, headers, contactId, 'sms:opted-in'));
     }
     await Promise.all(tagPromises);
 

@@ -499,9 +499,12 @@
               <p style="font-size:0.92rem;color:var(--charcoal);line-height:1.7;margin-bottom:20px;">The 10 Week Emotional Fitness Cohort opens for limited enrollment only a few times per year. Join the waitlist to be first to know when the next cohort opens and get early access before the public.</p>
               <form id="waitlistForm" style="display:flex;flex-direction:column;gap:12px;">
                 <div class="hp-field" aria-hidden="true"><label>Website (do not fill): <input type="text" name="website_url" tabindex="-1" autocomplete="off"></label></div>
-                <input type="text" name="waitlist_name" placeholder="Your Name" required minlength="2" autocomplete="given-name" style="padding:12px 16px;border:2px solid #ddd;border-radius:8px;font-size:0.95rem;font-family:inherit;outline:none;" />
+                <input type="text" name="waitlist_first_name" placeholder="First Name" required minlength="2" autocomplete="given-name" style="padding:12px 16px;border:2px solid #ddd;border-radius:8px;font-size:0.95rem;font-family:inherit;outline:none;" />
+                <input type="text" name="waitlist_last_name" placeholder="Last Name" required minlength="1" autocomplete="family-name" style="padding:12px 16px;border:2px solid #ddd;border-radius:8px;font-size:0.95rem;font-family:inherit;outline:none;" />
                 <input type="email" name="waitlist_email" placeholder="Your Email" required style="padding:12px 16px;border:2px solid #ddd;border-radius:8px;font-size:0.95rem;font-family:inherit;outline:none;" />
                 <input type="text" name="waitlist_country" placeholder="Country" required list="countries" autocomplete="country-name" style="padding:12px 16px;border:2px solid #ddd;border-radius:8px;font-size:0.95rem;font-family:inherit;outline:none;" />
+                <input type="tel" name="waitlist_phone" placeholder="Phone (optional)" autocomplete="tel" style="padding:12px 16px;border:2px solid #ddd;border-radius:8px;font-size:0.95rem;font-family:inherit;outline:none;" />
+                <p style="font-size:0.82rem;color:var(--mid-gray);margin:-4px 0 6px;line-height:1.5;">Optional. I'll text you a tip of the day. No calls.</p>
                 <button type="submit" class="btn btn-primary" style="width:100%;cursor:pointer;border:none;">Add Me to the Waitlist</button>
               </form>
               <div id="waitlistConfirmation" style="display:none;text-align:center;padding:20px;background:rgba(27,108,168,0.08);border-radius:8px;border:1px solid rgba(27,108,168,0.2);">

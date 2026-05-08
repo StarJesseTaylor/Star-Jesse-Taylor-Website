@@ -367,6 +367,7 @@
       <div class="quiz-question">Quick. What should I call you?</div>
       <div class="quiz-form-stack">
         <input type="text" id="qNameInput" class="quiz-input" placeholder="First name" autocomplete="given-name" minlength="2" required />
+        <input type="text" id="qLastNameInput" class="quiz-input" placeholder="Last name" autocomplete="family-name" minlength="1" required />
       </div>
       <div class="quiz-cta-row">
         <button class="quiz-submit-btn" id="qNameContinue" disabled>Continue</button>
@@ -576,7 +577,8 @@
         <div class="hp-field" aria-hidden="true"><label>Website (do not fill): <input type="text" id="qWebsiteUrl" name="website_url" tabindex="-1" autocomplete="off"></label></div>
         <input type="email" id="qEmailInput" class="quiz-input" placeholder="Your email" autocomplete="email" required />
         <input type="text" id="qCountryInput" class="quiz-input" placeholder="Country" list="countries" autocomplete="country-name" required />
-        <input type="tel" id="qPhoneInput" class="quiz-input" placeholder="Phone (optional, if you'd like a quick personal note)" autocomplete="tel" />
+        <input type="tel" id="qPhoneInput" class="quiz-input" placeholder="Phone (optional)" autocomplete="tel" />
+        <p class="quiz-phone-note" style="font-size:0.85rem;color:var(--mid-gray);margin:-12px 4px 0;line-height:1.5;">Optional. I'll text you a tip of the day. No calls.</p>
       </div>
       <div class="quiz-cta-row">
         <button class="quiz-submit-btn" id="qEmailSubmit">Show My Path →</button>
@@ -725,16 +727,23 @@
 
   // NAME CAPTURE
   const nameInput = document.getElementById('qNameInput');
+  const lastNameInput = document.getElementById('qLastNameInput');
   const nameContinue = document.getElementById('qNameContinue');
 
-  nameInput.addEventListener('input', () => {
-    nameContinue.disabled = nameInput.value.trim().length < 2;
-  });
+  function updateNameContinueDisabled() {
+    nameContinue.disabled = nameInput.value.trim().length < 2 || lastNameInput.value.trim().length < 1;
+  }
+  nameInput.addEventListener('input', updateNameContinueDisabled);
+  lastNameInput.addEventListener('input', updateNameContinueDisabled);
   nameInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !nameContinue.disabled) { e.preventDefault(); nameContinue.click(); }
+  });
+  lastNameInput.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' && !nameContinue.disabled) { e.preventDefault(); nameContinue.click(); }
   });
   nameContinue.addEventListener('click', () => {
     state.name = nameInput.value.trim();
+    state.lastName = lastNameInput.value.trim();
     goToQuestion(1);
   });
 
@@ -833,6 +842,7 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: state.name,
+          lastName: state.lastName,
           email: state.email,
           country: state.country,
           phone: state.phone,

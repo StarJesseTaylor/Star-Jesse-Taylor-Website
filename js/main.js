@@ -183,16 +183,18 @@ if (waitlistForm) {
     submitBtn.textContent = 'Adding you...';
 
     const data = new FormData(waitlistForm);
-    const name = data.get('waitlist_name') || '';
+    const firstName = data.get('waitlist_first_name') || data.get('waitlist_name') || '';
+    const lastName = data.get('waitlist_last_name') || '';
     const email = data.get('waitlist_email') || '';
     const country = data.get('waitlist_country') || '';
+    const phone = data.get('waitlist_phone') || '';
     const website_url = data.get('website_url') || '';
 
     try {
       await fetch('/api/cohort-waitlist', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, country, website_url })
+        body: JSON.stringify({ name: firstName, lastName, email, country, phone, website_url })
       });
       if (typeof window.starTrack === 'function') {
         window.starTrack('cohort_waitlist_signup', { value: 0 });
