@@ -1054,7 +1054,7 @@
   <div class="container">
     <div class="text-center fade-up" style="margin-bottom:32px;">
       <span class="section-label">Tickets</span>
-      <h2 class="section-title">Two Ways In.</h2>
+      <h2 class="section-title">Reserve a Seat.</h2>
     </div>
 
     <div style="text-align:center;margin:0 auto 28px;" class="fade-up">
@@ -1112,12 +1112,10 @@
       }
     </style>
 
-    <div class="tiers-grid">
+    <div class="tiers-grid" style="grid-template-columns:1fr;max-width:520px;margin:0 auto;">
 
-      <!-- GA -->
       <div class="tier-card fade-up">
         <div id="gaBonusBadge" style="position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:linear-gradient(90deg,#d97706,#f59e0b);color:#fff;font-size:0.72rem;font-weight:800;letter-spacing:0.16em;text-transform:uppercase;padding:6px 18px;border-radius:50px;white-space:nowrap;box-shadow:0 6px 18px rgba(217,119,6,0.32);">★ Bonus Course · Book by May 15</div>
-        <div class="tier-name">General Admission</div>
         <div class="tier-title">A Seat in the Room</div>
         <div class="tier-price">$97</div>
         <div class="tier-price-sub">Per person</div>
@@ -1127,22 +1125,7 @@
           <li>Open Q&amp;A with Star</li>
           <li id="gaBonusBullet" style="color:#9a4d00;font-weight:700;"><strong>★ Breakthrough Blueprint course included</strong> if booked by May 15</li>
         </ul>
-        <a href="https://buy.stripe.com/3cI9ASdIz6J7bd638lcMM18" class="tier-cta" target="_blank" rel="noopener" onclick="if(window.starTrack)window.starTrack('InitiateCheckout',{value:97,currency:'USD',content_name:'LA Event GA Ticket',content_category:'event_ticket'});">Take a GA seat →</a>
-      </div>
-
-      <!-- VIP -->
-      <div class="tier-card featured fade-up">
-        <div class="tier-name">VIP</div>
-        <div class="tier-title">Plus a Private 1-on-1 Coaching Session With Star</div>
-        <div class="tier-price">$347</div>
-        <div class="tier-price-sub">Per person</div>
-        <ul class="tier-features">
-          <li>Everything in General Admission</li>
-          <li>Private 50-minute 1-on-1 coaching session with Star via Zoom, scheduled within 2 weeks of the event</li>
-          <li>Front 2 rows</li>
-          <li><strong>Breakthrough Blueprint course included</strong></li>
-        </ul>
-        <a href="https://buy.stripe.com/00w4gy1ZRc3r1Cw6kxcMM19" class="tier-cta" target="_blank" rel="noopener" onclick="if(window.starTrack)window.starTrack('InitiateCheckout',{value:347,currency:'USD',content_name:'LA Event VIP Ticket',content_category:'event_ticket'});">Take a VIP seat →</a>
+        <a href="https://buy.stripe.com/3cI9ASdIz6J7bd638lcMM18" class="tier-cta" target="_blank" rel="noopener" onclick="if(window.starTrack)window.starTrack('InitiateCheckout',{value:97,currency:'USD',content_name:'LA Event GA Ticket',content_category:'event_ticket'});">Take a seat →</a>
       </div>
 
     </div>
@@ -1422,8 +1405,7 @@
       <p style="color:var(--charcoal);font-size:1.05rem;line-height:1.75;margin:0 0 32px;">If something in this page felt true, the room is open.</p>
 
       <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:16px;margin-bottom:20px;">
-        <a href="https://buy.stripe.com/3cI9ASdIz6J7bd638lcMM18" class="btn btn-outline btn-lg" target="_blank" rel="noopener" onclick="if(window.starTrack)window.starTrack('InitiateCheckout',{value:97,currency:'USD',content_name:'LA Event GA Ticket',content_category:'event_ticket'});">GA Seat · $97</a>
-        <a href="https://buy.stripe.com/00w4gy1ZRc3r1Cw6kxcMM19" class="btn btn-primary btn-lg" target="_blank" rel="noopener" onclick="if(window.starTrack)window.starTrack('InitiateCheckout',{value:347,currency:'USD',content_name:'LA Event VIP Ticket',content_category:'event_ticket'});">VIP Seat · $347</a>
+        <a href="https://buy.stripe.com/3cI9ASdIz6J7bd638lcMM18" class="btn btn-primary btn-lg" target="_blank" rel="noopener" onclick="if(window.starTrack)window.starTrack('InitiateCheckout',{value:97,currency:'USD',content_name:'LA Event GA Ticket',content_category:'event_ticket'});">Take a seat · $97</a>
       </div>
 
       <p style="font-size:0.9rem;color:#9a4d00;font-weight:700;margin:0;">★ Book by Friday May 15 and the Breakthrough Blueprint course comes with you.</p>
@@ -1468,7 +1450,7 @@
         <ul class="footer-links">
           <li><a href="services.html">1-on-1 Coaching</a></li>
           <li><a href="services.html">10-Week Cohort (Waitlist)</a></li>
-          <li><a href="event.html">Live Workshop ($97+)</a></li>
+          <li><a href="event.html">Live Workshop ($97)</a></li>
           <li><a href="courses.html">Courses</a></li>
           <li><a href="https://starjessetaylor.bio/shop/51c9e967-da06-4c5a-adf3-5d79d32e30da" target="_blank" rel="noopener">The Book ($29)</a></li>
         </ul>
@@ -1521,13 +1503,13 @@
         var gaSold = data && data.ga && typeof data.ga.sold === 'number' ? data.ga.sold : 0;
         var bonusLeft = Math.max(0, BONUS_LIMIT - gaSold);
 
-        // ----- Bonus visibility (tracks GA sales only — VIP gets course always) -----
+        // ----- Bonus visibility -----
         if (bonusLeft === 0) {
           if (bonusBanner) bonusBanner.style.display = 'none';
           if (gaBonusBadge) gaBonusBadge.style.display = 'none';
           if (gaBonusBullet) gaBonusBullet.style.display = 'none';
         } else if (bonusCounter) {
-          bonusCounter.textContent = '🎁 GA bonus included if booked by Friday May 15';
+          bonusCounter.textContent = '🎁 Bonus course included if booked by Friday May 15';
         }
 
         // ----- Seat counter -----
@@ -1570,10 +1552,8 @@
   // Track Stripe checkout clicks (actual buy intent)
   document.querySelectorAll('a[href*="buy.stripe.com"]').forEach(link => {
     link.addEventListener('click', () => {
-      const isVIP = link.href.includes('00w4gy1ZRc3r1Cw6kxcMM19');
       trackEvent('stripe_checkout_click', {
-        tier: isVIP ? 'VIP' : 'GA',
-        amount: isVIP ? 347 : 97,
+        amount: 97,
         link: link.href
       });
     });
