@@ -559,13 +559,11 @@
     <!-- QUESTION 6 · STAKES -->
     <div class="quiz-card" id="q6">
       <div class="quiz-question">What changes for you if you solve this in the next 90 days?</div>
-      <p style="color:var(--mid-gray);font-size:0.95rem;line-height:1.6;margin-top:-18px;margin-bottom:24px;">One sentence is enough. Skip if you'd rather not say.</p>
       <div class="quiz-form-stack">
-        <textarea id="qStakesInput" class="quiz-textarea" placeholder="If I solved this in 90 days, I would feel..."></textarea>
+        <textarea id="qStakesInput" class="quiz-textarea" required minlength="10" placeholder="If I solved this in 90 days, I would feel..."></textarea>
       </div>
       <div class="quiz-cta-row">
-        <button class="quiz-submit-btn" id="qStakesContinue">Continue</button>
-        <button class="quiz-skip-link" id="qStakesSkip">Skip</button>
+        <button class="quiz-submit-btn" id="qStakesContinue" disabled>Continue</button>
       </div>
     </div>
 
@@ -787,12 +785,13 @@
 
   // STAKES (q6)
   const stakesInput = document.getElementById('qStakesInput');
-  document.getElementById('qStakesContinue').addEventListener('click', () => {
-    state.stakes = stakesInput.value.trim();
-    goToEmail();
+  const stakesContinue = document.getElementById('qStakesContinue');
+  stakesInput.addEventListener('input', () => {
+    stakesContinue.disabled = stakesInput.value.trim().length < 10;
   });
-  document.getElementById('qStakesSkip').addEventListener('click', () => {
-    state.stakes = '';
+  stakesContinue.addEventListener('click', () => {
+    if (stakesInput.value.trim().length < 10) return;
+    state.stakes = stakesInput.value.trim();
     goToEmail();
   });
 
