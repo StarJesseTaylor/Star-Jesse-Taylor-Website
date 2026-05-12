@@ -198,17 +198,65 @@
             </div>
           </div>
 
-          <div class="form-group">
-            <label for="how_found">How did you find Star? <span>*</span></label>
-            <select id="how_found" name="how_found" required>
-              <option value="" disabled selected>Select one</option>
-              <option value="Instagram">Instagram</option>
-              <option value="TikTok">TikTok</option>
-              <option value="YouTube">YouTube</option>
-              <option value="Podcast">Podcast</option>
-              <option value="Friend or referral">Friend or referral</option>
-              <option value="Other">Other</option>
-            </select>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="timezone">Time Zone <span>*</span></label>
+              <select id="timezone" name="timezone" required>
+                <option value="" disabled selected>Select your time zone</option>
+                <option value="HST (UTC-10) Hawaii">HST (UTC-10) Hawaii</option>
+                <option value="AKST (UTC-9) Alaska">AKST (UTC-9) Alaska</option>
+                <option value="PST (UTC-8) Los Angeles, Vancouver">PST (UTC-8) Los Angeles, Vancouver</option>
+                <option value="MST (UTC-7) Denver, Phoenix">MST (UTC-7) Denver, Phoenix</option>
+                <option value="CST (UTC-6) Chicago, Mexico City">CST (UTC-6) Chicago, Mexico City</option>
+                <option value="EST (UTC-5) New York, Toronto">EST (UTC-5) New York, Toronto</option>
+                <option value="AST (UTC-4) Atlantic, Caracas">AST (UTC-4) Atlantic, Caracas</option>
+                <option value="BRT (UTC-3) São Paulo, Buenos Aires">BRT (UTC-3) São Paulo, Buenos Aires</option>
+                <option value="GMT (UTC+0) London, Lisbon">GMT (UTC+0) London, Lisbon</option>
+                <option value="CET (UTC+1) Paris, Berlin, Madrid">CET (UTC+1) Paris, Berlin, Madrid</option>
+                <option value="EET (UTC+2) Athens, Cairo, Johannesburg">EET (UTC+2) Athens, Cairo, Johannesburg</option>
+                <option value="MSK (UTC+3) Moscow, Istanbul, Riyadh">MSK (UTC+3) Moscow, Istanbul, Riyadh</option>
+                <option value="GST (UTC+4) Dubai, Baku">GST (UTC+4) Dubai, Baku</option>
+                <option value="PKT (UTC+5) Karachi, Islamabad">PKT (UTC+5) Karachi, Islamabad</option>
+                <option value="IST (UTC+5:30) India, Sri Lanka">IST (UTC+5:30) India, Sri Lanka</option>
+                <option value="BST (UTC+6) Dhaka, Almaty">BST (UTC+6) Dhaka, Almaty</option>
+                <option value="ICT (UTC+7) Bangkok, Jakarta, Hanoi">ICT (UTC+7) Bangkok, Jakarta, Hanoi</option>
+                <option value="CST (UTC+8) Beijing, Singapore, Perth">CST (UTC+8) Beijing, Singapore, Perth</option>
+                <option value="JST (UTC+9) Tokyo, Seoul">JST (UTC+9) Tokyo, Seoul</option>
+                <option value="AEST (UTC+10) Sydney, Melbourne">AEST (UTC+10) Sydney, Melbourne</option>
+                <option value="NZST (UTC+12) Auckland, Wellington">NZST (UTC+12) Auckland, Wellington</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="how_found">How did you find Star? <span>*</span></label>
+              <select id="how_found" name="how_found" required>
+                <option value="" disabled selected>Select one</option>
+                <option value="Instagram">Instagram</option>
+                <option value="TikTok">TikTok</option>
+                <option value="YouTube">YouTube</option>
+                <option value="Podcast">Podcast</option>
+                <option value="Friend or referral">Friend or referral</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-top:8px;">
+            <label style="margin-bottom:14px;">Quick check-ins (tick everything that applies):</label>
+            <div style="display:flex;flex-direction:column;gap:12px;background:var(--off-white);border:1px solid var(--light-gray);border-radius:10px;padding:18px 20px;">
+              <label style="display:flex;align-items:flex-start;gap:12px;cursor:pointer;font-weight:500;color:var(--charcoal);line-height:1.55;">
+                <input type="checkbox" name="head_time" value="Yes" style="margin-top:5px;flex-shrink:0;width:18px;height:18px;cursor:pointer;" />
+                <span>I spend a lot of time inside my head.</span>
+              </label>
+              <label style="display:flex;align-items:flex-start;gap:12px;cursor:pointer;font-weight:500;color:var(--charcoal);line-height:1.55;">
+                <input type="checkbox" name="avoiding_action" value="Yes" style="margin-top:5px;flex-shrink:0;width:18px;height:18px;cursor:pointer;" />
+                <span>I am avoiding actions to grow my life because of emotions like anxiety, depression, or other.</span>
+              </label>
+              <label style="display:flex;align-items:flex-start;gap:12px;cursor:pointer;font-weight:500;color:var(--charcoal);line-height:1.55;">
+                <input type="checkbox" name="read_book" value="Yes" style="margin-top:5px;flex-shrink:0;width:18px;height:18px;cursor:pointer;" />
+                <span>I have read The Emotional Fitness book. <span style="color:var(--mid-gray);font-weight:400;">(By the way, it is a quick read. Only 120 pages of only valuable things.)</span></span>
+              </label>
+            </div>
           </div>
         </div>
 
@@ -373,8 +421,8 @@
         <ul class="footer-links">
           <li><a href="services.html">1-on-1 Coaching</a></li>
           <li><a href="services.html">10-Week Cohort (Waitlist)</a></li>
-          <li><a href="services.html">Trial Session ($97)</a></li>
           <li><a href="courses.html">Courses</a></li>
+          <li><a href="virtual-events.html">Free Virtual Event</a></li>
           <li><a href="https://starjessetaylor.bio/shop/51c9e967-da06-4c5a-adf3-5d79d32e30da" target="_blank" rel="noopener">The Book ($29)</a></li>
         </ul>
       </div>
