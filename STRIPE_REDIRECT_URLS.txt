@@ -1,0 +1,22 @@
+STRIPE SUCCESS REDIRECT URLS
+============================
+Paste these into Stripe → Payment Link → Settings → After payment → "Confirmation page" → "Don't show confirmation page" → "Redirect customer to a URL"
+
+----------------------------------------
+BREAKTHROUGH BLUEPRINT COURSE ($147)
+Stripe link: https://buy.stripe.com/bJe3cueMDgjHgxqeR3cMM1b
+Redirect to:
+https://starjessetaylor.com/breakthrough-blueprint-access-9k7m2vxp.html
+----------------------------------------
+
+----------------------------------------
+HOW TO CREATE A HEALTHY RELATIONSHIP COURSE ($37)
+Stripe link: https://buy.stripe.com/aFa4gygUL6J73KEcIVcMM1d
+Redirect to:
+https://starjessetaylor.com/healthy-relationship-access-3p8x7m9k.html
+----------------------------------------
+
+Notes:
+- If your live site is on www.starjessetaylor.com instead of starjessetaylor.com, replace the domain accordingly.
+- Each course has its own private delivery URL. Do NOT reuse the same redirect URL for different courses.
+- Bookmark or save this file every time you launch a new course so you have all the URLs in one place.
