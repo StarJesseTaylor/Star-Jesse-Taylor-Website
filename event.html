@@ -353,10 +353,11 @@
     }
     .tiers-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 28px;
-      max-width: 920px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      max-width: 1100px;
       margin: 0 auto;
+      align-items: stretch;
     }
     .tier-card {
       background: var(--white);
@@ -484,9 +485,92 @@
       background: var(--cobalt);
       color: var(--white);
     }
-    @media (max-width: 880px) {
+    @media (max-width: 980px) {
       .tiers-grid { grid-template-columns: 1fr; gap: 28px; }
       .tier-card.featured { transform: none; }
+    }
+
+    /* UPCOMING (MUTED) TIERS */
+    .tier-card.tier-upcoming {
+      opacity: 0.62;
+      filter: saturate(0.55);
+      background: var(--light-gray);
+    }
+    .tier-card.tier-upcoming:hover {
+      opacity: 0.8;
+      transform: translateY(-2px);
+    }
+    .tier-card.tier-upcoming .tier-price {
+      color: var(--mid-gray);
+    }
+    .tier-cta-disabled {
+      display: block;
+      text-align: center;
+      padding: 16px;
+      border-radius: 50px;
+      font-weight: 800;
+      font-size: 0.96rem;
+      background: var(--white);
+      color: var(--mid-gray);
+      border: 2px dashed rgba(0,0,0,0.18);
+      cursor: not-allowed;
+      user-select: none;
+    }
+
+    /* EARLY BIRD COUNTDOWN */
+    .early-bird-countdown {
+      background: linear-gradient(135deg, #b91c1c 0%, #dc2626 100%);
+      color: var(--white);
+      border-radius: 14px;
+      padding: 16px 14px;
+      margin-bottom: 22px;
+      text-align: center;
+      box-shadow: 0 8px 22px rgba(185,28,28,0.32);
+    }
+    .ebc-label {
+      font-size: 0.74rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+      opacity: 0.95;
+    }
+    .ebc-row {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+    }
+    .ebc-block {
+      background: rgba(255,255,255,0.16);
+      border-radius: 8px;
+      padding: 8px 6px;
+      flex: 1;
+      min-width: 0;
+    }
+    .ebc-num {
+      font-size: 1.55rem;
+      font-weight: 900;
+      line-height: 1.05;
+    }
+    .ebc-unit {
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+      opacity: 0.92;
+      margin-top: 2px;
+    }
+    .early-bird-countdown.ended {
+      background: var(--charcoal);
+      padding: 22px 14px;
+    }
+    .early-bird-countdown.ended .ebc-label {
+      font-size: 1.05rem;
+      letter-spacing: 0.12em;
+      margin: 0;
+    }
+    .early-bird-countdown.ended .ebc-row {
+      display: none;
     }
 
     /* GUARANTEE */
@@ -1118,24 +1202,35 @@
   </div>
 </section>
 
-<!-- PRICING TIERS -->
+<!-- PRICING TIERS · 3-TIER EARLY BIRD LADDER -->
 <section class="tiers-section" id="tiers">
   <div class="container">
     <div class="text-center fade-up" style="margin-bottom:48px;">
-      <span class="section-label">Two Ways In</span>
-      <h2 class="section-title">Pick the Experience That Fits You.</h2>
-      <p style="color:var(--mid-gray);max-width:600px;margin:0 auto;font-size:1.05rem;">Both tiers include the full workshop, the workbook, the 14-day replay, the daily email series, and the community channel. VIP adds a private Clarity Session with Star.</p>
+      <span class="section-label">Price Ladder</span>
+      <h2 class="section-title">Lock In Early Bird Before It's Gone.</h2>
+      <p style="color:var(--mid-gray);max-width:620px;margin:0 auto;font-size:1.05rem;">The price goes up twice before May 30. Reserve at $97 now or pay $199 or $299 later. Every tier includes the full workshop, the workbook, the 14-day replay, the daily email series, and the community channel.</p>
     </div>
 
     <div class="tiers-grid">
 
-      <!-- GA -->
-      <div class="tier-card fade-up">
-        <div class="tier-name">General Admission</div>
-        <div class="tier-title">A Seat in the Room</div>
+      <!-- EARLY BIRD · ACTIVE -->
+      <div class="tier-card featured fade-up">
+        <div class="tier-badge">Available Now</div>
+        <div class="tier-name">Early Bird</div>
+        <div class="tier-title">Lock In Today</div>
         <div class="tier-price">$97</div>
-        <div class="tier-price-sub">Per person</div>
-        <div class="tier-scarcity">🔥 22 of 22 GA seats remaining</div>
+        <div class="tier-price-sub">Per person · ends May 14</div>
+
+        <div class="early-bird-countdown" id="earlyBirdCountdown">
+          <div class="ebc-label" id="ebc-label">Early bird ends in</div>
+          <div class="ebc-row" id="ebc-row">
+            <div class="ebc-block"><div class="ebc-num" id="ebc-days">--</div><div class="ebc-unit">Days</div></div>
+            <div class="ebc-block"><div class="ebc-num" id="ebc-hours">--</div><div class="ebc-unit">Hrs</div></div>
+            <div class="ebc-block"><div class="ebc-num" id="ebc-mins">--</div><div class="ebc-unit">Min</div></div>
+            <div class="ebc-block"><div class="ebc-num" id="ebc-secs">--</div><div class="ebc-unit">Sec</div></div>
+          </div>
+        </div>
+
         <ul class="tier-features">
           <li>Full 5-hour live workshop</li>
           <li>Two live coaching demos</li>
@@ -1146,26 +1241,37 @@
           <li>7-day daily email series</li>
           <li>30-day private community channel</li>
         </ul>
-        <a href="https://buy.stripe.com/REPLACE_WITH_GA_LINK" class="tier-cta" target="_blank" rel="noopener">Reserve a GA Seat — $97</a>
+        <a href="https://buy.stripe.com/3cI9ASdIz6J7bd638lcMM18" class="tier-cta" target="_blank" rel="noopener">Reserve a Seat, $97</a>
       </div>
 
-      <!-- VIP (FEATURED) -->
-      <div class="tier-card featured fade-up">
-        <div class="tier-badge">Best Value</div>
-        <div class="tier-name">VIP</div>
-        <div class="tier-title">Front Row + Private Clarity Session</div>
-        <div class="tier-price">$347</div>
-        <div class="tier-price-sub">Per person · A $597 value</div>
-        <div class="tier-scarcity">⚡ 8 of 8 VIP seats remaining</div>
+      <!-- STANDARD · UPCOMING -->
+      <div class="tier-card tier-upcoming fade-up">
+        <div class="tier-name">Standard</div>
+        <div class="tier-title">May 14 to May 24</div>
+        <div class="tier-price">$199</div>
+        <div class="tier-price-sub">Per person · opens May 14</div>
         <ul class="tier-features">
-          <li>Everything in General Admission</li>
-          <li>Private 50-minute Clarity Session with Star via Zoom (scheduled within 2 weeks of the event · normally $500 standalone)</li>
-          <li>Front 2 rows · best seats in the house</li>
-          <li>30-minute private Q&amp;A circle with Star after the event</li>
-          <li>Photo with Star</li>
-          <li>Priority entry · skip the line at doors</li>
+          <li>Same full 5-hour workshop</li>
+          <li>Same workbook and 14-day replay</li>
+          <li>Same email series and community channel</li>
+          <li>Same room, same teaching, higher price</li>
         </ul>
-        <a href="https://buy.stripe.com/REPLACE_WITH_VIP_LINK" class="tier-cta" target="_blank" rel="noopener">Reserve a VIP Seat — $347</a>
+        <div class="tier-cta-disabled">Opens May 14</div>
+      </div>
+
+      <!-- FINAL WEEK · UPCOMING -->
+      <div class="tier-card tier-upcoming fade-up">
+        <div class="tier-name">Final Week</div>
+        <div class="tier-title">May 25 to May 30</div>
+        <div class="tier-price">$299</div>
+        <div class="tier-price-sub">Per person · opens May 25</div>
+        <ul class="tier-features">
+          <li>Same full 5-hour workshop</li>
+          <li>Same workbook and 14-day replay</li>
+          <li>Same email series and community channel</li>
+          <li>Last chance pricing before doors close</li>
+        </ul>
+        <div class="tier-cta-disabled">Opens May 25</div>
       </div>
 
     </div>
@@ -1415,6 +1521,40 @@
     }
     tick();
     setInterval(tick, 1000);
+  })();
+
+  // Early bird countdown to May 14, 2026 4:30 PM Pacific (23:30 UTC)
+  (function() {
+    const target = new Date('2026-05-14T23:30:00Z').getTime();
+    const wrap = document.getElementById('earlyBirdCountdown');
+    const labelEl = document.getElementById('ebc-label');
+    const dEl = document.getElementById('ebc-days');
+    const hEl = document.getElementById('ebc-hours');
+    const mEl = document.getElementById('ebc-mins');
+    const sEl = document.getElementById('ebc-secs');
+    if (!wrap || !dEl) return;
+
+    let timer;
+
+    function tick() {
+      const diff = target - Date.now();
+      if (diff <= 0) {
+        wrap.classList.add('ended');
+        if (labelEl) labelEl.textContent = 'EARLY BIRD ENDED';
+        if (timer) clearInterval(timer);
+        return;
+      }
+      const days = Math.floor(diff / 86400000);
+      const hours = Math.floor((diff % 86400000) / 3600000);
+      const mins = Math.floor((diff % 3600000) / 60000);
+      const secs = Math.floor((diff % 60000) / 1000);
+      dEl.textContent = days;
+      hEl.textContent = String(hours).padStart(2, '0');
+      mEl.textContent = String(mins).padStart(2, '0');
+      sEl.textContent = String(secs).padStart(2, '0');
+    }
+    tick();
+    timer = setInterval(tick, 1000);
   })();
 </script>
 
