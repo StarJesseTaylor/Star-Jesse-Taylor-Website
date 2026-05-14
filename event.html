@@ -195,14 +195,6 @@
       text-shadow: 0 1px 10px rgba(0,0,0,0.5);
       margin-bottom: 6px;
     }
-    .hero-countdown {
-      margin: 6px 0 18px;
-    }
-    .hero-countdown .eb-countdown-block {
-      background: linear-gradient(135deg,#7f1d1d 0%,#dc2626 100%);
-      border: 1px solid rgba(255,255,255,0.18);
-      box-shadow: 0 10px 28px rgba(220,38,38,0.4), 0 2px 8px rgba(0,0,0,0.35);
-    }
 
     /* COUNTDOWN */
     .event-countdown {
@@ -553,49 +545,6 @@
       .tier-card.featured { transform: none; }
     }
 
-    /* EARLY BIRD COUNTDOWN */
-    .early-bird-countdown {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      margin: 18px 0 22px;
-      flex-wrap: wrap;
-    }
-    .eb-countdown-block {
-      background: linear-gradient(135deg,#7f1d1d 0%,#dc2626 100%);
-      color: #fff;
-      border-radius: 12px;
-      padding: 12px 14px;
-      min-width: 70px;
-      box-shadow: 0 8px 22px rgba(220,38,38,0.32);
-      text-align: center;
-    }
-    .eb-countdown-num {
-      font-size: 2rem;
-      font-weight: 900;
-      line-height: 1;
-      letter-spacing: 0.02em;
-    }
-    .eb-countdown-label {
-      font-size: 0.66rem;
-      font-weight: 800;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      margin-top: 6px;
-      opacity: 0.92;
-    }
-    .early-bird-ended {
-      display: block;
-      text-align: center;
-      background: #1a1a1a;
-      color: #fff;
-      font-weight: 900;
-      letter-spacing: 0.22em;
-      font-size: 1.05rem;
-      padding: 16px 18px;
-      border-radius: 12px;
-      margin: 18px 0 22px;
-    }
     .early-bird-label {
       display: inline-block;
       background: linear-gradient(90deg,#dc2626,#f59e0b);
@@ -656,8 +605,6 @@
     }
     @media (max-width: 540px) {
       .price-ladder { grid-template-columns: 1fr; }
-      .eb-countdown-block { min-width: 62px; padding: 10px 12px; }
-      .eb-countdown-num { font-size: 1.6rem; }
     }
 
     /* GUARANTEE */
@@ -1030,13 +977,6 @@
           <div class="hero-price-alert-line">$97 now, then $199 May 14 to 24, then $299 May 25 to 30.</div>
         </div>
 
-        <div class="early-bird-countdown eb-countdown hero-countdown" aria-live="polite">
-          <div class="eb-countdown-block"><div class="eb-countdown-num" data-eb-unit="days">0</div><div class="eb-countdown-label">Days</div></div>
-          <div class="eb-countdown-block"><div class="eb-countdown-num" data-eb-unit="hours">0</div><div class="eb-countdown-label">Hours</div></div>
-          <div class="eb-countdown-block"><div class="eb-countdown-num" data-eb-unit="minutes">0</div><div class="eb-countdown-label">Min</div></div>
-          <div class="eb-countdown-block"><div class="eb-countdown-num" data-eb-unit="seconds">0</div><div class="eb-countdown-label">Sec</div></div>
-        </div>
-
         <a href="#tiers" class="event-cta-btn">Take a seat · $97</a>
       </div>
     </div>
@@ -1303,13 +1243,6 @@
           <li>Open Q&amp;A with Star</li>
           <li id="gaBonusBullet" style="color:#9a4d00;font-weight:700;"><strong>★ Breakthrough Blueprint course included</strong> if booked by May 15</li>
         </ul>
-
-        <div class="early-bird-countdown eb-countdown" aria-live="polite">
-          <div class="eb-countdown-block"><div class="eb-countdown-num" data-eb-unit="days">0</div><div class="eb-countdown-label">Days</div></div>
-          <div class="eb-countdown-block"><div class="eb-countdown-num" data-eb-unit="hours">0</div><div class="eb-countdown-label">Hours</div></div>
-          <div class="eb-countdown-block"><div class="eb-countdown-num" data-eb-unit="minutes">0</div><div class="eb-countdown-label">Min</div></div>
-          <div class="eb-countdown-block"><div class="eb-countdown-num" data-eb-unit="seconds">0</div><div class="eb-countdown-label">Sec</div></div>
-        </div>
 
         <a href="https://buy.stripe.com/3cI9ASdIz6J7bd638lcMM18" class="tier-cta" target="_blank" rel="noopener" onclick="if(window.starTrack)window.starTrack('InitiateCheckout',{value:97,currency:'USD',content_name:'LA Event GA Ticket',content_category:'event_ticket'});">Lock in $97 →</a>
       </div>
@@ -1840,43 +1773,6 @@
     setTimeout(() => trackEvent('engaged_120s'), 120000);
     // And on leaving
     window.addEventListener('beforeunload', reportTime);
-  })();
-
-  // EARLY BIRD COUNTDOWN — ends May 14, 2026 at 5:00 PM Pacific (00:00 UTC May 15)
-  (function() {
-    const target = new Date('2026-05-15T00:00:00Z').getTime();
-    const wraps = Array.from(document.querySelectorAll('.eb-countdown'));
-    if (!wraps.length) return;
-
-    function pad(n) { return n < 10 ? '0' + n : String(n); }
-
-    let timer = null;
-
-    function tick() {
-      const diff = target - Date.now();
-      if (diff <= 0) {
-        wraps.forEach(w => { w.outerHTML = '<div class="early-bird-ended">EARLY BIRD ENDED.</div>'; });
-        if (timer) clearInterval(timer);
-        return;
-      }
-      const days = Math.floor(diff / 86400000);
-      const hours = Math.floor((diff % 86400000) / 3600000);
-      const minutes = Math.floor((diff % 3600000) / 60000);
-      const seconds = Math.floor((diff % 60000) / 1000);
-      wraps.forEach(w => {
-        const d = w.querySelector('[data-eb-unit="days"]');
-        const h = w.querySelector('[data-eb-unit="hours"]');
-        const m = w.querySelector('[data-eb-unit="minutes"]');
-        const s = w.querySelector('[data-eb-unit="seconds"]');
-        if (d) d.textContent = days;
-        if (h) h.textContent = pad(hours);
-        if (m) m.textContent = pad(minutes);
-        if (s) s.textContent = pad(seconds);
-      });
-    }
-
-    tick();
-    timer = setInterval(tick, 1000);
   })();
 
 </script>
