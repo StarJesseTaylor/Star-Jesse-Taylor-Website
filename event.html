@@ -558,6 +558,62 @@
       margin-bottom: 10px;
     }
 
+    /* PRICE JUMP COUNTDOWN */
+    .price-jump-countdown {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin: 18px 0 22px;
+      flex-wrap: wrap;
+    }
+    .pj-countdown-block {
+      background: linear-gradient(135deg,#7f1d1d 0%,#dc2626 100%);
+      color: #fff;
+      border-radius: 12px;
+      padding: 12px 14px;
+      min-width: 70px;
+      box-shadow: 0 8px 22px rgba(220,38,38,0.32);
+      text-align: center;
+    }
+    .pj-countdown-num {
+      font-size: 2rem;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: 0.02em;
+    }
+    .pj-countdown-label {
+      font-size: 0.66rem;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-top: 6px;
+      opacity: 0.92;
+    }
+    .price-jump-ended {
+      display: block;
+      text-align: center;
+      background: #1a1a1a;
+      color: #fff;
+      font-weight: 900;
+      letter-spacing: 0.18em;
+      font-size: 1rem;
+      padding: 16px 18px;
+      border-radius: 12px;
+      margin: 18px 0 22px;
+    }
+    .hero-price-jump-countdown {
+      margin: 6px 0 18px;
+    }
+    .hero-price-jump-countdown .pj-countdown-block {
+      background: linear-gradient(135deg,#7f1d1d 0%,#dc2626 100%);
+      border: 1px solid rgba(255,255,255,0.18);
+      box-shadow: 0 10px 28px rgba(220,38,38,0.4), 0 2px 8px rgba(0,0,0,0.35);
+    }
+    @media (max-width: 540px) {
+      .pj-countdown-block { min-width: 62px; padding: 10px 12px; }
+      .pj-countdown-num { font-size: 1.6rem; }
+    }
+
     /* PRICE LADDER (upcoming tiers) */
     .price-ladder {
       max-width: 720px;
@@ -977,6 +1033,13 @@
           <div class="hero-price-alert-line">$199 now. Goes to $299 on May 25.</div>
         </div>
 
+        <div class="price-jump-countdown pj-countdown hero-price-jump-countdown" aria-live="polite">
+          <div class="pj-countdown-block"><div class="pj-countdown-num" data-pj-unit="days">0</div><div class="pj-countdown-label">Days</div></div>
+          <div class="pj-countdown-block"><div class="pj-countdown-num" data-pj-unit="hours">0</div><div class="pj-countdown-label">Hours</div></div>
+          <div class="pj-countdown-block"><div class="pj-countdown-num" data-pj-unit="minutes">0</div><div class="pj-countdown-label">Min</div></div>
+          <div class="pj-countdown-block"><div class="pj-countdown-num" data-pj-unit="seconds">0</div><div class="pj-countdown-label">Sec</div></div>
+        </div>
+
         <a href="#tiers" class="event-cta-btn">Take a seat · $199</a>
       </div>
     </div>
@@ -1243,6 +1306,13 @@
           <li>Open Q&amp;A with Star</li>
           <li id="gaBonusBullet" style="color:#9a4d00;font-weight:700;"><strong>★ Breakthrough Blueprint course included</strong> if booked by May 15</li>
         </ul>
+
+        <div class="price-jump-countdown pj-countdown" aria-live="polite">
+          <div class="pj-countdown-block"><div class="pj-countdown-num" data-pj-unit="days">0</div><div class="pj-countdown-label">Days</div></div>
+          <div class="pj-countdown-block"><div class="pj-countdown-num" data-pj-unit="hours">0</div><div class="pj-countdown-label">Hours</div></div>
+          <div class="pj-countdown-block"><div class="pj-countdown-num" data-pj-unit="minutes">0</div><div class="pj-countdown-label">Min</div></div>
+          <div class="pj-countdown-block"><div class="pj-countdown-num" data-pj-unit="seconds">0</div><div class="pj-countdown-label">Sec</div></div>
+        </div>
 
         <a href="https://buy.stripe.com/7sY6oGfQH9VjdlebERcMM1f" class="tier-cta" target="_blank" rel="noopener" onclick="if(window.starTrack)window.starTrack('InitiateCheckout',{value:199,currency:'USD',content_name:'LA Event GA Ticket',content_category:'event_ticket'});">Lock in $199 →</a>
       </div>
@@ -1768,6 +1838,43 @@
     setTimeout(() => trackEvent('engaged_120s'), 120000);
     // And on leaving
     window.addEventListener('beforeunload', reportTime);
+  })();
+
+  // PRICE JUMP COUNTDOWN — price goes from $199 to $299 at midnight Pacific on May 25 (07:00 UTC May 25)
+  (function() {
+    const target = new Date('2026-05-25T07:00:00Z').getTime();
+    const wraps = Array.from(document.querySelectorAll('.pj-countdown'));
+    if (!wraps.length) return;
+
+    function pad(n) { return n < 10 ? '0' + n : String(n); }
+
+    let timer = null;
+
+    function tick() {
+      const diff = target - Date.now();
+      if (diff <= 0) {
+        wraps.forEach(w => { w.outerHTML = '<div class="price-jump-ended">PRICE NOW $299.</div>'; });
+        if (timer) clearInterval(timer);
+        return;
+      }
+      const days = Math.floor(diff / 86400000);
+      const hours = Math.floor((diff % 86400000) / 3600000);
+      const minutes = Math.floor((diff % 3600000) / 60000);
+      const seconds = Math.floor((diff % 60000) / 1000);
+      wraps.forEach(w => {
+        const d = w.querySelector('[data-pj-unit="days"]');
+        const h = w.querySelector('[data-pj-unit="hours"]');
+        const m = w.querySelector('[data-pj-unit="minutes"]');
+        const s = w.querySelector('[data-pj-unit="seconds"]');
+        if (d) d.textContent = days;
+        if (h) h.textContent = pad(hours);
+        if (m) m.textContent = pad(minutes);
+        if (s) s.textContent = pad(seconds);
+      });
+    }
+
+    tick();
+    timer = setInterval(tick, 1000);
   })();
 
 </script>
