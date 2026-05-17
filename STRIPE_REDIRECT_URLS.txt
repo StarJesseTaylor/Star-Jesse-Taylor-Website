@@ -3,6 +3,18 @@ STRIPE SUCCESS REDIRECT URLS
 Paste these into Stripe → Payment Link → Settings → After payment → "Confirmation page" → "Don't show confirmation page" → "Redirect customer to a URL"
 
 ----------------------------------------
+LA WORKSHOP — MAY 30, 2026 ($197)
+Stripe link: https://buy.stripe.com/eVqaEW8ofc3repi9wJcMM1g
+Redirect to:
+https://starjessetaylor.com/workshop-welcome.html
+----------------------------------------
+
+(Old workshop links to verify and either redirect or archive:)
+Early bird $97 link: https://buy.stripe.com/3cI9ASdIz6J7bd638lcMM18
+Old $199 link: https://buy.stripe.com/7sY6oGfQH9VjdlebERcMM1f
+Both should redirect to https://starjessetaylor.com/workshop-welcome.html OR be archived in Stripe so no one can use them.
+
+----------------------------------------
 BREAKTHROUGH BLUEPRINT COURSE ($147)
 Stripe link: https://buy.stripe.com/bJe3cueMDgjHgxqeR3cMM1b
 Redirect to:
