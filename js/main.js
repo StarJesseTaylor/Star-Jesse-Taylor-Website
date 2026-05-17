@@ -143,7 +143,7 @@ if (form) {
     try {
       if (typeof emailjs !== 'undefined') {
         await emailjs.send('service_emotfit', 'template_application', {
-          to_email: 'starjessetaylor@gmail.com',
+          to_email: 'star@starjessetaylor.com',
           subject: 'New Coaching Application',
           applicant_name: fields.full_name || 'Applicant',
           message: body,
@@ -151,7 +151,7 @@ if (form) {
         });
       } else {
         // Fallback: mailto (opens email client)
-        const mailto = `mailto:starjessetaylor@gmail.com?subject=New%20Coaching%20Application&body=${encodeURIComponent(body)}`;
+        const mailto = `mailto:star@starjessetaylor.com?subject=New%20Coaching%20Application&body=${encodeURIComponent(body)}`;
         window.open(mailto);
       }
 
@@ -163,7 +163,7 @@ if (form) {
     } catch (err) {
       console.error('Send error:', err);
       // Fallback gracefully
-      const mailto = `mailto:starjessetaylor@gmail.com?subject=New%20Coaching%20Application&body=${encodeURIComponent(body)}`;
+      const mailto = `mailto:star@starjessetaylor.com?subject=New%20Coaching%20Application&body=${encodeURIComponent(body)}`;
       window.open(mailto);
       form.style.display = 'none';
       if (confirmation) confirmation.classList.add('visible');
