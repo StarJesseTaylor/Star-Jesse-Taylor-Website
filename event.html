@@ -1209,16 +1209,27 @@
 
     <div style="max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:24px;" class="fade-up">
 
-      <!-- Lara Kinslow (LEAD CARD) -->
+      <!-- Lara Kinslow (LEAD CARD - VIDEO) -->
       <div style="background:linear-gradient(135deg,rgba(27,108,168,0.04),rgba(125,211,252,0.10));border-radius:18px;padding:36px 40px;border-left:5px solid var(--cobalt);box-shadow:0 12px 36px rgba(27,108,168,0.12);">
-        <div style="display:flex;gap:26px;align-items:flex-start;" class="anxiety-lead-card-inner">
-          <div style="width:84px;height:84px;border-radius:50%;background:linear-gradient(135deg,var(--cobalt),var(--turquoise));display:flex;align-items:center;justify-content:center;color:white;font-weight:800;font-size:2rem;flex-shrink:0;box-shadow:0 8px 22px rgba(27,108,168,0.32);">L</div>
-          <div style="flex:1;">
+        <div style="display:grid;grid-template-columns:1.15fr 1fr;gap:36px;align-items:center;" class="lara-video-grid">
+
+          <div style="position:relative;width:100%;padding-bottom:56.25%;border-radius:14px;overflow:hidden;box-shadow:0 14px 40px rgba(27,108,168,0.22);">
+            <iframe
+              src="https://www.youtube-nocookie.com/embed/85NNRRPeHeU?rel=0&playsinline=1&modestbranding=1"
+              style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+              title="Lara Kinslow: From Anxiety and ADHD to Building Her Business"
+            ></iframe>
+          </div>
+
+          <div>
             <div style="font-size:2.6rem;color:var(--cobalt);line-height:0.6;margin-bottom:14px;font-family:Georgia,serif;opacity:0.38;">&ldquo;</div>
-            <p style="font-size:1.08rem;color:var(--charcoal);line-height:1.78;font-style:italic;margin:0 0 22px;">Hands down, Star has been one of the biggest catalysts for change in my life. I still struggled with intrusive thoughts, foggy brain, extreme anxiety. There were days I couldn't even be productive. My life now has never ever been so clear, and free. My emotions no longer rule my life. I can't recommend him enough to ANYONE who wants their life to finally be peaceful.</p>
+            <p style="font-size:1.02rem;color:var(--charcoal);line-height:1.78;font-style:italic;margin:0 0 22px;">Hands down, Star has been one of the biggest catalysts for change in my life. I still struggled with intrusive thoughts, foggy brain, extreme anxiety. There were days I couldn't even be productive. My life now has never ever been so clear, and free. My emotions no longer rule my life. I can't recommend him enough to ANYONE who wants their life to finally be peaceful.</p>
             <div style="font-weight:800;color:var(--charcoal);font-size:1.08rem;">Lara Kinslow</div>
             <div style="font-size:0.88rem;color:var(--cobalt);font-weight:700;margin-top:4px;">ADHD &amp; Anxiety Coach · 1-on-1 Coaching Client</div>
           </div>
+
         </div>
       </div>
 
@@ -1267,7 +1278,7 @@
     <style>
       @media (max-width: 800px) {
         .anxiety-supporting-grid { grid-template-columns: 1fr !important; }
-        .anxiety-lead-card-inner { flex-direction: column !important; align-items: center !important; text-align: center; gap: 18px !important; }
+        .lara-video-grid { grid-template-columns: 1fr !important; gap: 24px !important; }
       }
     </style>
   </div>
