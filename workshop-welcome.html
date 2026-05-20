@@ -292,8 +292,6 @@
       <div id="formView">
         <div class="ww-form-intro">
           <h2>Tell me about you.</h2>
-          <p>Five quick questions. Takes about 3 minutes. I read every single one personally.</p>
-          <p style="margin-top:12px;color:var(--charcoal);font-size:0.98rem;">These answers help me tailor part of the workshop to you on May 30.</p>
         </div>
 
         <form id="workshopForm" novalidate>
@@ -309,28 +307,29 @@
             </div>
           </div>
 
-<div class="ww-field">
+          <div class="ww-field">
             <label for="walkAway">What is your goal for May 30? What do you most want to walk away with?</label>
-            <div class="ww-helper">One sentence is fine. Be honest, not impressive.</div>
             <textarea id="walkAway" name="walkAway" required></textarea>
           </div>
 
           <div class="ww-field">
             <label for="biggestChallenge">What is the biggest challenge you are facing right now?</label>
-            <div class="ww-helper">In your work, your relationships, your inner life. Whatever is loudest.</div>
             <textarea id="biggestChallenge" name="biggestChallenge" required></textarea>
           </div>
 
           <div class="ww-field">
             <label for="feelStuck">Where do you feel most stuck?</label>
-            <div class="ww-helper">The thing you keep circling back to and can't seem to move through.</div>
             <textarea id="feelStuck" name="feelStuck"></textarea>
           </div>
 
           <div class="ww-field">
             <label for="askStar">If we had 5 minutes alone, what would you ask me?</label>
-            <div class="ww-helper">Optional. But the answers I get to this question often tell me where to put the most weight in the room.</div>
             <textarea id="askStar" name="askStar"></textarea>
+          </div>
+
+          <div class="ww-field">
+            <label for="anythingElse">Is there anything else you want to share with Star that you would like Star to address in the workshop?</label>
+            <textarea id="anythingElse" name="anythingElse"></textarea>
           </div>
 
           <button type="submit" class="ww-submit" id="submitBtn">Send to Star</button>
@@ -383,11 +382,11 @@
     const data = {
       firstName: document.getElementById('firstName').value.trim(),
       email: document.getElementById('email').value.trim(),
-      tier: document.getElementById('tier').value,
       walkAway: document.getElementById('walkAway').value.trim(),
       biggestChallenge: document.getElementById('biggestChallenge').value.trim(),
       feelStuck: document.getElementById('feelStuck').value.trim(),
       askStar: document.getElementById('askStar').value.trim(),
+      anythingElse: document.getElementById('anythingElse').value.trim(),
       website_url: hpInput ? hpInput.value : ''
     };
 

@@ -27,6 +27,7 @@ export default async function handler(req, res) {
     biggestChallenge,
     feelStuck,
     askStar,
+    anythingElse,
     website_url
   } = req.body || {};
 
@@ -117,7 +118,10 @@ export default async function handler(req, res) {
       feelStuck?.trim() || '(no answer)',
       '',
       'If we had 5 minutes alone, they would ask Star:',
-      askStar?.trim() || '(no answer)'
+      askStar?.trim() || '(no answer)',
+      '',
+      'Anything else they want Star to address in the workshop:',
+      anythingElse?.trim() || '(no answer)'
     ].filter(Boolean).join('\n');
 
     await fetch(`${AC_URL}/api/3/notes`, {
