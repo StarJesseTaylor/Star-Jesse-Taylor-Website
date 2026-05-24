@@ -149,6 +149,12 @@
         <span>Star personally reviews every application. If you are a fit, you will hear back within 48 hours.</span>
       </div>
 
+      <!-- INVESTMENT FLOOR ROUTING NOTICE -->
+      <div class="fade-up" style="background:#fff7ed;border:1.5px solid #f59e0b;border-radius:12px;padding:18px 22px;margin-bottom:24px;font-size:0.96rem;line-height:1.65;color:#7a3e00;">
+        <strong style="display:block;color:#7a3e00;margin-bottom:6px;font-size:1.02rem;">Coaching with Star starts at $500.</strong>
+        If you are under that, the book ($29) and courses ($97 to $197) are the right entry point. <strong>There is no 1-on-1 coaching with Star under $500.</strong> <a href="courses.html" style="color:#9a4d00;font-weight:700;text-decoration:underline;">See the courses →</a>
+      </div>
+
       <!-- THE FORM -->
       <form id="applicationForm" novalidate>
         <div class="hp-field" aria-hidden="true"><label>Website (do not fill): <input type="text" name="website_url" tabindex="-1" autocomplete="off"></label></div>
@@ -316,14 +322,17 @@
           </div>
 
           <div class="form-group">
-            <label for="investment">What is your available investment right now? <span>*</span></label>
+            <label for="investment">What investment level fits you right now? <span>*</span></label>
             <select id="investment" name="investment" required>
               <option value="" disabled selected>Select one</option>
-              <option value="Exploring options under $500">I am exploring options under $500</option>
-              <option value="Ready to invest $500–$1,000">I am ready to invest $500 to $1,000</option>
-              <option value="Ready to invest $1,000–$2,500">I am ready to invest $1,000 to $2,500</option>
-              <option value="Ready to invest $2,500+">I am ready to invest $2,500 and above</option>
-              <option value="Results matter more than cost">Results matter more than cost</option>
+              <option value="Under $500 (book or course path, no 1-on-1)">Under $500. I want to start with the book or a course. (No 1-on-1 coaching at this level.)</option>
+              <option value="$500 — Clarity Session">$500. I am ready for a Clarity Session with Star.</option>
+              <option value="$2,200 — 10-Week Cohort waitlist">$2,200. I want the 10-Week Cohort when it opens.</option>
+              <option value="$3,497 — 1-on-1 Six Week Package">$3,497. I am ready for the 1-on-1 Six Week Package.</option>
+              <option value="$4,997 — 1-on-1 Ten Week Package">$4,997. I am ready for the 1-on-1 Ten Week Package.</option>
+              <option value="$9,997 — 1-on-1 Five Month Package">$9,997. I am ready for the 1-on-1 Five Month Package.</option>
+              <option value="Results matter more than cost">Results matter more than cost. Star, tell me what fits.</option>
+              <option value="Message Star first (ask.meanything.co)">I want to message Star first before deciding.</option>
             </select>
           </div>
 
@@ -376,12 +385,32 @@
 
       </form>
 
-      <!-- CONFIRMATION MESSAGE -->
+      <!-- CONFIRMATION MESSAGE (default) -->
       <div class="form-confirmation" id="formConfirmation">
         <div class="confirm-icon">✓“</div>
         <h3>Application Received.</h3>
         <p>Thank you. Star personally reads every application. You will hear back within 48 hours.</p>
         <a href="index.html" class="btn btn-primary" style="margin-top:8px;">Return Home</a>
+      </div>
+
+      <!-- CONFIRMATION MESSAGE (under $500 path) -->
+      <div class="form-confirmation" id="formConfirmationCourses" style="display:none;">
+        <div class="confirm-icon">📘</div>
+        <h3>Thank you for applying.</h3>
+        <p>Based on your investment level, Star's 1-on-1 coaching is not the right fit yet. Start with the book or a course. They use the same framework Star teaches in 1-on-1, just self-paced. When you are ready for coaching, come back here.</p>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:18px;">
+          <a href="courses.html" class="btn btn-primary">See the Courses</a>
+          <a href="book.html" class="btn btn-outline">Get the Book ($29)</a>
+        </div>
+      </div>
+
+      <!-- CONFIRMATION MESSAGE (message Star first path) -->
+      <div class="form-confirmation" id="formConfirmationAsk" style="display:none;">
+        <div class="confirm-icon">🎙️</div>
+        <h3>Send Star a voice memo.</h3>
+        <p>For a fast, paid voice memo from Star, ask your question here.</p>
+        <p style="margin-top:12px;font-size:0.95rem;color:var(--charcoal);"><strong>Your voice memo investment credits toward coaching if you continue. One credit per person, not stacked.</strong></p>
+        <a href="https://ask.meanything.co/starjessetaylor" target="_blank" rel="noopener" class="btn btn-primary" style="margin-top:14px;">Ask Star Directly</a>
       </div>
 
     </div>

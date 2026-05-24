@@ -114,6 +114,18 @@ document.querySelectorAll('[data-count]').forEach(el => statsObserver.observe(el
 // ===== APPLICATION FORM =====
 const form = document.getElementById('applicationForm');
 const confirmation = document.getElementById('formConfirmation');
+const confirmationCourses = document.getElementById('formConfirmationCourses');
+const confirmationAsk = document.getElementById('formConfirmationAsk');
+
+function pickConfirmation(investmentValue) {
+  if (investmentValue && investmentValue.indexOf('Under $500') === 0) {
+    return confirmationCourses || confirmation;
+  }
+  if (investmentValue && investmentValue.indexOf('Message Star first') === 0) {
+    return confirmationAsk || confirmation;
+  }
+  return confirmation;
+}
 
 if (form) {
   form.addEventListener('submit', async (e) => {
@@ -139,6 +151,8 @@ if (form) {
       .map(([k, v]) => `${k.replace(/_/g, ' ').toUpperCase()}: ${v || '—'}`)
       .join('\n\n');
 
+    const targetConfirmation = pickConfirmation(fields.investment);
+
     // EmailJS send
     try {
       if (typeof emailjs !== 'undefined') {
@@ -156,9 +170,10 @@ if (form) {
       }
 
       form.style.display = 'none';
-      if (confirmation) {
-        confirmation.classList.add('visible');
-        confirmation.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      if (targetConfirmation) {
+        targetConfirmation.style.display = 'block';
+        targetConfirmation.classList.add('visible');
+        targetConfirmation.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     } catch (err) {
       console.error('Send error:', err);
@@ -166,7 +181,10 @@ if (form) {
       const mailto = `mailto:star@starjessetaylor.com?subject=New%20Coaching%20Application&body=${encodeURIComponent(body)}`;
       window.open(mailto);
       form.style.display = 'none';
-      if (confirmation) confirmation.classList.add('visible');
+      if (targetConfirmation) {
+        targetConfirmation.style.display = 'block';
+        targetConfirmation.classList.add('visible');
+      }
     }
   });
 }
