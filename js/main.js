@@ -116,6 +116,7 @@ const form = document.getElementById('applicationForm');
 const confirmation = document.getElementById('formConfirmation');
 const confirmationCourses = document.getElementById('formConfirmationCourses');
 const confirmationAsk = document.getElementById('formConfirmationAsk');
+const confirmationCohort = document.getElementById('formConfirmationCohort');
 
 function pickConfirmation(investmentValue) {
   if (investmentValue && investmentValue.indexOf('Under $500') === 0) {
@@ -124,7 +125,35 @@ function pickConfirmation(investmentValue) {
   if (investmentValue && investmentValue.indexOf('Message Star first') === 0) {
     return confirmationAsk || confirmation;
   }
+  if (investmentValue && investmentValue.indexOf('$2,200') === 0) {
+    return confirmationCohort || confirmation;
+  }
   return confirmation;
+}
+
+async function pingCohortWaitlist(fields) {
+  try {
+    const fullName = (fields.full_name || '').trim();
+    const parts = fullName.split(/\s+/);
+    const firstName = parts[0] || '';
+    const lastName = parts.slice(1).join(' ') || 'Applicant';
+    const location = (fields.location || '').trim();
+    const country = location.split(',').pop().trim() || 'Unknown';
+    await fetch('/api/cohort-waitlist', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: firstName,
+        lastName: lastName,
+        email: fields.email || '',
+        country: country,
+        phone: fields.phone || '',
+        website_url: ''
+      })
+    });
+  } catch (err) {
+    console.warn('Cohort AC ping failed (non-fatal):', err);
+  }
 }
 
 if (form) {
@@ -152,6 +181,11 @@ if (form) {
       .join('\n\n');
 
     const targetConfirmation = pickConfirmation(fields.investment);
+
+    // If they picked the cohort path, also add them to the AC cohort waitlist
+    if (fields.investment && fields.investment.indexOf('$2,200') === 0) {
+      pingCohortWaitlist(fields);
+    }
 
     // EmailJS send
     try {
