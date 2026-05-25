@@ -1049,19 +1049,6 @@
       </div>
 
       <div class="event-cta-stack">
-        <div class="hero-price-alert">
-          <div class="price-countdown-label">$197 Ends In</div>
-        </div>
-
-        <div class="price-jump-countdown pj-countdown hero-price-jump-countdown" aria-live="polite">
-          <div class="pj-countdown-block"><div class="pj-countdown-num" data-pj-unit="days">0</div><div class="pj-countdown-label">Days</div></div>
-          <div class="pj-countdown-block"><div class="pj-countdown-num" data-pj-unit="hours">0</div><div class="pj-countdown-label">Hours</div></div>
-          <div class="pj-countdown-block"><div class="pj-countdown-num" data-pj-unit="minutes">0</div><div class="pj-countdown-label">Min</div></div>
-          <div class="pj-countdown-block"><div class="pj-countdown-num" data-pj-unit="seconds">0</div><div class="pj-countdown-label">Sec</div></div>
-        </div>
-
-        <div class="price-countdown-sub">Then the price goes to $297 on May 25.</div>
-
         <a href="https://buy.stripe.com/eVqaEW8ofc3repi9wJcMM1g" class="event-cta-btn" target="_blank" rel="noopener" onclick="if(window.starTrack)window.starTrack('InitiateCheckout',{value:197,currency:'USD',content_name:'LA Event GA Ticket',content_category:'event_ticket'});">Get your ticket · $197</a>
       </div>
     </div>
@@ -1422,34 +1409,11 @@
     <div class="tiers-grid" style="grid-template-columns:1fr;max-width:560px;margin:0 auto;">
 
       <div class="tier-card featured fade-up">
-        <div style="text-align:center;">
-          <div class="early-bird-label">★ Standard · Active Now</div>
-        </div>
         <div class="tier-title" style="text-align:center;">A Seat in the Room</div>
         <div class="tier-price" style="text-align:center;">$197</div>
-        <div class="tier-price-sub" style="text-align:center;margin-bottom:18px;">Per person · Price goes to $297 on May 25</div>
-
-        <div class="price-countdown-label">$197 Ends In</div>
-
-        <div class="price-jump-countdown pj-countdown" aria-live="polite">
-          <div class="pj-countdown-block"><div class="pj-countdown-num" data-pj-unit="days">0</div><div class="pj-countdown-label">Days</div></div>
-          <div class="pj-countdown-block"><div class="pj-countdown-num" data-pj-unit="hours">0</div><div class="pj-countdown-label">Hours</div></div>
-          <div class="pj-countdown-block"><div class="pj-countdown-num" data-pj-unit="minutes">0</div><div class="pj-countdown-label">Min</div></div>
-          <div class="pj-countdown-block"><div class="pj-countdown-num" data-pj-unit="seconds">0</div><div class="pj-countdown-label">Sec</div></div>
-        </div>
-
-        <div class="price-countdown-sub">Then the price goes to $297 on May 25.</div>
+        <div class="tier-price-sub" style="text-align:center;margin-bottom:18px;">Per person</div>
       </div>
 
-    </div>
-
-    <div class="price-ladder-caption">Next price jump</div>
-    <div class="price-ladder" style="grid-template-columns:1fr;max-width:360px;">
-      <div class="upcoming-tier">
-        <div class="upcoming-tier-name">Final Week</div>
-        <div class="upcoming-tier-price">$297</div>
-        <div class="upcoming-tier-dates">May 25 to May 30</div>
-      </div>
     </div>
 
   </div>
@@ -1961,43 +1925,6 @@
     setTimeout(() => trackEvent('engaged_120s'), 120000);
     // And on leaving
     window.addEventListener('beforeunload', reportTime);
-  })();
-
-  // PRICE JUMP COUNTDOWN — price goes from $197 to $297 at midnight Pacific on May 25 (07:00 UTC May 25)
-  (function() {
-    const target = new Date('2026-05-25T07:00:00Z').getTime();
-    const wraps = Array.from(document.querySelectorAll('.pj-countdown'));
-    if (!wraps.length) return;
-
-    function pad(n) { return n < 10 ? '0' + n : String(n); }
-
-    let timer = null;
-
-    function tick() {
-      const diff = target - Date.now();
-      if (diff <= 0) {
-        wraps.forEach(w => { w.outerHTML = '<div class="price-jump-ended">PRICE NOW $297.</div>'; });
-        if (timer) clearInterval(timer);
-        return;
-      }
-      const days = Math.floor(diff / 86400000);
-      const hours = Math.floor((diff % 86400000) / 3600000);
-      const minutes = Math.floor((diff % 3600000) / 60000);
-      const seconds = Math.floor((diff % 60000) / 1000);
-      wraps.forEach(w => {
-        const d = w.querySelector('[data-pj-unit="days"]');
-        const h = w.querySelector('[data-pj-unit="hours"]');
-        const m = w.querySelector('[data-pj-unit="minutes"]');
-        const s = w.querySelector('[data-pj-unit="seconds"]');
-        if (d) d.textContent = days;
-        if (h) h.textContent = pad(hours);
-        if (m) m.textContent = pad(minutes);
-        if (s) s.textContent = pad(seconds);
-      });
-    }
-
-    tick();
-    timer = setInterval(tick, 1000);
   })();
 
 </script>
