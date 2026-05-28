@@ -15,14 +15,14 @@
   var STORAGE_KEY = 'announcementBarDismissed';
   if (typeof sessionStorage !== 'undefined' && sessionStorage.getItem(STORAGE_KEY) === '1') return;
 
-  var EVENT_DATE = new Date('2026-05-30T13:30:00-07:00');
+  var EVENT_DATE = new Date('2026-05-30T14:00:00-07:00');
   var EVENT_URL = '/event.html';
   var BAR_HEIGHT_DESKTOP = 42;
   var BAR_HEIGHT_MOBILE = 36;
 
   function daysUntilEvent() {
     var diff = EVENT_DATE.getTime() - Date.now();
-    return Math.max(0, Math.ceil(diff / 86400000));
+    return Math.max(0, Math.floor(diff / 86400000));
   }
 
   function injectStyles() {
