@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Monthly LA Meetup · Meditate With Star | Star Jesse Taylor</title>
+  <meta name="description" content="Once a month, in person, in Los Angeles. A meditation and connection meetup with Star Jesse Taylor. Join the list and you will hear the date and place before anyone else." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-T0T1Z0VBT8"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-T0T1Z0VBT8');
+  </script>
+  <script src="js/tracking.js" async></script>
+  <script src="js/announcement-bar.js" defer></script>
+  <style>
+    .lm-hero {
+      background: linear-gradient(135deg, #0b2848 0%, #1B6CA8 100%);
+      color: var(--white);
+      padding: 96px 0 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    .lm-hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at top right, rgba(0,180,216,0.18) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .lm-hero-inner {
+      max-width: 760px;
+      margin: 0 auto;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      padding: 0 24px;
+    }
+    .lm-eyebrow {
+      display: inline-block;
+      background: rgba(0,180,216,0.18);
+      color: #b5edff;
+      font-size: 0.78rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 800;
+      padding: 7px 16px;
+      border-radius: 999px;
+      margin-bottom: 24px;
+      border: 1px solid rgba(0,180,216,0.35);
+    }
+    .lm-hero h1 {
+      font-size: clamp(2rem, 4.8vw, 3.2rem);
+      line-height: 1.12;
+      color: var(--white);
+      margin-bottom: 22px;
+    }
+    .lm-hero h1 em {
+      color: var(--turquoise-light);
+      font-style: normal;
+    }
+    .lm-hero-sub {
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.88);
+      line-height: 1.7;
+      margin-bottom: 28px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .lm-meta-row {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      justify-content: center;
+      padding: 14px 22px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 14px;
+      font-size: 0.92rem;
+      color: rgba(255,255,255,0.88);
+    }
+
+    .lm-what-section {
+      background: var(--white);
+      padding: 80px 0;
+    }
+    .lm-what-inner {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .lm-what-section h2 {
+      font-size: clamp(1.6rem, 3vw, 2.1rem);
+      color: var(--charcoal);
+      margin-bottom: 22px;
+      text-align: center;
+    }
+    .lm-what-section p {
+      font-size: 1.04rem;
+      color: var(--charcoal);
+      line-height: 1.78;
+      margin-bottom: 18px;
+    }
+    .lm-what-section .lm-bullets {
+      list-style: none;
+      padding: 0;
+      margin: 24px 0;
+    }
+    .lm-what-section .lm-bullets li {
+      padding: 14px 18px;
+      background: var(--off-white);
+      border-left: 3px solid var(--cobalt);
+      border-radius: 8px;
+      margin-bottom: 10px;
+      font-size: 1rem;
+      color: var(--charcoal);
+      line-height: 1.6;
+    }
+
+    .lm-form-section {
+      background: linear-gradient(160deg, #0e3a32 0%, #1a4742 50%, #2d6b5f 100%);
+      color: white;
+      padding: 96px 0;
+    }
+    .lm-form-inner {
+      max-width: 560px;
+      margin: 0 auto;
+      text-align: center;
+      padding: 0 24px;
+    }
+    .lm-form-inner .section-label {
+      color: #b5edff;
+    }
+    .lm-form-inner h2 {
+      color: white;
+      margin-bottom: 14px;
+    }
+    .lm-form-inner > p {
+      font-size: 1.04rem;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.88);
+      margin-bottom: 28px;
+    }
+    .lm-form {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 16px;
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      text-align: left;
+    }
+    .lm-form input {
+      padding: 14px 16px;
+      border: 1.5px solid rgba(255,255,255,0.24);
+      border-radius: 10px;
+      font-size: 1rem;
+      font-family: inherit;
+      outline: none;
+      background: rgba(255,255,255,0.06);
+      color: white;
+    }
+    .lm-form input::placeholder { color: rgba(255,255,255,0.55); }
+    .lm-form input:focus { border-color: #f5d478; }
+    .lm-submit {
+      padding: 16px 22px;
+      background: linear-gradient(90deg,#c9a84c,#f5d478);
+      color: #0e3a32;
+      border: none;
+      border-radius: 50px;
+      font-weight: 800;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 6px;
+    }
+    .lm-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    .lm-error {
+      display: none;
+      background: rgba(220,38,38,0.18);
+      border: 1px solid rgba(248,113,113,0.4);
+      color: #fecaca;
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      margin-top: 6px;
+    }
+    .lm-error.active { display: block; }
+    .lm-success {
+      display: none;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 16px;
+      padding: 32px 28px;
+      margin-top: 14px;
+    }
+    .lm-success.active { display: block; }
+    .lm-success-icon { font-size: 2.6rem; margin-bottom: 12px; }
+    .lm-success h3 {
+      color: white;
+      font-size: 1.4rem;
+      margin-bottom: 12px;
+    }
+    .lm-success p {
+      color: rgba(255,255,255,0.88);
+      font-size: 1rem;
+      line-height: 1.65;
+      margin: 0;
+    }
+
+    /* HONEYPOT */
+    .hp-field {
+      position: absolute !important;
+      left: -9999px !important;
+      top: -9999px !important;
+    }
+  </style>
+</head>
+<body>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1385602039742216&ev=PageView&noscript=1"/></noscript>
+
+<!-- NAVIGATION -->
+<nav class="nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <span class="nav-logo-name">Star Jesse Taylor</span>
+        <span class="nav-logo-sub">Emotional Fitness</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="services.html">Work With Star</a></li>
+        <li><a href="book.html">Star's Book</a></li>
+        <li><a href="event.html">Workshop</a></li>
+        <li><a href="speak.html">Speaking</a></li>
+        <li><a href="virtual-events.html">Ask Star</a></li>
+      </ul>
+      <a href="apply.html" class="btn btn-primary btn-sm nav-cta">Apply for Coaching</a>
+      <button class="nav-hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="nav-mobile">
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="services.html">Work With Star</a>
+  <a href="book.html">Star's Book</a>
+  <a href="event.html">Workshop</a>
+  <a href="speak.html">Speaking</a>
+  <a href="virtual-events.html">Ask Star</a>
+  <a href="apply.html">Apply for Coaching</a>
+</div>
+
+<!-- HERO -->
+<section class="lm-hero">
+  <div class="lm-hero-inner fade-up">
+    <span class="lm-eyebrow">Los Angeles · Monthly · In Person</span>
+    <h1>Meditate With <em>Star.</em></h1>
+    <p class="lm-hero-sub">Once a month, in person, in Los Angeles. A small in-person meetup to meditate together, sit with whatever is here, and reconnect with people doing the same work. Join the list and you will hear the next date and place before anyone else.</p>
+    <div class="lm-meta-row">
+      <span>📍 Los Angeles</span>
+      <span>📅 Monthly</span>
+      <span>🧘 In Person</span>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT IT IS -->
+<section class="lm-what-section">
+  <div class="lm-what-inner fade-up">
+    <h2>What this is.</h2>
+    <p>I want to meet the people in LA who have been doing this work with me. Not on Zoom. Not through a screen. In a room together, sitting with what comes up, practicing what we have been teaching.</p>
+    <p>Once a month I host a small in-person meetup. We meditate. We share. We connect. Then we go back to our lives.</p>
+    <ul class="lm-bullets">
+      <li>An hour or so of guided meditation and presence</li>
+      <li>Time to be in the room with people doing the same work as you</li>
+      <li>Optional sharing, never required</li>
+      <li>Open to anyone who has been touched by the work, no membership needed</li>
+    </ul>
+    <p>The exact date and location for the next meetup goes out by email to the list. Join below and you are first to know.</p>
+  </div>
+</section>
+
+<!-- SIGNUP FORM -->
+<section class="lm-form-section">
+  <div class="lm-form-inner">
+    <span class="section-label">Get the Date First</span>
+    <h2 class="section-title">Join the LA Meetup List.</h2>
+    <p>You will hear the date and place by email before anyone else.</p>
+
+    <form id="laMeetupForm" class="lm-form">
+      <div class="hp-field" aria-hidden="true"><label>Website (do not fill): <input type="text" name="website_url" tabindex="-1" autocomplete="off"></label></div>
+      <input type="text" name="firstName" placeholder="First Name" required minlength="2" autocomplete="given-name" />
+      <input type="text" name="lastName" placeholder="Last Name" required minlength="1" autocomplete="family-name" />
+      <input type="email" name="email" placeholder="Your Email" required />
+      <input type="text" name="neighborhood" placeholder="LA neighborhood (optional, helps me pick the location)" />
+      <button type="submit" class="lm-submit">Add Me to the List</button>
+      <div class="lm-error" id="lmError"></div>
+    </form>
+
+    <div class="lm-success" id="lmSuccess">
+      <div class="lm-success-icon">🙏</div>
+      <h3>You are on the list.</h3>
+      <p>You will hear from me by email when the next LA meetup date is locked. Looking forward to being in the room with you.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div>
+          <div class="footer-brand-name">Star Jesse Taylor</div>
+          <div class="footer-brand-sub">Emotional Fitness</div>
+        </div>
+        <p class="footer-brand-desc">High Performer and Mental Health Coach, Author, and Speaker based in Los Angeles.</p>
+        <div class="social-links">
+          <a href="https://www.instagram.com/starjessetaylor" class="social-link" aria-label="Instagram" target="_blank" rel="noopener">IG</a>
+          <a href="https://www.tiktok.com/@starjessetaylor" class="social-link" aria-label="TikTok" target="_blank" rel="noopener">TK</a>
+          <a href="#" class="social-link" aria-label="YouTube">YT</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="services.html">Work With Star</a></li>
+          <li><a href="courses.html">Courses</a></li>
+          <li><a href="book.html">Star's Book</a></li>
+          <li><a href="event.html">Workshop</a></li>
+          <li><a href="virtual-events.html">Ask Star</a></li>
+          <li><a href="apply.html">Apply for Coaching</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Star Jesse Taylor Emotional Fitness. All rights reserved.</span>
+      <div class="footer-legal">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/chat-widget.js"></script>
+<script>
+  (function() {
+    const form = document.getElementById('laMeetupForm');
+    const success = document.getElementById('lmSuccess');
+    const errorBox = document.getElementById('lmError');
+    if (!form) return;
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorBox.classList.remove('active');
+
+      const data = new FormData(form);
+      const payload = {
+        firstName: (data.get('firstName') || '').trim(),
+        lastName: (data.get('lastName') || '').trim(),
+        email: (data.get('email') || '').trim(),
+        neighborhood: (data.get('neighborhood') || '').trim(),
+        website_url: data.get('website_url') || ''
+      };
+
+      if (!payload.firstName || !payload.lastName || !payload.email) {
+        errorBox.textContent = 'First name, last name, and email are required.';
+        errorBox.classList.add('active');
+        return;
+      }
+
+      const submitBtn = form.querySelector('.lm-submit');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Adding you to the list...';
+
+      try {
+        const res = await fetch('/api/la-meetup-waitlist', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err.error || 'Submission failed');
+        }
+
+        form.style.display = 'none';
+        success.classList.add('active');
+        success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        if (window.starTrack) {
+          window.starTrack('Lead', { content_name: 'LA Meetup List', value: 0, currency: 'USD' });
+        }
+      } catch (err) {
+        console.error(err);
+        errorBox.textContent = 'Something went wrong. Email starjessetaylor@gmail.com and I will add you manually.';
+        errorBox.classList.add('active');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Add Me to the List';
+      }
+    });
+  })();
+</script>
+</body>
+</html>
