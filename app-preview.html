@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>App Preview · Emotional Fitness</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #F5F1E8;
+      --card: #FFFFFF;
+      --sage: #5C8B6D;
+      --sage-deep: #3F6850;
+      --sage-light: #E8EFE9;
+      --gold: #C9A84C;
+      --gold-light: #F5D478;
+      --ink: #1F1F1F;
+      --muted: #6B6B6B;
+      --soft: #D6CFC0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(160deg, #F5F1E8 0%, #E8E2D2 100%);
+      color: var(--ink);
+      min-height: 100vh;
+      padding: 64px 24px;
+      line-height: 1.5;
+    }
+    .preview-header {
+      max-width: 1400px;
+      margin: 0 auto 56px;
+      text-align: center;
+    }
+    .preview-header h1 {
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+      color: var(--ink);
+    }
+    .preview-header p {
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 640px;
+      margin: 0 auto;
+      line-height: 1.65;
+    }
+    .preview-header .vibe {
+      display: inline-block;
+      margin-top: 18px;
+      padding: 6px 14px;
+      background: var(--sage-light);
+      color: var(--sage-deep);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border-radius: 50px;
+    }
+
+    .phones-row {
+      display: flex;
+      gap: 36px;
+      justify-content: center;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .phone-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+    .phone-label {
+      font-size: 0.78rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--sage-deep);
+      font-weight: 800;
+    }
+
+    .phone {
+      width: 280px;
+      height: 600px;
+      background: var(--bg);
+      border-radius: 42px;
+      border: 10px solid #1a1a1a;
+      box-shadow: 0 30px 80px rgba(31, 31, 31, 0.18), 0 10px 30px rgba(31, 31, 31, 0.10);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .phone::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 110px;
+      height: 24px;
+      background: #1a1a1a;
+      border-radius: 0 0 16px 16px;
+      z-index: 10;
+    }
+
+    .status-bar {
+      padding: 14px 22px 6px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .screen {
+      flex: 1;
+      padding: 28px 22px 18px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ============== ONBOARDING SCREEN ============== */
+    .onboarding {
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 22px;
+    }
+    .onboarding .logo-mark {
+      width: 56px;
+      height: 56px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, var(--sage), var(--sage-deep));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 900;
+      font-size: 1.6rem;
+      letter-spacing: -0.04em;
+      box-shadow: 0 12px 30px rgba(63, 104, 80, 0.22);
+    }
+    .onboarding h1 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      max-width: 220px;
+    }
+    .onboarding p {
+      font-size: 0.86rem;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 220px;
+    }
+    .onboarding-btn {
+      margin-top: 14px;
+      padding: 14px 42px;
+      background: var(--sage-deep);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 0.92rem;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+    }
+    .onboarding .sign-in {
+      margin-top: 8px;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    /* ============== HOME SCREEN ============== */
+    .home-greeting {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+    .home-greeting .hi {
+      font-size: 1rem;
+      font-weight: 700;
+    }
+    .home-greeting .hi-sub {
+      font-size: 0.72rem;
+      color: var(--muted);
+      font-weight: 500;
+      margin-top: 2px;
+    }
+    .home-greeting .avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold-light), var(--gold));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 800;
+      font-size: 0.92rem;
+    }
+
+    .today-card {
+      background: var(--card);
+      border-radius: 22px;
+      padding: 22px 20px;
+      box-shadow: 0 12px 30px rgba(31, 31, 31, 0.06);
+      margin-bottom: 18px;
+    }
+    .today-card .label {
+      font-size: 0.66rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--sage-deep);
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .today-card .title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+      margin-bottom: 12px;
+    }
+    .today-card .meta {
+      font-size: 0.74rem;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+    .today-card .play-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 22px;
+      background: var(--sage-deep);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 0.82rem;
+      cursor: pointer;
+    }
+
+    .actions-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+    .action-tile {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 16px 8px;
+      text-align: center;
+      box-shadow: 0 6px 16px rgba(31, 31, 31, 0.04);
+    }
+    .action-tile .icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      margin: 0 auto 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+    .action-tile .icon.win { background: var(--sage-light); color: var(--sage-deep); }
+    .action-tile .icon.wheel { background: #FBF1D9; color: #9a7a1c; }
+    .action-tile .icon.check { background: #FCE4E0; color: #b04a35; }
+    .action-tile .text {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .streak-row {
+      background: var(--sage-light);
+      border-radius: 16px;
+      padding: 14px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .streak-row .streak-text {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--sage-deep);
+    }
+    .streak-row .streak-num {
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: var(--sage-deep);
+    }
+
+    .nav-bar {
+      margin-top: auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      padding-top: 14px;
+      border-top: 1px solid rgba(31, 31, 31, 0.08);
+    }
+    .nav-bar .nav-item {
+      text-align: center;
+      font-size: 0.62rem;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+    .nav-bar .nav-item.active {
+      color: var(--sage-deep);
+    }
+    .nav-bar .nav-item .nav-icon {
+      font-size: 1.05rem;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    /* ============== TODAY PRACTICE OPEN SCREEN ============== */
+    .practice .visual {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      border-radius: 18px;
+      background: linear-gradient(160deg, var(--sage) 0%, var(--sage-deep) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 18px;
+      position: relative;
+      overflow: hidden;
+    }
+    .practice .visual::before {
+      content: '';
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      top: -40px;
+      right: -40px;
+    }
+    .practice .visual .play {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: white;
+      color: var(--sage-deep);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      font-weight: 900;
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
+      position: relative;
+      z-index: 1;
+    }
+    .practice .practice-label {
+      font-size: 0.66rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--sage-deep);
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+    .practice .practice-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+      margin-bottom: 10px;
+    }
+    .practice .practice-desc {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.65;
+      margin-bottom: 16px;
+    }
+    .practice .audio-bar {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 6px 14px rgba(31, 31, 31, 0.04);
+    }
+    .practice .audio-bar .audio-time {
+      font-size: 0.74rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .practice .audio-bar .audio-progress {
+      flex: 1;
+      height: 4px;
+      background: var(--soft);
+      border-radius: 2px;
+      margin: 0 12px;
+      position: relative;
+    }
+    .practice .audio-bar .audio-progress::before {
+      content: '';
+      position: absolute;
+      width: 38%;
+      height: 100%;
+      background: var(--sage-deep);
+      border-radius: 2px;
+    }
+
+    /* ============== WINS OF THE DAY SCREEN ============== */
+    .wins .wins-header {
+      margin-bottom: 18px;
+    }
+    .wins .wins-label {
+      font-size: 0.66rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--sage-deep);
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+    .wins .wins-title {
+      font-size: 1.4rem;
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+    .wins .wins-sub {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+
+    .win-card {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      box-shadow: 0 4px 12px rgba(31, 31, 31, 0.04);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .win-card .check {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--sage-light);
+      color: var(--sage-deep);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.84rem;
+      font-weight: 900;
+      flex-shrink: 0;
+    }
+    .win-card .text {
+      font-size: 0.82rem;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+    .win-card .time {
+      font-size: 0.66rem;
+      color: var(--muted);
+      margin-top: 2px;
+      font-weight: 500;
+    }
+
+    .add-win {
+      margin-top: 14px;
+      padding: 14px;
+      background: var(--sage-deep);
+      color: white;
+      border: none;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    /* ============== FOCUS WHEEL SCREEN ============== */
+    .focus {
+      text-align: center;
+      align-items: center;
+    }
+    .focus .focus-label {
+      font-size: 0.66rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+    .focus .focus-title {
+      font-size: 1.3rem;
+      font-weight: 800;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+      max-width: 220px;
+      margin: 0 auto 4px;
+    }
+    .focus .focus-sub {
+      font-size: 0.76rem;
+      color: var(--muted);
+      margin-bottom: 22px;
+      max-width: 220px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .focus .wheel {
+      width: 170px;
+      height: 170px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, var(--gold-light), var(--gold));
+      box-shadow: 0 20px 50px rgba(201, 168, 76, 0.32);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 22px;
+      position: relative;
+    }
+    .focus .wheel::before {
+      content: '';
+      position: absolute;
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      background: white;
+    }
+    .focus .wheel .wheel-text {
+      position: relative;
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: var(--ink);
+      max-width: 110px;
+      line-height: 1.35;
+    }
+    .focus .prompt-card {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 14px 16px;
+      box-shadow: 0 6px 14px rgba(31, 31, 31, 0.04);
+      text-align: left;
+      font-size: 0.82rem;
+      line-height: 1.55;
+      color: var(--ink);
+      width: 100%;
+    }
+    .focus .prompt-card .step {
+      font-size: 0.62rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+    .focus .next-btn {
+      margin-top: auto;
+      width: 100%;
+      padding: 14px;
+      background: var(--gold);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-weight: 800;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    /* ============== NOTES ============== */
+    .notes-block {
+      max-width: 900px;
+      margin: 80px auto 0;
+      padding: 32px 28px;
+      background: var(--card);
+      border-radius: 18px;
+      box-shadow: 0 12px 40px rgba(31, 31, 31, 0.08);
+    }
+    .notes-block h2 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+    .notes-block ul {
+      list-style: none;
+      padding: 0;
+    }
+    .notes-block li {
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(31, 31, 31, 0.06);
+      font-size: 0.94rem;
+      line-height: 1.6;
+      color: var(--ink);
+    }
+    .notes-block li:last-child { border-bottom: 0; }
+    .notes-block li strong { color: var(--sage-deep); }
+
+    @media (max-width: 1300px) {
+      .phones-row { gap: 28px; }
+    }
+    @media (max-width: 920px) {
+      body { padding: 40px 16px; }
+      .phones-row { gap: 32px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="preview-header">
+    <span class="vibe">Static Mockup · Not Functional Yet</span>
+    <h1>Emotional Fitness · App Preview v0</h1>
+    <p>Five screens to react to. Cream and sage palette, Calm-direction, one thing per screen. Tell me what feels right and what to change.</p>
+  </div>
+
+  <div class="phones-row">
+
+    <!-- 1. ONBOARDING -->
+    <div class="phone-wrap">
+      <div class="phone-label">1. Welcome</div>
+      <div class="phone">
+        <div class="status-bar">
+          <span>9:41</span>
+          <span>●●● ▴</span>
+        </div>
+        <div class="screen onboarding">
+          <div class="logo-mark">EF</div>
+          <h1>You can move forward, anxious or not.</h1>
+          <p>Daily practice, the same tools Star teaches his coaching clients. Built for anxiety, OCD, ADHD, intrusive thoughts.</p>
+          <button class="onboarding-btn">Get Started</button>
+          <div class="sign-in">Already have an account? <strong>Sign in</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. HOME -->
+    <div class="phone-wrap">
+      <div class="phone-label">2. Home</div>
+      <div class="phone">
+        <div class="status-bar">
+          <span>9:41</span>
+          <span>●●● ▴</span>
+        </div>
+        <div class="screen">
+          <div class="home-greeting">
+            <div>
+              <div class="hi">Hi Star.</div>
+              <div class="hi-sub">Wednesday, June 4</div>
+            </div>
+            <div class="avatar">S</div>
+          </div>
+
+          <div class="today-card">
+            <div class="label">Today's Practice</div>
+            <div class="title">The Confidence Reframe.</div>
+            <div class="meta">3 min · Audio</div>
+            <button class="play-btn">▶ Play</button>
+          </div>
+
+          <div class="actions-row">
+            <div class="action-tile">
+              <div class="icon win">✓</div>
+              <div class="text">Log a Win</div>
+            </div>
+            <div class="action-tile">
+              <div class="icon wheel">◯</div>
+              <div class="text">Focus Wheel</div>
+            </div>
+            <div class="action-tile">
+              <div class="icon check">♡</div>
+              <div class="text">Check In</div>
+            </div>
+          </div>
+
+          <div class="streak-row">
+            <div class="streak-text">Streak</div>
+            <div class="streak-num">4 days in a row</div>
+          </div>
+
+          <div class="nav-bar">
+            <div class="nav-item active"><span class="nav-icon">⌂</span>Home</div>
+            <div class="nav-item"><span class="nav-icon">☰</span>Library</div>
+            <div class="nav-item"><span class="nav-icon">⚙</span>Settings</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TODAY'S PRACTICE OPEN -->
+    <div class="phone-wrap">
+      <div class="phone-label">3. Practice</div>
+      <div class="phone">
+        <div class="status-bar">
+          <span>9:41</span>
+          <span>●●● ▴</span>
+        </div>
+        <div class="screen practice">
+          <div class="visual">
+            <div class="play">▶</div>
+          </div>
+          <div class="practice-label">Today's Teaching</div>
+          <div class="practice-title">The Confidence Reframe.</div>
+          <div class="practice-desc">Confidence isn't the absence of anxiety. It's the experience of saying "I can handle this," and moving forward anyway.</div>
+          <div class="audio-bar">
+            <div class="audio-time">1:08</div>
+            <div class="audio-progress"></div>
+            <div class="audio-time">3:00</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. WINS OF THE DAY -->
+    <div class="phone-wrap">
+      <div class="phone-label">4. Wins</div>
+      <div class="phone">
+        <div class="status-bar">
+          <span>9:41</span>
+          <span>●●● ▴</span>
+        </div>
+        <div class="screen wins">
+          <div class="wins-header">
+            <div class="wins-label">Today</div>
+            <div class="wins-title">Wins of the Day.</div>
+            <div class="wins-sub">What did you move forward with today, even while uncomfortable?</div>
+          </div>
+
+          <div class="win-card">
+            <div class="check">✓</div>
+            <div>
+              <div class="text">Posted on social despite the fear.</div>
+              <div class="time">2:14 PM</div>
+            </div>
+          </div>
+
+          <div class="win-card">
+            <div class="check">✓</div>
+            <div>
+              <div class="text">Went to the gym even with anxiety.</div>
+              <div class="time">11:32 AM</div>
+            </div>
+          </div>
+
+          <div class="win-card">
+            <div class="check">✓</div>
+            <div>
+              <div class="text">Sent the email I was avoiding.</div>
+              <div class="time">9:47 AM</div>
+            </div>
+          </div>
+
+          <button class="add-win">+ Add a Win</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. FOCUS WHEEL -->
+    <div class="phone-wrap">
+      <div class="phone-label">5. Focus Wheel</div>
+      <div class="phone">
+        <div class="status-bar">
+          <span>9:41</span>
+          <span>●●● ▴</span>
+        </div>
+        <div class="screen focus">
+          <div class="focus-label">Better Feeling Thought</div>
+          <div class="focus-title">Focus Wheel.</div>
+          <div class="focus-sub">3 minutes. Drop into a lighter thought from wherever you are.</div>
+
+          <div class="wheel">
+            <div class="wheel-text">It's possible<br/>this works out.</div>
+          </div>
+
+          <div class="prompt-card">
+            <div class="step">Step 2 of 6</div>
+            What is one thing about today you can already appreciate, even slightly?
+          </div>
+
+          <button class="next-btn">Next →</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="notes-block">
+    <h2>What to tell me after you look</h2>
+    <ul>
+      <li><strong>The palette:</strong> cream + sage + warm gold accent. Too soft? Too earthy? Want bluer like Calm?</li>
+      <li><strong>The home screen:</strong> one main card, three quick actions, streak. Too sparse? Too busy?</li>
+      <li><strong>The Wins of the Day card:</strong> the killer feature you mentioned. Check-mark log style here. Want it more journal-style? More visual?</li>
+      <li><strong>The Focus Wheel:</strong> circular visual with a step-by-step prompt. Right metaphor or want different visual entirely?</li>
+      <li><strong>The audio player in Practice:</strong> simple bar with timestamp. Want chapters? Transcripts?</li>
+      <li><strong>The "EF" logo mark:</strong> placeholder. Want a different name? A symbol? Your handwriting?</li>
+      <li><strong>Anything that feels Headspace-busy:</strong> we cut.</li>
+    </ul>
+  </div>
+
+</body>
+</html>
