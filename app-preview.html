@@ -10,21 +10,21 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #F5F1E8;
+      --bg: #FFFFFF;
       --card: #FFFFFF;
-      --sage: #5C8B6D;
-      --sage-deep: #3F6850;
-      --sage-light: #E8EFE9;
-      --gold: #C9A84C;
-      --gold-light: #F5D478;
-      --ink: #1F1F1F;
-      --muted: #6B6B6B;
-      --soft: #D6CFC0;
+      --cobalt: #1B6CA8;
+      --cobalt-deep: #155A8A;
+      --cobalt-soft: #EAF2FA;
+      --turquoise: #00B4D8;
+      --turquoise-light: #90E0EF;
+      --ink: #2C2C2C;
+      --muted: #6B7280;
+      --soft: #EEF1F5;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: linear-gradient(160deg, #F5F1E8 0%, #E8E2D2 100%);
+      background: linear-gradient(160deg, #F8FBFE 0%, #E5F0F8 100%);
       color: var(--ink);
       min-height: 100vh;
       padding: 64px 24px;
@@ -53,8 +53,8 @@
       display: inline-block;
       margin-top: 18px;
       padding: 6px 14px;
-      background: var(--sage-light);
-      color: var(--sage-deep);
+      background: var(--cobalt-soft);
+      color: var(--cobalt-deep);
       font-size: 0.78rem;
       font-weight: 700;
       letter-spacing: 0.12em;
@@ -82,7 +82,7 @@
       font-size: 0.78rem;
       letter-spacing: 0.16em;
       text-transform: uppercase;
-      color: var(--sage-deep);
+      color: var(--cobalt-deep);
       font-weight: 800;
     }
 
@@ -139,7 +139,7 @@
       width: 56px;
       height: 56px;
       border-radius: 18px;
-      background: linear-gradient(135deg, var(--sage), var(--sage-deep));
+      background: linear-gradient(135deg, var(--cobalt), var(--cobalt-deep));
       display: flex;
       align-items: center;
       justify-content: center;
@@ -165,7 +165,7 @@
     .onboarding-btn {
       margin-top: 14px;
       padding: 14px 42px;
-      background: var(--sage-deep);
+      background: var(--cobalt-deep);
       color: white;
       border: none;
       border-radius: 50px;
@@ -201,7 +201,7 @@
       width: 34px;
       height: 34px;
       border-radius: 50%;
-      background: linear-gradient(135deg, var(--gold-light), var(--gold));
+      background: linear-gradient(135deg, var(--turquoise-light), var(--turquoise));
       display: flex;
       align-items: center;
       justify-content: center;
@@ -221,7 +221,7 @@
       font-size: 0.66rem;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: var(--sage-deep);
+      color: var(--cobalt-deep);
       font-weight: 800;
       margin-bottom: 8px;
     }
@@ -242,7 +242,7 @@
       align-items: center;
       gap: 8px;
       padding: 11px 22px;
-      background: var(--sage-deep);
+      background: var(--cobalt-deep);
       color: white;
       border: none;
       border-radius: 50px;
@@ -274,9 +274,9 @@
       justify-content: center;
       font-size: 1rem;
     }
-    .action-tile .icon.win { background: var(--sage-light); color: var(--sage-deep); }
-    .action-tile .icon.wheel { background: #FBF1D9; color: #9a7a1c; }
-    .action-tile .icon.check { background: #FCE4E0; color: #b04a35; }
+    .action-tile .icon.win { background: var(--cobalt-soft); color: var(--cobalt-deep); }
+    .action-tile .icon.wheel { background: #E6F8FB; color: #007A93; }
+    .action-tile .icon.check { background: #EAF2FA; color: var(--cobalt-deep); }
     .action-tile .text {
       font-size: 0.72rem;
       font-weight: 700;
@@ -284,7 +284,7 @@
     }
 
     .streak-row {
-      background: var(--sage-light);
+      background: var(--cobalt-soft);
       border-radius: 16px;
       padding: 14px 16px;
       display: flex;
@@ -294,12 +294,12 @@
     .streak-row .streak-text {
       font-size: 0.78rem;
       font-weight: 700;
-      color: var(--sage-deep);
+      color: var(--cobalt-deep);
     }
     .streak-row .streak-num {
       font-size: 0.78rem;
       font-weight: 800;
-      color: var(--sage-deep);
+      color: var(--cobalt-deep);
     }
 
     .nav-bar {
@@ -317,7 +317,7 @@
       letter-spacing: 0.06em;
     }
     .nav-bar .nav-item.active {
-      color: var(--sage-deep);
+      color: var(--cobalt-deep);
     }
     .nav-bar .nav-item .nav-icon {
       font-size: 1.05rem;
@@ -330,7 +330,7 @@
       width: 100%;
       aspect-ratio: 4 / 3;
       border-radius: 18px;
-      background: linear-gradient(160deg, var(--sage) 0%, var(--sage-deep) 100%);
+      background: linear-gradient(160deg, var(--cobalt) 0%, var(--cobalt-deep) 100%);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -353,7 +353,7 @@
       height: 56px;
       border-radius: 50%;
       background: white;
-      color: var(--sage-deep);
+      color: var(--cobalt-deep);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -367,7 +367,7 @@
       font-size: 0.66rem;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: var(--sage-deep);
+      color: var(--cobalt-deep);
       font-weight: 800;
       margin-bottom: 6px;
     }
@@ -411,7 +411,7 @@
       position: absolute;
       width: 38%;
       height: 100%;
-      background: var(--sage-deep);
+      background: var(--cobalt-deep);
       border-radius: 2px;
     }
 
@@ -423,7 +423,7 @@
       font-size: 0.66rem;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: var(--sage-deep);
+      color: var(--cobalt-deep);
       font-weight: 800;
       margin-bottom: 6px;
     }
@@ -434,146 +434,182 @@
       letter-spacing: -0.02em;
     }
     .wins .wins-sub {
-      font-size: 0.82rem;
+      font-size: 0.78rem;
       color: var(--muted);
       margin-top: 6px;
       line-height: 1.5;
     }
 
-    .win-card {
+    .win-box {
       background: var(--card);
+      border: 1.5px solid var(--soft);
       border-radius: 14px;
-      padding: 14px 16px;
+      padding: 14px 14px;
       margin-bottom: 10px;
-      box-shadow: 0 4px 12px rgba(31, 31, 31, 0.04);
-      display: flex;
-      align-items: center;
-      gap: 12px;
+      box-shadow: 0 2px 8px rgba(31, 31, 31, 0.03);
     }
-    .win-card .check {
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      background: var(--sage-light);
-      color: var(--sage-deep);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.84rem;
-      font-weight: 900;
-      flex-shrink: 0;
+    .win-box .num {
+      font-size: 0.62rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--cobalt);
+      font-weight: 800;
+      margin-bottom: 6px;
     }
-    .win-card .text {
-      font-size: 0.82rem;
-      font-weight: 600;
-      line-height: 1.4;
+    .win-box textarea {
+      width: 100%;
+      border: none;
+      outline: none;
+      resize: none;
+      font-family: inherit;
+      font-size: 0.86rem;
+      font-weight: 500;
+      color: var(--ink);
+      line-height: 1.45;
+      background: transparent;
+      min-height: 36px;
     }
-    .win-card .time {
-      font-size: 0.66rem;
-      color: var(--muted);
-      margin-top: 2px;
+    .win-box.filled {
+      background: var(--cobalt-soft);
+      border-color: var(--cobalt-soft);
+    }
+    .win-box textarea::placeholder {
+      color: #B5B9BF;
       font-weight: 500;
     }
 
-    .add-win {
+    .save-wins {
       margin-top: 14px;
       padding: 14px;
-      background: var(--sage-deep);
+      background: var(--cobalt-deep);
       color: white;
       border: none;
-      border-radius: 14px;
+      border-radius: 50px;
       font-weight: 700;
       font-size: 0.88rem;
       cursor: pointer;
       width: 100%;
     }
 
-    /* ============== FOCUS WHEEL SCREEN ============== */
-    .focus {
-      text-align: center;
-      align-items: center;
-    }
-    .focus .focus-label {
+    /* ============== BETTER FEELING THOUGHT TRAIN SCREEN ============== */
+    .train .train-label {
       font-size: 0.66rem;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: var(--gold);
+      color: var(--cobalt-deep);
       font-weight: 800;
       margin-bottom: 6px;
     }
-    .focus .focus-title {
+    .train .train-title {
       font-size: 1.3rem;
       font-weight: 800;
-      line-height: 1.25;
+      line-height: 1.2;
       letter-spacing: -0.02em;
-      max-width: 220px;
-      margin: 0 auto 4px;
+      margin-bottom: 4px;
     }
-    .focus .focus-sub {
+    .train .train-sub {
       font-size: 0.76rem;
       color: var(--muted);
-      margin-bottom: 22px;
-      max-width: 220px;
-      margin-left: auto;
-      margin-right: auto;
+      margin-bottom: 18px;
+      line-height: 1.5;
     }
-    .focus .wheel {
-      width: 170px;
-      height: 170px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 35% 30%, var(--gold-light), var(--gold));
-      box-shadow: 0 20px 50px rgba(201, 168, 76, 0.32);
+    .train .track {
+      position: relative;
+      flex: 1;
+      overflow-y: auto;
+    }
+    .train .car {
+      background: var(--card);
+      border: 1.5px solid var(--soft);
+      border-radius: 12px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .train .car.done {
+      background: var(--cobalt-soft);
+      border-color: var(--cobalt-soft);
+    }
+    .train .car.current {
+      border-color: var(--cobalt);
+      border-width: 2px;
+      box-shadow: 0 4px 14px rgba(27,108,168,0.12);
+    }
+    .train .car .icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: var(--cobalt);
+      color: white;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto 22px;
-      position: relative;
+      font-size: 0.9rem;
+      flex-shrink: 0;
     }
-    .focus .wheel::before {
-      content: '';
-      position: absolute;
-      width: 130px;
-      height: 130px;
-      border-radius: 50%;
-      background: white;
+    .train .car.locked .icon {
+      background: var(--soft);
+      color: var(--muted);
     }
-    .focus .wheel .wheel-text {
-      position: relative;
-      font-size: 0.74rem;
-      font-weight: 700;
-      color: var(--ink);
-      max-width: 110px;
-      line-height: 1.35;
+    .train .car .car-body {
+      flex: 1;
     }
-    .focus .prompt-card {
-      background: var(--card);
-      border-radius: 14px;
-      padding: 14px 16px;
-      box-shadow: 0 6px 14px rgba(31, 31, 31, 0.04);
-      text-align: left;
-      font-size: 0.82rem;
-      line-height: 1.55;
-      color: var(--ink);
-      width: 100%;
-    }
-    .focus .prompt-card .step {
-      font-size: 0.62rem;
+    .train .car .car-step {
+      font-size: 0.58rem;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--muted);
       font-weight: 800;
-      margin-bottom: 4px;
+      margin-bottom: 2px;
     }
-    .focus .next-btn {
-      margin-top: auto;
+    .train .car .car-thought {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.4;
+    }
+    .train .car .car-thought.empty {
+      color: #B5B9BF;
+      font-style: italic;
+      font-weight: 500;
+    }
+    .train .car textarea {
       width: 100%;
-      padding: 14px;
-      background: var(--gold);
+      border: none;
+      outline: none;
+      resize: none;
+      font-family: inherit;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--ink);
+      background: transparent;
+      min-height: 22px;
+    }
+    .train .car textarea::placeholder {
+      color: #B5B9BF;
+      font-weight: 500;
+      font-style: italic;
+    }
+    .train .connector {
+      width: 2px;
+      height: 8px;
+      background: var(--soft);
+      margin-left: 25px;
+      margin-bottom: 8px;
+    }
+    .train .next-btn {
+      margin-top: 12px;
+      width: 100%;
+      padding: 13px;
+      background: var(--cobalt-deep);
       color: white;
       border: none;
       border-radius: 50px;
       font-weight: 800;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       cursor: pointer;
     }
 
@@ -603,7 +639,7 @@
       color: var(--ink);
     }
     .notes-block li:last-child { border-bottom: 0; }
-    .notes-block li strong { color: var(--sage-deep); }
+    .notes-block li strong { color: var(--cobalt-deep); }
 
     @media (max-width: 1300px) {
       .phones-row { gap: 28px; }
@@ -619,7 +655,7 @@
   <div class="preview-header">
     <span class="vibe">Static Mockup · Not Functional Yet</span>
     <h1>Emotional Fitness · App Preview v0</h1>
-    <p>Five screens to react to. Cream and sage palette, Calm-direction, one thing per screen. Tell me what feels right and what to change.</p>
+    <p>Five screens to react to. White + cobalt + turquoise, Greek island palette. One thing per screen. Tell me what feels right and what to change.</p>
   </div>
 
   <div class="phones-row">
@@ -673,7 +709,7 @@
             </div>
             <div class="action-tile">
               <div class="icon wheel">◯</div>
-              <div class="text">Focus Wheel</div>
+              <div class="text">The Train</div>
             </div>
             <div class="action-tile">
               <div class="icon check">♡</div>
@@ -731,61 +767,82 @@
           <div class="wins-header">
             <div class="wins-label">Today</div>
             <div class="wins-title">Wins of the Day.</div>
-            <div class="wins-sub">What did you move forward with today, even while uncomfortable?</div>
+            <div class="wins-sub">What did you move forward with today, even while uncomfortable? Write three.</div>
           </div>
 
-          <div class="win-card">
-            <div class="check">✓</div>
-            <div>
-              <div class="text">Posted on social despite the fear.</div>
-              <div class="time">2:14 PM</div>
-            </div>
+          <div class="win-box filled">
+            <div class="num">Win 1</div>
+            <textarea placeholder="Write what you did...">Posted on social despite the fear.</textarea>
           </div>
 
-          <div class="win-card">
-            <div class="check">✓</div>
-            <div>
-              <div class="text">Went to the gym even with anxiety.</div>
-              <div class="time">11:32 AM</div>
-            </div>
+          <div class="win-box">
+            <div class="num">Win 2</div>
+            <textarea placeholder="Write what you did..."></textarea>
           </div>
 
-          <div class="win-card">
-            <div class="check">✓</div>
-            <div>
-              <div class="text">Sent the email I was avoiding.</div>
-              <div class="time">9:47 AM</div>
-            </div>
+          <div class="win-box">
+            <div class="num">Win 3</div>
+            <textarea placeholder="Write what you did..."></textarea>
           </div>
 
-          <button class="add-win">+ Add a Win</button>
+          <button class="save-wins">Save Today's Wins</button>
         </div>
       </div>
     </div>
 
-    <!-- 5. FOCUS WHEEL -->
+    <!-- 5. BETTER FEELING THOUGHT TRAIN -->
     <div class="phone-wrap">
-      <div class="phone-label">5. Focus Wheel</div>
+      <div class="phone-label">5. The Train</div>
       <div class="phone">
         <div class="status-bar">
           <span>9:41</span>
           <span>●●● ▴</span>
         </div>
-        <div class="screen focus">
-          <div class="focus-label">Better Feeling Thought</div>
-          <div class="focus-title">Focus Wheel.</div>
-          <div class="focus-sub">3 minutes. Drop into a lighter thought from wherever you are.</div>
+        <div class="screen train">
+          <div class="train-label">Better Feeling Thought</div>
+          <div class="train-title">The Train.</div>
+          <div class="train-sub">Each car holds the next slightly lighter thought. Only move forward when it actually feels lighter.</div>
 
-          <div class="wheel">
-            <div class="wheel-text">It's possible<br/>this works out.</div>
+          <div class="track">
+
+            <div class="car done">
+              <div class="icon">🚂</div>
+              <div class="car-body">
+                <div class="car-step">Where you are</div>
+                <div class="car-thought">I feel like I'm behind on everything.</div>
+              </div>
+            </div>
+            <div class="connector"></div>
+
+            <div class="car done">
+              <div class="icon">🚃</div>
+              <div class="car-body">
+                <div class="car-step">Slightly lighter</div>
+                <div class="car-thought">I've felt this before and it passed.</div>
+              </div>
+            </div>
+            <div class="connector"></div>
+
+            <div class="car current">
+              <div class="icon">🚃</div>
+              <div class="car-body">
+                <div class="car-step">Your turn</div>
+                <textarea placeholder="Write a thought that feels even slightly better..."></textarea>
+              </div>
+            </div>
+            <div class="connector"></div>
+
+            <div class="car locked">
+              <div class="icon">🚃</div>
+              <div class="car-body">
+                <div class="car-step">Next</div>
+                <div class="car-thought empty">Locked until you find the next one.</div>
+              </div>
+            </div>
+
           </div>
 
-          <div class="prompt-card">
-            <div class="step">Step 2 of 6</div>
-            What is one thing about today you can already appreciate, even slightly?
-          </div>
-
-          <button class="next-btn">Next →</button>
+          <button class="next-btn">Continue the Train →</button>
         </div>
       </div>
     </div>
@@ -795,10 +852,10 @@
   <div class="notes-block">
     <h2>What to tell me after you look</h2>
     <ul>
-      <li><strong>The palette:</strong> cream + sage + warm gold accent. Too soft? Too earthy? Want bluer like Calm?</li>
+      <li><strong>The palette:</strong> white + cobalt + turquoise, your website blues. Greek island. Right direction or push more toward sea/sky?</li>
       <li><strong>The home screen:</strong> one main card, three quick actions, streak. Too sparse? Too busy?</li>
-      <li><strong>The Wins of the Day card:</strong> the killer feature you mentioned. Check-mark log style here. Want it more journal-style? More visual?</li>
-      <li><strong>The Focus Wheel:</strong> circular visual with a step-by-step prompt. Right metaphor or want different visual entirely?</li>
+      <li><strong>The Wins of the Day:</strong> three writable boxes per your note. Want different number? Different prompt?</li>
+      <li><strong>The Train:</strong> car-by-car better feeling thought. They write the next lighter thought, only unlock the next car when they find it. Want different metaphor (rocks, birds), keep the train, or something else entirely?</li>
       <li><strong>The audio player in Practice:</strong> simple bar with timestamp. Want chapters? Transcripts?</li>
       <li><strong>The "EF" logo mark:</strong> placeholder. Want a different name? A symbol? Your handwriting?</li>
       <li><strong>Anything that feels Headspace-busy:</strong> we cut.</li>
