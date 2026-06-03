@@ -163,7 +163,7 @@ async function emailApplicantConfirmation(toEmail, name) {
   const text = [
     greeting,
     '',
-    'Your coaching application is in. I will personally read every single one of them. If we are a fit, you will hear back from me.',
+    'Your coaching application is in. I will personally read every single one of them. If we are a fit, you will hear back from me. If not, I will send you some resources on Instagram or TikTok to help you go into the right direction.',
     '',
     'Until then, message me on Instagram at @starjessetaylor and let me know that you applied for coaching. If you do not have Instagram, message me on TikTok at @starjessetaylor instead.',
     '',
