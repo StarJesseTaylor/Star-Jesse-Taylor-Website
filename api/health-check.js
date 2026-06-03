@@ -189,6 +189,104 @@ async function alertStar(failed, allResults) {
   }
 }
 
+async function checkResendService() {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) {
+    return { ok: false, status: 'no-key', body: 'RESEND_API_KEY environment variable missing' };
+  }
+  const started = Date.now();
+  try {
+    // GET /domains is a cheap authenticated call that proves Resend
+    // accepts the API key and the service is reachable.
+    const res = await fetch('https://api.resend.com/domains', {
+      method: 'GET',
+      headers: { 'Authorization': `Bearer ${apiKey}` }
+    });
+    return {
+      ok: res.ok,
+      status: res.status,
+      durationMs: Date.now() - started,
+      body: res.ok ? 'reachable' : (await res.text()).slice(0, 240)
+    };
+  } catch (err) {
+    return {
+      ok: false,
+      status: 'fetch-error',
+      durationMs: Date.now() - started,
+      body: String(err && err.message ? err.message : err)
+    };
+  }
+}
+
+async function checkAlertEmailPath() {
+  // We send a tiny test email to ourselves with subject prefix [ping].
+  // If this fails, the alert system itself is broken and we need to
+  // know. The email body is one line so it does not clutter the inbox.
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) return { ok: false, status: 'no-key', body: 'RESEND_API_KEY missing' };
+  const started = Date.now();
+  try {
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from: 'Website Health Check <hello@starjessetaylor.com>',
+        to: ['starjessetaylor@gmail.com'],
+        subject: '[ping] Health check alert path test',
+        text: 'This confirms the health-check alert email path is functional. Auto-fired by daily cron. You only see this if something else also failed today, or once a week as a heartbeat.'
+      })
+    });
+    return {
+      ok: res.ok,
+      status: res.status,
+      durationMs: Date.now() - started,
+      body: res.ok ? 'sent' : (await res.text()).slice(0, 240)
+    };
+  } catch (err) {
+    return {
+      ok: false,
+      status: 'fetch-error',
+      durationMs: Date.now() - started,
+      body: String(err && err.message ? err.message : err)
+    };
+  }
+}
+
+async function sendHeartbeat(results) {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) return;
+  const lines = [
+    '✓ Weekly heartbeat: website forms are all healthy.',
+    '',
+    'This email confirms two things:',
+    '1. The daily health check is running on schedule.',
+    '2. All 7 form-backing endpoints responded successfully today.',
+    '',
+    'You only get this email once a week. If a form ever breaks, you',
+    'get a different email immediately at any time, not just on the',
+    'weekly cadence.',
+    '',
+    '— Endpoints checked —',
+    ...results.map(r => `  ${r.ok ? '✓' : '✗'} ${r.name.padEnd(28)} ${r.status}`),
+    '',
+    `Checked at: ${new Date().toISOString()}`
+  ].join('\n');
+  try {
+    await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from: 'Website Health Check <hello@starjessetaylor.com>',
+        to: ['starjessetaylor@gmail.com'],
+        subject: '✓ Weekly heartbeat: website forms healthy',
+        text: lines
+      })
+    });
+  } catch (err) {
+    console.error('Heartbeat send failed:', err);
+  }
+}
+
 export default async function handler(req, res) {
   // Allow GET so Vercel cron can hit it without a payload
   if (req.method !== 'GET' && req.method !== 'POST') {
@@ -199,15 +297,30 @@ export default async function handler(req, res) {
   const protocol = host.indexOf('localhost') >= 0 ? 'http' : 'https';
   const baseUrl = `${protocol}://${host}`;
 
+  // 1. Check each form-backing endpoint
   const results = [];
   for (const endpoint of ENDPOINTS) {
     results.push(await checkEndpoint(baseUrl, endpoint));
   }
 
+  // 2. Check Resend service itself (the email infra everything depends on)
+  const resendCheck = await checkResendService();
+  results.push({ name: 'resend-service', path: 'api.resend.com/domains', ...resendCheck });
+
   const failed = results.filter(r => !r.ok);
 
+  // 3. If anything failed, send the alert email. Also verify the alert
+  //    path itself works by attempting the send — failures get logged.
   if (failed.length > 0) {
     await alertStar(failed, results);
+  } else {
+    // 4. On Mondays, send a heartbeat so Star KNOWS the cron is alive.
+    //    Silent-on-success has a blind spot: if Vercel cron stops firing,
+    //    Star would never know. The weekly heartbeat closes that hole.
+    const todayUtc = new Date();
+    if (todayUtc.getUTCDay() === 1) { // Monday
+      await sendHeartbeat(results);
+    }
   }
 
   return res.status(failed.length > 0 ? 503 : 200).json({
