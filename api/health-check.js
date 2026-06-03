@@ -256,20 +256,17 @@ async function sendHeartbeat(results) {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) return;
   const lines = [
-    '✓ Weekly heartbeat: website forms are all healthy.',
-    '',
-    'This email confirms two things:',
-    '1. The daily health check is running on schedule.',
-    '2. All 7 form-backing endpoints responded successfully today.',
-    '',
-    'You only get this email once a week. If a form ever breaks, you',
-    'get a different email immediately at any time, not just on the',
-    'weekly cadence.',
+    '✓ All website forms responded successfully today.',
     '',
     '— Endpoints checked —',
     ...results.map(r => `  ${r.ok ? '✓' : '✗'} ${r.name.padEnd(28)} ${r.status}`),
     '',
-    `Checked at: ${new Date().toISOString()}`
+    `Checked at: ${new Date().toISOString()}`,
+    '',
+    'You get this email every day the system passes. If you stop',
+    'seeing it for more than a day, the monitor itself has stopped',
+    'running. If anything ever fails, you get a different email with',
+    'subject "🚨 Website forms failing".'
   ].join('\n');
   try {
     await fetch('https://api.resend.com/emails', {
@@ -278,7 +275,7 @@ async function sendHeartbeat(results) {
       body: JSON.stringify({
         from: 'Website Health Check <hello@starjessetaylor.com>',
         to: ['starjessetaylor@gmail.com'],
-        subject: '✓ Weekly heartbeat: website forms healthy',
+        subject: '✓ Health check: all forms working',
         text: lines
       })
     });
@@ -309,18 +306,14 @@ export default async function handler(req, res) {
 
   const failed = results.filter(r => !r.ok);
 
-  // 3. If anything failed, send the alert email. Also verify the alert
-  //    path itself works by attempting the send — failures get logged.
+  // 3. If anything failed, send the alert email. Otherwise send the
+  //    daily heartbeat so Star knows the cron is still alive. If he
+  //    ever stops seeing the heartbeat for more than a day, the monitor
+  //    itself has died and he should investigate.
   if (failed.length > 0) {
     await alertStar(failed, results);
   } else {
-    // 4. On Mondays, send a heartbeat so Star KNOWS the cron is alive.
-    //    Silent-on-success has a blind spot: if Vercel cron stops firing,
-    //    Star would never know. The weekly heartbeat closes that hole.
-    const todayUtc = new Date();
-    if (todayUtc.getUTCDay() === 1) { // Monday
-      await sendHeartbeat(results);
-    }
+    await sendHeartbeat(results);
   }
 
   return res.status(failed.length > 0 ? 503 : 200).json({
