@@ -119,7 +119,12 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const { name, lastName, email, country, website_url } = req.body || {};
+  const body = req.body || {};
+  const { name, lastName, email, country, website_url } = body;
+
+  if (body.health_check === 'health-check-daily') {
+    return res.status(200).json({ success: true, healthCheck: true });
+  }
 
   if (website_url) {
     console.log('Bot blocked (honeypot):', { name, email });

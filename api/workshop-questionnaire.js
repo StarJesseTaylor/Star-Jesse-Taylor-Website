@@ -19,6 +19,7 @@ export default async function handler(req, res) {
   const AC_URL = (process.env.ACTIVECAMPAIGN_API_URL || 'https://starjessetaylor92181.api-us1.com').replace(/\/$/, '');
   if (!AC_KEY) return res.status(500).json({ error: 'Server configuration error' });
 
+  const body = req.body || {};
   const {
     firstName,
     email,
@@ -29,7 +30,11 @@ export default async function handler(req, res) {
     askStar,
     anythingElse,
     website_url
-  } = req.body || {};
+  } = body;
+
+  if (body.health_check === 'health-check-daily') {
+    return res.status(200).json({ success: true, healthCheck: true });
+  }
 
   // Honeypot
   if (website_url) {

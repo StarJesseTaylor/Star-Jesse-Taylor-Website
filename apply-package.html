@@ -455,7 +455,7 @@
     var confirmation = document.getElementById('formConfirmation');
     if (!form) return;
 
-    form.addEventListener('submit', function(e) {
+    form.addEventListener('submit', async function(e) {
       e.preventDefault();
 
       var data = new FormData(form);
@@ -469,66 +469,39 @@
 
       var fields = {};
       data.forEach(function(val, key) { fields[key] = val; });
+      fields.tier = 'package';
 
-      var body = [
-        'New Package Application',
-        '',
-        'Name: ' + (fields.full_name || ''),
-        'Email: ' + (fields.email || ''),
-        'Phone: ' + (fields.phone || ''),
-        'Location: ' + (fields.location || ''),
-        'How Found: ' + (fields.how_found || ''),
-        '',
-        'Package Applying For: ' + (fields.package_choice || ''),
-        '',
-        'Main Challenge:',
-        fields.main_challenge || '',
-        '',
-        'How Long:',
-        fields.how_long || '',
-        '',
-        'Daily Impact:',
-        fields.daily_impact || '',
-        '',
-        'What They Have Tried:',
-        fields.what_tried || '',
-        '',
-        'Life When Resolved:',
-        fields.life_resolved || '',
-        '',
-        'Why Now:',
-        fields.why_now || '',
-        '',
-        'Specific Goals:',
-        fields.specific_goals || '',
-        '',
-        'Ready to Start: ' + (fields.start_ready || ''),
-        'Decision Maker: ' + (fields.decision_maker || ''),
-        'Payment Plan: ' + (fields.payment_plan || ''),
-        'Commitment Scale: ' + (fields.commitment_scale || '') + '/10',
-        '',
-        'Anything Else:',
-        fields.anything_else || ''
-      ].join('\n');
+      var submitBtn = form.querySelector('button[type="submit"], .btn-submit');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending...';
+      }
 
-      // Try EmailJS first, fall back to mailto
-      if (window.emailjs) {
-        emailjs.send('service_emotfit', 'template_application', {
-          to_email: 'starjessetaylor@gmail.com',
-          from_name: fields.full_name,
-          from_email: fields.email,
-          subject: 'New Package Application',
-          message: body
-        }).then(function() {
-          form.style.display = 'none';
-          confirmation.style.display = 'block';
-        }).catch(function() {
-          window.location.href = 'mailto:starjessetaylor@gmail.com?subject=New%20Package%20Application&body=' + encodeURIComponent(body);
+      try {
+        var res = await fetch('/api/coaching-application', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(fields)
         });
-      } else {
-        window.location.href = 'mailto:starjessetaylor@gmail.com?subject=New%20Package%20Application&body=' + encodeURIComponent(body);
+
+        if (!res.ok) {
+          var errPayload = await res.json().catch(function() { return {}; });
+          throw new Error(errPayload.error || 'Submission failed (' + res.status + ')');
+        }
+
         form.style.display = 'none';
-        confirmation.style.display = 'block';
+        if (confirmation) confirmation.style.display = 'block';
+      } catch (err) {
+        console.error('Package application error:', err);
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Submit Application';
+        }
+        alert(
+          'We hit a problem submitting your application. ' +
+          'Please email starjessetaylor@gmail.com directly and we will not lose your message. ' +
+          'Your message: ' + (err && err.message ? err.message : 'unknown error')
+        );
       }
     });
   })();

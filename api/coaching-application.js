@@ -56,6 +56,7 @@ function fmt(val) {
 }
 
 function buildApplicationEmailText(f) {
+  const isPackage = f.tier === 'package';
   const checked = [];
   if (f.head_time === 'Yes') checked.push('spends a lot of time inside their head');
   if (f.avoiding_action === 'Yes') checked.push('avoiding actions due to anxiety/depression/emotions');
@@ -66,52 +67,64 @@ function buildApplicationEmailText(f) {
   if (f.breakup === 'Yes') checked.push('just had a breakup');
   if (f.read_book === 'Yes') checked.push('has read The Emotional Fitness book');
 
-  return [
-    '=== NEW COACHING APPLICATION ===',
+  const lines = [
+    isPackage ? '=== NEW PACKAGE APPLICATION ===' : '=== NEW COACHING APPLICATION ===',
     'Submitted: ' + new Date().toISOString(),
     '',
     '— APPLICANT —',
     'Name: ' + fmt(f.full_name),
     'Email: ' + fmt(f.email),
     'Phone: ' + fmt(f.phone),
-    'Location: ' + fmt(f.location),
-    'Time zone: ' + fmt(f.timezone),
-    'How they found Star: ' + fmt(f.how_found),
-    '',
-    '— QUICK CHECK-INS —',
-    checked.length ? checked.map(c => '  • ' + c).join('\n') : '  (none selected)',
+    'Location: ' + fmt(f.location)
+  ];
+  if (f.timezone) lines.push('Time zone: ' + fmt(f.timezone));
+  if (f.how_found) lines.push('How they found Star: ' + fmt(f.how_found));
+
+  if (isPackage && f.package_choice) {
+    lines.push('', '— PACKAGE —', 'Package applying for: ' + fmt(f.package_choice));
+  }
+
+  if (checked.length) {
+    lines.push('', '— QUICK CHECK-INS —', checked.map(c => '  • ' + c).join('\n'));
+  }
+
+  lines.push(
     '',
     '— THEIR STORY —',
-    'Main challenge:',
-    fmt(f.main_challenge),
-    '',
-    'How long they have been dealing with this:',
-    fmt(f.how_long),
-    '',
-    'Daily impact:',
-    fmt(f.daily_impact),
-    '',
-    'What they have already tried:',
-    fmt(f.what_tried),
-    '',
+    'Main challenge:', fmt(f.main_challenge), '',
+    'How long they have been dealing with this:', fmt(f.how_long), '',
+    'Daily impact:', fmt(f.daily_impact), '',
+    'What they have already tried:', fmt(f.what_tried), '',
     '— WHAT THEY WANT —',
-    'What life looks like when this is resolved:',
-    fmt(f.life_resolved),
-    '',
-    'Why now is the right time:',
-    fmt(f.why_now),
+    'What life looks like when this is resolved:', fmt(f.life_resolved), '',
+    'Why now is the right time:', fmt(f.why_now)
+  );
+
+  if (isPackage && f.specific_goals) {
+    lines.push('', 'Specific goals:', fmt(f.specific_goals));
+  }
+
+  lines.push(
     '',
     '— COMMITMENT —',
-    'Ready to start in next two weeks: ' + fmt(f.start_ready),
-    'Available investment: ' + fmt(f.investment),
-    'Commitment scale (1-10): ' + fmt(f.commitment_scale),
+    'Ready to start in next two weeks: ' + fmt(f.start_ready)
+  );
+  if (!isPackage) lines.push('Available investment: ' + fmt(f.investment));
+  if (isPackage) {
+    lines.push('Decision maker on payment: ' + fmt(f.decision_maker));
+    lines.push('Payment plan preference: ' + fmt(f.payment_plan));
+  }
+  lines.push('Commitment scale (1-10): ' + fmt(f.commitment_scale));
+
+  lines.push(
     '',
     '— FINAL —',
-    'Anything else they want to share:',
-    fmt(f.anything_else),
+    'Anything else they want to share:', fmt(f.anything_else),
     '',
     '==================================='
-  ].join('\n');
+  );
+
+  return lines.join('\n');
 }
 
 async function emailStar(applicantName, applicantEmail, bodyText) {
@@ -128,7 +141,7 @@ async function emailStar(applicantName, applicantEmail, bodyText) {
         from: 'Coaching Application <hello@starjessetaylor.com>',
         to: ['starjessetaylor@gmail.com'],
         reply_to: applicantEmail || undefined,
-        subject: 'New Coaching Application: ' + (applicantName || applicantEmail || 'Unnamed Applicant'),
+        subject: (bodyText.indexOf('NEW PACKAGE APPLICATION') >= 0 ? 'New Package Application: ' : 'New Coaching Application: ') + (applicantName || applicantEmail || 'Unnamed Applicant'),
         text: bodyText
       })
     });
@@ -192,6 +205,11 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const f = req.body || {};
+
+  // Health check probe: return 200 without polluting AC or emailing Star
+  if (f.health_check === 'health-check-daily') {
+    return res.status(200).json({ success: true, healthCheck: true });
+  }
 
   // Honeypot
   if (f.website_url) {

@@ -13,6 +13,7 @@ export default async function handler(req, res) {
   const AC_URL = (process.env.ACTIVECAMPAIGN_API_URL || 'https://starjessetaylor92181.api-us1.com').replace(/\/$/, '');
   if (!AC_KEY) return res.status(500).json({ error: 'Server configuration error' });
 
+  const body = req.body || {};
   const {
     firstName,
     lastName,
@@ -29,7 +30,11 @@ export default async function handler(req, res) {
     budget,
     message,
     website_url
-  } = req.body || {};
+  } = body;
+
+  if (body.health_check === 'health-check-daily') {
+    return res.status(200).json({ success: true, healthCheck: true });
+  }
 
   // Honeypot
   if (website_url) {
@@ -135,6 +140,62 @@ export default async function handler(req, res) {
         }
       })
     }).catch(() => {});
+
+    // Email Star directly so speaking gigs do not sit silently in AC.
+    // Speaking inquiries are high-value (paid gigs) — Star needs to see
+    // them in his inbox, not just as an AC tag.
+    const resendKey = process.env.RESEND_API_KEY;
+    if (resendKey) {
+      const subject = `New Speaking Inquiry: ${firstName} ${lastName || ''}`.trim() +
+        (organization ? ` (${organization})` : '');
+      const fullName = `${firstName} ${lastName || ''}`.trim();
+      const emailText = [
+        '=== NEW SPEAKING INQUIRY ===',
+        'Submitted: ' + new Date().toISOString(),
+        '',
+        '— CONTACT —',
+        'Name: ' + fullName,
+        'Email: ' + email,
+        'Phone: ' + (phone || '(blank)'),
+        '',
+        '— ORG —',
+        'Organization: ' + (organization || '(blank)'),
+        'Role: ' + (role || '(blank)'),
+        '',
+        '— EVENT —',
+        'Event: ' + (eventName || '(blank)'),
+        'Date: ' + (eventDate || '(blank)'),
+        'Location: ' + (eventLocation || '(blank)'),
+        'Audience size: ' + (audienceSize || '(blank)'),
+        'Audience type: ' + (audienceType || '(blank)'),
+        '',
+        '— TOPIC AND BUDGET —',
+        'Topic interest: ' + (topic || '(blank)'),
+        'Budget: ' + (budget || '(blank)'),
+        '',
+        '— MESSAGE —',
+        message || '(blank)',
+        '',
+        '============================='
+      ].join('\n');
+      try {
+        await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${resendKey}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            from: 'Speaking Inquiries <hello@starjessetaylor.com>',
+            to: ['starjessetaylor@gmail.com'],
+            reply_to: email,
+            subject,
+            text: emailText
+          })
+        });
+      } catch (err) {
+        console.error('Resend speaking-inquiry email-to-Star failed:', err);
+      }
+    } else {
+      console.warn('RESEND_API_KEY missing — speaking inquiry captured to AC but Star not emailed');
+    }
 
     return res.status(200).json({ success: true });
   } catch (err) {
