@@ -10,21 +10,28 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #FFFFFF;
-      --card: #FFFFFF;
-      --cobalt: #1B6CA8;
-      --cobalt-deep: #155A8A;
-      --cobalt-soft: #EAF2FA;
-      --turquoise: #00B4D8;
-      --turquoise-light: #90E0EF;
-      --ink: #2C2C2C;
-      --muted: #6B7280;
-      --soft: #EEF1F5;
+      /* Santorini palette: three colors only. White + dome blue + sky blue. Restrained on purpose. */
+      --bg: #FFFFFF;           /* Pure white — building / stucco */
+      --card: #FFFFFF;         /* Cards stay pure white */
+      --dome-blue: #1976D2;    /* The iconic Santorini dome blue — primary buttons, active states, brand */
+      --dome-deep: #115293;    /* Deeper dome blue for headings, depth, hover */
+      --sky-blue: #4FC3F7;     /* Bright Aegean sky — accents, secondary actions, soft highlights */
+      --sky-soft: #E1F1FB;     /* Pale sky tint for card backgrounds, soft panels */
+      --ink: #1A1A2E;          /* Almost-black for text, high contrast against pure white */
+      --muted: #6B7280;        /* Neutral gray for secondary text */
+      --soft: #EEF1F5;         /* Subtle border / divider gray */
+
+      /* Aliases so existing CSS variable names still resolve */
+      --cobalt: var(--dome-blue);
+      --cobalt-deep: var(--dome-deep);
+      --cobalt-soft: var(--sky-soft);
+      --turquoise: var(--sky-blue);
+      --turquoise-light: var(--sky-soft);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: linear-gradient(160deg, #F8FBFE 0%, #E5F0F8 100%);
+      background: linear-gradient(160deg, #FFFFFF 0%, #E8F2FE 100%);
       color: var(--ink);
       min-height: 100vh;
       padding: 64px 24px;
