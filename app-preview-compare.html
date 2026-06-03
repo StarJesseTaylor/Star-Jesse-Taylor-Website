@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>App Preview · Old vs New Palette Comparison</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #1F2937;
+      color: white;
+      min-height: 100vh;
+      padding: 32px 16px;
+    }
+    .compare-header {
+      max-width: 1400px;
+      margin: 0 auto 28px;
+      text-align: center;
+    }
+    .compare-header h1 {
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+    }
+    .compare-header p {
+      font-size: 1rem;
+      color: #D1D5DB;
+      max-width: 720px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      max-width: 1900px;
+      margin: 0 auto;
+    }
+    .compare-col {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .compare-col-header {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 16px 22px;
+      text-align: center;
+    }
+    .compare-col-header.old {
+      border-color: rgba(0,180,216,0.35);
+    }
+    .compare-col-header.new {
+      border-color: rgba(79,195,247,0.35);
+    }
+    .compare-col-header .palette-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 800;
+      margin-bottom: 8px;
+      opacity: 0.7;
+    }
+    .compare-col-header h2 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+    .compare-col-header .swatches {
+      display: inline-flex;
+      gap: 6px;
+      margin-top: 10px;
+    }
+    .swatch {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.18);
+    }
+    .compare-col iframe {
+      width: 100%;
+      height: 1500px;
+      border: 0;
+      border-radius: 16px;
+      background: white;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    .compare-footer {
+      max-width: 1400px;
+      margin: 40px auto 0;
+      text-align: center;
+      padding: 24px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 14px;
+    }
+    .compare-footer p {
+      font-size: 0.96rem;
+      color: #D1D5DB;
+      line-height: 1.65;
+      margin-bottom: 10px;
+    }
+    .compare-footer a {
+      color: #4FC3F7;
+      text-decoration: underline;
+      font-weight: 700;
+    }
+    @media (max-width: 1100px) {
+      .compare-grid { grid-template-columns: 1fr; }
+      .compare-col iframe { height: 1300px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="compare-header">
+    <h1>App Palette Comparison · Old vs New</h1>
+    <p>Same screens, two palettes, side by side. Scroll both, compare honestly. Tell me which one wins. Or if you want to mix them.</p>
+  </div>
+
+  <div class="compare-grid">
+
+    <div class="compare-col">
+      <div class="compare-col-header old">
+        <div class="palette-label">OLD</div>
+        <h2>Website Cobalt + Turquoise</h2>
+        <div style="font-size:0.88rem;color:#D1D5DB;line-height:1.55;">The previous app preview. Uses the existing site's brand blues. Slightly cooler, more muted.</div>
+        <div class="swatches">
+          <div class="swatch" style="background:#FFFFFF;" title="White"></div>
+          <div class="swatch" style="background:#1B6CA8;" title="Cobalt #1B6CA8"></div>
+          <div class="swatch" style="background:#155A8A;" title="Cobalt Dark"></div>
+          <div class="swatch" style="background:#00B4D8;" title="Turquoise #00B4D8"></div>
+          <div class="swatch" style="background:#90E0EF;" title="Turquoise Light"></div>
+        </div>
+      </div>
+      <iframe src="app-preview-old.html" title="Old palette preview"></iframe>
+    </div>
+
+    <div class="compare-col">
+      <div class="compare-col-header new">
+        <div class="palette-label">NEW</div>
+        <h2>Santorini · Three Colors</h2>
+        <div style="font-size:0.88rem;color:#D1D5DB;line-height:1.55;">Locked from your Santorini reference photos June 3 2026. Brighter, more saturated, more restrained.</div>
+        <div class="swatches">
+          <div class="swatch" style="background:#FFFFFF;" title="White"></div>
+          <div class="swatch" style="background:#1976D2;" title="Dome Blue #1976D2"></div>
+          <div class="swatch" style="background:#115293;" title="Dome Deep"></div>
+          <div class="swatch" style="background:#4FC3F7;" title="Sky Blue #4FC3F7"></div>
+          <div class="swatch" style="background:#E1F1FB;" title="Sky Soft"></div>
+        </div>
+      </div>
+      <iframe src="app-preview.html" title="New Santorini palette preview"></iframe>
+    </div>
+
+  </div>
+
+  <div class="compare-footer">
+    <p><strong>Open either standalone:</strong> <a href="app-preview-old.html">Old palette only</a> · <a href="app-preview.html">New Santorini palette only</a></p>
+    <p>Tell me: keep new, go back to old, or mix specific bits from each.</p>
+  </div>
+
+</body>
+</html>
