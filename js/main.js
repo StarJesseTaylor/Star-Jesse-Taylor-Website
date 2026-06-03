@@ -175,11 +175,6 @@ if (form) {
     const data = new FormData(form);
     const fields = Object.fromEntries(data.entries());
 
-    // Build email body
-    const body = Object.entries(fields)
-      .map(([k, v]) => `${k.replace(/_/g, ' ').toUpperCase()}: ${v || '—'}`)
-      .join('\n\n');
-
     const targetConfirmation = pickConfirmation(fields.investment);
 
     // If they picked the cohort path, also add them to the AC cohort waitlist
@@ -187,20 +182,20 @@ if (form) {
       pingCohortWaitlist(fields);
     }
 
-    // EmailJS send
+    // Post to the real backend. Will email Star via Resend, add to AC,
+    // and send the applicant a confirmation. If this fails, we DO NOT
+    // show a success message — we show the user an error so they know
+    // their application did not go through.
     try {
-      if (typeof emailjs !== 'undefined') {
-        await emailjs.send('service_emotfit', 'template_application', {
-          to_email: 'star@starjessetaylor.com',
-          subject: 'New Coaching Application',
-          applicant_name: fields.full_name || 'Applicant',
-          message: body,
-          reply_to: fields.email || '',
-        });
-      } else {
-        // Fallback: mailto (opens email client)
-        const mailto = `mailto:star@starjessetaylor.com?subject=New%20Coaching%20Application&body=${encodeURIComponent(body)}`;
-        window.open(mailto);
+      const res = await fetch('/api/coaching-application', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(fields)
+      });
+
+      if (!res.ok) {
+        const errPayload = await res.json().catch(() => ({}));
+        throw new Error(errPayload.error || 'Submission failed (' + res.status + ')');
       }
 
       form.style.display = 'none';
@@ -210,15 +205,14 @@ if (form) {
         targetConfirmation.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     } catch (err) {
-      console.error('Send error:', err);
-      // Fallback gracefully
-      const mailto = `mailto:star@starjessetaylor.com?subject=New%20Coaching%20Application&body=${encodeURIComponent(body)}`;
-      window.open(mailto);
-      form.style.display = 'none';
-      if (targetConfirmation) {
-        targetConfirmation.style.display = 'block';
-        targetConfirmation.classList.add('visible');
-      }
+      console.error('Application submission error:', err);
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit My Application';
+      alert(
+        'We hit a problem submitting your application. ' +
+        'Please email starjessetaylor@gmail.com directly and we will not lose your message. ' +
+        'Your message: ' + (err && err.message ? err.message : 'unknown error')
+      );
     }
   });
 }
