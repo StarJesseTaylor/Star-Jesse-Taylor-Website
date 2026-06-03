@@ -165,9 +165,7 @@ async function emailApplicantConfirmation(toEmail, name) {
     '',
     'Your coaching application is in. I personally read every one of these.',
     '',
-    'If we are a fit, you will hear back from me within 48 hours. If not, I will still write to let you know and point you to the best next step.',
-    '',
-    'In the meantime, if a question comes up that cannot wait, you can send me a paid voice memo at ask.meanything.co/starjessetaylor. The cost credits toward coaching if you continue.',
+    'If we are a fit, you will hear back from me. If not, I will still write to let you know and point you to the best next step.',
     '',
     'Talk soon,',
     'Star'
