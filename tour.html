@@ -68,6 +68,75 @@
       margin: 0 auto;
     }
 
+    .tour-testimonials {
+      padding: 64px 0 40px;
+      background: linear-gradient(160deg, #e8f0f7 0%, #ffffff 100%);
+    }
+    .tour-testimonials-inner {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .tour-vid-wrap {
+      max-width: 380px;
+      margin: 0 auto 36px;
+    }
+    .tour-vid {
+      position: relative;
+      width: 100%;
+      padding-bottom: 177.78%;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 18px 60px rgba(0,0,0,0.18);
+      background: #000;
+    }
+    .tour-vid iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      border: 0;
+    }
+    .tour-vid-cap {
+      text-align: center;
+      margin-top: 14px;
+    }
+    .tour-vid-cap strong {
+      display: block;
+      color: var(--charcoal);
+      font-weight: 800;
+      font-size: 1rem;
+    }
+    .tour-vid-cap span {
+      display: block;
+      color: var(--cobalt);
+      font-weight: 700;
+      font-size: 0.85rem;
+      margin-top: 3px;
+    }
+    .tour-quote {
+      background: var(--white);
+      border-left: 4px solid var(--cobalt);
+      border-radius: 6px;
+      padding: 28px 28px 22px;
+      margin: 0;
+      box-shadow: 0 4px 24px rgba(27,108,168,0.08);
+    }
+    .tour-quote p {
+      font-size: 1.1rem;
+      line-height: 1.65;
+      color: var(--charcoal);
+      font-weight: 500;
+      margin: 0 0 14px;
+      font-style: italic;
+    }
+    .tour-quote cite {
+      font-size: 0.88rem;
+      color: var(--mid-gray);
+      font-weight: 700;
+      font-style: normal;
+      letter-spacing: 0.02em;
+    }
+
     .tour-story {
       padding: 80px 0 40px;
       background: linear-gradient(160deg, #ffffff 0%, #f6f9fc 100%);
@@ -463,6 +532,31 @@
       <div class="tour-after-form">
         If your city isn't on the list yet, write it in the <strong>Other</strong> field. The cities with the most demand are the ones I'll book first.
       </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="tour-testimonials">
+    <div class="tour-testimonials-inner">
+      <h2 class="phases-heading">From the people who did the work</h2>
+      <div class="tour-vid-wrap">
+        <div class="tour-vid">
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/KJcgDLzLTgo?rel=0&playsinline=1&modestbranding=1"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+            title="Katie Hayman: 1-on-1 Coaching Client Story"
+          ></iframe>
+        </div>
+        <div class="tour-vid-cap">
+          <strong>Katie Hayman</strong>
+          <span>1-on-1 Coaching</span>
+        </div>
+      </div>
+      <blockquote class="tour-quote">
+        <p>"I've tried so many things for mental health. I've read so many self-help books, and I'm a psychologist. But this is what actually changed things."</p>
+        <cite>Annabelle Twigt &middot; Psychologist &middot; 1-on-1 + Group Coaching</cite>
+      </blockquote>
     </div>
   </section>
 
