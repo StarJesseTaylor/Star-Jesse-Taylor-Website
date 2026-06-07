@@ -1,0 +1,581 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Workshop Tour | Star Jesse Taylor</title>
+  <meta name="description" content="Tell Star where you want him to come. Multi-city Emotional Fitness workshop tour. LA, New York, Miami, Austin, online — or write in your city." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-T0T1Z0VBT8"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-T0T1Z0VBT8');
+  </script>
+  <script src="js/tracking.js" async></script>
+  <script src="js/announcement-bar.js" defer></script>
+  <style>
+    .tour-hero {
+      background: linear-gradient(135deg, #0b2848 0%, #1B6CA8 100%);
+      color: var(--white);
+      padding: calc(var(--nav-height) + 80px) 0 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    .tour-hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at top right, rgba(0,180,216,0.18) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .tour-hero-inner {
+      max-width: 760px;
+      margin: 0 auto;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      padding: 0 24px;
+    }
+    .tour-eyebrow {
+      display: inline-block;
+      background: rgba(0,180,216,0.18);
+      color: #b5edff;
+      font-size: 0.78rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 800;
+      padding: 7px 16px;
+      border-radius: 999px;
+      margin-bottom: 24px;
+    }
+    .tour-hero h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      line-height: 1.15;
+      font-weight: 900;
+      margin-bottom: 20px;
+    }
+    .tour-hero h1 span { color: #b5edff; }
+    .tour-hero .lede {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.92);
+      max-width: 620px;
+      margin: 0 auto;
+    }
+
+    .tour-story {
+      padding: 80px 0 40px;
+      background: linear-gradient(160deg, #ffffff 0%, #f6f9fc 100%);
+    }
+    .tour-story-inner {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .phases-heading {
+      font-size: 0.85rem;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--cobalt);
+      text-align: center;
+      margin-bottom: 36px;
+    }
+    .phases-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      counter-reset: phase;
+    }
+    .phases-list > li {
+      display: flex;
+      gap: 22px;
+      padding: 24px 0;
+      border-bottom: 1px solid #eef1f5;
+    }
+    .phases-list > li:last-child { border-bottom: none; }
+    .phase-num {
+      width: 44px;
+      height: 44px;
+      flex-shrink: 0;
+      background: var(--cobalt);
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 1.15rem;
+    }
+    .phase-body { flex: 1; }
+    .phase-body h3 {
+      font-size: 1.18rem;
+      font-weight: 800;
+      color: var(--charcoal);
+      margin: 4px 0 6px;
+      letter-spacing: -0.01em;
+    }
+    .phase-body p {
+      font-size: 1rem;
+      line-height: 1.65;
+      color: var(--mid-gray);
+      margin: 0;
+    }
+
+    .tour-form-wrap {
+      padding: 40px 0 80px;
+      background: linear-gradient(160deg, #f6f9fc 0%, #e8f0f7 100%);
+    }
+    .tour-form-container {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .tour-form-card {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 44px 40px;
+      box-shadow: 0 4px 32px rgba(27,108,168,0.1);
+    }
+    .tour-form-card h2 {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 900;
+      color: var(--cobalt);
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    .tour-form-card .form-sub {
+      text-align: center;
+      color: var(--mid-gray);
+      font-size: 0.98rem;
+      margin-bottom: 32px;
+    }
+    .tour-field { margin-bottom: 20px; }
+    .tour-field label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--cobalt);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .tour-field input[type="text"],
+    .tour-field input[type="email"] {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid #eef1f5;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-family: inherit;
+      background: #f8f9fb;
+      color: var(--charcoal);
+      transition: border-color 0.18s ease, background 0.18s ease;
+    }
+    .tour-field input[type="text"]:focus,
+    .tour-field input[type="email"]:focus {
+      outline: none;
+      border-color: var(--cobalt);
+      background: var(--white);
+    }
+    .tour-cities {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .tour-city {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 20px;
+      background: #f8f9fb;
+      border: 2px solid #eef1f5;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--charcoal);
+      user-select: none;
+    }
+    .tour-city:hover {
+      border-color: var(--cobalt);
+      background: rgba(27,108,168,0.04);
+    }
+    .tour-city input { display: none; }
+    .tour-city .checkbox-vis {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      border: 2px solid #cdd5dd;
+      background: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.18s ease;
+    }
+    .tour-city .checkbox-vis::after {
+      content: '✓';
+      color: var(--white);
+      font-weight: 900;
+      font-size: 14px;
+      opacity: 0;
+      transition: opacity 0.18s ease;
+    }
+    .tour-city.selected {
+      border-color: var(--cobalt);
+      background: rgba(27,108,168,0.08);
+    }
+    .tour-city.selected .checkbox-vis {
+      border-color: var(--cobalt);
+      background: var(--cobalt);
+    }
+    .tour-city.selected .checkbox-vis::after { opacity: 1; }
+
+    .tour-other-input {
+      display: none;
+      margin-top: 12px;
+    }
+    .tour-other-input.visible { display: block; }
+
+    .tour-submit-row {
+      margin-top: 30px;
+    }
+    .tour-submit {
+      width: 100%;
+      padding: 18px 24px;
+      background: linear-gradient(135deg, var(--cobalt), #2a85c9);
+      color: var(--white);
+      border: none;
+      border-radius: 999px;
+      font-size: 1.05rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      font-family: inherit;
+    }
+    .tour-submit:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(27,108,168,0.25);
+    }
+    .tour-submit:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .tour-after-form {
+      max-width: 640px;
+      margin: 32px auto 0;
+      padding: 0 24px;
+      text-align: center;
+      color: var(--mid-gray);
+      font-size: 0.96rem;
+      line-height: 1.65;
+    }
+    .tour-after-form strong { color: var(--cobalt); font-weight: 700; }
+
+    .tour-thanks {
+      display: none;
+      text-align: center;
+      padding: 40px 20px;
+    }
+    .tour-thanks.visible { display: block; }
+    .tour-thanks .check {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      background: var(--cobalt);
+      color: var(--white);
+      font-size: 32px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+    }
+    .tour-thanks h2 {
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: var(--cobalt);
+      margin-bottom: 12px;
+    }
+    .tour-thanks p {
+      color: var(--charcoal);
+      font-size: 1.02rem;
+      line-height: 1.65;
+    }
+
+    .tour-error {
+      display: none;
+      margin-top: 16px;
+      padding: 14px 16px;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: 10px;
+      color: #b91c1c;
+      font-size: 0.95rem;
+    }
+    .tour-error.visible { display: block; }
+
+    .tour-tagline {
+      text-align: center;
+      padding: 48px 24px;
+      font-style: italic;
+      color: var(--cobalt);
+      font-weight: 600;
+      font-size: 1.08rem;
+      background: var(--white);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="container">
+      <div class="nav-inner">
+        <a href="index.html" class="nav-logo">
+          <span class="nav-logo-name">Star Jesse Taylor</span>
+          <span class="nav-logo-sub">Emotional Fitness</span>
+        </a>
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="services.html">Work With Star</a></li>
+          <li><a href="book.html">Star's Book</a></li>
+          <li><a href="event.html">Workshop</a></li>
+          <li><a href="speak.html">Speaking</a></li>
+          <li><a href="virtual-events.html">Ask Star</a></li>
+        </ul>
+        <a href="apply.html" class="btn btn-primary btn-sm nav-cta">Apply for Coaching</a>
+        <button class="nav-hamburger" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MOBILE NAV -->
+  <div class="nav-mobile">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="services.html">Work With Star</a>
+    <a href="book.html">Star's Book</a>
+    <a href="event.html">Workshop</a>
+    <a href="speak.html">Speaking</a>
+    <a href="virtual-events.html">Ask Star</a>
+    <a href="apply.html">Apply for Coaching</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="tour-hero">
+    <div class="tour-hero-inner">
+      <span class="tour-eyebrow">The Workshop Tour</span>
+      <h1>Where should I <span>come?</span></h1>
+      <p class="lede">
+        From Anxiety to Confidence in One Day. Six hours, live, in person or online.
+      </p>
+    </div>
+  </section>
+
+  <!-- FORM -->
+  <section class="tour-form-wrap">
+    <div class="tour-form-container">
+      <div class="tour-form-card" id="tourCard">
+        <h2>Tell me where you are.</h2>
+        <p class="form-sub">First-tier seats and dates go to the people on this list before anyone else hears.</p>
+
+        <form id="tourForm" autocomplete="on">
+          <div class="tour-field">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" name="firstName" required autocomplete="given-name" />
+          </div>
+
+          <div class="tour-field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required autocomplete="email" />
+          </div>
+
+          <div class="tour-field">
+            <label>Where should I come?</label>
+            <div class="tour-cities">
+              <label class="tour-city" data-city="la">
+                <input type="checkbox" name="cities" value="la" />
+                <span class="checkbox-vis"></span>
+                <span>Los Angeles</span>
+              </label>
+              <label class="tour-city" data-city="ny">
+                <input type="checkbox" name="cities" value="ny" />
+                <span class="checkbox-vis"></span>
+                <span>New York</span>
+              </label>
+              <label class="tour-city" data-city="miami">
+                <input type="checkbox" name="cities" value="miami" />
+                <span class="checkbox-vis"></span>
+                <span>Miami</span>
+              </label>
+              <label class="tour-city" data-city="austin">
+                <input type="checkbox" name="cities" value="austin" />
+                <span class="checkbox-vis"></span>
+                <span>Austin</span>
+              </label>
+              <label class="tour-city" data-city="online">
+                <input type="checkbox" name="cities" value="online" />
+                <span class="checkbox-vis"></span>
+                <span>Online workshop</span>
+              </label>
+              <label class="tour-city" data-city="other">
+                <input type="checkbox" name="cities" value="other" id="otherCheckbox" />
+                <span class="checkbox-vis"></span>
+                <span>Other — which city?</span>
+              </label>
+            </div>
+            <div class="tour-other-input" id="otherInputWrap">
+              <input type="text" id="otherCity" name="otherCity" placeholder="Type the city you want" autocomplete="off" />
+            </div>
+          </div>
+
+          <div class="tour-submit-row">
+            <button type="submit" class="tour-submit" id="tourSubmit">Tell Star where to come</button>
+          </div>
+
+          <div class="tour-error" id="tourError"></div>
+        </form>
+
+        <div class="tour-thanks" id="tourThanks">
+          <div class="check">✓</div>
+          <h2>You're in.</h2>
+          <p>
+            You'll be the first to know when your city locks in. I'll send the date, the venue, and a link to grab your seat before anyone else.
+          </p>
+        </div>
+      </div>
+
+      <div class="tour-after-form">
+        If your city isn't on the list yet, write it in the <strong>Other</strong> field. The cities with the most demand are the ones I'll book first.
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT WE DO -->
+  <section class="tour-story">
+    <div class="tour-story-inner">
+      <h2 class="phases-heading">What we do in the room</h2>
+      <ol class="phases-list">
+        <li>
+          <span class="phase-num">1</span>
+          <div class="phase-body">
+            <h3>We expose your patterns.</h3>
+            <p>See the loops actually running your life. Not theory. Yours.</p>
+          </div>
+        </li>
+        <li>
+          <span class="phase-num">2</span>
+          <div class="phase-body">
+            <h3>We break your patterns.</h3>
+            <p>Disrupt the loops that have been keeping you stuck.</p>
+          </div>
+        </li>
+        <li>
+          <span class="phase-num">3</span>
+          <div class="phase-body">
+            <h3>We show you a new direction.</h3>
+            <p>So you're not a slave to the patterns. You live your life authentically. You move forward.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <p class="tour-tagline">Have the audacity to live your life.</p>
+
+  <script>
+    (function() {
+      const cityLabels = document.querySelectorAll('.tour-city');
+      const otherCheckbox = document.getElementById('otherCheckbox');
+      const otherInputWrap = document.getElementById('otherInputWrap');
+      const otherCity = document.getElementById('otherCity');
+      const form = document.getElementById('tourForm');
+      const submitBtn = document.getElementById('tourSubmit');
+      const errorEl = document.getElementById('tourError');
+      const card = document.getElementById('tourCard');
+      const formEl = form;
+      const thanks = document.getElementById('tourThanks');
+
+      cityLabels.forEach(label => {
+        const input = label.querySelector('input');
+        const update = () => {
+          if (input.checked) label.classList.add('selected');
+          else label.classList.remove('selected');
+          if (input === otherCheckbox) {
+            if (input.checked) otherInputWrap.classList.add('visible');
+            else otherInputWrap.classList.remove('visible');
+          }
+        };
+        input.addEventListener('change', update);
+        update();
+      });
+
+      function showError(msg) {
+        errorEl.textContent = msg;
+        errorEl.classList.add('visible');
+      }
+
+      function clearError() { errorEl.classList.remove('visible'); }
+
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        clearError();
+
+        const firstName = document.getElementById('firstName').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const cities = Array.from(document.querySelectorAll('input[name="cities"]:checked')).map(i => i.value);
+        const otherCityValue = otherCity.value.trim();
+
+        if (!firstName) { showError('Please add your first name.'); return; }
+        if (!email || !/.+@.+\..+/.test(email)) { showError('Please add a valid email.'); return; }
+        if (cities.length === 0) { showError('Pick at least one city or the online workshop.'); return; }
+        if (cities.includes('other') && !otherCityValue) { showError('You picked Other — which city?'); return; }
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending...';
+
+        try {
+          const res = await fetch('/api/tour-interest', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ firstName, email, cities, otherCity: otherCityValue })
+          });
+          const data = await res.json();
+          if (!res.ok) {
+            showError(data.error || 'Something went wrong. Try again in a moment.');
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Tell Star where to come';
+            return;
+          }
+          // Hide form, show thanks
+          formEl.style.display = 'none';
+          errorEl.classList.remove('visible');
+          thanks.classList.add('visible');
+          if (typeof gtag === 'function') {
+            gtag('event', 'tour_interest_submit', { cities: cities.join(',') });
+          }
+        } catch (err) {
+          showError('Network hiccup. Try again.');
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Tell Star where to come';
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
