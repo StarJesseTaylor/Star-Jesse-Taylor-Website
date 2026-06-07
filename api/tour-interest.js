@@ -201,7 +201,16 @@ module.exports = async (req, res) => {
       if (tag) tagPromises.push(applyTag(AC_URL, headers, contactId, tag));
     }
     if (cities.includes('other') && otherCity) {
-      tagPromises.push(applyTag(AC_URL, headers, contactId, 'requested_city:' + otherCity));
+      // Normalize: lowercase, strip punctuation, collapse spaces.
+      // "Denver, CO" / "Denver" / "DENVER" all collapse to "denver".
+      const normalized = otherCity
+        .toLowerCase()
+        .replace(/[^a-z0-9\s]/g, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+      if (normalized) {
+        tagPromises.push(applyTag(AC_URL, headers, contactId, 'requested_city:' + normalized));
+      }
     }
     await Promise.all(tagPromises);
 
