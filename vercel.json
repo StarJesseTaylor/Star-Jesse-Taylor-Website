@@ -1,4 +1,7 @@
 {
+  "rewrites": [
+    { "source": "/tour", "destination": "/tour.html" }
+  ],
   "crons": [
     {
       "path": "/api/blue/daily-cron",
