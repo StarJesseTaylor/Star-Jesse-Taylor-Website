@@ -514,7 +514,7 @@
           </div>
 
           <div class="tour-submit-row">
-            <button type="submit" class="tour-submit" id="tourSubmit">Tell Star where to come</button>
+            <button type="submit" class="tour-submit" id="tourSubmit">Get on the waitlist</button>
           </div>
 
           <div class="tour-error" id="tourError"></div>
@@ -655,7 +655,7 @@
           if (!res.ok) {
             showError(data.error || 'Something went wrong. Try again in a moment.');
             submitBtn.disabled = false;
-            submitBtn.textContent = 'Tell Star where to come';
+            submitBtn.textContent = 'Get on the waitlist';
             return;
           }
           // Hide form, show thanks
@@ -668,7 +668,7 @@
         } catch (err) {
           showError('Network hiccup. Try again.');
           submitBtn.disabled = false;
-          submitBtn.textContent = 'Tell Star where to come';
+          submitBtn.textContent = 'Get on the waitlist';
         }
       });
     })();
