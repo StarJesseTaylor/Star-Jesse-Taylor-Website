@@ -103,6 +103,52 @@ const ENDPOINTS = [
       firstName: 'Health Check',
       health_check: HEALTH_MARKER
     })
+  },
+  {
+    name: 'quiz-submit',
+    path: '/api/quiz-submit',
+    payload: () => ({
+      name: 'Health',
+      lastName: 'Check',
+      email: markerEmail(),
+      result: 'book',
+      symptom: 'new',
+      painScore: 5,
+      stakes: 'health check',
+      answers: {},
+      health_check: HEALTH_MARKER
+    })
+  },
+  {
+    name: 'tour-interest',
+    path: '/api/tour-interest',
+    payload: () => ({
+      firstName: 'Health',
+      email: markerEmail(),
+      cities: ['la'],
+      health_check: HEALTH_MARKER
+    })
+  },
+  {
+    name: 'subscribe',
+    path: '/api/subscribe',
+    payload: () => ({
+      firstName: 'Health',
+      email: markerEmail(),
+      health_check: HEALTH_MARKER
+    })
+  },
+  {
+    name: 'zoom-rsvp',
+    path: '/api/zoom-rsvp',
+    payload: () => ({
+      firstName: 'Health',
+      lastName: 'Check',
+      email: markerEmail(),
+      country: 'USA',
+      connection: 'health check',
+      health_check: HEALTH_MARKER
+    })
   }
 ];
 

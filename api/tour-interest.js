@@ -140,6 +140,11 @@ module.exports = async (req, res) => {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const body = req.body || {};
+
+  if (body.health_check === 'health-check-daily') {
+    return res.status(200).json({ success: true, healthCheck: true });
+  }
+
   const firstName = String(body.firstName || '').trim();
   const email = String(body.email || '').trim().toLowerCase();
   const cities = Array.isArray(body.cities) ? body.cities.filter(c => CITY_TAGS[c]) : [];
