@@ -1,8 +1,6 @@
 {
   "rewrites": [
-    { "source": "/tour", "destination": "/tour.html" },
-    { "source": "/online-workshop", "destination": "/online-workshop.html" },
-    { "source": "/july18", "destination": "/online-workshop.html" }
+    { "source": "/tour", "destination": "/tour.html" }
   ],
   "crons": [
     {
