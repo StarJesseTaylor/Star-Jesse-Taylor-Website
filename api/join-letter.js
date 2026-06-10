@@ -51,8 +51,6 @@ async function sendConfirmation(toEmail, name) {
     '',
     "You are signed up for Star's Letters.",
     '',
-    'I will write you something when I have something real to say.',
-    '',
     'For daily reminders to stay on track, join my WhatsApp group:',
     'https://chat.whatsapp.com/Iu8X0qemy6R3XkHFBWN9f7?s=cl&p=i&mlu=1&amv=1',
     '',
