@@ -124,7 +124,7 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const body = req.body || {};
-  const { name, email, phone, smsOptIn, source, website_url } = body;
+  const { name, lastName, email, phone, smsOptIn, source, website_url } = body;
 
   if (body.health_check === 'health-check-daily') {
     return res.status(200).json({ success: true, healthCheck: true });
@@ -186,6 +186,7 @@ export default async function handler(req, res) {
 
   try {
     const contactPayload = { email, firstName: name || '' };
+    if (lastName) contactPayload.lastName = lastName;
     if (phoneClean) contactPayload.phone = phoneClean;
     const syncRes = await fetch(`${AC_URL}/api/3/contact/sync`, {
       method: 'POST', headers,
