@@ -49,13 +49,12 @@ async function sendConfirmation(toEmail, name) {
   const text = [
     greeting,
     '',
-    'You are signed up for Star\'s Letters.',
+    "You are signed up for Star's Letters.",
     '',
-    'I write to you when I have something to say. Whatever I am working on, whatever is hitting me, whatever I think might land for you. No bait, no PDF, no funnel. Just me writing to you.',
+    'I will write you something when I have something real to say.',
     '',
-    'You will get the first one when I sit down to write it.',
-    '',
-    'Glad you are here.',
+    'For daily reminders to stay on track, join my WhatsApp group:',
+    'https://chat.whatsapp.com/Iu8X0qemy6R3XkHFBWN9f7?s=cl&p=i&mlu=1&amv=1',
     '',
     'Star'
   ].join('\n');
