@@ -139,6 +139,16 @@ const ENDPOINTS = [
     })
   },
   {
+    name: 'join-letter',
+    path: '/api/join-letter',
+    payload: () => ({
+      name: 'Health',
+      lastName: 'Check',
+      email: markerEmail(),
+      health_check: HEALTH_MARKER
+    })
+  },
+  {
     name: 'zoom-rsvp',
     path: '/api/zoom-rsvp',
     payload: () => ({
