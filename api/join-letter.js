@@ -54,6 +54,8 @@ async function sendConfirmation(toEmail, name) {
     'For daily reminders to stay on track, join my WhatsApp group:',
     'https://chat.whatsapp.com/Iu8X0qemy6R3XkHFBWN9f7?s=cl&p=i&mlu=1&amv=1',
     '',
+    'Hit reply with anything to say hi. Tells me the email got to you.',
+    '',
     'Star'
   ].join('\n');
 

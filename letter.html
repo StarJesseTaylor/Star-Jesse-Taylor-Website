@@ -103,6 +103,12 @@
       outline: none;
       border-color: #1976D2;
     }
+    .field-hint {
+      font-size: 13px;
+      color: #666;
+      margin: 0 0 8px;
+      line-height: 1.4;
+    }
     .letter-honeypot {
       position: absolute;
       left: -9999px;
@@ -299,16 +305,8 @@
 
     <div class="letter-field">
       <label for="phone">Phone number<span class="optional-tag">OPTIONAL</span></label>
+      <p class="field-hint">For daily reminders from Star to stay on track.</p>
       <input type="tel" id="phone" name="phone" autocomplete="tel" placeholder="(555) 555 5555" />
-    </div>
-
-    <div class="sms-block" id="smsBlock">
-      <div class="sms-row">
-        <input type="checkbox" id="smsOptIn" name="smsOptIn" />
-        <label for="smsOptIn">
-          <strong>Yes, send me daily reminders to stay on track.</strong>
-        </label>
-      </div>
     </div>
 
     <button type="submit" class="letter-submit" id="letterSubmit">Get Star's Letters</button>
@@ -337,15 +335,6 @@
     const successBlock = document.getElementById('letterSuccess');
     const submitBtn = document.getElementById('letterSubmit');
     const phoneInput = document.getElementById('phone');
-    const smsBlock = document.getElementById('smsBlock');
-
-    phoneInput.addEventListener('input', function() {
-      if (phoneInput.value.trim().length > 0) {
-        smsBlock.classList.add('visible');
-      } else {
-        smsBlock.classList.remove('visible');
-      }
-    });
 
     // Source detection from query string
     function getSource() {
@@ -365,12 +354,14 @@
       submitBtn.disabled = true;
       submitBtn.textContent = 'Adding you...';
 
+      // Entering the phone is the opt-in (sub-label tells them what they get)
+      const phoneVal = phoneInput.value.trim();
       const data = {
         name: document.getElementById('first_name').value.trim(),
         lastName: document.getElementById('last_name').value.trim(),
         email: document.getElementById('email').value.trim(),
-        phone: phoneInput.value.trim(),
-        smsOptIn: document.getElementById('smsOptIn').checked,
+        phone: phoneVal,
+        smsOptIn: phoneVal.length > 0,
         source: getSource(),
         website_url: document.getElementById('website_url').value
       };
