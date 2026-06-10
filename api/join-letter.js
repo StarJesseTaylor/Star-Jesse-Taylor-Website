@@ -1,10 +1,10 @@
 /**
- * Weekly Letter signup handler.
+ * Star's Letters signup handler.
  *
  * The honest filter signup. No lead magnet, no PDF, no freebie.
- * Captures: first name, email, optional phone with SMS opt-in.
- * Tags in ActiveCampaign: path:weekly-letter, signup-method:resonance,
- * source:ig-story (if referrer matches), sms:opted-in (if applicable).
+ * Captures: first name, last name, email, optional phone with SMS opt-in.
+ * Tags in ActiveCampaign: path:stars-letters, signup-method:resonance,
+ * source:* (ig-story, youtube, tiktok, etc), sms:opted-in (if applicable).
  * Sends a confirmation email in Star's voice. Notifies Star.
  */
 
@@ -49,13 +49,11 @@ async function sendConfirmation(toEmail, name) {
   const text = [
     greeting,
     '',
-    'You are on the list.',
+    'You are signed up for Star\'s Letters.',
     '',
-    'I write a real letter once a week. Whatever I am working on, whatever is hitting me, whatever I think might land for you. No bait, no PDF, no funnel. Just me writing to you.',
+    'I write to you when I have something to say. Whatever I am working on, whatever is hitting me, whatever I think might land for you. No bait, no PDF, no funnel. Just me writing to you.',
     '',
-    'You will get the first one this week or next, depending on when I sit down to write.',
-    '',
-    'If it ever stops landing for you, unsubscribe. No hard feelings. I want this list to be people who actually want to read me, not people who feel stuck on it.',
+    'You will get the first one when I sit down to write it.',
     '',
     'Glad you are here.',
     '',
@@ -76,7 +74,7 @@ async function sendConfirmation(toEmail, name) {
         from: 'Star Jesse Taylor <hello@starjessetaylor.com>',
         to: [toEmail],
         reply_to: 'starjessetaylor@gmail.com',
-        subject: name ? `${name}, you are on the list` : 'You are on the list',
+        subject: name ? `${name}, you are signed up for Star's Letters` : "You are signed up for Star's Letters",
         html, text
       })
     });
@@ -88,7 +86,7 @@ async function notifyStar(name, email, phone, smsOptIn, sourceTag) {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) return;
   const text = [
-    'New weekly letter signup.',
+    "New Star's Letters signup.",
     '',
     'Name: ' + (name || 'not provided'),
     'Email: ' + email,
@@ -97,7 +95,7 @@ async function notifyStar(name, email, phone, smsOptIn, sourceTag) {
     'Source: ' + (sourceTag || 'direct'),
     'Time: ' + new Date().toISOString(),
     '',
-    'Tags applied: path:weekly-letter, signup-method:resonance' +
+    "Tags applied: path:stars-letters, signup-method:resonance" +
       (smsOptIn ? ', sms:opted-in' : '') +
       (sourceTag ? ', ' + sourceTag : ''),
     'Confirmation email already sent.'
@@ -107,9 +105,9 @@ async function notifyStar(name, email, phone, smsOptIn, sourceTag) {
       method: 'POST',
       headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        from: 'Weekly Letter <hello@starjessetaylor.com>',
+        from: "Star's Letters <hello@starjessetaylor.com>",
         to: ['starjessetaylor@gmail.com'],
-        subject: 'New letter signup: ' + (name || email),
+        subject: "New Star's Letters signup: " + (name || email),
         text
       })
     });
@@ -206,7 +204,7 @@ export default async function handler(req, res) {
     }).catch(err => console.error('List add error:', err));
 
     const tagPromises = [
-      applyTag(AC_URL, headers, contactId, 'path:weekly-letter'),
+      applyTag(AC_URL, headers, contactId, 'path:stars-letters'),
       applyTag(AC_URL, headers, contactId, 'signup-method:resonance'),
       applyTag(AC_URL, headers, contactId, sourceTag),
     ];
