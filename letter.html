@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Get Star's Weekly Letter | Star Jesse Taylor</title>
+  <meta name="description" content="A private letter from Star Jesse Taylor once a week. Real thinking out loud. No bait, no PDF, no funnel. Just me writing to you." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-T0T1Z0VBT8"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-T0T1Z0VBT8');
+  </script>
+  <script src="js/tracking.js" async></script>
+  <style>
+    .letter-hero {
+      padding: 80px 24px 40px;
+      max-width: 640px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .letter-eyebrow {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 3px;
+      color: #1976D2;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .letter-title {
+      font-size: 44px;
+      font-weight: 900;
+      letter-spacing: -1px;
+      color: #1A1A1A;
+      line-height: 1.1;
+      margin-bottom: 24px;
+    }
+    .letter-sub {
+      font-size: 18px;
+      color: #555;
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+    .letter-form-wrap {
+      max-width: 480px;
+      margin: 40px auto 80px;
+      padding: 0 24px;
+    }
+    .letter-form {
+      background: #fff;
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+      border: 1px solid #EEF1F5;
+    }
+    .letter-field {
+      display: block;
+      margin-bottom: 16px;
+    }
+    .letter-field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      color: #1A1A1A;
+      margin-bottom: 6px;
+    }
+    .letter-field .optional-tag {
+      font-size: 11px;
+      font-weight: 700;
+      color: #999;
+      letter-spacing: 1.5px;
+      margin-left: 8px;
+    }
+    .letter-field input {
+      width: 100%;
+      padding: 14px 16px;
+      font-size: 16px;
+      border: 1.5px solid #DDD;
+      border-radius: 10px;
+      font-family: inherit;
+      box-sizing: border-box;
+    }
+    .letter-field input:focus {
+      outline: none;
+      border-color: #1976D2;
+    }
+    .letter-honeypot {
+      position: absolute;
+      left: -9999px;
+      visibility: hidden;
+    }
+    .sms-block {
+      background: #F5F8FB;
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-top: 8px;
+      margin-bottom: 16px;
+      display: none;
+    }
+    .sms-block.visible { display: block; }
+    .sms-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .sms-row label {
+      flex: 1;
+      font-size: 13px;
+      color: #1A1A1A;
+      line-height: 1.4;
+    }
+    .sms-row label strong { display: block; margin-bottom: 2px; }
+    .sms-row label small {
+      color: #666;
+      font-size: 11px;
+      line-height: 1.4;
+      display: block;
+      margin-top: 2px;
+    }
+    .letter-submit {
+      width: 100%;
+      padding: 16px;
+      background: #1976D2;
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      letter-spacing: 0.3px;
+      transition: background 0.15s;
+    }
+    .letter-submit:hover { background: #1565C0; }
+    .letter-submit:disabled { opacity: 0.6; cursor: default; }
+    .letter-fine {
+      font-size: 12px;
+      color: #888;
+      text-align: center;
+      margin-top: 16px;
+      line-height: 1.5;
+    }
+    .letter-success {
+      text-align: center;
+      padding: 48px 24px;
+    }
+    .letter-success-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 32px;
+      background: #1976D2;
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      margin-bottom: 24px;
+    }
+    .letter-success h2 {
+      font-size: 28px;
+      font-weight: 900;
+      color: #1A1A1A;
+      margin-bottom: 12px;
+    }
+    .letter-success p {
+      font-size: 16px;
+      color: #555;
+      line-height: 1.6;
+      max-width: 420px;
+      margin: 0 auto;
+    }
+    @media (max-width: 600px) {
+      .letter-title { font-size: 34px; }
+      .letter-hero { padding: 48px 20px 32px; }
+    }
+  </style>
+</head>
+<body>
+<!-- Meta Pixel noscript fallback -->
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1385602039742216&ev=PageView&noscript=1"/></noscript>
+
+<!-- NAVIGATION -->
+<nav class="nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <span class="nav-logo-name">Star Jesse Taylor</span>
+        <span class="nav-logo-sub">Emotional Fitness</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="services.html">Work With Star</a></li>
+        <li><a href="book.html">Star's Book</a></li>
+        <li><a href="event.html">Workshop</a></li>
+        <li><a href="speak.html">Speaking</a></li>
+        <li><a href="virtual-events.html">Ask Star</a></li>
+      </ul>
+      <a href="apply.html" class="btn btn-primary btn-sm nav-cta">Apply for Coaching</a>
+      <button class="nav-hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="letter-hero">
+  <div class="letter-eyebrow">The Letter</div>
+  <h1 class="letter-title">A real letter once a week.</h1>
+  <p class="letter-sub">I write to you when I have something to say. Whatever I am working on, whatever is hitting me, whatever I think might land for you.</p>
+  <p class="letter-sub">No bait, no PDF, no funnel. Just me writing to you.</p>
+</section>
+
+<!-- FORM -->
+<section class="letter-form-wrap">
+  <form class="letter-form" id="letterForm">
+    <div class="letter-honeypot">
+      <label for="website_url">Website</label>
+      <input type="text" id="website_url" name="website_url" tabindex="-1" autocomplete="off" />
+    </div>
+
+    <div class="letter-field">
+      <label for="first_name">First name</label>
+      <input type="text" id="first_name" name="first_name" required autocomplete="given-name" placeholder="Your first name" />
+    </div>
+
+    <div class="letter-field">
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required autocomplete="email" placeholder="you@example.com" />
+    </div>
+
+    <div class="letter-field">
+      <label for="phone">Phone number<span class="optional-tag">OPTIONAL</span></label>
+      <input type="tel" id="phone" name="phone" autocomplete="tel" placeholder="(555) 555 5555" />
+    </div>
+
+    <div class="sms-block" id="smsBlock">
+      <div class="sms-row">
+        <input type="checkbox" id="smsOptIn" name="smsOptIn" />
+        <label for="smsOptIn">
+          <strong>Yes, send me quick tips by text sometimes.</strong>
+          <small>Star sends rare, useful texts. Skip this if you only want emails.</small>
+        </label>
+      </div>
+    </div>
+
+    <button type="submit" class="letter-submit" id="letterSubmit">Get the letter</button>
+    <p class="letter-fine">If it ever stops landing for you, unsubscribe in one click. No hard feelings.</p>
+  </form>
+
+  <div class="letter-success" id="letterSuccess" style="display:none;">
+    <div class="letter-success-icon">✓</div>
+    <h2>You are on the list.</h2>
+    <p>Check your inbox for a note from me. The first letter goes out this week or next, depending on when I sit down to write.</p>
+  </div>
+</section>
+
+<script>
+  (function() {
+    const form = document.getElementById('letterForm');
+    const successBlock = document.getElementById('letterSuccess');
+    const submitBtn = document.getElementById('letterSubmit');
+    const phoneInput = document.getElementById('phone');
+    const smsBlock = document.getElementById('smsBlock');
+
+    phoneInput.addEventListener('input', function() {
+      if (phoneInput.value.trim().length > 0) {
+        smsBlock.classList.add('visible');
+      } else {
+        smsBlock.classList.remove('visible');
+      }
+    });
+
+    // Source detection from query string
+    function getSource() {
+      const params = new URLSearchParams(window.location.search);
+      const src = params.get('src') || params.get('source') || '';
+      if (src) return src;
+      // Referrer fallback
+      const ref = (document.referrer || '').toLowerCase();
+      if (ref.includes('instagram')) return 'ig-story';
+      if (ref.includes('youtube')) return 'youtube';
+      if (ref.includes('tiktok')) return 'tiktok';
+      return '';
+    }
+
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Adding you...';
+
+      const data = {
+        name: document.getElementById('first_name').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        phone: phoneInput.value.trim(),
+        smsOptIn: document.getElementById('smsOptIn').checked,
+        source: getSource(),
+        website_url: document.getElementById('website_url').value
+      };
+
+      try {
+        const res = await fetch('/api/join-letter', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        if (!res.ok) throw new Error('Server error');
+        form.style.display = 'none';
+        successBlock.style.display = 'block';
+        if (typeof gtag === 'function') {
+          gtag('event', 'letter_signup', { source: data.source || 'direct' });
+        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } catch (err) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Get the letter';
+        alert('Could not add you right now. Try again in a moment.');
+      }
+    });
+  })();
+</script>
+
+<!-- FOOTER -->
+<footer style="background:#1A1A1A;color:#999;padding:32px 24px;text-align:center;font-size:13px;line-height:1.6;">
+  <p style="margin:0 0 8px;">Star Jesse Taylor · Emotional Fitness</p>
+  <p style="margin:0;"><a href="privacy.html" style="color:#999;text-decoration:underline;">Privacy</a> · <a href="terms.html" style="color:#999;text-decoration:underline;">Terms</a></p>
+</footer>
+
+</body>
+</html>
