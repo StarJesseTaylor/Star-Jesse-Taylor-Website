@@ -162,7 +162,8 @@ const ENDPOINTS = [
   }
 ];
 
-async function checkEndpoint(baseUrl, endpoint) {
+// Try one HTTP POST attempt, return a result object.
+async function attemptOneCheck(baseUrl, endpoint) {
   const url = baseUrl + endpoint.path;
   const started = Date.now();
   try {
@@ -192,6 +193,23 @@ async function checkEndpoint(baseUrl, endpoint) {
       body: String(err && err.message ? err.message : err)
     };
   }
+}
+
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+// Wrap attemptOneCheck with retries so a single transient blip during the
+// 1-min daily check doesn't fire a false 'forms broken' alert. We try up to
+// 3 times with 2s/4s backoff. If the endpoint stays bad across all attempts
+// it's a real failure worth alerting on.
+async function checkEndpoint(baseUrl, endpoint) {
+  const backoffs = [0, 2000, 4000];
+  let last = null;
+  for (const delay of backoffs) {
+    if (delay > 0) await sleep(delay);
+    last = await attemptOneCheck(baseUrl, endpoint);
+    if (last.ok) return last;
+  }
+  return { ...last, retried: true };
 }
 
 async function alertStar(failed, allResults) {
