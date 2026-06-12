@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Audacity | Star Jesse Taylor</title>
+  <meta name="description" content="Audacity. The daily practice of Emotional Fitness. Coming this summer to iPhone. Built around Star Jesse Taylor's framework: Value Garden, No Brain Method, Spiral Breaker, daily wins." />
+  <meta property="og:title" content="Audacity by Star Jesse Taylor" />
+  <meta property="og:description" content="The daily practice of Emotional Fitness. Coming to iPhone." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-T0T1Z0VBT8"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-T0T1Z0VBT8');
+  </script>
+  <script src="js/tracking.js" async></script>
+  <style>
+    body { background: #FFFFFF; }
+    .app-hero {
+      padding: 96px 24px 48px;
+      max-width: 920px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .app-eyebrow {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 3px;
+      color: #1976D2;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+    .app-title {
+      font-size: 56px;
+      font-weight: 900;
+      letter-spacing: -2px;
+      color: #1A1A1A;
+      line-height: 1.05;
+      margin-bottom: 24px;
+    }
+    .app-tagline {
+      font-size: 22px;
+      color: #2C2C2C;
+      line-height: 1.4;
+      font-weight: 600;
+      max-width: 600px;
+      margin: 0 auto 28px;
+    }
+    .app-sub {
+      font-size: 16px;
+      color: #6B7280;
+      line-height: 1.6;
+      max-width: 540px;
+      margin: 0 auto 36px;
+    }
+    .app-status-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #E1F1FB;
+      color: #115293;
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 36px;
+    }
+    .app-status-dot {
+      width: 8px;
+      height: 8px;
+      background: #1976D2;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    /* WHAT IT IS */
+    .what-section {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 24px 24px 64px;
+    }
+    .what-eyebrow {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 3px;
+      color: #1976D2;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      text-align: center;
+    }
+    .what-title {
+      font-size: 32px;
+      font-weight: 900;
+      letter-spacing: -0.6px;
+      color: #1A1A1A;
+      line-height: 1.2;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    .what-body {
+      font-size: 17px;
+      color: #2C2C2C;
+      line-height: 1.7;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .what-body strong {
+      color: #115293;
+      font-weight: 800;
+    }
+
+    /* FEATURE BLOCKS */
+    .features {
+      background: #F7FBFE;
+      padding: 80px 24px;
+    }
+    .features-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin-top: 48px;
+    }
+    .feature-card {
+      background: #fff;
+      border-radius: 18px;
+      padding: 28px;
+      border: 1px solid #EEF1F5;
+    }
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 24px;
+      background: #1976D2;
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      margin-bottom: 18px;
+    }
+    .feature-card.coral .feature-icon { background: #E55B45; }
+    .feature-card.purple .feature-icon { background: #4A2E7D; }
+    .feature-card.green .feature-icon { background: #4ECDC4; }
+    .feature-title {
+      font-size: 19px;
+      font-weight: 900;
+      letter-spacing: -0.3px;
+      color: #1A1A1A;
+      margin-bottom: 10px;
+    }
+    .feature-copy {
+      font-size: 14.5px;
+      color: #555;
+      line-height: 1.6;
+    }
+    @media (max-width: 700px) {
+      .features-grid { grid-template-columns: 1fr; }
+      .app-title { font-size: 40px; letter-spacing: -1px; }
+      .app-tagline { font-size: 19px; }
+    }
+
+    /* FRAMEWORK ROW */
+    .framework {
+      padding: 80px 24px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .framework-eyebrow {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 3px;
+      color: #1976D2;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      text-align: center;
+    }
+    .framework-title {
+      font-size: 32px;
+      font-weight: 900;
+      letter-spacing: -0.6px;
+      color: #1A1A1A;
+      line-height: 1.2;
+      margin-bottom: 32px;
+      text-align: center;
+    }
+    .framework-quote {
+      background: #4A2E7D;
+      color: #fff;
+      border-radius: 18px;
+      padding: 32px;
+      margin-top: 24px;
+    }
+    .framework-quote-eyebrow {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 3px;
+      color: #E0D4F5;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .framework-quote-text {
+      font-size: 22px;
+      font-weight: 800;
+      line-height: 1.35;
+      letter-spacing: -0.4px;
+    }
+
+    /* WAITLIST */
+    .waitlist {
+      background: #1A1A2E;
+      color: #fff;
+      padding: 96px 24px;
+    }
+    .waitlist-inner {
+      max-width: 540px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .waitlist-eyebrow {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 3px;
+      color: #4FC3F7;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .waitlist-title {
+      font-size: 38px;
+      font-weight: 900;
+      letter-spacing: -1px;
+      line-height: 1.15;
+      margin-bottom: 18px;
+    }
+    .waitlist-sub {
+      font-size: 16px;
+      color: rgba(255,255,255,0.75);
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+    .waitlist-form {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 16px;
+      padding: 24px;
+      text-align: left;
+    }
+    .waitlist-field {
+      display: block;
+      margin-bottom: 14px;
+    }
+    .waitlist-field-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 0;
+    }
+    .waitlist-field-half { flex: 1; }
+    @media (max-width: 480px) {
+      .waitlist-field-row { flex-direction: column; gap: 0; }
+      .waitlist-title { font-size: 30px; }
+    }
+    .waitlist-field label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      color: rgba(255,255,255,0.7);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .waitlist-field input {
+      width: 100%;
+      padding: 14px 16px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 10px;
+      font-size: 15px;
+      color: #fff;
+      font-family: inherit;
+      box-sizing: border-box;
+    }
+    .waitlist-field input:focus {
+      outline: none;
+      border-color: #4FC3F7;
+      background: rgba(255,255,255,0.12);
+    }
+    .waitlist-field input::placeholder { color: rgba(255,255,255,0.4); }
+    .waitlist-submit {
+      width: 100%;
+      padding: 16px;
+      background: #1976D2;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.15s;
+      font-family: inherit;
+    }
+    .waitlist-submit:hover:not(:disabled) { background: #115293; }
+    .waitlist-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+    .waitlist-disclaimer {
+      font-size: 12px;
+      color: rgba(255,255,255,0.45);
+      margin-top: 18px;
+      text-align: center;
+    }
+
+    /* SUCCESS */
+    .waitlist-success {
+      display: none;
+      text-align: center;
+      padding: 24px 0;
+    }
+    .waitlist-success.show { display: block; }
+    .waitlist-success-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 32px;
+      background: #4FC3F7;
+      color: #1A1A2E;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      margin-bottom: 24px;
+    }
+    .waitlist-success h3 {
+      font-size: 24px;
+      font-weight: 900;
+      margin-bottom: 12px;
+    }
+    .waitlist-success p {
+      font-size: 15px;
+      color: rgba(255,255,255,0.75);
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+<!-- Meta Pixel noscript fallback -->
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1385602039742216&ev=PageView&noscript=1"/></noscript>
+
+<!-- NAVIGATION -->
+<nav class="nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <span class="nav-logo-name">Star Jesse Taylor</span>
+        <span class="nav-logo-sub">Emotional Fitness</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="services.html">Work With Star</a></li>
+        <li><a href="book.html">Star's Book</a></li>
+        <li><a href="event.html">Workshop</a></li>
+        <li><a href="speak.html">Speaking</a></li>
+        <li><a href="virtual-events.html">Ask Star</a></li>
+      </ul>
+      <a href="apply.html" class="btn btn-primary btn-sm nav-cta">Apply for Coaching</a>
+      <button class="nav-hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- MOBILE NAV -->
+<div class="nav-mobile">
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="services.html">Work With Star</a>
+  <a href="book.html">Star's Book</a>
+  <a href="event.html">Workshop</a>
+  <a href="speak.html">Speaking</a>
+  <a href="virtual-events.html">Ask Star</a>
+  <a href="apply.html">Apply for Coaching</a>
+</div>
+
+<!-- HERO -->
+<section class="app-hero">
+  <div class="app-status-chip">
+    <span class="app-status-dot"></span>
+    Coming this summer
+  </div>
+  <div class="app-eyebrow">THE EMOTIONAL FITNESS APP</div>
+  <h1 class="app-title">Audacity.</h1>
+  <p class="app-tagline">
+    The daily practice that heals through doing, not through waiting to be fixed first.
+  </p>
+  <p class="app-sub">
+    Built around Star Jesse Taylor's framework: plant the values that run your life, water them with valued actions, learn what your brain is doing when it loops, and have something to reach for the moment it's loud.
+  </p>
+</section>
+
+<!-- WHAT IT IS -->
+<section class="what-section">
+  <div class="what-eyebrow">THE PREMISE</div>
+  <h2 class="what-title">Mental health is healed by moving forward, not by waiting to be fixed first.</h2>
+  <p class="what-body">
+    Most people think: I have to heal my anxiety, fix my trauma, feel ready, then I can live. Star teaches the opposite. <strong>You live the valued actions, you gain clarity about what matters, and the mental health follows.</strong> Audacity is the app that makes that practice daily.
+  </p>
+</section>
+
+<!-- FEATURES -->
+<section class="features">
+  <div class="features-inner">
+    <div class="what-eyebrow">WHAT'S INSIDE</div>
+    <h2 class="what-title">The whole practice in one app.</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🌱</div>
+        <div class="feature-title">Value Garden</div>
+        <div class="feature-copy">
+          Plant the values that run your life. Water them daily with actions you actually do. See your whole life as one garden growing.
+        </div>
+      </div>
+      <div class="feature-card coral">
+        <div class="feature-icon">⚡</div>
+        <div class="feature-title">Spiral Breaker</div>
+        <div class="feature-copy">
+          The moment something is loud, one tap. Thirty seconds to ground, identify what's happening, and route to the framework piece that fits.
+        </div>
+      </div>
+      <div class="feature-card purple">
+        <div class="feature-icon">💡</div>
+        <div class="feature-title">Insights</div>
+        <div class="feature-copy">
+          Single sentences from Star's framework that rewire how the brain reads itself. The lines you'll repeat when you're spiraling.
+        </div>
+      </div>
+      <div class="feature-card green">
+        <div class="feature-icon">✨</div>
+        <div class="feature-title">Star AI</div>
+        <div class="feature-copy">
+          The personal guide that knows Star's framework, knows your data, and tells you which tool to use right now. Not a chatbot. A coach in your pocket.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FRAMEWORK QUOTE -->
+<section class="framework">
+  <div class="framework-eyebrow">FROM STAR'S FRAMEWORK</div>
+  <h2 class="framework-title">An insight you'll carry around.</h2>
+  <div class="framework-quote">
+    <div class="framework-quote-eyebrow">FRAMEWORK · ANXIETY</div>
+    <div class="framework-quote-text">
+      Excessive anxiety comes from freaking out about anxiety. The brain's language is engagement. Whatever you engage with, it gives you more.
+    </div>
+  </div>
+</section>
+
+<!-- WAITLIST -->
+<section class="waitlist">
+  <div class="waitlist-inner">
+    <div class="waitlist-eyebrow">FIRST ACCESS · FOUNDING PRICING</div>
+    <h2 class="waitlist-title">Be there at launch.</h2>
+    <p class="waitlist-sub">
+      I'll send you the link the day Audacity goes live on the App Store. Waitlist members get founding pricing locked in for life.
+    </p>
+
+    <form id="waitlistForm" class="waitlist-form" novalidate>
+      <div class="waitlist-field-row">
+        <div class="waitlist-field waitlist-field-half">
+          <label for="firstName">First name</label>
+          <input type="text" id="firstName" name="firstName" placeholder="Your name" autocomplete="given-name" required />
+        </div>
+        <div class="waitlist-field waitlist-field-half">
+          <label for="lastName">Last name</label>
+          <input type="text" id="lastName" name="lastName" placeholder="Last name" autocomplete="family-name" />
+        </div>
+      </div>
+      <div class="waitlist-field">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" required />
+      </div>
+      <input type="text" id="website_url" name="website_url" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;width:1px;height:1px;" />
+      <button type="submit" class="waitlist-submit" id="submitBtn">Save my spot</button>
+      <div class="waitlist-disclaimer">
+        No spam. One email when Audacity launches. You can unsubscribe anytime.
+      </div>
+    </form>
+
+    <div class="waitlist-success" id="waitlistSuccess">
+      <div class="waitlist-success-icon">✓</div>
+      <h3>You're on the list.</h3>
+      <p>I'll write you the day Audacity hits the App Store. Founding pricing reserved for you. See you on the inside.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <p>&copy; 2026 Star Jesse Taylor. Emotional Fitness.</p>
+    <p>
+      <a href="privacy.html">Privacy</a> ·
+      <a href="terms.html">Terms</a>
+    </p>
+  </div>
+</footer>
+
+<script src="js/nav.js"></script>
+<script>
+  (function () {
+    const form = document.getElementById('waitlistForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const success = document.getElementById('waitlistSuccess');
+
+    function getSourceFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('src') || params.get('source') || null;
+    }
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      if (submitBtn.disabled) return;
+
+      const firstName = form.firstName.value.trim();
+      const lastName = form.lastName.value.trim();
+      const email = form.email.value.trim();
+      const honeypot = form.website_url.value;
+
+      if (honeypot) { return; } // bot
+
+      if (!firstName || firstName.length < 2) {
+        alert('Please enter your first name.');
+        return;
+      }
+      if (!email || email.indexOf('@') < 1) {
+        alert('Please enter a valid email.');
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Saving...';
+
+      try {
+        const res = await fetch('/api/audacity-waitlist', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: firstName,
+            lastName: lastName,
+            email: email,
+            source: getSourceFromUrl(),
+            website_url: honeypot,
+          }),
+        });
+        if (!res.ok) throw new Error('Submission failed');
+        form.style.display = 'none';
+        success.classList.add('show');
+        if (window.gtag) {
+          window.gtag('event', 'audacity_waitlist_signup', {
+            event_category: 'engagement',
+          });
+        }
+      } catch (err) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Save my spot';
+        alert('Hit a snag. Please try again in a moment.');
+      }
+    });
+  })();
+</script>
+</body>
+</html>
