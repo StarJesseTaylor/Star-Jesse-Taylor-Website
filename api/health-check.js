@@ -198,16 +198,19 @@ async function attemptOneCheck(baseUrl, endpoint) {
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 // Wrap attemptOneCheck with retries so a single transient blip during the
-// 1-min daily check doesn't fire a false 'forms broken' alert. We try up to
-// 3 times with 2s/4s backoff. If the endpoint stays bad across all attempts
-// it's a real failure worth alerting on.
+// daily check doesn't fire a false 'forms broken' alert. We try up to 3
+// times spread over a 90-second window (0s, 30s, 60s). Real network blips
+// almost never last that long. Only an endpoint that stays bad for 90+
+// consecutive seconds is a real failure worth alerting on.
 async function checkEndpoint(baseUrl, endpoint) {
-  const backoffs = [0, 2000, 4000];
+  const backoffs = [0, 30000, 60000];
   let last = null;
-  for (const delay of backoffs) {
-    if (delay > 0) await sleep(delay);
+  for (let i = 0; i < backoffs.length; i++) {
+    if (backoffs[i] > 0) await sleep(backoffs[i]);
     last = await attemptOneCheck(baseUrl, endpoint);
-    if (last.ok) return last;
+    if (last.ok) {
+      return i > 0 ? { ...last, recoveredAfterRetries: i } : last;
+    }
   }
   return { ...last, retried: true };
 }
@@ -387,7 +390,11 @@ export default async function handler(req, res) {
   if (failed.length > 0) {
     await alertStar(failed, results);
   } else {
-    await sendHeartbeat(results);
+    // Only send the heartbeat email on Sundays so the inbox isn't cluttered
+    // with daily "all is well" messages. If the heartbeat ever STOPS arriving
+    // on Sundays for more than a week, the monitor itself has died.
+    const isSunday = new Date().getUTCDay() === 0;
+    if (isSunday) await sendHeartbeat(results);
   }
 
   return res.status(failed.length > 0 ? 503 : 200).json({
