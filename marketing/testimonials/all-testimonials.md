@@ -60,6 +60,28 @@ Photo: `images/Client Pictures/Carl.jpeg`
 
 ---
 
+### Carie Polasek
+**1-on-1 client**
+
+✅ **VERIFIED (full long quote, sent by Star Jun 13 2026):**
+> "Above all, the coaching of Star helped me refocus and see more clearly what really matters to me in life and where my energy needs to go to. Instead of some abstract theoretical concepts, you're given concrete tools that you can use right away in your daily life. The best part is that the methods are flexible and can always be adapted to your own situation.
+>
+> The shift in perspective was particularly valuable for me. You learn to view situations differently and consciously change your own mindset. It quickly becomes clear that mental strength isn't something you simply have or don't have. It's a skill that you can and must train.
+>
+> One of the most important insights from the coaching for me was: no one can do the work for you. You are the one who has to take action. Change doesn't happen overnight, it's a continuous process. But that's exactly what makes you stronger, more self-confident, and more resilient in the long run.
+>
+> Anyone willing to work on themselves and grow will not only gain valuable insights here but also practical tools that can truly make a difference in everyday life. Highly recommended!"
+
+Live on services.html in the "After the Videos, Before the Packages" featured slot.
+
+✅ **VERIFIED (pull-quote excerpt for shorter contexts):**
+> "Instead of some abstract theoretical concepts, you're given concrete tools that you can use right away in your daily life."
+
+✅ **VERIFIED (Star's signature line, perfect for hero quote):**
+> "Mental strength isn't something you simply have or don't have. It's a skill that you can and must train."
+
+---
+
 ## 1-ON-1 COACHING CLIENTS
 
 ### Lara Kinslow ✅ VERIFIED
