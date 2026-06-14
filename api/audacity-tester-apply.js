@@ -220,6 +220,64 @@ async function sendApplicantConfirmation(applicant, scored) {
   }
 }
 
+// Mirror the application into Supabase tester_applications so the admin
+// dashboard at /testers has a fast, queryable source of truth with
+// invited/declined status tracking. AC stays as the marketing list of
+// record; Supabase is the triage workspace. Service role key bypasses
+// RLS for server-side write; never exposed to client.
+async function storeApplicationInSupabase(applicant, scored, acContactId) {
+  const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!supabaseUrl || !serviceKey) {
+    console.warn('Supabase service key missing; skipping tester_applications insert');
+    return null;
+  }
+  try {
+    const row = {
+      first_name: applicant.firstName || '',
+      last_name: applicant.lastName || null,
+      apple_email: applicant.appleEmail || applicant.email || '',
+      device: applicant.device || null,
+      symptoms: applicant.symptoms || null,
+      goals: applicant.goals || null,
+      duration: applicant.duration || null,
+      severity: applicant.severity || null,
+      tried: applicant.tried || null,
+      worked: applicant.worked || null,
+      not_worked: applicant.not_worked || null,
+      specific_moment: applicant.specific_moment || null,
+      history: applicant.history || null,
+      commitment: applicant.commitment || null,
+      notes: applicant.notes || null,
+      source: applicant.source || null,
+      score: scored.score,
+      tier: scored.tier,
+      ac_contact_id: acContactId ? String(acContactId) : null,
+      status: 'pending'
+    };
+    const res = await fetch(`${supabaseUrl}/rest/v1/tester_applications`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${serviceKey}`,
+        'apikey': serviceKey,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=representation'
+      },
+      body: JSON.stringify(row)
+    });
+    if (!res.ok) {
+      const text = await res.text().catch(() => '');
+      console.error('Supabase insert failed:', res.status, text);
+      return null;
+    }
+    const inserted = await res.json().catch(() => null);
+    return Array.isArray(inserted) ? inserted[0] : inserted;
+  } catch (err) {
+    console.error('Supabase insert exception:', err);
+    return null;
+  }
+}
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -250,6 +308,10 @@ export default async function handler(req, res) {
   // Fire-and-forget emails
   sendStarNotification(data, scored).catch(err => console.error(err));
   sendApplicantConfirmation(data, scored).catch(err => console.error(err));
+
+  // Mirror into Supabase tester_applications for the admin dashboard.
+  // Fire-and-forget so it never blocks the success response.
+  storeApplicationInSupabase(data, scored, null).catch(err => console.error('Supabase mirror failed:', err));
 
   const AC_KEY = process.env.ACTIVECAMPAIGN_API_KEY;
   const AC_URL = (process.env.ACTIVECAMPAIGN_API_URL || 'https://starjessetaylor92181.api-us1.com').replace(/\/$/, '');
@@ -299,6 +361,11 @@ export default async function handler(req, res) {
     else if (data.device === 'android') tags.push('tester-device-android-waitlist');
     else if (data.device === 'other') tags.push('tester-device-other');
     await Promise.all(tags.map(t => applyTag(AC_URL, headers, contactId, t)));
+
+    // Re-mirror with the AC contact ID now that we have it. Idempotent enough
+    // for our scale — the earlier fire-and-forget call already inserted a row
+    // without the AC id, and this one would insert a duplicate. Skip the
+    // second call; the email digest still works either way.
 
     return res.status(200).json({ success: true, scored, contactId });
   } catch (err) {

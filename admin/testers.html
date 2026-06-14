@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Tester Triage · Audacity</title>
+  <style>
+    :root {
+      --cobalt: #1B6CA8;
+      --cobalt-dark: #155a8a;
+      --turquoise: #00B4D8;
+      --charcoal: #2C2C2C;
+      --off-white: #F8F9FB;
+      --light-gray: #eef1f5;
+      --mid-gray: #6b7280;
+      --green: #16a34a;
+      --red: #dc2626;
+      --amber: #d97706;
+      --tier-a: #1B6CA8;
+      --tier-b: #6b7280;
+      --tier-c: #9ca3af;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: var(--off-white);
+      color: var(--charcoal);
+      padding: 16px;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 1.5rem;
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+      font-weight: 900;
+    }
+    .subtitle {
+      color: var(--mid-gray);
+      font-size: 0.88rem;
+      margin-bottom: 20px;
+    }
+    .auth-prompt {
+      background: white;
+      border-radius: 12px;
+      padding: 32px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      max-width: 480px;
+      margin: 60px auto;
+      text-align: center;
+    }
+    .auth-prompt input {
+      width: 100%;
+      padding: 14px;
+      border: 2px solid var(--light-gray);
+      border-radius: 8px;
+      font-size: 1rem;
+      margin: 12px 0;
+      font-family: monospace;
+    }
+    .auth-prompt button {
+      background: var(--cobalt);
+      color: white;
+      border: none;
+      padding: 14px 32px;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .summary-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+    .stat {
+      background: white;
+      border-radius: 10px;
+      padding: 14px 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .stat-label {
+      font-size: 0.66rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--mid-gray);
+      margin-bottom: 4px;
+    }
+    .stat-value {
+      font-size: 1.4rem;
+      font-weight: 900;
+      color: var(--charcoal);
+      line-height: 1;
+    }
+    .stat-sub {
+      font-size: 0.72rem;
+      color: var(--mid-gray);
+      margin-top: 2px;
+    }
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .filter-chip {
+      background: white;
+      border: 1.5px solid var(--light-gray);
+      border-radius: 50px;
+      padding: 8px 14px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      color: var(--mid-gray);
+      transition: all 0.15s;
+      user-select: none;
+    }
+    .filter-chip.active {
+      background: var(--cobalt);
+      border-color: var(--cobalt);
+      color: white;
+    }
+    .filter-chip:hover:not(.active) {
+      border-color: var(--cobalt);
+      color: var(--cobalt);
+    }
+    .applicant {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+      margin-bottom: 10px;
+      overflow: hidden;
+      transition: box-shadow 0.15s;
+    }
+    .applicant.invited { border-left: 4px solid var(--green); }
+    .applicant.declined { opacity: 0.55; border-left: 4px solid var(--red); }
+    .applicant.maybe { border-left: 4px solid var(--amber); }
+    .applicant-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 18px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .applicant-header:hover {
+      background: #fafbfc;
+    }
+    .tier-badge {
+      font-size: 0.7rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      padding: 4px 10px;
+      border-radius: 50px;
+      color: white;
+      min-width: 60px;
+      text-align: center;
+    }
+    .tier-a { background: var(--cobalt); }
+    .tier-b { background: var(--mid-gray); }
+    .tier-c { background: var(--tier-c); }
+    .tier-waitlist { background: var(--amber); }
+    .name-block {
+      flex: 1;
+      min-width: 0;
+    }
+    .name { font-weight: 800; font-size: 0.98rem; }
+    .meta {
+      font-size: 0.78rem;
+      color: var(--mid-gray);
+      margin-top: 2px;
+    }
+    .score {
+      font-family: ui-monospace, SFMono-Regular, monospace;
+      font-size: 0.74rem;
+      color: var(--mid-gray);
+      font-weight: 700;
+    }
+    .status-pill {
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      padding: 4px 10px;
+      border-radius: 50px;
+      text-transform: uppercase;
+      background: var(--light-gray);
+      color: var(--mid-gray);
+    }
+    .status-pill.invited { background: #dcfce7; color: #166534; }
+    .status-pill.declined { background: #fee2e2; color: #991b1b; }
+    .status-pill.maybe { background: #fef3c7; color: #92400e; }
+    .expand-icon {
+      color: var(--mid-gray);
+      font-size: 0.9rem;
+      transition: transform 0.2s;
+    }
+    .applicant.open .expand-icon {
+      transform: rotate(90deg);
+    }
+    .body {
+      display: none;
+      padding: 0 18px 18px;
+      border-top: 1px solid var(--light-gray);
+    }
+    .applicant.open .body { display: block; }
+    .answer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .answer {
+      background: var(--off-white);
+      padding: 10px 12px;
+      border-radius: 8px;
+    }
+    .answer-label {
+      font-size: 0.66rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mid-gray);
+      margin-bottom: 4px;
+    }
+    .answer-value {
+      font-size: 0.86rem;
+      color: var(--charcoal);
+      line-height: 1.4;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid var(--light-gray);
+    }
+    .btn {
+      padding: 10px 16px;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      cursor: pointer;
+      border: 0;
+      transition: opacity 0.15s;
+    }
+    .btn:hover { opacity: 0.88; }
+    .btn-copy { background: var(--cobalt); color: white; }
+    .btn-invite { background: var(--green); color: white; }
+    .btn-maybe { background: var(--amber); color: white; }
+    .btn-decline { background: var(--red); color: white; }
+    .btn-reset { background: var(--light-gray); color: var(--charcoal); }
+    .empty {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--mid-gray);
+      font-style: italic;
+    }
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--charcoal);
+      color: white;
+      padding: 12px 22px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      opacity: 0;
+      transition: opacity 0.2s;
+      pointer-events: none;
+      z-index: 100;
+    }
+    .toast.show { opacity: 1; }
+    .error {
+      background: #fee;
+      border-left: 4px solid var(--red);
+      padding: 16px;
+      border-radius: 8px;
+      color: var(--red);
+    }
+    @media (max-width: 600px) {
+      h1 { font-size: 1.2rem; }
+      .stat-value { font-size: 1.1rem; }
+      .applicant-header { padding: 12px 14px; gap: 8px; }
+      .btn { padding: 9px 12px; font-size: 0.74rem; }
+      .answer-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="authView" class="auth-prompt" style="display:none">
+  <h1>Tester Triage</h1>
+  <p style="color:var(--mid-gray);margin-top:8px;font-size:0.9rem;">Enter admin key</p>
+  <input id="keyInput" type="password" placeholder="CRON_SECRET" onkeypress="if(event.key==='Enter')login()" />
+  <p id="authError" style="color:var(--red);font-size:0.85rem;display:none;margin-bottom:8px;">Invalid key. Try again.</p>
+  <button onclick="login()">Unlock</button>
+</div>
+
+<div id="loadingView" style="display:none;text-align:center;padding:60px 0;">
+  <p style="color:var(--mid-gray);">Loading applicants...</p>
+</div>
+
+<div id="mainView" style="display:none;">
+  <h1>Tester Triage</h1>
+  <p class="subtitle" id="lastUpdated"></p>
+
+  <div class="summary-row" id="summaryRow"></div>
+
+  <div class="filters">
+    <button class="filter-chip active" data-filter="tier" data-value="all">All tiers</button>
+    <button class="filter-chip" data-filter="tier" data-value="a">Tier A only</button>
+    <button class="filter-chip" data-filter="tier" data-value="b">Tier B</button>
+    <button class="filter-chip" data-filter="tier" data-value="c">Tier C</button>
+  </div>
+  <div class="filters">
+    <button class="filter-chip active" data-filter="status" data-value="all">All statuses</button>
+    <button class="filter-chip" data-filter="status" data-value="pending">Pending</button>
+    <button class="filter-chip" data-filter="status" data-value="invited">Invited</button>
+    <button class="filter-chip" data-filter="status" data-value="maybe">Maybe</button>
+    <button class="filter-chip" data-filter="status" data-value="declined">Declined</button>
+  </div>
+  <div class="filters">
+    <button class="filter-chip active" data-filter="device" data-value="all">All devices</button>
+    <button class="filter-chip" data-filter="device" data-value="iphone">iPhone only</button>
+    <button class="filter-chip" data-filter="device" data-value="android">Android waitlist</button>
+  </div>
+
+  <div id="applicantsList"></div>
+</div>
+
+<div id="errorView" style="display:none;" class="error"></div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const STORAGE_KEY = 'tester_admin_key';
+let allRows = [];
+let activeFilters = { tier: 'all', status: 'all', device: 'all' };
+
+window.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+  const urlKey = params.get('key');
+  if (urlKey) {
+    sessionStorage.setItem(STORAGE_KEY, urlKey);
+    window.history.replaceState({}, '', window.location.pathname);
+  }
+  const stored = sessionStorage.getItem(STORAGE_KEY);
+  if (stored) {
+    loadApplicants(stored);
+  } else {
+    showView('authView');
+  }
+
+  document.querySelectorAll('.filter-chip').forEach((chip) => {
+    chip.addEventListener('click', () => {
+      const dim = chip.dataset.filter;
+      const val = chip.dataset.value;
+      activeFilters[dim] = val;
+      document.querySelectorAll(`.filter-chip[data-filter="${dim}"]`).forEach((c) => {
+        c.classList.toggle('active', c.dataset.value === val);
+      });
+      renderApplicants();
+    });
+  });
+});
+
+function showView(view) {
+  ['authView', 'loadingView', 'mainView', 'errorView'].forEach((v) => {
+    document.getElementById(v).style.display = 'none';
+  });
+  document.getElementById(view).style.display = 'block';
+}
+
+function login() {
+  const key = document.getElementById('keyInput').value.trim();
+  if (!key) return;
+  sessionStorage.setItem(STORAGE_KEY, key);
+  loadApplicants(key);
+}
+
+async function loadApplicants(key) {
+  showView('loadingView');
+  try {
+    const res = await fetch(`/api/admin/testers-list?key=${encodeURIComponent(key)}`);
+    if (res.status === 401) {
+      sessionStorage.removeItem(STORAGE_KEY);
+      document.getElementById('authError').style.display = 'block';
+      showView('authView');
+      return;
+    }
+    if (!res.ok) {
+      const err = await res.text();
+      document.getElementById('errorView').textContent = `Error: ${err}`;
+      showView('errorView');
+      return;
+    }
+    const data = await res.json();
+    allRows = data.rows;
+    renderSummary(data.summary, data.generated);
+    renderApplicants();
+    showView('mainView');
+  } catch (err) {
+    document.getElementById('errorView').textContent = `Failed to load: ${err.message}`;
+    showView('errorView');
+  }
+}
+
+function renderSummary(s, generated) {
+  const cards = [
+    { label: 'Total', value: s.total, sub: 'applicants' },
+    { label: 'Tier A', value: s.tier_a, sub: 'strong fit' },
+    { label: 'Pending', value: s.pending, sub: 'need decision' },
+    { label: 'Invited', value: s.invited, sub: 'TestFlight sent' },
+    { label: 'iPhone', value: s.iphone, sub: `${s.android} Android` },
+  ];
+  document.getElementById('summaryRow').innerHTML = cards.map((c) => `
+    <div class="stat">
+      <div class="stat-label">${c.label}</div>
+      <div class="stat-value">${c.value}</div>
+      <div class="stat-sub">${c.sub}</div>
+    </div>
+  `).join('');
+  document.getElementById('lastUpdated').textContent = `Last updated ${new Date(generated).toLocaleString()}`;
+}
+
+function passesFilters(row) {
+  if (activeFilters.tier !== 'all' && row.tier !== activeFilters.tier) return false;
+  if (activeFilters.status !== 'all' && row.status !== activeFilters.status) return false;
+  if (activeFilters.device !== 'all' && row.device !== activeFilters.device) return false;
+  return true;
+}
+
+function escapeHtml(s) {
+  if (s == null) return '';
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function formatList(s) {
+  if (!s) return '';
+  return s.split('|').filter(Boolean).map((x) => x.replace(/_/g, ' ')).join(', ');
+}
+
+function timeAgo(iso) {
+  const seconds = Math.floor((Date.now() - new Date(iso).getTime()) / 1000);
+  if (seconds < 60) return `${seconds}s ago`;
+  if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
+  if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
+  return `${Math.floor(seconds / 86400)}d ago`;
+}
+
+function renderApplicants() {
+  const list = document.getElementById('applicantsList');
+  const filtered = allRows.filter(passesFilters);
+  if (filtered.length === 0) {
+    list.innerHTML = '<div class="empty">No applicants match these filters.</div>';
+    return;
+  }
+  list.innerHTML = filtered.map(renderApplicant).join('');
+
+  // Wire up expand toggles + buttons
+  filtered.forEach((row) => {
+    const el = document.getElementById(`a-${row.id}`);
+    if (!el) return;
+    el.querySelector('.applicant-header').addEventListener('click', () => {
+      el.classList.toggle('open');
+    });
+    el.querySelectorAll('[data-action]').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const action = btn.dataset.action;
+        handleAction(row.id, action, row);
+      });
+    });
+  });
+}
+
+function renderApplicant(row) {
+  const tierClass = row.tier ? `tier-${row.tier}` : 'tier-c';
+  const tierLabel = row.tier ? row.tier.toUpperCase() : '?';
+  const statusClass = row.status || 'pending';
+  return `
+    <div class="applicant ${statusClass}" id="a-${row.id}">
+      <div class="applicant-header">
+        <span class="tier-badge ${tierClass}">TIER ${tierLabel}</span>
+        <div class="name-block">
+          <div class="name">${escapeHtml(row.first_name)} ${escapeHtml(row.last_name || '')}</div>
+          <div class="meta">${escapeHtml(row.apple_email)} · ${row.device || 'unknown device'} · ${timeAgo(row.created_at)}</div>
+        </div>
+        <span class="score">${row.score ?? '?'}</span>
+        <span class="status-pill ${statusClass}">${statusClass}</span>
+        <span class="expand-icon">▶</span>
+      </div>
+      <div class="body">
+        <div class="answer-grid">
+          ${row.symptoms ? answerCard('Symptoms', formatList(row.symptoms)) : ''}
+          ${row.goals ? answerCard('Goals', formatList(row.goals)) : ''}
+          ${row.duration ? answerCard('Duration', row.duration.replace(/_/g, ' ')) : ''}
+          ${row.severity ? answerCard('Severity', row.severity + '/10') : ''}
+          ${row.commitment ? answerCard('Commitment', row.commitment) : ''}
+          ${row.tried ? answerCard('Tried before', formatList(row.tried)) : ''}
+          ${row.history ? answerCard('History with Star', formatList(row.history)) : ''}
+          ${row.specific_moment ? answerCard('The moment', row.specific_moment) : ''}
+          ${row.worked ? answerCard('What worked', row.worked) : ''}
+          ${row.not_worked ? answerCard("What didn't", row.not_worked) : ''}
+          ${row.notes ? answerCard('Notes', row.notes) : ''}
+        </div>
+        <div class="actions">
+          <button class="btn btn-copy" data-action="copy">Copy Apple ID email</button>
+          <button class="btn btn-invite" data-action="invite">Mark invited</button>
+          <button class="btn btn-maybe" data-action="maybe">Maybe</button>
+          <button class="btn btn-decline" data-action="decline">Decline</button>
+          ${row.status !== 'pending' ? '<button class="btn btn-reset" data-action="reset">Back to pending</button>' : ''}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function answerCard(label, value) {
+  return `
+    <div class="answer">
+      <div class="answer-label">${label}</div>
+      <div class="answer-value">${escapeHtml(value)}</div>
+    </div>
+  `;
+}
+
+async function handleAction(id, action, row) {
+  if (action === 'copy') {
+    try {
+      await navigator.clipboard.writeText(row.apple_email);
+      showToast(`Copied ${row.apple_email}`);
+    } catch {
+      showToast('Copy failed');
+    }
+    return;
+  }
+
+  const statusMap = {
+    invite: 'invited',
+    maybe: 'maybe',
+    decline: 'declined',
+    reset: 'pending',
+  };
+  const newStatus = statusMap[action];
+  if (!newStatus) return;
+
+  const key = sessionStorage.getItem(STORAGE_KEY);
+  try {
+    const res = await fetch(`/api/admin/testers-update?key=${encodeURIComponent(key)}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, status: newStatus }),
+    });
+    if (!res.ok) {
+      showToast('Update failed');
+      return;
+    }
+    const data = await res.json();
+    if (data.row) {
+      const idx = allRows.findIndex((r) => r.id === id);
+      if (idx >= 0) allRows[idx] = data.row;
+      // Refresh summary too
+      const summary = {
+        total: allRows.length,
+        tier_a: allRows.filter((r) => r.tier === 'a').length,
+        tier_b: allRows.filter((r) => r.tier === 'b').length,
+        tier_c: allRows.filter((r) => r.tier === 'c').length,
+        pending: allRows.filter((r) => r.status === 'pending').length,
+        invited: allRows.filter((r) => r.status === 'invited').length,
+        declined: allRows.filter((r) => r.status === 'declined').length,
+        iphone: allRows.filter((r) => r.device === 'iphone').length,
+        android: allRows.filter((r) => r.device === 'android').length,
+      };
+      renderSummary(summary, new Date().toISOString());
+      renderApplicants();
+    }
+    showToast({
+      invited: 'Marked invited',
+      maybe: 'Marked maybe',
+      declined: 'Declined',
+      pending: 'Reset to pending',
+    }[newStatus]);
+  } catch (err) {
+    showToast('Network error');
+  }
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1800);
+}
+</script>
+
+</body>
+</html>
