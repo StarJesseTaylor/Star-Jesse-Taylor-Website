@@ -173,8 +173,22 @@
       <!-- Honeypot -->
       <input type="text" name="website_url" class="hp" tabindex="-1" autocomplete="off" />
 
+      <!-- STEP 0: iPhone gate (asked first so Android folks don't fill 5 minutes of form for nothing) -->
+      <div class="apply-card active" data-step="0">
+        <h2>Quick check: do you have an iPhone?</h2>
+        <p class="qhint">Audacity is iPhone only right now. Android comes a few weeks after.</p>
+        <div class="opt-row" data-singleselect="device">
+          <label class="opt"><input type="radio" name="device" value="iphone" /> Yes, iPhone</label>
+          <label class="opt"><input type="radio" name="device" value="android" /> Android</label>
+          <label class="opt"><input type="radio" name="device" value="other" /> Other</label>
+        </div>
+        <div class="cta-row">
+          <button type="button" class="apply-btn" id="deviceContinue" disabled>Continue</button>
+        </div>
+      </div>
+
       <!-- STEP 1: Symptoms + Growth Goals -->
-      <div class="apply-card active" data-step="1">
+      <div class="apply-card" data-step="1">
         <h2>What's bringing you here?</h2>
         <p class="qhint">Pick all that apply. Mix and match.</p>
 
@@ -306,13 +320,10 @@
           <label class="opt"><input type="radio" name="commitment" value="just_try" /> I just want to try it</label>
         </div>
 
-        <label style="font-size: 0.88rem; font-weight: 600; display: block; margin: 24px 0 8px;">How will you give feedback?</label>
-        <p class="qhint" style="margin-bottom: 12px;">Pick all that apply.</p>
-        <div class="opt-grid compact" id="feedbackGrid">
-          <label class="opt"><input type="checkbox" name="feedback" value="written" /> Written notes (text or email)</label>
-          <label class="opt"><input type="checkbox" name="feedback" value="voice" /> Voice memo</label>
-          <label class="opt"><input type="checkbox" name="feedback" value="screen" /> Screen recording when something is confusing</label>
-          <label class="opt"><input type="checkbox" name="feedback" value="call" /> Live call with Star</label>
+        <div style="background: rgba(27,108,168,0.06); border-left: 4px solid var(--cobalt); border-radius: 8px; padding: 16px 18px; margin-top: 24px;">
+          <p style="font-size: 0.78rem; font-weight: 800; letter-spacing: 1.5px; color: var(--cobalt); margin: 0 0 8px; text-transform: uppercase;">How feedback works</p>
+          <p style="margin: 0 0 6px; font-size: 0.96rem; line-height: 1.6; color: var(--charcoal);">There's a <strong>Send Feedback</strong> button right in the app on the Me tab. Type what's confusing, broken, or great. It goes straight to my email.</p>
+          <p style="margin: 0; font-size: 0.96rem; line-height: 1.6; color: var(--charcoal);">No screenshots needed, no separate app, no waiting for a survey. Tap, type, send.</p>
         </div>
 
         <div class="cta-row">
@@ -321,7 +332,7 @@
         </div>
       </div>
 
-      <!-- STEP 6: Contact + device + 2FA + submit -->
+      <!-- STEP 6: Contact + Apple ID email + submit -->
       <div class="apply-card" data-step="6">
         <h2>One last thing.</h2>
         <p class="qhint">Make sure I can actually invite you to TestFlight.</p>
@@ -337,31 +348,10 @@
           </div>
         </div>
 
-        <label style="font-size: 0.88rem; font-weight: 600; display: block; margin: 18px 0 8px;">What phone do you have?</label>
-        <div class="opt-row" data-singleselect="device">
-          <label class="opt"><input type="radio" name="device" value="iphone" /> iPhone</label>
-          <label class="opt"><input type="radio" name="device" value="android" /> Android</label>
-          <label class="opt"><input type="radio" name="device" value="other" /> Other</label>
-        </div>
-
-        <div class="form-stack" id="emailFields">
-          <div>
-            <label for="email">Best email to reach you at</label>
-            <input class="apply-input" id="email" name="email" type="email" autocomplete="email" required />
-          </div>
-          <div id="appleEmailRow">
-            <label for="appleEmail">Apple ID email</label>
-            <input class="apply-input" id="appleEmail" name="appleEmail" type="email" autocomplete="email" />
-            <p class="help-text">The email connected to your iPhone, where TestFlight invitations are sent. Settings → tap your name at the top → the email shown. This might be different from your regular email.</p>
-            <label class="same-row"><input type="checkbox" id="sameEmail" /> Same as above</label>
-          </div>
-        </div>
-
-        <label style="font-size: 0.88rem; font-weight: 600; display: block; margin: 18px 0 8px;">Two-factor authentication on your Apple ID?</label>
-        <div class="opt-row" data-singleselect="twofa">
-          <label class="opt"><input type="radio" name="twofa" value="on" /> Already on</label>
-          <label class="opt"><input type="radio" name="twofa" value="will_setup" /> Will set up</label>
-          <label class="opt"><input type="radio" name="twofa" value="need_help" /> Need help</label>
+        <div id="emailFields" style="margin-top: 8px;">
+          <label for="appleEmail" style="font-size: 0.88rem; font-weight: 600; display: block; margin-bottom: 6px;">Apple ID email</label>
+          <input class="apply-input" id="appleEmail" name="appleEmail" type="email" autocomplete="email" required />
+          <p class="help-text">The email connected to your iPhone, where TestFlight invitations go. Open Settings, tap your name at the top, the email shown there is the right one. Many people use a different iCloud email here than their personal email.</p>
         </div>
 
         <label style="font-size: 0.88rem; font-weight: 600; display: block; margin: 18px 0 8px;">Anything else I should know? (optional)</label>
@@ -379,7 +369,7 @@
           <h2 id="successTitle">Got it. I'll be in touch.</h2>
           <div class="tier-badge" id="tierBadge" style="display:none">Top tier applicant</div>
           <p id="successBody">I read every application personally. If you're a fit, you'll hear back within a few days with TestFlight install instructions.</p>
-          <p style="font-size: 0.92rem; color: var(--mid-gray);">Until then, follow along at <a href="https://instagram.com/starjessetaylor" style="color: var(--cobalt);">@starjessetaylor</a>.</p>
+          <p style="font-size: 0.92rem; color: var(--mid-gray);" id="successFooter">Until then, follow along at <a href="https://instagram.com/starjessetaylor" style="color: var(--cobalt);">@starjessetaylor</a>.</p>
         </div>
       </div>
 
@@ -389,7 +379,7 @@
 
 <script>
 (function() {
-  var currentStep = 1;
+  var currentStep = 0;
   var totalSteps = 6;
   var form = document.getElementById('applyForm');
   var cards = form.querySelectorAll('.apply-card[data-step]');
@@ -397,21 +387,101 @@
   var progLabel = document.getElementById('progLabel');
 
   function setStep(n) {
-    currentStep = Math.max(1, Math.min(7, n));
+    currentStep = Math.max(0, Math.min(7, n));
     cards.forEach(function(c) {
       c.classList.toggle('active', parseInt(c.getAttribute('data-step'), 10) === currentStep);
     });
-    var pct = Math.round((currentStep / (totalSteps + 1)) * 100);
+    var stepForProgress = Math.max(1, currentStep);
+    var pct = Math.round((stepForProgress / (totalSteps + 1)) * 100);
     if (progFill) progFill.style.width = pct + '%';
     if (progLabel) {
-      if (currentStep > totalSteps) {
-        progLabel.style.display = 'none';
-        document.querySelector('.apply-progress').style.display = 'none';
+      if (currentStep > totalSteps || currentStep === 0) {
+        if (currentStep === 0) {
+          progLabel.textContent = 'Step 1 of ' + (totalSteps + 1);
+        } else {
+          progLabel.style.display = 'none';
+          document.querySelector('.apply-progress').style.display = 'none';
+        }
       } else {
-        progLabel.textContent = 'Step ' + currentStep + ' of ' + totalSteps;
+        progLabel.textContent = 'Step ' + (currentStep + 1) + ' of ' + (totalSteps + 1);
       }
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Device check on step 0 — gate Android right away, don't make them
+  // fill 5 minutes of form first.
+  var deviceContinueBtn = document.getElementById('deviceContinue');
+  document.querySelectorAll('input[name="device"]').forEach(function(input) {
+    input.addEventListener('change', function() {
+      if (deviceContinueBtn) deviceContinueBtn.disabled = false;
+    });
+  });
+  if (deviceContinueBtn) {
+    deviceContinueBtn.addEventListener('click', function() {
+      var dev = (document.querySelector('input[name="device"]:checked') || {}).value || '';
+      if (dev === 'iphone') {
+        setStep(1);
+      } else {
+        // Auto-route Android / Other to a waitlist signup. We still
+        // want their email, just a much shorter ask.
+        document.querySelectorAll('.apply-card').forEach(function(c) {
+          c.classList.remove('active');
+        });
+        // Reuse the success card with a waitlist message + email field
+        var successCard = document.querySelector('.apply-card[data-step="7"]');
+        successCard.classList.add('active');
+        successCard.querySelector('#successTitle').textContent = "Want a heads-up when Android is ready?";
+        successCard.querySelector('#successBody').innerHTML =
+          'Audacity launches on iPhone first, with Android a few weeks behind. Drop your email and I will let you know the moment Android is open for testing.' +
+          '<form id="androidWaitForm" style="margin-top:22px;display:flex;flex-direction:column;gap:10px;max-width:360px;margin-left:auto;margin-right:auto;">' +
+          '<input class="apply-input" id="androidName" placeholder="First name" required />' +
+          '<input class="apply-input" id="androidEmail" type="email" placeholder="Email" required />' +
+          '<button type="submit" class="apply-btn">Join the Android waitlist</button>' +
+          '<p id="androidStatus" style="font-size:0.85rem;color:var(--mid-gray);text-align:center;margin:6px 0 0;"></p>' +
+          '</form>';
+        document.querySelector('.apply-progress').style.display = 'none';
+        var awForm = document.getElementById('androidWaitForm');
+        if (awForm) {
+          awForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var nm = document.getElementById('androidName').value.trim();
+            var em = document.getElementById('androidEmail').value.trim();
+            if (!nm || !em) return;
+            document.getElementById('androidStatus').textContent = 'Saving...';
+            fetch('/api/audacity-tester-apply', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                firstName: nm,
+                lastName: '',
+                appleEmail: em,
+                device: dev,
+                symptoms: '',
+                goals: '',
+                duration: '',
+                severity: '',
+                tried: '',
+                worked: '',
+                not_worked: '',
+                specific_moment: 'Android waitlist signup',
+                history: '',
+                commitment: 'maybe',
+                notes: '',
+                source: new URLSearchParams(window.location.search).get('src') || 'website',
+                website_url: ''
+              })
+            }).then(function() {
+              document.getElementById('androidStatus').textContent = "You're on the waitlist. Talk soon.";
+              awForm.querySelectorAll('input, button').forEach(function(el) { el.disabled = true; });
+            }).catch(function() {
+              document.getElementById('androidStatus').textContent = 'Something went wrong. Try again.';
+            });
+          });
+        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
   }
 
   // Click handlers for checkbox/radio "opt" labels (visual selected state)
@@ -454,8 +524,6 @@
     }
     if (n === 5) {
       if (!document.querySelector('input[name="commitment"]:checked')) { alert('Pick a commitment level.'); return false; }
-      var fb = document.querySelectorAll('input[name="feedback"]:checked');
-      if (fb.length === 0) { alert('Pick at least one way you will give feedback.'); return false; }
     }
     return true;
   }
@@ -469,25 +537,6 @@
   document.querySelectorAll('[data-prev]').forEach(function(btn) {
     btn.addEventListener('click', function() { setStep(currentStep - 1); });
   });
-
-  // Same email checkbox
-  var sameEmail = document.getElementById('sameEmail');
-  var emailInput = document.getElementById('email');
-  var appleInput = document.getElementById('appleEmail');
-  if (sameEmail) {
-    sameEmail.addEventListener('change', function() {
-      if (sameEmail.checked) {
-        appleInput.value = emailInput.value;
-        appleInput.setAttribute('readonly', 'readonly');
-      } else {
-        appleInput.removeAttribute('readonly');
-        appleInput.value = '';
-      }
-    });
-    emailInput && emailInput.addEventListener('input', function() {
-      if (sameEmail.checked) appleInput.value = emailInput.value;
-    });
-  }
 
   // Scoring (client side, mirrored on server)
   function scoreApplication(data) {
@@ -531,21 +580,19 @@
     if (!validateStep(currentStep)) return;
 
     var firstName = document.getElementById('firstName').value.trim();
-    var email = document.getElementById('email').value.trim();
-    if (!firstName || !email) { alert('First name and email are required.'); return; }
+    var appleEmail = document.getElementById('appleEmail').value.trim();
+    if (!firstName || !appleEmail) { alert('First name and Apple ID email are required.'); return; }
+    if (!/.+@.+\..+/.test(appleEmail)) { alert('That email doesn\'t look right. Make sure it ends with a real domain.'); return; }
 
     var symptoms = Array.from(document.querySelectorAll('input[name="symptoms"]:checked')).map(function(i){return i.value;});
     var goals = Array.from(document.querySelectorAll('input[name="goals"]:checked')).map(function(i){return i.value;});
     var tried = Array.from(document.querySelectorAll('input[name="tried"]:checked')).map(function(i){return i.value;});
     var history = Array.from(document.querySelectorAll('input[name="history"]:checked')).map(function(i){return i.value;});
-    var feedback = Array.from(document.querySelectorAll('input[name="feedback"]:checked')).map(function(i){return i.value;});
 
     var data = {
       firstName: firstName,
       lastName: document.getElementById('lastName').value.trim(),
-      email: email,
-      appleEmail: (sameEmail && sameEmail.checked) ? email : document.getElementById('appleEmail').value.trim(),
-      sameEmail: !!(sameEmail && sameEmail.checked),
+      appleEmail: appleEmail,
       symptoms: symptoms.join('|'),
       goals: goals.join('|'),
       duration: (document.querySelector('input[name="duration"]:checked') || {}).value || '',
@@ -556,9 +603,7 @@
       specific_moment: (document.querySelector('textarea[name="specific_moment"]') || {}).value || '',
       history: history.join('|'),
       commitment: (document.querySelector('input[name="commitment"]:checked') || {}).value || '',
-      feedback: feedback.join('|'),
       device: (document.querySelector('input[name="device"]:checked') || {}).value || '',
-      twofa: (document.querySelector('input[name="twofa"]:checked') || {}).value || '',
       notes: (document.querySelector('textarea[name="notes"]') || {}).value || '',
       source: new URLSearchParams(window.location.search).get('src') || 'website',
       website_url: document.querySelector('input[name="website_url"]').value || ''

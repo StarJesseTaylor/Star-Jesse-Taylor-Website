@@ -96,10 +96,8 @@ async function sendStarNotification(applicant, scored) {
     `NEW TESTER APPLICATION — Tier ${scored.tier.toUpperCase()} (score ${scored.score})`,
     '',
     `Name:  ${applicant.firstName || ''} ${applicant.lastName || ''}`.trim(),
-    `Email: ${applicant.email || ''}`,
-    `Apple ID email: ${applicant.appleEmail || '(same as above)'}`,
+    `Apple ID email: ${applicant.appleEmail || applicant.email || ''}`,
     `Device: ${applicant.device || ''}`,
-    `2FA: ${applicant.twofa || ''}`,
     '',
     `Symptoms: ${(applicant.symptoms || '').split('|').filter(Boolean).join(', ')}`,
     `Working toward: ${(applicant.goals || '').split('|').filter(Boolean).join(', ')}`,
@@ -108,7 +106,6 @@ async function sendStarNotification(applicant, scored) {
     `Tried: ${(applicant.tried || '').split('|').filter(Boolean).join(', ')}`,
     `History with Star: ${(applicant.history || '').split('|').filter(Boolean).join(', ')}`,
     `Commitment: ${applicant.commitment || ''}`,
-    `Feedback channels: ${(applicant.feedback || '').split('|').filter(Boolean).join(', ')}`,
     '',
     'WHAT WORKED:',
     applicant.worked || '(empty)',
@@ -238,8 +235,11 @@ export default async function handler(req, res) {
     return res.status(200).json({ success: true });
   }
 
+  // Only Apple ID email is collected now (Star June 14 simplification).
+  // Map appleEmail -> email for downstream AC + Resend.
+  if (data.appleEmail && !data.email) data.email = data.appleEmail;
   if (!data.email || !data.firstName) {
-    return res.status(400).json({ error: 'First name and email required' });
+    return res.status(400).json({ error: 'First name and Apple ID email required' });
   }
 
   // Re-score server-side (don't trust client)
@@ -298,8 +298,6 @@ export default async function handler(req, res) {
     if (data.device === 'iphone') tags.push('tester-device-iphone');
     else if (data.device === 'android') tags.push('tester-device-android-waitlist');
     else if (data.device === 'other') tags.push('tester-device-other');
-    if (data.twofa === 'need_help') tags.push('tester-needs-2fa-help');
-
     await Promise.all(tags.map(t => applyTag(AC_URL, headers, contactId, t)));
 
     return res.status(200).json({ success: true, scored, contactId });
