@@ -2,7 +2,8 @@
   "rewrites": [
     { "source": "/tour", "destination": "/tour.html" },
     { "source": "/letter", "destination": "/letter.html" },
-    { "source": "/app", "destination": "/app.html" }
+    { "source": "/app", "destination": "/app.html" },
+    { "source": "/apply-tester", "destination": "/apply-tester.html" }
   ],
   "crons": [
     {
