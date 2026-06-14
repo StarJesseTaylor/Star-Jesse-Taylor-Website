@@ -33,7 +33,28 @@
       letter-spacing: -0.02em;
       margin-bottom: 4px;
     }
-    .subtitle { color: var(--mid-gray); font-size: 0.9rem; margin-bottom: 24px; }
+    .subtitle { color: var(--mid-gray); font-size: 0.9rem; margin-bottom: 20px; }
+    .tab-row {
+      display: flex;
+      gap: 4px;
+      border-bottom: 2px solid var(--light-gray);
+      margin-bottom: 20px;
+    }
+    .tab {
+      padding: 10px 20px;
+      background: transparent;
+      border: 0;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--mid-gray);
+      cursor: pointer;
+    }
+    .tab.active {
+      color: var(--cobalt);
+      border-bottom-color: var(--cobalt);
+    }
     .auth-prompt {
       background: white; border-radius: 12px; padding: 32px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.06); max-width: 480px; margin: 60px auto;
@@ -146,10 +167,13 @@
       font-size: 1.1rem;
       font-weight: 700;
     }
+    .input-with-mic {
+      position: relative;
+    }
     .raw-textarea {
       width: 100%;
       min-height: 240px;
-      padding: 16px;
+      padding: 16px 60px 16px 16px;
       border: 1.5px solid var(--light-gray);
       border-radius: 10px;
       font-size: 0.95rem;
@@ -161,6 +185,45 @@
       outline: none;
       border-color: var(--cobalt);
     }
+    .mic-btn {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 0;
+      background: var(--cobalt);
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s;
+    }
+    .mic-btn:hover { background: var(--cobalt-dark); }
+    .mic-btn.recording {
+      background: var(--red);
+      animation: pulse 1.2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.12); }
+    }
+    .voice-status {
+      position: absolute;
+      top: 60px;
+      right: 14px;
+      background: var(--charcoal);
+      color: white;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      display: none;
+    }
+    .voice-status.show { display: block; }
     .btn-row {
       display: flex;
       flex-wrap: wrap;
@@ -256,8 +319,68 @@
       font-style: italic;
       margin-top: 4px;
     }
+    .history-row {
+      display: grid;
+      grid-template-columns: 1fr 100px 100px 90px;
+      gap: 16px;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--light-gray);
+      cursor: pointer;
+    }
+    .history-row:hover { background: var(--off-white); }
+    .history-subject {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--charcoal);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .history-meta {
+      font-size: 0.74rem;
+      color: var(--mid-gray);
+      margin-top: 4px;
+    }
+    .history-num {
+      font-family: ui-monospace, monospace;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--charcoal);
+      text-align: right;
+    }
+    .history-num-label {
+      font-size: 0.66rem;
+      color: var(--mid-gray);
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .history-clone-btn {
+      background: var(--light-gray);
+      color: var(--charcoal);
+      border: 0;
+      padding: 8px 14px;
+      border-radius: 50px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .saved-draft-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--off-white);
+      color: var(--mid-gray);
+      padding: 4px 10px;
+      border-radius: 50px;
+      font-size: 0.74rem;
+      font-weight: 600;
+    }
     @media (max-width: 900px) {
       .layout { grid-template-columns: 1fr; }
+      .history-row { grid-template-columns: 1fr 70px 70px; }
+      .history-clone-btn { display: none; }
     }
   </style>
 </head>
@@ -275,44 +398,71 @@
   <h1>Email Writer</h1>
   <p class="subtitle">Dictate. Polish. Send. To anyone tagged in ActiveCampaign.</p>
 
-  <div class="layout">
-    <!-- LEFT: Audience picker -->
-    <div class="panel">
-      <h2>Audience</h2>
-      <input class="tag-search" id="tagSearch" placeholder="Search tags..." />
-      <div class="tag-list" id="tagList">
-        <p style="text-align:center;padding:24px;color:var(--mid-gray);font-size:0.84rem;">Loading tags...</p>
+  <div class="tab-row">
+    <button class="tab active" data-tab="write" onclick="switchTab('write')">Write</button>
+    <button class="tab" data-tab="history" onclick="switchTab('history')">History</button>
+  </div>
+
+  <!-- WRITE TAB -->
+  <div id="writeTab">
+    <div class="layout">
+      <!-- LEFT: Audience picker -->
+      <div class="panel">
+        <h2>Audience</h2>
+        <input class="tag-search" id="tagSearch" placeholder="Search tags..." />
+        <div class="tag-list" id="tagList">
+          <p style="text-align:center;padding:24px;color:var(--mid-gray);font-size:0.84rem;">Loading tags...</p>
+        </div>
+        <div class="audience-summary" id="audienceSummary">
+          Select tags to see audience size.
+        </div>
       </div>
-      <div class="audience-summary" id="audienceSummary">
-        Select tags to see audience size.
+
+      <!-- RIGHT: Editor -->
+      <div class="panel">
+        <h2>
+          Write
+          <span id="draftPill" class="saved-draft-pill" style="display:none;float:right;margin-top:-3px;">
+            <span>●</span> Draft saved
+          </span>
+        </h2>
+        <div class="editor">
+          <input type="text" class="subject-input" id="subjectInput" placeholder="Subject (Claude will suggest one when you polish)" />
+
+          <div class="input-with-mic">
+            <textarea id="rawInput" class="raw-textarea" placeholder="Dictate or type your raw thoughts. Run-on, no breaks, voice-to-text errors all fine. Claude will polish it in your voice with all the rules baked in (no dashes, no salesy, Tuesday moments, life-on-the-other-side framing)."></textarea>
+            <button class="mic-btn" id="micBtn" onclick="toggleVoice()" title="Hold to dictate">🎤</button>
+            <div class="voice-status" id="voiceStatus">Listening...</div>
+          </div>
+          <p class="help-text">Tip: tap the mic and speak. Browser converts to text. Then tap Polish.</p>
+
+          <div class="btn-row">
+            <button class="btn btn-primary" id="polishBtn" onclick="polish()">Polish in my voice</button>
+            <button class="btn btn-secondary" onclick="clearAll()">Clear</button>
+          </div>
+
+          <div class="preview" id="previewBlock" style="display:none">
+            <div class="preview-label">Polished email (click to edit)</div>
+            <div class="preview-subject" id="previewSubject" contenteditable="true"></div>
+            <div class="preview-body" id="previewBody" contenteditable="true"></div>
+          </div>
+
+          <div class="btn-row" id="sendBtnRow" style="display:none">
+            <button class="btn btn-amber" id="testSendBtn" onclick="testSend()">Test send to my inbox</button>
+            <button class="btn btn-success" id="sendBtn" onclick="sendNow()">Send to selected audience</button>
+            <button class="btn btn-secondary" id="draftBtn" onclick="saveDraft()">Save as draft in AC</button>
+          </div>
+        </div>
       </div>
     </div>
+  </div>
 
-    <!-- RIGHT: Editor -->
+  <!-- HISTORY TAB -->
+  <div id="historyTab" style="display:none">
     <div class="panel">
-      <h2>Write</h2>
-      <div class="editor">
-        <input type="text" class="subject-input" id="subjectInput" placeholder="Subject line (Claude will suggest one when you polish)" />
-
-        <textarea id="rawInput" class="raw-textarea" placeholder="Dictate or type your raw thoughts. Run-on, no breaks, voice-to-text errors all fine. Claude will polish it in your voice with all the rules baked in (no dashes, no salesy, Tuesday moments, life-on-the-other-side framing)."></textarea>
-        <p class="help-text">Tip: just dump everything you want to say. Claude handles structure, voice, and rules.</p>
-
-        <div class="btn-row">
-          <button class="btn btn-primary" id="polishBtn" onclick="polish()">Polish in my voice</button>
-          <button class="btn btn-secondary" onclick="clearAll()">Clear</button>
-        </div>
-
-        <div class="preview" id="previewBlock" style="display:none">
-          <div class="preview-label">Polished email (click to edit)</div>
-          <div class="preview-subject" id="previewSubject" contenteditable="true"></div>
-          <div class="preview-body" id="previewBody" contenteditable="true"></div>
-        </div>
-
-        <div class="btn-row" id="sendBtnRow" style="display:none">
-          <button class="btn btn-amber" id="testSendBtn" onclick="testSend()">Test send to my inbox</button>
-          <button class="btn btn-success" id="sendBtn" onclick="sendNow()">Send to selected audience</button>
-          <button class="btn btn-secondary" id="draftBtn" onclick="saveDraft()">Save as draft in AC</button>
-        </div>
+      <h2>Recent sends from ActiveCampaign</h2>
+      <div id="historyList">
+        <p style="text-align:center;padding:24px;color:var(--mid-gray);font-size:0.84rem;">Loading history...</p>
       </div>
     </div>
   </div>
@@ -322,9 +472,12 @@
 
 <script>
 const STORAGE_KEY = 'email_writer_key';
+const DRAFT_STORAGE_KEY = 'email_writer_draft';
 let allTags = [];
 let selectedTagIds = new Set();
 let polished = false;
+let voiceRecognition = null;
+let isRecording = false;
 
 window.addEventListener('DOMContentLoaded', () => {
   const params = new URLSearchParams(window.location.search);
@@ -337,12 +490,143 @@ window.addEventListener('DOMContentLoaded', () => {
   if (stored) {
     showView('mainView');
     loadTags();
+    restoreDraft();
   } else {
     showView('authView');
   }
 
   document.getElementById('tagSearch').addEventListener('input', renderTagList);
+
+  // Auto-save draft on every keystroke (debounced)
+  ['rawInput', 'subjectInput'].forEach((id) => {
+    document.getElementById(id).addEventListener('input', debouncedSaveDraft);
+  });
+  setupVoiceRecognition();
 });
+
+let saveDraftTimer = null;
+function debouncedSaveDraft() {
+  if (saveDraftTimer) clearTimeout(saveDraftTimer);
+  saveDraftTimer = setTimeout(saveLocalDraft, 800);
+}
+
+function saveLocalDraft() {
+  const draft = {
+    raw: document.getElementById('rawInput').value,
+    subject: document.getElementById('subjectInput').value,
+    savedAt: new Date().toISOString(),
+  };
+  if (!draft.raw && !draft.subject) {
+    localStorage.removeItem(DRAFT_STORAGE_KEY);
+    document.getElementById('draftPill').style.display = 'none';
+    return;
+  }
+  localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draft));
+  document.getElementById('draftPill').style.display = 'inline-flex';
+}
+
+function restoreDraft() {
+  try {
+    const raw = localStorage.getItem(DRAFT_STORAGE_KEY);
+    if (!raw) return;
+    const draft = JSON.parse(raw);
+    if (draft.raw) document.getElementById('rawInput').value = draft.raw;
+    if (draft.subject) document.getElementById('subjectInput').value = draft.subject;
+    if (draft.raw || draft.subject) {
+      document.getElementById('draftPill').style.display = 'inline-flex';
+    }
+  } catch {}
+}
+
+function setupVoiceRecognition() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    document.getElementById('micBtn').style.display = 'none';
+    return;
+  }
+  voiceRecognition = new SpeechRecognition();
+  voiceRecognition.continuous = true;
+  voiceRecognition.interimResults = true;
+  voiceRecognition.lang = 'en-US';
+
+  let finalTranscript = '';
+  let baselineText = '';
+
+  voiceRecognition.onstart = () => {
+    isRecording = true;
+    finalTranscript = '';
+    baselineText = document.getElementById('rawInput').value;
+    if (baselineText && !baselineText.endsWith(' ') && !baselineText.endsWith('\n')) {
+      baselineText += ' ';
+    }
+    document.getElementById('micBtn').classList.add('recording');
+    document.getElementById('voiceStatus').classList.add('show');
+    document.getElementById('voiceStatus').textContent = 'Listening...';
+  };
+
+  voiceRecognition.onresult = (event) => {
+    let interim = '';
+    for (let i = event.resultIndex; i < event.results.length; i++) {
+      const transcript = event.results[i][0].transcript;
+      if (event.results[i].isFinal) {
+        finalTranscript += transcript + ' ';
+      } else {
+        interim += transcript;
+      }
+    }
+    document.getElementById('rawInput').value = baselineText + finalTranscript + interim;
+    debouncedSaveDraft();
+  };
+
+  voiceRecognition.onerror = (event) => {
+    if (event.error === 'no-speech') return;
+    toast('Voice: ' + event.error, 'error');
+    stopVoice();
+  };
+
+  voiceRecognition.onend = () => {
+    if (isRecording) {
+      // Auto-restart for continuous mode unless user explicitly stopped
+      try { voiceRecognition.start(); } catch {}
+    } else {
+      document.getElementById('micBtn').classList.remove('recording');
+      document.getElementById('voiceStatus').classList.remove('show');
+    }
+  };
+}
+
+function toggleVoice() {
+  if (!voiceRecognition) {
+    toast('Voice dictation needs Chrome or Edge', 'error');
+    return;
+  }
+  if (isRecording) stopVoice();
+  else startVoice();
+}
+
+function startVoice() {
+  try {
+    voiceRecognition.start();
+  } catch (e) {
+    toast('Voice failed to start', 'error');
+  }
+}
+
+function stopVoice() {
+  isRecording = false;
+  try { voiceRecognition.stop(); } catch {}
+  document.getElementById('micBtn').classList.remove('recording');
+  document.getElementById('voiceStatus').classList.remove('show');
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach((t) => {
+    t.classList.toggle('active', t.dataset.tab === tab);
+  });
+  document.getElementById('writeTab').style.display = tab === 'write' ? 'block' : 'none';
+  document.getElementById('historyTab').style.display = tab === 'history' ? 'block' : 'none';
+  if (tab === 'history') loadHistory();
+}
 
 function showView(view) {
   ['authView', 'mainView'].forEach(v => {
@@ -357,6 +641,7 @@ function login() {
   sessionStorage.setItem(STORAGE_KEY, key);
   showView('mainView');
   loadTags();
+  restoreDraft();
 }
 
 async function loadTags() {
@@ -429,6 +714,7 @@ async function polish() {
     toast('Type or paste something first', 'error');
     return;
   }
+  if (isRecording) stopVoice();
   const key = sessionStorage.getItem(STORAGE_KEY);
   const btn = document.getElementById('polishBtn');
   btn.disabled = true;
@@ -538,6 +824,8 @@ async function sendNow() {
       toast('Send failed: ' + (data.error || 'unknown'), 'error');
       return;
     }
+    localStorage.removeItem(DRAFT_STORAGE_KEY);
+    document.getElementById('draftPill').style.display = 'none';
     toast(data.message || 'Sent.', 'success');
   } catch (err) {
     toast('Send error: ' + err.message, 'error');
@@ -587,7 +875,7 @@ async function saveDraft() {
 }
 
 function clearAll() {
-  if (!confirm('Clear everything?')) return;
+  if (!confirm('Clear everything? Your draft will be lost.')) return;
   document.getElementById('rawInput').value = '';
   document.getElementById('subjectInput').value = '';
   document.getElementById('previewSubject').textContent = '';
@@ -595,6 +883,66 @@ function clearAll() {
   document.getElementById('previewBlock').style.display = 'none';
   document.getElementById('sendBtnRow').style.display = 'none';
   polished = false;
+  localStorage.removeItem(DRAFT_STORAGE_KEY);
+  document.getElementById('draftPill').style.display = 'none';
+}
+
+async function loadHistory() {
+  const key = sessionStorage.getItem(STORAGE_KEY);
+  const list = document.getElementById('historyList');
+  list.innerHTML = '<p style="text-align:center;padding:24px;color:var(--mid-gray);font-size:0.84rem;">Loading...</p>';
+  try {
+    const res = await fetch(`/api/email-writer/history?key=${encodeURIComponent(key)}`);
+    if (!res.ok) {
+      list.innerHTML = '<p style="text-align:center;padding:24px;color:var(--red);font-size:0.84rem;">Failed to load history.</p>';
+      return;
+    }
+    const data = await res.json();
+    const campaigns = data.campaigns || [];
+    if (campaigns.length === 0) {
+      list.innerHTML = '<p style="text-align:center;padding:24px;color:var(--mid-gray);font-size:0.84rem;">No past campaigns found.</p>';
+      return;
+    }
+    list.innerHTML = campaigns.map((c) => {
+      const sent = c.sdate || c.cdate;
+      const ago = sent ? timeAgo(sent) : 'unknown';
+      const statusLabel = c.status == 5 ? 'sent' : c.status == 0 ? 'draft' : c.status == 1 ? 'scheduled' : 'in progress';
+      return `
+        <div class="history-row" onclick="cloneCampaign('${escapeHtml(c.subject)}')">
+          <div>
+            <div class="history-subject">${escapeHtml(c.subject || '(no subject)')}</div>
+            <div class="history-meta">${ago} · ${escapeHtml(statusLabel)} · ${c.send_amt || 0} sent</div>
+          </div>
+          <div>
+            <div class="history-num">${c.uniqueopens || 0}</div>
+            <div class="history-num-label" style="text-align:right;">opens</div>
+          </div>
+          <div>
+            <div class="history-num">${c.uniquelinkclicks || 0}</div>
+            <div class="history-num-label" style="text-align:right;">clicks</div>
+          </div>
+          <button class="history-clone-btn" onclick="event.stopPropagation();cloneCampaign('${escapeHtml(c.subject)}');">Clone</button>
+        </div>
+      `;
+    }).join('');
+  } catch (err) {
+    list.innerHTML = '<p style="text-align:center;padding:24px;color:var(--red);font-size:0.84rem;">Error: ' + escapeHtml(err.message) + '</p>';
+  }
+}
+
+function cloneCampaign(subject) {
+  document.getElementById('subjectInput').value = subject;
+  switchTab('write');
+  toast('Subject loaded. Type or dictate the new body.', 'success');
+}
+
+function timeAgo(iso) {
+  if (!iso) return 'unknown';
+  const seconds = Math.floor((Date.now() - new Date(iso).getTime()) / 1000);
+  if (seconds < 60) return seconds + 's ago';
+  if (seconds < 3600) return Math.floor(seconds/60) + 'm ago';
+  if (seconds < 86400) return Math.floor(seconds/3600) + 'h ago';
+  return Math.floor(seconds/86400) + 'd ago';
 }
 
 function toast(msg, type = '') {
