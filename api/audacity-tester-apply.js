@@ -128,7 +128,7 @@ async function sendStarNotification(applicant, scored) {
       method: 'POST',
       headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        from: 'Audacity Tester Apps <hello@starjessetaylor.com>',
+        from: 'App Tester Apps <hello@starjessetaylor.com>',
         to: ['starjessetaylor@gmail.com'],
         subject: `[Tier ${scored.tier.toUpperCase()}] Tester applicant: ${applicant.firstName || applicant.email}`,
         text: lines.join('\n')
@@ -149,9 +149,9 @@ async function sendApplicantConfirmation(applicant, scored) {
     bodyText = [
       name ? `Hey ${name},` : 'Hey,',
       '',
-      "Thanks for applying to test Audacity.",
+      "Thanks for applying to be a beta tester.",
       '',
-      "Right now Audacity is iPhone only. I'm building Android in parallel and it'll launch a few weeks after the iPhone version. I'll email you the moment it's ready.",
+      "Right now the app is iPhone only. I'm building Android in parallel and it'll launch a few weeks after the iPhone version. I'll email you the moment it's ready, and that's when I'll share the name and what it does.",
       '',
       "In the meantime, follow along at instagram.com/starjessetaylor.",
       '',
@@ -161,9 +161,9 @@ async function sendApplicantConfirmation(applicant, scored) {
     bodyText = [
       name ? `Hey ${name},` : 'Hey,',
       '',
-      "Thanks for applying to test Audacity. Your application is a strong fit for what I'm looking for.",
+      "Thanks for applying to be a beta tester. Your application is a strong fit for what I'm looking for.",
       '',
-      "Within 48 hours you'll get an invitation email from Apple titled 'You've been invited to App Store Connect.' Accept that first. Then you'll get a second email from TestFlight to install the app on your iPhone.",
+      "Within 48 hours you'll get an invitation email from Apple titled 'You've been invited to App Store Connect.' Accept that first. Then you'll get a second email from TestFlight to install the app on your iPhone. That's when I'll share the name and what it does.",
       '',
       "When you have it, just use it however feels natural. When something is confusing or broken, screenshot it or text me. The point of you being early is your feedback.",
       '',
@@ -186,7 +186,7 @@ async function sendApplicantConfirmation(applicant, scored) {
     bodyText = [
       name ? `Hey ${name},` : 'Hey,',
       '',
-      "Thanks for applying to test Audacity.",
+      "Thanks for applying to be a beta tester.",
       '',
       "Beta capacity is limited right now and I'm picking testers who match very specific situations. I'll keep your application on file and reach out when a spot opens that matches what you're working with.",
       '',
@@ -210,7 +210,7 @@ async function sendApplicantConfirmation(applicant, scored) {
         from: 'Star Jesse Taylor <hello@starjessetaylor.com>',
         to: [applicant.email],
         reply_to: 'starjessetaylor@gmail.com',
-        subject: name ? `${name}, about your Audacity tester application` : 'About your Audacity tester application',
+        subject: name ? `${name}, about your tester application` : 'About your tester application',
         html,
         text: bodyText
       })

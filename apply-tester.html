@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Apply to Test Audacity | Star Jesse Taylor</title>
-  <meta name="description" content="Apply to be one of the first to test Audacity, the daily practice of Emotional Fitness. 14 day commitment, honest feedback." />
+  <title>Apply to Beta Test My App | Star Jesse Taylor</title>
+  <meta name="description" content="Apply to be one of the first to beta test my new app. Daily practice of Emotional Fitness. 14 day commitment, honest feedback." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -149,8 +149,8 @@
   <div class="apply-container">
 
     <div class="apply-header">
-      <h1>Apply to test Audacity.</h1>
-      <p>I'm picking a small group to try Audacity before public launch. Honest feedback only.</p>
+      <h1>Apply to beta test my new app.</h1>
+      <p>I'm picking a small group to try it before public launch. Honest feedback only. I'll share the name and a sneak peek with the people I invite.</p>
     </div>
 
     <div class="apply-intro">
@@ -176,7 +176,7 @@
       <!-- STEP 0: iPhone gate (asked first so Android folks don't fill 5 minutes of form for nothing) -->
       <div class="apply-card active" data-step="0">
         <h2>Quick check: do you have an iPhone?</h2>
-        <p class="qhint">Audacity is iPhone only right now. Android comes a few weeks after.</p>
+        <p class="qhint">The app is iPhone only right now. Android comes a few weeks after.</p>
         <div class="opt-row" data-singleselect="device">
           <label class="opt"><input type="radio" name="device" value="iphone" /> Yes, iPhone</label>
           <label class="opt"><input type="radio" name="device" value="android" /> Android</label>
@@ -195,19 +195,19 @@
         <p style="font-size: 0.78rem; font-weight: 800; letter-spacing: 1.5px; color: var(--cobalt); margin: 4px 0 10px; text-transform: uppercase;">What you're dealing with</p>
         <div class="opt-grid compact" id="symptomsGrid">
           <label class="opt"><input type="checkbox" name="symptoms" value="anxiety" /> Anxiety</label>
+          <label class="opt"><input type="checkbox" name="symptoms" value="overthinking" /> Overthinking, can't turn off my mind</label>
+          <label class="opt"><input type="checkbox" name="symptoms" value="stuck" /> Feeling stuck</label>
           <label class="opt"><input type="checkbox" name="symptoms" value="panic_attacks" /> Panic attacks</label>
           <label class="opt"><input type="checkbox" name="symptoms" value="intrusive_thoughts" /> Intrusive thoughts, OCD</label>
-          <label class="opt"><input type="checkbox" name="symptoms" value="overthinking" /> Overthinking, racing mind</label>
           <label class="opt"><input type="checkbox" name="symptoms" value="depression" /> Depression, low motivation</label>
+          <label class="opt"><input type="checkbox" name="symptoms" value="self_worth" /> Self-worth, harsh inner critic</label>
+          <label class="opt"><input type="checkbox" name="symptoms" value="procrastination" /> Procrastination</label>
           <label class="opt"><input type="checkbox" name="symptoms" value="adhd" /> ADHD</label>
           <label class="opt"><input type="checkbox" name="symptoms" value="trauma" /> Trauma</label>
-          <label class="opt"><input type="checkbox" name="symptoms" value="procrastination" /> Procrastination</label>
-          <label class="opt"><input type="checkbox" name="symptoms" value="self_worth" /> Self-worth, harsh inner critic</label>
           <label class="opt"><input type="checkbox" name="symptoms" value="burnout" /> Burnout</label>
           <label class="opt"><input type="checkbox" name="symptoms" value="sleep" /> Sleep issues, insomnia</label>
           <label class="opt"><input type="checkbox" name="symptoms" value="anger" /> Anger, reactivity</label>
           <label class="opt"><input type="checkbox" name="symptoms" value="breakup" /> Going through a breakup or loss</label>
-          <label class="opt"><input type="checkbox" name="symptoms" value="stuck" /> General drift, feeling stuck</label>
         </div>
 
         <p style="font-size: 0.78rem; font-weight: 800; letter-spacing: 1.5px; color: var(--cobalt); margin: 22px 0 10px; text-transform: uppercase;">What you're working toward</p>
@@ -433,7 +433,7 @@
         successCard.classList.add('active');
         successCard.querySelector('#successTitle').textContent = "Want a heads-up when Android is ready?";
         successCard.querySelector('#successBody').innerHTML =
-          'Audacity launches on iPhone first, with Android a few weeks behind. Drop your email and I will let you know the moment Android is open for testing.' +
+          'The app launches on iPhone first, with Android a few weeks behind. Drop your email and I will let you know the moment Android is open for testing.' +
           '<form id="androidWaitForm" style="margin-top:22px;display:flex;flex-direction:column;gap:10px;max-width:360px;margin-left:auto;margin-right:auto;">' +
           '<input class="apply-input" id="androidName" placeholder="First name" required />' +
           '<input class="apply-input" id="androidEmail" type="email" placeholder="Email" required />' +
