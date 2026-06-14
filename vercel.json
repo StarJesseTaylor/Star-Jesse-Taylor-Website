@@ -4,7 +4,8 @@
     { "source": "/letter", "destination": "/letter.html" },
     { "source": "/app", "destination": "/app.html" },
     { "source": "/apply-tester", "destination": "/apply-tester.html" },
-    { "source": "/testers", "destination": "/admin/testers.html" }
+    { "source": "/testers", "destination": "/admin/testers.html" },
+    { "source": "/email-writer", "destination": "/admin/email-writer.html" }
   ],
   "crons": [
     {

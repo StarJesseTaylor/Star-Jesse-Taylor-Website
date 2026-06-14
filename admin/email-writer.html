@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Email Writer · Star Jesse Taylor</title>
+  <style>
+    :root {
+      --cobalt: #1B6CA8;
+      --cobalt-dark: #155a8a;
+      --turquoise: #00B4D8;
+      --charcoal: #2C2C2C;
+      --off-white: #F8F9FB;
+      --light-gray: #eef1f5;
+      --mid-gray: #6b7280;
+      --green: #16a34a;
+      --red: #dc2626;
+      --amber: #d97706;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: var(--off-white);
+      color: var(--charcoal);
+      padding: 16px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 1.6rem;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+    }
+    .subtitle { color: var(--mid-gray); font-size: 0.9rem; margin-bottom: 24px; }
+    .auth-prompt {
+      background: white; border-radius: 12px; padding: 32px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06); max-width: 480px; margin: 60px auto;
+      text-align: center;
+    }
+    .auth-prompt input {
+      width: 100%; padding: 14px; border: 2px solid var(--light-gray); border-radius: 8px;
+      font-size: 1rem; margin: 12px 0; font-family: monospace;
+    }
+    .auth-prompt button {
+      background: var(--cobalt); color: white; border: none; padding: 14px 32px;
+      border-radius: 50px; font-size: 1rem; font-weight: 700; cursor: pointer;
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 20px;
+    }
+    .panel {
+      background: white;
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    }
+    .panel h2 {
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--cobalt);
+      margin-bottom: 14px;
+    }
+    .tag-search {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1.5px solid var(--light-gray);
+      border-radius: 8px;
+      font-size: 0.88rem;
+      margin-bottom: 12px;
+    }
+    .tag-list {
+      max-height: 480px;
+      overflow-y: auto;
+      border-top: 1px solid var(--light-gray);
+      margin-top: 4px;
+    }
+    .tag-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 9px 4px;
+      cursor: pointer;
+      border-bottom: 1px solid var(--light-gray);
+      user-select: none;
+    }
+    .tag-row:hover { background: var(--off-white); }
+    .tag-row.selected {
+      background: rgba(27, 108, 168, 0.08);
+    }
+    .tag-row .tag-checkbox {
+      width: 18px; height: 18px;
+      border: 2px solid var(--light-gray);
+      border-radius: 4px;
+      margin-right: 10px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .tag-row.selected .tag-checkbox {
+      background: var(--cobalt);
+      border-color: var(--cobalt);
+      color: white;
+      font-size: 12px;
+      font-weight: 900;
+    }
+    .tag-row .tag-name {
+      font-size: 0.84rem;
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      margin-right: 8px;
+    }
+    .tag-row .tag-count {
+      font-size: 0.74rem;
+      color: var(--mid-gray);
+      font-weight: 700;
+      font-family: ui-monospace, monospace;
+    }
+    .audience-summary {
+      background: var(--off-white);
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-top: 14px;
+      font-size: 0.84rem;
+    }
+    .audience-summary strong {
+      color: var(--cobalt);
+      font-weight: 900;
+    }
+    .editor {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .subject-input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1.5px solid var(--light-gray);
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+    .raw-textarea {
+      width: 100%;
+      min-height: 240px;
+      padding: 16px;
+      border: 1.5px solid var(--light-gray);
+      border-radius: 10px;
+      font-size: 0.95rem;
+      line-height: 1.55;
+      font-family: inherit;
+      resize: vertical;
+    }
+    .raw-textarea:focus, .subject-input:focus {
+      outline: none;
+      border-color: var(--cobalt);
+    }
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .btn {
+      padding: 12px 22px;
+      border: 0;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn:hover:not(:disabled) { opacity: 0.88; }
+    .btn-primary { background: var(--cobalt); color: white; }
+    .btn-secondary { background: var(--light-gray); color: var(--charcoal); }
+    .btn-success { background: var(--green); color: white; }
+    .btn-amber { background: var(--amber); color: white; }
+    .preview {
+      background: var(--off-white);
+      border-radius: 10px;
+      padding: 20px;
+      border: 1px solid var(--light-gray);
+    }
+    .preview-label {
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      color: var(--mid-gray);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .preview-subject {
+      font-size: 1.05rem;
+      font-weight: 800;
+      margin-bottom: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--light-gray);
+    }
+    .preview-body {
+      white-space: pre-wrap;
+      font-size: 0.95rem;
+      line-height: 1.65;
+      color: var(--charcoal);
+      max-height: 600px;
+      overflow-y: auto;
+    }
+    .preview-body[contenteditable="true"] {
+      outline: none;
+      cursor: text;
+    }
+    .preview-body[contenteditable="true"]:focus {
+      border: 2px solid var(--cobalt);
+      border-radius: 6px;
+      padding: 8px;
+    }
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--charcoal);
+      color: white;
+      padding: 14px 24px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      opacity: 0;
+      transition: opacity 0.2s;
+      pointer-events: none;
+      z-index: 100;
+    }
+    .toast.show { opacity: 1; }
+    .toast.success { background: var(--green); }
+    .toast.error { background: var(--red); }
+    .spinner {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-right: 8px;
+      vertical-align: -2px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .help-text {
+      font-size: 0.78rem;
+      color: var(--mid-gray);
+      font-style: italic;
+      margin-top: 4px;
+    }
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="authView" class="auth-prompt" style="display:none">
+  <h1>Email Writer</h1>
+  <p style="color:var(--mid-gray);margin:8px 0;font-size:0.9rem;">Enter admin key</p>
+  <input id="keyInput" type="password" placeholder="CRON_SECRET" onkeypress="if(event.key==='Enter')login()" />
+  <p id="authError" style="color:var(--red);font-size:0.85rem;display:none;margin-bottom:8px;">Invalid key.</p>
+  <button onclick="login()">Unlock</button>
+</div>
+
+<div id="mainView" style="display:none">
+  <h1>Email Writer</h1>
+  <p class="subtitle">Dictate. Polish. Send. To anyone tagged in ActiveCampaign.</p>
+
+  <div class="layout">
+    <!-- LEFT: Audience picker -->
+    <div class="panel">
+      <h2>Audience</h2>
+      <input class="tag-search" id="tagSearch" placeholder="Search tags..." />
+      <div class="tag-list" id="tagList">
+        <p style="text-align:center;padding:24px;color:var(--mid-gray);font-size:0.84rem;">Loading tags...</p>
+      </div>
+      <div class="audience-summary" id="audienceSummary">
+        Select tags to see audience size.
+      </div>
+    </div>
+
+    <!-- RIGHT: Editor -->
+    <div class="panel">
+      <h2>Write</h2>
+      <div class="editor">
+        <input type="text" class="subject-input" id="subjectInput" placeholder="Subject line (Claude will suggest one when you polish)" />
+
+        <textarea id="rawInput" class="raw-textarea" placeholder="Dictate or type your raw thoughts. Run-on, no breaks, voice-to-text errors all fine. Claude will polish it in your voice with all the rules baked in (no dashes, no salesy, Tuesday moments, life-on-the-other-side framing)."></textarea>
+        <p class="help-text">Tip: just dump everything you want to say. Claude handles structure, voice, and rules.</p>
+
+        <div class="btn-row">
+          <button class="btn btn-primary" id="polishBtn" onclick="polish()">Polish in my voice</button>
+          <button class="btn btn-secondary" onclick="clearAll()">Clear</button>
+        </div>
+
+        <div class="preview" id="previewBlock" style="display:none">
+          <div class="preview-label">Polished email (click to edit)</div>
+          <div class="preview-subject" id="previewSubject" contenteditable="true"></div>
+          <div class="preview-body" id="previewBody" contenteditable="true"></div>
+        </div>
+
+        <div class="btn-row" id="sendBtnRow" style="display:none">
+          <button class="btn btn-amber" id="testSendBtn" onclick="testSend()">Test send to my inbox</button>
+          <button class="btn btn-success" id="sendBtn" onclick="sendNow()">Send to selected audience</button>
+          <button class="btn btn-secondary" id="draftBtn" onclick="saveDraft()">Save as draft in AC</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const STORAGE_KEY = 'email_writer_key';
+let allTags = [];
+let selectedTagIds = new Set();
+let polished = false;
+
+window.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+  const urlKey = params.get('key');
+  if (urlKey) {
+    sessionStorage.setItem(STORAGE_KEY, urlKey);
+    window.history.replaceState({}, '', window.location.pathname);
+  }
+  const stored = sessionStorage.getItem(STORAGE_KEY);
+  if (stored) {
+    showView('mainView');
+    loadTags();
+  } else {
+    showView('authView');
+  }
+
+  document.getElementById('tagSearch').addEventListener('input', renderTagList);
+});
+
+function showView(view) {
+  ['authView', 'mainView'].forEach(v => {
+    document.getElementById(v).style.display = 'none';
+  });
+  document.getElementById(view).style.display = 'block';
+}
+
+function login() {
+  const key = document.getElementById('keyInput').value.trim();
+  if (!key) return;
+  sessionStorage.setItem(STORAGE_KEY, key);
+  showView('mainView');
+  loadTags();
+}
+
+async function loadTags() {
+  const key = sessionStorage.getItem(STORAGE_KEY);
+  try {
+    const res = await fetch(`/api/email-writer/tags?key=${encodeURIComponent(key)}`);
+    if (res.status === 401) {
+      sessionStorage.removeItem(STORAGE_KEY);
+      showView('authView');
+      document.getElementById('authError').style.display = 'block';
+      return;
+    }
+    const data = await res.json();
+    allTags = data.tags || [];
+    renderTagList();
+  } catch (err) {
+    toast('Failed to load tags', 'error');
+  }
+}
+
+function renderTagList() {
+  const search = document.getElementById('tagSearch').value.toLowerCase();
+  const filtered = allTags.filter(t => t.name.toLowerCase().includes(search));
+  const list = document.getElementById('tagList');
+  if (filtered.length === 0) {
+    list.innerHTML = '<p style="text-align:center;padding:24px;color:var(--mid-gray);font-size:0.84rem;">No tags match.</p>';
+    return;
+  }
+  list.innerHTML = filtered.map(t => {
+    const selected = selectedTagIds.has(t.id);
+    return `
+      <div class="tag-row ${selected ? 'selected' : ''}" onclick="toggleTag('${t.id}')">
+        <div style="display:flex;align-items:center;flex:1;min-width:0;">
+          <div class="tag-checkbox">${selected ? '✓' : ''}</div>
+          <span class="tag-name" title="${escapeHtml(t.name)}">${escapeHtml(t.name)}</span>
+        </div>
+        <span class="tag-count">${t.count}</span>
+      </div>
+    `;
+  }).join('');
+}
+
+function toggleTag(id) {
+  if (selectedTagIds.has(id)) selectedTagIds.delete(id);
+  else selectedTagIds.add(id);
+  renderTagList();
+  updateAudienceSummary();
+}
+
+function updateAudienceSummary() {
+  const summary = document.getElementById('audienceSummary');
+  if (selectedTagIds.size === 0) {
+    summary.textContent = 'Select tags to see audience size.';
+    return;
+  }
+  const selectedTags = allTags.filter(t => selectedTagIds.has(t.id));
+  const approxCount = selectedTags.reduce((max, t) => Math.max(max, t.count), 0);
+  const names = selectedTags.map(t => t.name).join(', ');
+  summary.innerHTML = `<strong>${approxCount}</strong> contacts (anyone tagged with one of these). <br/><span style="color:var(--mid-gray);font-size:0.78rem;">Selected: ${escapeHtml(names)}</span>`;
+}
+
+function escapeHtml(s) {
+  if (s == null) return '';
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+async function polish() {
+  const raw = document.getElementById('rawInput').value.trim();
+  if (!raw) {
+    toast('Type or paste something first', 'error');
+    return;
+  }
+  const key = sessionStorage.getItem(STORAGE_KEY);
+  const btn = document.getElementById('polishBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>Polishing in your voice...';
+
+  try {
+    const res = await fetch(`/api/email-writer/polish?key=${encodeURIComponent(key)}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        raw,
+        currentSubject: document.getElementById('subjectInput').value.trim() || undefined,
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      toast('Polish failed: ' + (data.error || 'unknown'), 'error');
+      return;
+    }
+    document.getElementById('previewSubject').textContent = data.subject;
+    document.getElementById('previewBody').textContent = data.body;
+    document.getElementById('previewBlock').style.display = 'block';
+    document.getElementById('sendBtnRow').style.display = 'flex';
+    if (!document.getElementById('subjectInput').value.trim()) {
+      document.getElementById('subjectInput').value = data.subject;
+    }
+    polished = true;
+    toast('Polished. Edit the preview if you want.', 'success');
+  } catch (err) {
+    toast('Polish error: ' + err.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = 'Polish in my voice';
+  }
+}
+
+function getCurrentEmail() {
+  return {
+    subject: document.getElementById('previewSubject').textContent.trim() || document.getElementById('subjectInput').value.trim(),
+    body: document.getElementById('previewBody').textContent.trim() || document.getElementById('rawInput').value.trim(),
+  };
+}
+
+async function testSend() {
+  if (!polished) {
+    toast('Polish first, then test send', 'error');
+    return;
+  }
+  const { subject, body } = getCurrentEmail();
+  if (!subject || !body) {
+    toast('Subject and body required', 'error');
+    return;
+  }
+  const key = sessionStorage.getItem(STORAGE_KEY);
+  const btn = document.getElementById('testSendBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>Sending...';
+  try {
+    const res = await fetch(`/api/email-writer/test-send?key=${encodeURIComponent(key)}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ subject, body }),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      toast('Test send failed: ' + (data.error || 'unknown'), 'error');
+      return;
+    }
+    toast('Test email sent to your inbox.', 'success');
+  } catch (err) {
+    toast('Test send error: ' + err.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = 'Test send to my inbox';
+  }
+}
+
+async function sendNow() {
+  if (selectedTagIds.size === 0) {
+    toast('Select at least one audience tag', 'error');
+    return;
+  }
+  const { subject, body } = getCurrentEmail();
+  if (!subject || !body) {
+    toast('Subject and body required', 'error');
+    return;
+  }
+  const approxCount = allTags.filter(t => selectedTagIds.has(t.id)).reduce((max, t) => Math.max(max, t.count), 0);
+  if (!confirm(`Send to approximately ${approxCount} contacts via ActiveCampaign? This cannot be undone.`)) return;
+
+  const key = sessionStorage.getItem(STORAGE_KEY);
+  const btn = document.getElementById('sendBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>Sending...';
+  try {
+    const res = await fetch(`/api/email-writer/send?key=${encodeURIComponent(key)}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        subject, body,
+        tagIds: Array.from(selectedTagIds),
+        mode: 'send-now',
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      toast('Send failed: ' + (data.error || 'unknown'), 'error');
+      return;
+    }
+    toast(data.message || 'Sent.', 'success');
+  } catch (err) {
+    toast('Send error: ' + err.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = 'Send to selected audience';
+  }
+}
+
+async function saveDraft() {
+  if (selectedTagIds.size === 0) {
+    toast('Select at least one audience tag', 'error');
+    return;
+  }
+  const { subject, body } = getCurrentEmail();
+  if (!subject || !body) return;
+
+  const key = sessionStorage.getItem(STORAGE_KEY);
+  const btn = document.getElementById('draftBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>Saving draft...';
+  try {
+    const res = await fetch(`/api/email-writer/send?key=${encodeURIComponent(key)}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        subject, body,
+        tagIds: Array.from(selectedTagIds),
+        mode: 'draft',
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      toast('Draft save failed: ' + (data.error || 'unknown'), 'error');
+      return;
+    }
+    toast('Draft saved in ActiveCampaign.', 'success');
+    if (data.acEditUrl) {
+      setTimeout(() => { if (confirm('Open the draft in ActiveCampaign?')) window.open(data.acEditUrl, '_blank'); }, 800);
+    }
+  } catch (err) {
+    toast('Draft error: ' + err.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = 'Save as draft in AC';
+  }
+}
+
+function clearAll() {
+  if (!confirm('Clear everything?')) return;
+  document.getElementById('rawInput').value = '';
+  document.getElementById('subjectInput').value = '';
+  document.getElementById('previewSubject').textContent = '';
+  document.getElementById('previewBody').textContent = '';
+  document.getElementById('previewBlock').style.display = 'none';
+  document.getElementById('sendBtnRow').style.display = 'none';
+  polished = false;
+}
+
+function toast(msg, type = '') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + type;
+  setTimeout(() => t.classList.remove('show'), 2400);
+}
+</script>
+
+</body>
+</html>
