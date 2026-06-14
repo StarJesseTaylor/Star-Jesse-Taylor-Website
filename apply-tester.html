@@ -156,8 +156,8 @@
     <div class="apply-intro">
       <h3>What I'm looking for in a tester</h3>
       <ul>
-        <li>You actually have the problem (anxiety, OCD, intrusive thoughts, overthinking, depression, procrastination, stuck).</li>
-        <li>You'll use the app for at least 14 days.</li>
+        <li>You have something you're working on. Mental health (anxiety, panic, OCD, intrusive thoughts, depression, ADHD, trauma, burnout) or a life you want to grow into (build habits, achieve a goal, feel more alive, more direction).</li>
+        <li>You'll use the app <strong>every day for 14 days</strong>. Daily use is the whole point.</li>
         <li>You'll give honest written feedback when something is confusing or broken.</li>
         <li>You own an iPhone (Android testers go on the waitlist).</li>
       </ul>
@@ -173,20 +173,41 @@
       <!-- Honeypot -->
       <input type="text" name="website_url" class="hp" tabindex="-1" autocomplete="off" />
 
-      <!-- STEP 1: Symptoms -->
+      <!-- STEP 1: Symptoms + Growth Goals -->
       <div class="apply-card active" data-step="1">
-        <h2>What are you dealing with right now?</h2>
-        <p class="qhint">Pick all that apply.</p>
-        <div class="opt-grid" id="symptomsGrid">
-          <label class="opt"><input type="checkbox" name="symptoms" value="anxiety" /> Anxiety, panic</label>
+        <h2>What's bringing you here?</h2>
+        <p class="qhint">Pick all that apply. Mix and match.</p>
+
+        <p style="font-size: 0.78rem; font-weight: 800; letter-spacing: 1.5px; color: var(--cobalt); margin: 4px 0 10px; text-transform: uppercase;">What you're dealing with</p>
+        <div class="opt-grid compact" id="symptomsGrid">
+          <label class="opt"><input type="checkbox" name="symptoms" value="anxiety" /> Anxiety</label>
+          <label class="opt"><input type="checkbox" name="symptoms" value="panic_attacks" /> Panic attacks</label>
           <label class="opt"><input type="checkbox" name="symptoms" value="intrusive_thoughts" /> Intrusive thoughts, OCD</label>
-          <label class="opt"><input type="checkbox" name="symptoms" value="overthinking" /> Overthinking, can't get out of my head</label>
+          <label class="opt"><input type="checkbox" name="symptoms" value="overthinking" /> Overthinking, racing mind</label>
           <label class="opt"><input type="checkbox" name="symptoms" value="depression" /> Depression, low motivation</label>
+          <label class="opt"><input type="checkbox" name="symptoms" value="adhd" /> ADHD</label>
+          <label class="opt"><input type="checkbox" name="symptoms" value="trauma" /> Trauma</label>
           <label class="opt"><input type="checkbox" name="symptoms" value="procrastination" /> Procrastination</label>
           <label class="opt"><input type="checkbox" name="symptoms" value="self_worth" /> Self-worth, harsh inner critic</label>
+          <label class="opt"><input type="checkbox" name="symptoms" value="burnout" /> Burnout</label>
+          <label class="opt"><input type="checkbox" name="symptoms" value="sleep" /> Sleep issues, insomnia</label>
+          <label class="opt"><input type="checkbox" name="symptoms" value="anger" /> Anger, reactivity</label>
           <label class="opt"><input type="checkbox" name="symptoms" value="breakup" /> Going through a breakup or loss</label>
-          <label class="opt"><input type="checkbox" name="symptoms" value="stuck" /> General drift, stuckness</label>
+          <label class="opt"><input type="checkbox" name="symptoms" value="stuck" /> General drift, feeling stuck</label>
         </div>
+
+        <p style="font-size: 0.78rem; font-weight: 800; letter-spacing: 1.5px; color: var(--cobalt); margin: 22px 0 10px; text-transform: uppercase;">What you're working toward</p>
+        <div class="opt-grid compact" id="goalsGrid">
+          <label class="opt"><input type="checkbox" name="goals" value="habits" /> Building daily habits</label>
+          <label class="opt"><input type="checkbox" name="goals" value="direction" /> Living with more direction</label>
+          <label class="opt"><input type="checkbox" name="goals" value="specific_goal" /> Achieving a specific goal</label>
+          <label class="opt"><input type="checkbox" name="goals" value="aliveness" /> Feeling more alive</label>
+          <label class="opt"><input type="checkbox" name="goals" value="confidence" /> Building confidence</label>
+          <label class="opt"><input type="checkbox" name="goals" value="creative" /> Creative work consistency</label>
+          <label class="opt"><input type="checkbox" name="goals" value="career" /> Career or business growth</label>
+          <label class="opt"><input type="checkbox" name="goals" value="relationships" /> Better relationships</label>
+        </div>
+
         <div class="cta-row">
           <button type="button" class="apply-btn" data-next>Continue</button>
         </div>
@@ -277,11 +298,11 @@
           <label class="opt"><input type="checkbox" name="history" value="new" /> Brand new to Star</label>
         </div>
 
-        <h2 style="margin-top: 30px;">Will you commit to 14 days?</h2>
-        <p class="qhint">I want testers who will actually use the app and give feedback.</p>
+        <h2 style="margin-top: 30px;">Will you use the app EVERY DAY for 14 days?</h2>
+        <p class="qhint">Daily use is how I learn what's actually working. If you can't commit to daily, this isn't the right batch.</p>
         <div class="opt-grid compact" data-singleselect="commitment">
-          <label class="opt"><input type="radio" name="commitment" value="yes" /> Yes, absolutely</label>
-          <label class="opt"><input type="radio" name="commitment" value="maybe" /> Maybe, depends on what it's like</label>
+          <label class="opt"><input type="radio" name="commitment" value="yes" /> Yes, every day for 14 days minimum</label>
+          <label class="opt"><input type="radio" name="commitment" value="maybe" /> I'll try, depends on what it's like</label>
           <label class="opt"><input type="radio" name="commitment" value="just_try" /> I just want to try it</label>
         </div>
 
@@ -413,9 +434,10 @@
   // Next button: basic per-step validation
   function validateStep(n) {
     if (n === 1) {
-      var checked = document.querySelectorAll('input[name="symptoms"]:checked');
-      if (checked.length === 0) {
-        alert('Pick at least one. If nothing fits, choose stuckness.');
+      var symptomsChecked = document.querySelectorAll('input[name="symptoms"]:checked');
+      var goalsChecked = document.querySelectorAll('input[name="goals"]:checked');
+      if (symptomsChecked.length === 0 && goalsChecked.length === 0) {
+        alert('Pick at least one. Something you are dealing with, or something you are working toward, or both.');
         return false;
       }
     }
@@ -490,9 +512,9 @@
     if (sm.length >= 120) score += 3;
     else if (sm.length >= 60) score += 1;
 
-    if (data.commitment === 'yes') score += 3;
+    if (data.commitment === 'yes') score += 4;
     else if (data.commitment === 'maybe') score += 0;
-    else if (data.commitment === 'just_try') score -= 2;
+    else if (data.commitment === 'just_try') score -= 3;
 
     if (data.device === 'iphone') score += 1;
     else if (data.device === 'android' || data.device === 'other') score -= 5;
@@ -513,6 +535,7 @@
     if (!firstName || !email) { alert('First name and email are required.'); return; }
 
     var symptoms = Array.from(document.querySelectorAll('input[name="symptoms"]:checked')).map(function(i){return i.value;});
+    var goals = Array.from(document.querySelectorAll('input[name="goals"]:checked')).map(function(i){return i.value;});
     var tried = Array.from(document.querySelectorAll('input[name="tried"]:checked')).map(function(i){return i.value;});
     var history = Array.from(document.querySelectorAll('input[name="history"]:checked')).map(function(i){return i.value;});
     var feedback = Array.from(document.querySelectorAll('input[name="feedback"]:checked')).map(function(i){return i.value;});
@@ -524,6 +547,7 @@
       appleEmail: (sameEmail && sameEmail.checked) ? email : document.getElementById('appleEmail').value.trim(),
       sameEmail: !!(sameEmail && sameEmail.checked),
       symptoms: symptoms.join('|'),
+      goals: goals.join('|'),
       duration: (document.querySelector('input[name="duration"]:checked') || {}).value || '',
       severity: (document.querySelector('input[name="severity"]:checked') || {}).value || '',
       tried: tried.join('|'),

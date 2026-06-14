@@ -77,8 +77,8 @@ function scoreServer(d) {
   if (sm.length >= 120) score += 3;
   else if (sm.length >= 60) score += 1;
 
-  if (d.commitment === 'yes') score += 3;
-  else if (d.commitment === 'just_try') score -= 2;
+  if (d.commitment === 'yes') score += 4;
+  else if (d.commitment === 'just_try') score -= 3;
 
   if (d.device === 'iphone') score += 1;
   else if (d.device === 'android' || d.device === 'other') score -= 5;
@@ -102,6 +102,7 @@ async function sendStarNotification(applicant, scored) {
     `2FA: ${applicant.twofa || ''}`,
     '',
     `Symptoms: ${(applicant.symptoms || '').split('|').filter(Boolean).join(', ')}`,
+    `Working toward: ${(applicant.goals || '').split('|').filter(Boolean).join(', ')}`,
     `Duration: ${applicant.duration || ''}`,
     `Severity (1-10): ${applicant.severity || ''}`,
     `Tried: ${(applicant.tried || '').split('|').filter(Boolean).join(', ')}`,
@@ -291,6 +292,7 @@ export default async function handler(req, res) {
     const tags = ['path:audacity-tester-apply', `tester-tier-${scored.tier}`];
 
     (data.symptoms || '').split('|').filter(Boolean).forEach(s => tags.push(`tester-symptom-${s}`));
+    (data.goals || '').split('|').filter(Boolean).forEach(g => tags.push(`tester-goal-${g}`));
     (data.history || '').split('|').filter(Boolean).forEach(h => tags.push(`tester-history-${h}`));
     if (data.commitment) tags.push(`tester-commitment-${data.commitment}`);
     if (data.device === 'iphone') tags.push('tester-device-iphone');
