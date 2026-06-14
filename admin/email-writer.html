@@ -400,6 +400,7 @@
 
   <div class="tab-row">
     <button class="tab active" data-tab="write" onclick="switchTab('write')">Write</button>
+    <button class="tab" data-tab="templates" onclick="switchTab('templates')">Templates</button>
     <button class="tab" data-tab="history" onclick="switchTab('history')">History</button>
   </div>
 
@@ -447,12 +448,35 @@
             <div class="preview-body" id="previewBody" contenteditable="true"></div>
           </div>
 
+          <div class="btn-row" id="reviseRow" style="display:none">
+            <input type="text" id="reviseInstructions" placeholder="Tweak it: e.g. 'shorter hook, drop the workshop mention'" style="flex:1;min-width:240px;padding:10px 14px;border:1.5px solid var(--light-gray);border-radius:50px;font-size:0.85rem;" />
+            <button class="btn btn-primary" id="reviseBtn" onclick="revise()">Revise</button>
+          </div>
+
           <div class="btn-row" id="sendBtnRow" style="display:none">
             <button class="btn btn-amber" id="testSendBtn" onclick="testSend()">Test send to my inbox</button>
             <button class="btn btn-success" id="sendBtn" onclick="sendNow()">Send to selected audience</button>
             <button class="btn btn-secondary" id="draftBtn" onclick="saveDraft()">Save as draft in AC</button>
+            <button class="btn btn-secondary" id="saveTemplateBtn" onclick="saveAsTemplate()">Save as template</button>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEMPLATES TAB -->
+  <div id="templatesTab" style="display:none">
+    <div class="panel">
+      <h2>
+        Saved templates
+        <span style="float:right;font-size:0.74rem;font-weight:600;color:var(--mid-gray);text-transform:none;letter-spacing:0;">
+          Reusable email skeletons for sequences and recurring sends
+        </span>
+      </h2>
+      <div id="templatesList">
+        <p style="text-align:center;padding:24px;color:var(--mid-gray);font-size:0.84rem;font-style:italic;">
+          No templates yet. Write an email, polish it, then click 'Save as template' to keep it for next time.
+        </p>
       </div>
     </div>
   </div>
@@ -473,6 +497,7 @@
 <script>
 const STORAGE_KEY = 'email_writer_key';
 const DRAFT_STORAGE_KEY = 'email_writer_draft';
+const TEMPLATES_STORAGE_KEY = 'email_writer_templates';
 let allTags = [];
 let selectedTagIds = new Set();
 let polished = false;
@@ -624,8 +649,10 @@ function switchTab(tab) {
     t.classList.toggle('active', t.dataset.tab === tab);
   });
   document.getElementById('writeTab').style.display = tab === 'write' ? 'block' : 'none';
+  document.getElementById('templatesTab').style.display = tab === 'templates' ? 'block' : 'none';
   document.getElementById('historyTab').style.display = tab === 'history' ? 'block' : 'none';
   if (tab === 'history') loadHistory();
+  if (tab === 'templates') renderTemplates();
 }
 
 function showView(view) {
@@ -738,11 +765,12 @@ async function polish() {
     document.getElementById('previewBody').textContent = data.body;
     document.getElementById('previewBlock').style.display = 'block';
     document.getElementById('sendBtnRow').style.display = 'flex';
+    document.getElementById('reviseRow').style.display = 'flex';
     if (!document.getElementById('subjectInput').value.trim()) {
       document.getElementById('subjectInput').value = data.subject;
     }
     polished = true;
-    toast('Polished. Edit the preview if you want.', 'success');
+    toast('Polished. Edit the preview, revise with instructions, or send.', 'success');
   } catch (err) {
     toast('Polish error: ' + err.message, 'error');
   } finally {
@@ -934,6 +962,127 @@ function cloneCampaign(subject) {
   document.getElementById('subjectInput').value = subject;
   switchTab('write');
   toast('Subject loaded. Type or dictate the new body.', 'success');
+}
+
+async function revise() {
+  const instructions = document.getElementById('reviseInstructions').value.trim();
+  if (!instructions) {
+    toast('Type the change you want', 'error');
+    return;
+  }
+  const { subject, body } = getCurrentEmail();
+  const key = sessionStorage.getItem(STORAGE_KEY);
+  const btn = document.getElementById('reviseBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>Revising...';
+  try {
+    // Send the current polished version back through polish as raw with intent=revision
+    const revisedRaw = `CURRENT VERSION:\n\nSubject: ${subject}\n\n${body}\n\n---\n\nREVISE this email per the instructions, keeping the parts that work.`;
+    const res = await fetch(`/api/email-writer/polish?key=${encodeURIComponent(key)}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        raw: revisedRaw,
+        intent: instructions,
+        currentSubject: subject,
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      toast('Revise failed: ' + (data.error || 'unknown'), 'error');
+      return;
+    }
+    document.getElementById('previewSubject').textContent = data.subject;
+    document.getElementById('previewBody').textContent = data.body;
+    document.getElementById('reviseInstructions').value = '';
+    toast('Revised. Edit further if needed.', 'success');
+  } catch (err) {
+    toast('Revise error: ' + err.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = 'Revise';
+  }
+}
+
+function loadTemplates() {
+  try {
+    const raw = localStorage.getItem(TEMPLATES_STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch { return []; }
+}
+
+function saveTemplates(templates) {
+  localStorage.setItem(TEMPLATES_STORAGE_KEY, JSON.stringify(templates));
+}
+
+function saveAsTemplate() {
+  if (!polished) {
+    toast('Polish first, then save', 'error');
+    return;
+  }
+  const { subject, body } = getCurrentEmail();
+  if (!subject || !body) {
+    toast('Need subject + body', 'error');
+    return;
+  }
+  const name = prompt('Name this template (e.g. "Weekly value email," "Workshop pre-sell"):', subject.slice(0, 40));
+  if (!name) return;
+  const templates = loadTemplates();
+  templates.unshift({
+    id: 'tpl_' + Date.now(),
+    name: name.trim(),
+    subject,
+    body,
+    savedAt: new Date().toISOString(),
+  });
+  saveTemplates(templates);
+  toast('Saved as template.', 'success');
+}
+
+function renderTemplates() {
+  const list = document.getElementById('templatesList');
+  const templates = loadTemplates();
+  if (templates.length === 0) {
+    list.innerHTML = `
+      <p style="text-align:center;padding:24px;color:var(--mid-gray);font-size:0.84rem;font-style:italic;">
+        No templates yet. Write an email, polish it, then click 'Save as template' to keep it for next time.
+      </p>`;
+    return;
+  }
+  list.innerHTML = templates.map((t) => `
+    <div class="history-row" style="grid-template-columns:1fr 140px 90px 90px;">
+      <div>
+        <div class="history-subject">${escapeHtml(t.name)}</div>
+        <div class="history-meta">${escapeHtml(t.subject)} · saved ${timeAgo(t.savedAt)}</div>
+      </div>
+      <div></div>
+      <button class="history-clone-btn" onclick="loadTemplate('${t.id}')">Load</button>
+      <button class="history-clone-btn" style="background:#fee;color:var(--red);" onclick="deleteTemplate('${t.id}')">Delete</button>
+    </div>
+  `).join('');
+}
+
+function loadTemplate(id) {
+  const templates = loadTemplates();
+  const tpl = templates.find((t) => t.id === id);
+  if (!tpl) return;
+  document.getElementById('subjectInput').value = tpl.subject;
+  document.getElementById('previewSubject').textContent = tpl.subject;
+  document.getElementById('previewBody').textContent = tpl.body;
+  document.getElementById('previewBlock').style.display = 'block';
+  document.getElementById('sendBtnRow').style.display = 'flex';
+  document.getElementById('reviseRow').style.display = 'flex';
+  polished = true;
+  switchTab('write');
+  toast('Template loaded. Edit if you want, then send.', 'success');
+}
+
+function deleteTemplate(id) {
+  if (!confirm('Delete this template?')) return;
+  const templates = loadTemplates().filter((t) => t.id !== id);
+  saveTemplates(templates);
+  renderTemplates();
+  toast('Template deleted.', 'success');
 }
 
 function timeAgo(iso) {
