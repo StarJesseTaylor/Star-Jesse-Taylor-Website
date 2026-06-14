@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Apply to Test Audacity | Star Jesse Taylor</title>
+  <meta name="description" content="Apply to be one of the first to test Audacity, the daily practice of Emotional Fitness. 14 day commitment, honest feedback." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-T0T1Z0VBT8"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-T0T1Z0VBT8');
+  </script>
+  <script src="js/tracking.js" async></script>
+  <script src="js/announcement-bar.js" defer></script>
+  <style>
+    .apply-wrap {
+      min-height: 100vh;
+      padding-top: calc(var(--nav-height) + 60px);
+      padding-bottom: 80px;
+      background: var(--off-white);
+    }
+    .apply-container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+    .apply-header { text-align: center; margin-bottom: 36px; }
+    .apply-header h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: 12px; line-height: 1.15; }
+    .apply-header p { color: var(--mid-gray); font-size: 1.05rem; line-height: 1.65; }
+    .apply-intro {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 26px 28px;
+      margin-bottom: 36px;
+      border: 1px solid var(--light-gray);
+    }
+    .apply-intro h3 { margin: 0 0 10px; font-size: 1.05rem; }
+    .apply-intro ul { margin: 0; padding: 0 0 0 18px; color: var(--mid-gray); font-size: 0.96rem; line-height: 1.7; }
+    .apply-intro li { margin-bottom: 4px; }
+    .apply-progress { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; }
+    .apply-progress-bar { flex: 1; height: 6px; background: var(--light-gray); border-radius: 10px; overflow: hidden; }
+    .apply-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--cobalt), var(--turquoise));
+      border-radius: 10px;
+      transition: width 0.5s ease;
+      width: 10%;
+    }
+    .apply-progress-label { font-size: 0.8rem; font-weight: 700; color: var(--mid-gray); white-space: nowrap; }
+    .apply-card {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 40px 36px;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.08);
+      display: none;
+    }
+    .apply-card.active { display: block; }
+    .apply-card h2 { font-size: 1.35rem; margin-bottom: 8px; line-height: 1.3; }
+    .apply-card .qhint { color: var(--mid-gray); font-size: 0.95rem; margin-bottom: 22px; line-height: 1.6; }
+    .apply-input, .apply-textarea, .apply-select {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid var(--light-gray);
+      border-radius: 10px;
+      font-size: 1rem;
+      font-family: inherit;
+      color: var(--charcoal);
+      outline: none;
+      background: var(--white);
+    }
+    .apply-textarea { min-height: 110px; resize: vertical; line-height: 1.5; }
+    .apply-input:focus, .apply-textarea:focus, .apply-select:focus { border-color: var(--cobalt); }
+    .opt-grid { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
+    .opt {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      border: 2px solid var(--light-gray);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: border-color 0.15s ease, background 0.15s ease;
+      background: var(--white);
+      font-size: 0.98rem;
+      color: var(--charcoal);
+    }
+    .opt:hover { border-color: var(--cobalt); }
+    .opt.selected { border-color: var(--cobalt); background: rgba(27,108,168,0.06); }
+    .opt input { accent-color: var(--cobalt); flex-shrink: 0; }
+    .opt-grid.compact .opt { padding: 10px 14px; font-size: 0.94rem; }
+    .opt-row { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
+    .opt-row .opt { flex: 1 1 calc(50% - 5px); justify-content: center; min-width: 130px; }
+    .severity-scale { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; }
+    .severity-scale .opt { flex: 1 1 calc(20% - 6px); justify-content: center; padding: 12px 8px; font-size: 1rem; min-width: 50px; }
+    .form-stack { display: flex; flex-direction: column; gap: 14px; margin-bottom: 18px; }
+    .form-stack label { font-size: 0.88rem; font-weight: 600; color: var(--charcoal); display: block; margin-bottom: 6px; }
+    .same-row { display: flex; align-items: center; gap: 8px; margin: 4px 0; font-size: 0.9rem; color: var(--mid-gray); cursor: pointer; }
+    .cta-row { display: flex; gap: 14px; align-items: center; margin-top: 24px; flex-wrap: wrap; }
+    .apply-btn {
+      background: linear-gradient(90deg, var(--cobalt), var(--turquoise));
+      color: #fff;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 50px;
+      font-weight: 800;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 6px 18px rgba(27,108,168,0.18);
+    }
+    .apply-btn:hover { transform: translateY(-1px); box-shadow: 0 10px 26px rgba(27,108,168,0.22); }
+    .apply-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+    .apply-back-link { background: none; border: none; padding: 8px 0; cursor: pointer; color: var(--mid-gray); font-size: 0.9rem; font-weight: 600; text-decoration: underline; }
+    .help-text { font-size: 0.85rem; color: var(--mid-gray); margin-top: 6px; line-height: 1.55; font-style: italic; }
+    .final-success {
+      text-align: center;
+      padding: 48px 28px;
+      background: var(--white);
+      border-radius: 20px;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.08);
+    }
+    .final-success h2 { font-size: 1.6rem; margin-bottom: 14px; }
+    .final-success p { color: var(--mid-gray); font-size: 1.02rem; line-height: 1.7; max-width: 480px; margin: 0 auto 16px; }
+    .final-success .tier-badge {
+      display: inline-block;
+      background: linear-gradient(90deg, var(--cobalt), var(--turquoise));
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 0.82rem;
+      margin: 12px 0 8px;
+      letter-spacing: 0.5px;
+    }
+    /* honeypot */
+    .hp { position: absolute; left: -9999px; opacity: 0; pointer-events: none; }
+  </style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container nav-container">
+    <a href="index.html" class="site-logo">Star Jesse Taylor</a>
+  </div>
+</header>
+
+<div class="apply-wrap">
+  <div class="apply-container">
+
+    <div class="apply-header">
+      <h1>Apply to test Audacity.</h1>
+      <p>I'm picking a small group to try Audacity before public launch. Honest feedback only.</p>
+    </div>
+
+    <div class="apply-intro">
+      <h3>What I'm looking for in a tester</h3>
+      <ul>
+        <li>You actually have the problem (anxiety, OCD, intrusive thoughts, overthinking, depression, procrastination, stuck).</li>
+        <li>You'll use the app for at least 14 days.</li>
+        <li>You'll give honest written feedback when something is confusing or broken.</li>
+        <li>You own an iPhone (Android testers go on the waitlist).</li>
+      </ul>
+    </div>
+
+    <div class="apply-progress">
+      <div class="apply-progress-bar"><div class="apply-progress-fill" id="progFill"></div></div>
+      <div class="apply-progress-label" id="progLabel">Step 1 of 6</div>
+    </div>
+
+    <form id="applyForm" autocomplete="on" novalidate>
+
+      <!-- Honeypot -->
+      <input type="text" name="website_url" class="hp" tabindex="-1" autocomplete="off" />
+
+      <!-- STEP 1: Symptoms -->
+      <div class="apply-card active" data-step="1">
+        <h2>What are you dealing with right now?</h2>
+        <p class="qhint">Pick all that apply.</p>
+        <div class="opt-grid" id="symptomsGrid">
+          <label class="opt"><input type="checkbox" name="symptoms" value="anxiety" /> Anxiety, panic</label>
+          <label class="opt"><input type="checkbox" name="symptoms" value="intrusive_thoughts" /> Intrusive thoughts, OCD</label>
+          <label class="opt"><input type="checkbox" name="symptoms" value="overthinking" /> Overthinking, can't get out of my head</label>
+          <label class="opt"><input type="checkbox" name="symptoms" value="depression" /> Depression, low motivation</label>
+          <label class="opt"><input type="checkbox" name="symptoms" value="procrastination" /> Procrastination</label>
+          <label class="opt"><input type="checkbox" name="symptoms" value="self_worth" /> Self-worth, harsh inner critic</label>
+          <label class="opt"><input type="checkbox" name="symptoms" value="breakup" /> Going through a breakup or loss</label>
+          <label class="opt"><input type="checkbox" name="symptoms" value="stuck" /> General drift, stuckness</label>
+        </div>
+        <div class="cta-row">
+          <button type="button" class="apply-btn" data-next>Continue</button>
+        </div>
+      </div>
+
+      <!-- STEP 2: Duration + Severity + History -->
+      <div class="apply-card" data-step="2">
+        <h2>How deep is this for you?</h2>
+        <p class="qhint">A few quick questions about how long and how much.</p>
+
+        <label class="form-stack-label" style="font-size: 0.88rem; font-weight: 600; display: block; margin-bottom: 8px;">How long has this been going on?</label>
+        <div class="opt-grid compact" data-singleselect="duration">
+          <label class="opt"><input type="radio" name="duration" value="under_6m" /> Under 6 months</label>
+          <label class="opt"><input type="radio" name="duration" value="6m_2y" /> 6 months to 2 years</label>
+          <label class="opt"><input type="radio" name="duration" value="2y_5y" /> 2 to 5 years</label>
+          <label class="opt"><input type="radio" name="duration" value="5y_plus" /> 5 plus years</label>
+        </div>
+
+        <label class="form-stack-label" style="font-size: 0.88rem; font-weight: 600; display: block; margin: 24px 0 8px;">How much does this affect your daily life right now? (1 to 10)</label>
+        <div class="severity-scale" data-singleselect="severity">
+          <label class="opt"><input type="radio" name="severity" value="1" />1</label>
+          <label class="opt"><input type="radio" name="severity" value="2" />2</label>
+          <label class="opt"><input type="radio" name="severity" value="3" />3</label>
+          <label class="opt"><input type="radio" name="severity" value="4" />4</label>
+          <label class="opt"><input type="radio" name="severity" value="5" />5</label>
+          <label class="opt"><input type="radio" name="severity" value="6" />6</label>
+          <label class="opt"><input type="radio" name="severity" value="7" />7</label>
+          <label class="opt"><input type="radio" name="severity" value="8" />8</label>
+          <label class="opt"><input type="radio" name="severity" value="9" />9</label>
+          <label class="opt"><input type="radio" name="severity" value="10" />10</label>
+        </div>
+
+        <div class="cta-row">
+          <button type="button" class="apply-back-link" data-prev>Back</button>
+          <button type="button" class="apply-btn" data-next>Continue</button>
+        </div>
+      </div>
+
+      <!-- STEP 3: What have you tried + What worked -->
+      <div class="apply-card" data-step="3">
+        <h2>What have you tried so far?</h2>
+        <p class="qhint">Pick all that apply, then tell me what worked and what didn't.</p>
+        <div class="opt-grid compact" id="triedGrid">
+          <label class="opt"><input type="checkbox" name="tried" value="therapy" /> Therapy, counseling</label>
+          <label class="opt"><input type="checkbox" name="tried" value="books" /> Books, podcasts</label>
+          <label class="opt"><input type="checkbox" name="tried" value="apps" /> Apps like Calm or Headspace</label>
+          <label class="opt"><input type="checkbox" name="tried" value="coaching" /> Coaching</label>
+          <label class="opt"><input type="checkbox" name="tried" value="medication" /> Medication</label>
+          <label class="opt"><input type="checkbox" name="tried" value="toughed_it" /> Just toughed it out</label>
+          <label class="opt"><input type="checkbox" name="tried" value="nothing" /> Nothing yet</label>
+        </div>
+
+        <label style="font-size: 0.88rem; font-weight: 600; display: block; margin: 20px 0 8px;">What's worked best so far, and why?</label>
+        <textarea class="apply-textarea" name="worked" maxlength="500" placeholder="One or two sentences."></textarea>
+
+        <label style="font-size: 0.88rem; font-weight: 600; display: block; margin: 18px 0 8px;">What hasn't worked? Why?</label>
+        <textarea class="apply-textarea" name="not_worked" maxlength="500" placeholder="One or two sentences."></textarea>
+
+        <div class="cta-row">
+          <button type="button" class="apply-back-link" data-prev>Back</button>
+          <button type="button" class="apply-btn" data-next>Continue</button>
+        </div>
+      </div>
+
+      <!-- STEP 4: The specificity question (the gold filter) -->
+      <div class="apply-card" data-step="4">
+        <h2>Tell me about a specific recent moment.</h2>
+        <p class="qhint">When this hit you last week. What was happening, what was going through your head, what did you do? Two or three sentences.</p>
+        <textarea class="apply-textarea" name="specific_moment" maxlength="1000" style="min-height: 160px;" placeholder="E.g. 'Tuesday at 2pm I was about to send an email to a client and froze for 40 minutes...'"></textarea>
+        <p class="help-text">This question matters more than the others. The more specific, the better fit you are for the beta.</p>
+        <div class="cta-row">
+          <button type="button" class="apply-back-link" data-prev>Back</button>
+          <button type="button" class="apply-btn" data-next>Continue</button>
+        </div>
+      </div>
+
+      <!-- STEP 5: Your history with Star + commitment + feedback channels -->
+      <div class="apply-card" data-step="5">
+        <h2>Your history with Star.</h2>
+        <p class="qhint">Pick all that apply. Brand new is totally fine, I want a mix.</p>
+        <div class="opt-grid compact" id="historyGrid">
+          <label class="opt"><input type="checkbox" name="history" value="1on1" /> 1-on-1 coaching</label>
+          <label class="opt"><input type="checkbox" name="history" value="group" /> Group coaching cohort</label>
+          <label class="opt"><input type="checkbox" name="history" value="workshop" /> Live workshop or seminar</label>
+          <label class="opt"><input type="checkbox" name="history" value="course" /> Online course (Self Worth, etc.)</label>
+          <label class="opt"><input type="checkbox" name="history" value="book" /> Read the book</label>
+          <label class="opt"><input type="checkbox" name="history" value="social" /> Follow on Instagram, TikTok, or YouTube only</label>
+          <label class="opt"><input type="checkbox" name="history" value="new" /> Brand new to Star</label>
+        </div>
+
+        <h2 style="margin-top: 30px;">Will you commit to 14 days?</h2>
+        <p class="qhint">I want testers who will actually use the app and give feedback.</p>
+        <div class="opt-grid compact" data-singleselect="commitment">
+          <label class="opt"><input type="radio" name="commitment" value="yes" /> Yes, absolutely</label>
+          <label class="opt"><input type="radio" name="commitment" value="maybe" /> Maybe, depends on what it's like</label>
+          <label class="opt"><input type="radio" name="commitment" value="just_try" /> I just want to try it</label>
+        </div>
+
+        <label style="font-size: 0.88rem; font-weight: 600; display: block; margin: 24px 0 8px;">How will you give feedback?</label>
+        <p class="qhint" style="margin-bottom: 12px;">Pick all that apply.</p>
+        <div class="opt-grid compact" id="feedbackGrid">
+          <label class="opt"><input type="checkbox" name="feedback" value="written" /> Written notes (text or email)</label>
+          <label class="opt"><input type="checkbox" name="feedback" value="voice" /> Voice memo</label>
+          <label class="opt"><input type="checkbox" name="feedback" value="screen" /> Screen recording when something is confusing</label>
+          <label class="opt"><input type="checkbox" name="feedback" value="call" /> Live call with Star</label>
+        </div>
+
+        <div class="cta-row">
+          <button type="button" class="apply-back-link" data-prev>Back</button>
+          <button type="button" class="apply-btn" data-next>Continue</button>
+        </div>
+      </div>
+
+      <!-- STEP 6: Contact + device + 2FA + submit -->
+      <div class="apply-card" data-step="6">
+        <h2>One last thing.</h2>
+        <p class="qhint">Make sure I can actually invite you to TestFlight.</p>
+
+        <div class="form-stack">
+          <div>
+            <label for="firstName">First name</label>
+            <input class="apply-input" id="firstName" name="firstName" type="text" autocomplete="given-name" required />
+          </div>
+          <div>
+            <label for="lastName">Last name</label>
+            <input class="apply-input" id="lastName" name="lastName" type="text" autocomplete="family-name" />
+          </div>
+        </div>
+
+        <label style="font-size: 0.88rem; font-weight: 600; display: block; margin: 18px 0 8px;">What phone do you have?</label>
+        <div class="opt-row" data-singleselect="device">
+          <label class="opt"><input type="radio" name="device" value="iphone" /> iPhone</label>
+          <label class="opt"><input type="radio" name="device" value="android" /> Android</label>
+          <label class="opt"><input type="radio" name="device" value="other" /> Other</label>
+        </div>
+
+        <div class="form-stack" id="emailFields">
+          <div>
+            <label for="email">Best email to reach you at</label>
+            <input class="apply-input" id="email" name="email" type="email" autocomplete="email" required />
+          </div>
+          <div id="appleEmailRow">
+            <label for="appleEmail">Apple ID email</label>
+            <input class="apply-input" id="appleEmail" name="appleEmail" type="email" autocomplete="email" />
+            <p class="help-text">The email connected to your iPhone, where TestFlight invitations are sent. Settings → tap your name at the top → the email shown. This might be different from your regular email.</p>
+            <label class="same-row"><input type="checkbox" id="sameEmail" /> Same as above</label>
+          </div>
+        </div>
+
+        <label style="font-size: 0.88rem; font-weight: 600; display: block; margin: 18px 0 8px;">Two-factor authentication on your Apple ID?</label>
+        <div class="opt-row" data-singleselect="twofa">
+          <label class="opt"><input type="radio" name="twofa" value="on" /> Already on</label>
+          <label class="opt"><input type="radio" name="twofa" value="will_setup" /> Will set up</label>
+          <label class="opt"><input type="radio" name="twofa" value="need_help" /> Need help</label>
+        </div>
+
+        <label style="font-size: 0.88rem; font-weight: 600; display: block; margin: 18px 0 8px;">Anything else I should know? (optional)</label>
+        <textarea class="apply-textarea" name="notes" maxlength="500" style="min-height: 80px;"></textarea>
+
+        <div class="cta-row">
+          <button type="button" class="apply-back-link" data-prev>Back</button>
+          <button type="submit" class="apply-btn" id="submitBtn">Submit application</button>
+        </div>
+      </div>
+
+      <!-- SUCCESS CARD -->
+      <div class="apply-card" data-step="7">
+        <div class="final-success">
+          <h2 id="successTitle">Got it. I'll be in touch.</h2>
+          <div class="tier-badge" id="tierBadge" style="display:none">Top tier applicant</div>
+          <p id="successBody">I read every application personally. If you're a fit, you'll hear back within a few days with TestFlight install instructions.</p>
+          <p style="font-size: 0.92rem; color: var(--mid-gray);">Until then, follow along at <a href="https://instagram.com/starjessetaylor" style="color: var(--cobalt);">@starjessetaylor</a>.</p>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<script>
+(function() {
+  var currentStep = 1;
+  var totalSteps = 6;
+  var form = document.getElementById('applyForm');
+  var cards = form.querySelectorAll('.apply-card[data-step]');
+  var progFill = document.getElementById('progFill');
+  var progLabel = document.getElementById('progLabel');
+
+  function setStep(n) {
+    currentStep = Math.max(1, Math.min(7, n));
+    cards.forEach(function(c) {
+      c.classList.toggle('active', parseInt(c.getAttribute('data-step'), 10) === currentStep);
+    });
+    var pct = Math.round((currentStep / (totalSteps + 1)) * 100);
+    if (progFill) progFill.style.width = pct + '%';
+    if (progLabel) {
+      if (currentStep > totalSteps) {
+        progLabel.style.display = 'none';
+        document.querySelector('.apply-progress').style.display = 'none';
+      } else {
+        progLabel.textContent = 'Step ' + currentStep + ' of ' + totalSteps;
+      }
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Click handlers for checkbox/radio "opt" labels (visual selected state)
+  document.querySelectorAll('.opt').forEach(function(opt) {
+    var input = opt.querySelector('input');
+    if (!input) return;
+    input.addEventListener('change', function() {
+      if (input.type === 'radio') {
+        var groupName = input.name;
+        document.querySelectorAll('input[name="' + groupName + '"]').forEach(function(other) {
+          other.closest('.opt').classList.remove('selected');
+        });
+        if (input.checked) opt.classList.add('selected');
+      } else {
+        opt.classList.toggle('selected', input.checked);
+      }
+    });
+  });
+
+  // Next button: basic per-step validation
+  function validateStep(n) {
+    if (n === 1) {
+      var checked = document.querySelectorAll('input[name="symptoms"]:checked');
+      if (checked.length === 0) {
+        alert('Pick at least one. If nothing fits, choose stuckness.');
+        return false;
+      }
+    }
+    if (n === 2) {
+      if (!document.querySelector('input[name="duration"]:checked')) { alert('Pick a duration.'); return false; }
+      if (!document.querySelector('input[name="severity"]:checked')) { alert('Pick a severity from 1 to 10.'); return false; }
+    }
+    if (n === 4) {
+      var sm = (document.querySelector('textarea[name="specific_moment"]') || {}).value || '';
+      if (sm.trim().length < 30) {
+        alert('A real specific moment, not just a phrase. The more specific, the more likely you get in.');
+        return false;
+      }
+    }
+    if (n === 5) {
+      if (!document.querySelector('input[name="commitment"]:checked')) { alert('Pick a commitment level.'); return false; }
+      var fb = document.querySelectorAll('input[name="feedback"]:checked');
+      if (fb.length === 0) { alert('Pick at least one way you will give feedback.'); return false; }
+    }
+    return true;
+  }
+
+  document.querySelectorAll('[data-next]').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      if (!validateStep(currentStep)) return;
+      setStep(currentStep + 1);
+    });
+  });
+  document.querySelectorAll('[data-prev]').forEach(function(btn) {
+    btn.addEventListener('click', function() { setStep(currentStep - 1); });
+  });
+
+  // Same email checkbox
+  var sameEmail = document.getElementById('sameEmail');
+  var emailInput = document.getElementById('email');
+  var appleInput = document.getElementById('appleEmail');
+  if (sameEmail) {
+    sameEmail.addEventListener('change', function() {
+      if (sameEmail.checked) {
+        appleInput.value = emailInput.value;
+        appleInput.setAttribute('readonly', 'readonly');
+      } else {
+        appleInput.removeAttribute('readonly');
+        appleInput.value = '';
+      }
+    });
+    emailInput && emailInput.addEventListener('input', function() {
+      if (sameEmail.checked) appleInput.value = emailInput.value;
+    });
+  }
+
+  // Scoring (client side, mirrored on server)
+  function scoreApplication(data) {
+    var score = 0;
+    var sev = parseInt(data.severity || '0', 10);
+    if (sev >= 7) score += 3;
+    else if (sev >= 4) score += 1;
+
+    if (data.duration === '5y_plus' || data.duration === '2y_5y') score += 2;
+    else if (data.duration === '6m_2y') score += 1;
+
+    var tried = (data.tried || '').split('|').filter(Boolean);
+    if (tried.indexOf('nothing') === -1 && tried.length >= 2) score += 2;
+    else if (tried.length === 1) score += 1;
+
+    var worked = (data.worked || '').trim();
+    var notWorked = (data.not_worked || '').trim();
+    if (worked.length >= 30) score += 1;
+    if (notWorked.length >= 30) score += 1;
+
+    var sm = (data.specific_moment || '').trim();
+    if (sm.length >= 120) score += 3;
+    else if (sm.length >= 60) score += 1;
+
+    if (data.commitment === 'yes') score += 3;
+    else if (data.commitment === 'maybe') score += 0;
+    else if (data.commitment === 'just_try') score -= 2;
+
+    if (data.device === 'iphone') score += 1;
+    else if (data.device === 'android' || data.device === 'other') score -= 5;
+
+    var tier = 'c';
+    if (score >= 10) tier = 'a';
+    else if (score >= 5) tier = 'b';
+    return { score: score, tier: tier };
+  }
+
+  // Submit
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (!validateStep(currentStep)) return;
+
+    var firstName = document.getElementById('firstName').value.trim();
+    var email = document.getElementById('email').value.trim();
+    if (!firstName || !email) { alert('First name and email are required.'); return; }
+
+    var symptoms = Array.from(document.querySelectorAll('input[name="symptoms"]:checked')).map(function(i){return i.value;});
+    var tried = Array.from(document.querySelectorAll('input[name="tried"]:checked')).map(function(i){return i.value;});
+    var history = Array.from(document.querySelectorAll('input[name="history"]:checked')).map(function(i){return i.value;});
+    var feedback = Array.from(document.querySelectorAll('input[name="feedback"]:checked')).map(function(i){return i.value;});
+
+    var data = {
+      firstName: firstName,
+      lastName: document.getElementById('lastName').value.trim(),
+      email: email,
+      appleEmail: (sameEmail && sameEmail.checked) ? email : document.getElementById('appleEmail').value.trim(),
+      sameEmail: !!(sameEmail && sameEmail.checked),
+      symptoms: symptoms.join('|'),
+      duration: (document.querySelector('input[name="duration"]:checked') || {}).value || '',
+      severity: (document.querySelector('input[name="severity"]:checked') || {}).value || '',
+      tried: tried.join('|'),
+      worked: (document.querySelector('textarea[name="worked"]') || {}).value || '',
+      not_worked: (document.querySelector('textarea[name="not_worked"]') || {}).value || '',
+      specific_moment: (document.querySelector('textarea[name="specific_moment"]') || {}).value || '',
+      history: history.join('|'),
+      commitment: (document.querySelector('input[name="commitment"]:checked') || {}).value || '',
+      feedback: feedback.join('|'),
+      device: (document.querySelector('input[name="device"]:checked') || {}).value || '',
+      twofa: (document.querySelector('input[name="twofa"]:checked') || {}).value || '',
+      notes: (document.querySelector('textarea[name="notes"]') || {}).value || '',
+      source: new URLSearchParams(window.location.search).get('src') || 'website',
+      website_url: document.querySelector('input[name="website_url"]').value || ''
+    };
+
+    var scored = scoreApplication(data);
+    data.tier = scored.tier;
+    data.score = scored.score;
+
+    var btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = 'Submitting...';
+
+    fetch('/api/audacity-tester-apply', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    }).then(function(r) { return r.json(); }).then(function(res) {
+      // Customize success message by tier + device
+      var title = document.getElementById('successTitle');
+      var body = document.getElementById('successBody');
+      var badge = document.getElementById('tierBadge');
+      if (data.device === 'android' || data.device === 'other') {
+        title.textContent = 'You are on the Android waitlist.';
+        body.textContent = "I'll have an Android version a few weeks after the iPhone launch. I'll email you the moment it's ready.";
+      } else if (scored.tier === 'a') {
+        title.textContent = "You're in. I'll text you within 48 hours.";
+        body.textContent = "Your application is a strong fit. Watch for an email from App Store Connect with the TestFlight invite within 48 hours.";
+        badge.style.display = 'inline-block';
+      } else if (scored.tier === 'b') {
+        title.textContent = "Got it. I'll review and be in touch.";
+        body.textContent = "I read every application personally. If you're a fit for this batch, you'll hear back within a few days. If not, I'll let you know when the next batch opens.";
+      } else {
+        title.textContent = "Thanks for applying.";
+        body.textContent = "Beta capacity is limited right now. I'll reach out when a spot opens up that matches what you're working with.";
+      }
+      setStep(7);
+    }).catch(function(err) {
+      btn.disabled = false;
+      btn.textContent = 'Submit application';
+      alert('Something went wrong. Try again in a moment.');
+      console.error(err);
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
