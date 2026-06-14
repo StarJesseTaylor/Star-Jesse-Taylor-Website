@@ -305,9 +305,14 @@ export default async function handler(req, res) {
   data.tier = scored.tier;
   data.score = scored.score;
 
-  // Fire-and-forget emails
+  // Fire-and-forget emails.
+  // Star June 14 2026: applicant confirmations disabled to preserve Resend
+  // daily quota (100/day free tier). Star notification still fires so he
+  // sees each applicant in real time. When Star invites someone via the
+  // tester dashboard, he can send a personal email at that point instead
+  // of a generic auto-confirmation.
   sendStarNotification(data, scored).catch(err => console.error(err));
-  sendApplicantConfirmation(data, scored).catch(err => console.error(err));
+  // sendApplicantConfirmation(data, scored).catch(err => console.error(err));
 
   // Mirror into Supabase tester_applications for the admin dashboard.
   // Fire-and-forget so it never blocks the success response.
