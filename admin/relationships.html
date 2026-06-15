@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Star Relationships · Verify Tester Claims</title>
+  <style>
+    :root {
+      --cobalt: #1B6CA8;
+      --cobalt-dark: #155a8a;
+      --turquoise: #00B4D8;
+      --charcoal: #2C2C2C;
+      --off-white: #F8F9FB;
+      --light-gray: #eef1f5;
+      --mid-gray: #6b7280;
+      --green: #16a34a;
+      --red: #dc2626;
+      --amber: #d97706;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: var(--off-white); color: var(--charcoal);
+      padding: 16px; max-width: 1200px; margin: 0 auto;
+    }
+    h1 { font-size: 1.5rem; font-weight: 900; letter-spacing: -0.02em; margin-bottom: 4px; }
+    .subtitle { color: var(--mid-gray); font-size: 0.9rem; margin-bottom: 20px; }
+    .auth-prompt {
+      background: white; border-radius: 12px; padding: 32px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06); max-width: 480px; margin: 60px auto; text-align: center;
+    }
+    .auth-prompt input {
+      width: 100%; padding: 14px; border: 2px solid var(--light-gray); border-radius: 8px;
+      font-size: 1rem; margin: 12px 0; font-family: monospace;
+    }
+    .auth-prompt button {
+      background: var(--cobalt); color: white; border: none; padding: 14px 32px;
+      border-radius: 50px; font-size: 1rem; font-weight: 700; cursor: pointer;
+    }
+    .stats {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 10px; margin-bottom: 18px;
+    }
+    .stat {
+      background: white; border-radius: 10px; padding: 14px 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .stat-label {
+      font-size: 0.66rem; font-weight: 800; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--mid-gray); margin-bottom: 4px;
+    }
+    .stat-value { font-size: 1.4rem; font-weight: 900; line-height: 1; }
+    .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+    .filter-chip {
+      background: white; border: 1.5px solid var(--light-gray); border-radius: 50px;
+      padding: 8px 14px; font-size: 0.82rem; font-weight: 700;
+      cursor: pointer; color: var(--mid-gray); user-select: none;
+    }
+    .filter-chip.active { background: var(--cobalt); border-color: var(--cobalt); color: white; }
+    .search-box {
+      width: 100%; padding: 12px 16px; border: 1.5px solid var(--light-gray);
+      border-radius: 50px; font-size: 0.92rem; margin-bottom: 16px;
+    }
+    .table-wrap {
+      background: white; border-radius: 12px; overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    }
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      background: var(--light-gray); font-size: 0.7rem; font-weight: 800;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--mid-gray);
+      padding: 12px 14px; text-align: left;
+    }
+    td {
+      padding: 12px 14px; font-size: 0.88rem;
+      border-bottom: 1px solid var(--light-gray);
+    }
+    tr:hover td { background: #fafbfc; }
+    .relationship-pill {
+      display: inline-block; padding: 2px 8px; margin: 1px;
+      border-radius: 50px; font-size: 0.7rem; font-weight: 800;
+      letter-spacing: 0.03em;
+    }
+    .pill-book { background: #dcfce7; color: #166534; }
+    .pill-courses { background: #fef3c7; color: #92400e; }
+    .pill-coaching { background: #fee2e2; color: #991b1b; }
+    .pill-cohort { background: #ede9fe; color: #5b21b6; }
+    .pill-workshop { background: #dbeafe; color: #1e40af; }
+    .pill-free_chapter { background: var(--light-gray); color: var(--mid-gray); }
+    .toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+      background: var(--charcoal); color: white; padding: 12px 22px;
+      border-radius: 50px; font-weight: 700; font-size: 0.88rem;
+      opacity: 0; transition: opacity 0.2s; pointer-events: none; z-index: 100;
+    }
+    .toast.show { opacity: 1; }
+    @media (max-width: 700px) {
+      .stats { grid-template-columns: 1fr 1fr; }
+      td, th { padding: 10px 8px; font-size: 0.78rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="authView" class="auth-prompt" style="display:none">
+  <h1>Star Relationships</h1>
+  <p style="color:var(--mid-gray);margin:8px 0;font-size:0.9rem;">Enter admin key</p>
+  <input id="keyInput" type="password" placeholder="CRON_SECRET" onkeypress="if(event.key==='Enter')login()" />
+  <button onclick="login()">Unlock</button>
+</div>
+
+<div id="mainView" style="display:none">
+  <h1>Star Relationships</h1>
+  <p class="subtitle">Everyone who's bought your book, taken a course, or worked with you. Use this to cross-reference tester applicants who claimed these relationships.</p>
+
+  <div class="stats" id="statsRow"></div>
+
+  <input class="search-box" id="searchBox" placeholder="Search by name or email..." />
+
+  <div class="filters" id="filterChips"></div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Relationships</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const STORAGE_KEY = 'star_relationships_key';
+let allContacts = [];
+let summary = {};
+let activeFilter = 'all';
+
+window.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+  const urlKey = params.get('key');
+  if (urlKey) {
+    sessionStorage.setItem(STORAGE_KEY, urlKey);
+    window.history.replaceState({}, '', window.location.pathname);
+  }
+  if (sessionStorage.getItem(STORAGE_KEY)) loadData();
+  else showView('authView');
+  document.getElementById('searchBox').addEventListener('input', renderTable);
+});
+
+function showView(view) {
+  ['authView','mainView'].forEach((v) => { document.getElementById(v).style.display = 'none'; });
+  document.getElementById(view).style.display = 'block';
+}
+
+function login() {
+  const key = document.getElementById('keyInput').value.trim();
+  if (!key) return;
+  sessionStorage.setItem(STORAGE_KEY, key);
+  loadData();
+}
+
+async function loadData() {
+  showView('mainView');
+  document.getElementById('tableBody').innerHTML = '<tr><td colspan="3" style="padding:32px;text-align:center;color:var(--mid-gray)">Loading… AC takes a few seconds.</td></tr>';
+  const key = sessionStorage.getItem(STORAGE_KEY);
+  try {
+    const res = await fetch(`/api/admin/star-relationships?key=${encodeURIComponent(key)}`);
+    if (res.status === 401) {
+      sessionStorage.removeItem(STORAGE_KEY);
+      showView('authView');
+      return;
+    }
+    const data = await res.json();
+    allContacts = data.contacts || [];
+    summary = data.summary || {};
+    renderStats();
+    renderFilters();
+    renderTable();
+  } catch (e) {
+    document.getElementById('tableBody').innerHTML = '<tr><td colspan="3" style="padding:32px;text-align:center;color:var(--red)">Failed to load: ' + e.message + '</td></tr>';
+  }
+}
+
+function renderStats() {
+  const stats = [
+    { label: 'Total', value: summary.total },
+    { label: 'Book Readers', value: summary.book },
+    { label: 'Course Buyers', value: summary.courses },
+    { label: 'Coaching Clients', value: summary.coaching },
+    { label: 'Cohort Grads', value: summary.cohort },
+    { label: 'Workshop Alumni', value: summary.workshop },
+    { label: 'Multi-Relationship', value: summary.multi_relationship },
+  ];
+  document.getElementById('statsRow').innerHTML = stats.map(s => `
+    <div class="stat"><div class="stat-label">${s.label}</div><div class="stat-value">${s.value || 0}</div></div>
+  `).join('');
+}
+
+function renderFilters() {
+  const filters = [
+    { key: 'all', label: 'All' },
+    { key: 'book', label: 'Book Readers' },
+    { key: 'courses', label: 'Course Buyers' },
+    { key: 'coaching', label: 'Coaching Clients' },
+    { key: 'cohort', label: 'Cohort Grads' },
+    { key: 'workshop', label: 'Workshop Alumni' },
+    { key: 'multi', label: 'Multiple Relationships' },
+  ];
+  document.getElementById('filterChips').innerHTML = filters.map(f => `
+    <button class="filter-chip ${activeFilter===f.key?'active':''}" onclick="setFilter('${f.key}')">${f.label}</button>
+  `).join('');
+}
+
+function setFilter(key) {
+  activeFilter = key;
+  renderFilters();
+  renderTable();
+}
+
+function escapeHtml(s) {
+  if (s == null) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function renderTable() {
+  const search = document.getElementById('searchBox').value.toLowerCase();
+  let filtered = allContacts;
+  if (activeFilter === 'multi') filtered = filtered.filter(c => c.depth >= 2);
+  else if (activeFilter !== 'all') filtered = filtered.filter(c => c.relationships.includes(activeFilter));
+  if (search) {
+    filtered = filtered.filter(c =>
+      (c.email + ' ' + c.first_name + ' ' + c.last_name).toLowerCase().includes(search)
+    );
+  }
+  const tbody = document.getElementById('tableBody');
+  if (filtered.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="3" style="padding:32px;text-align:center;color:var(--mid-gray);font-style:italic">No matches.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = filtered.map(c => `
+    <tr>
+      <td><strong>${escapeHtml(c.first_name)} ${escapeHtml(c.last_name)}</strong></td>
+      <td><a href="mailto:${escapeHtml(c.email)}" style="color:var(--cobalt);text-decoration:none">${escapeHtml(c.email)}</a></td>
+      <td>${c.relationships.map(r => `<span class="relationship-pill pill-${r}">${r.replace('_',' ')}</span>`).join('')}</td>
+    </tr>
+  `).join('');
+}
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1800);
+}
+</script>
+
+</body>
+</html>
