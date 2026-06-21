@@ -1644,9 +1644,18 @@ select {
     grid-template-columns: 1fr !important;
   }
 
-  img, video, iframe {
+  img, video {
     max-width: 100% !important;
     height: auto !important;
+  }
+
+  /* iframes (YouTube / Vimeo) live inside responsive wrappers that
+     use padding-bottom for aspect ratio + position:absolute. Forcing
+     height:auto on the iframe collapsed it to a tiny box while the
+     wrapper still reserved the aspect-ratio space, showing as gray
+     bands. Constrain width only, leave height/positioning alone. */
+  iframe {
+    max-width: 100% !important;
   }
 
   /* Catch any element that escapes the viewport from a hard-coded
