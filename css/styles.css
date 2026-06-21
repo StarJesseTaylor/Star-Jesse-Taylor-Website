@@ -1628,3 +1628,29 @@ select {
   opacity: 0 !important;
   pointer-events: none !important;
 }
+
+/* ===== UNIVERSAL MOBILE OVERRIDES =====
+   Star June 21 2026: many pages use inline grid-template-columns
+   styles that override the responsive media queries above. This
+   forces ANY inline-grid element with multiple columns to stack on
+   mobile widths, no matter what the inline style says.
+   Also makes embedded images/videos/iframes scale to container so
+   they never trigger horizontal scroll. */
+@media (max-width: 768px) {
+  div[style*="grid-template-columns:repeat"],
+  div[style*="grid-template-columns: repeat"],
+  section[style*="grid-template-columns:repeat"],
+  section[style*="grid-template-columns: repeat"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  img, video, iframe {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* Catch any element that escapes the viewport from a hard-coded
+     width on a parent. Tap-targets get a minimum reasonable size. */
+  table { display: block; max-width: 100%; overflow-x: auto; }
+  a.btn, button { min-height: 44px; }
+}
