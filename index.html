@@ -885,6 +885,37 @@
   </div>
 </section>
 
+<!-- SMS OPT-IN · DIRECT FROM STAR -->
+<section id="sms-optin" style="background:linear-gradient(160deg, #0a1f3a 0%, #1b6ca8 100%);padding:90px 0;color:#fff;">
+  <div class="container" style="max-width:680px;">
+    <div class="text-center fade-up" style="margin-bottom:36px;">
+      <span style="display:inline-block;background:rgba(255,255,255,0.14);color:#fff;font-size:0.72rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;padding:8px 20px;border-radius:50px;margin-bottom:18px;">Direct from Star</span>
+      <h2 style="color:#fff;font-size:2.4rem;line-height:1.15;margin-bottom:18px;">Get Star in your pocket.</h2>
+      <p style="color:rgba(255,255,255,0.88);font-size:1.08rem;line-height:1.65;max-width:520px;margin:0 auto;">Tired of losing yourself when emotions hit? Get a text from Star at the right moment. Stop reacting. Stay on track with what actually matters.</p>
+    </div>
+
+    <form id="sms-optin-form" class="fade-up fade-up-delay-1" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.18);border-radius:18px;padding:28px;backdrop-filter:blur(10px);">
+      <input type="text" name="website_url" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;" />
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+        <input type="text" name="firstName" placeholder="First name" required style="width:100%;padding:14px 16px;border-radius:10px;border:1px solid rgba(255,255,255,0.25);background:rgba(255,255,255,0.95);color:#1a1a1a;font-size:1rem;" />
+        <input type="email" name="email" placeholder="Email address" required style="width:100%;padding:14px 16px;border-radius:10px;border:1px solid rgba(255,255,255,0.25);background:rgba(255,255,255,0.95);color:#1a1a1a;font-size:1rem;" />
+      </div>
+
+      <input type="tel" name="phone" placeholder="Phone number" required style="width:100%;padding:14px 16px;border-radius:10px;border:1px solid rgba(255,255,255,0.25);background:rgba(255,255,255,0.95);color:#1a1a1a;font-size:1rem;margin-bottom:14px;" />
+
+      <label style="display:flex;align-items:flex-start;gap:12px;font-size:0.82rem;color:rgba(255,255,255,0.85);line-height:1.55;margin-bottom:18px;cursor:pointer;">
+        <input type="checkbox" name="consent" required style="flex-shrink:0;margin-top:4px;width:18px;height:18px;cursor:pointer;" />
+        <span>Yes, send me reminders, tips, and updates about Star's offerings including workshops, cohorts, courses, coaching, books, and live events. Max 5 messages per week. Reply STOP to unsubscribe. Msg & data rates may apply.</span>
+      </label>
+
+      <button type="submit" style="width:100%;padding:16px 20px;border-radius:10px;border:none;background:#fff;color:var(--cobalt);font-size:1.05rem;font-weight:700;cursor:pointer;letter-spacing:0.02em;">Send me Star's texts</button>
+
+      <p id="sms-optin-status" style="text-align:center;margin-top:14px;font-size:0.85rem;color:rgba(255,255,255,0.7);min-height:20px;"></p>
+    </form>
+  </div>
+</section>
+
 <!-- BOTTOM CTA -->
 <section class="bottom-cta">
   <div class="container">
@@ -953,5 +984,42 @@
 
 <script src="js/main.js"></script>
 <script src="js/chat-widget.js"></script>
+<script>
+(function() {
+  const form = document.getElementById('sms-optin-form');
+  if (!form) return;
+  const status = document.getElementById('sms-optin-status');
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const fd = new FormData(form);
+    const data = {
+      firstName: fd.get('firstName') || '',
+      email: fd.get('email') || '',
+      phone: fd.get('phone') || '',
+      consent: fd.get('consent') === 'on',
+      website_url: fd.get('website_url') || '',
+      source: 'homepage_sms_optin'
+    };
+    if (!data.consent) { status.textContent = 'Please check the box to confirm consent.'; return; }
+    const btn = form.querySelector('button[type="submit"]');
+    const origText = btn.textContent;
+    btn.disabled = true; btn.textContent = 'Sending...';
+    status.textContent = '';
+    try {
+      const res = await fetch('/api/sms-optin', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+      const json = await res.json().catch(() => ({}));
+      if (res.ok && json.success) {
+        form.innerHTML = '<div style="text-align:center;padding:20px 0;"><div style="font-size:2.4rem;margin-bottom:12px;">✓</div><div style="color:#fff;font-size:1.15rem;font-weight:600;margin-bottom:8px;">You\'re in.</div><div style="color:rgba(255,255,255,0.85);font-size:0.95rem;">First text from Star comes soon.</div></div>';
+      } else {
+        status.textContent = json.error || 'Something went wrong. Try again in a moment.';
+        btn.disabled = false; btn.textContent = origText;
+      }
+    } catch (err) {
+      status.textContent = 'Connection issue. Try again.';
+      btn.disabled = false; btn.textContent = origText;
+    }
+  });
+})();
+</script>
 </body>
 </html>
