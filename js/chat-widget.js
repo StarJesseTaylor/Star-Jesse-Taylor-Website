@@ -375,7 +375,7 @@
     'courses':        { label: 'Browse Self-Paced Courses',         href: 'courses.html' },
     'intensive':      { label: 'Join the Intensive — $97',          href: 'services.html#intensive' },
     'cohort':         { label: 'Join the 10-Week Cohort Waitlist',  href: 'services.html#cohort' },
-    'clarity':        { label: 'Book a Clarity Session — $500',     href: 'https://buy.stripe.com/28E28q0VNc3rgxqeR3cMM16', external: true },
+    'clarity':        { label: 'Book a Clarity Session — $500',     href: 'https://buy.stripe.com/cN2eYg7kHepv1uocNw', external: true },
     'apply':          { label: 'Apply for 1-on-1 Coaching',         href: 'apply.html' },
     'quiz':           { label: 'Take the Find My Path Quiz',        href: 'quiz.html' },
     'ask-star':       { label: 'Ask Star Directly (Voice Memo)',    href: 'services.html' }
