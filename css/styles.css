@@ -387,6 +387,29 @@ h4 { font-size: 1.2rem; }
   height: 100%;
 }
 
+/* ===== VIDEO EMBED WRAPPERS =====
+   Two ratios for site embeds. Always use one of these classes.
+   NEVER write inline padding-bottom for video aspect.
+   Star June 24 2026: this is the protective layer so the gray-iframe
+   bug from earlier this year cannot return. */
+.video-embed {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: #000;
+}
+.video-embed.ratio-16x9 { padding-bottom: 56.25%; }
+.video-embed.ratio-9x16 { padding-bottom: 177.78%; }
+
+.video-embed > iframe {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  border: 0 !important;
+}
+
 .vsl-placeholder {
   background: linear-gradient(135deg, #1a2a3a, #0d1f2d);
   display: flex;
