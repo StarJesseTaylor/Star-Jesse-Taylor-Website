@@ -115,6 +115,7 @@ export default async function handler(req, res) {
 
   const email = (f.email || '').trim();
   const firstName = (f.firstName || '').trim();
+  const lastName = (f.lastName || '').trim();
   const interestedInWorkshop = !!f.interest_workshop;
   const interestedInCohort = !!f.interest_cohort;
   const interestedInCommunity = !!f.interest_community;
@@ -141,10 +142,12 @@ export default async function handler(req, res) {
   const headers = { 'Api-Token': AC_KEY, 'Content-Type': 'application/json' };
 
   try {
+    const contactPayload = { email, firstName };
+    if (lastName) contactPayload.lastName = lastName;
     const syncRes = await fetch(`${AC_URL}/api/3/contact/sync`, {
       method: 'POST',
       headers,
-      body: JSON.stringify({ contact: { email, firstName } }),
+      body: JSON.stringify({ contact: contactPayload }),
     });
     if (!syncRes.ok) {
       const text = await syncRes.text();
@@ -185,7 +188,7 @@ export default async function handler(req, res) {
     }
     await Promise.all(tagPromises);
 
-    sendConfirmation(email, firstName, interestedInWorkshop, interestedInCohort).catch((err) =>
+    sendConfirmation(email, firstName, interestedInWorkshop, interestedInCohort, interestedInCommunity).catch((err) =>
       console.error('Confirmation send failed:', err)
     );
 
