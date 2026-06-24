@@ -44,13 +44,15 @@ async function applyTag(AC_URL, headers, contactId, tagName) {
   }
 }
 
-async function sendConfirmation(toEmail, name, interestedInWorkshop, interestedInCohort) {
+async function sendConfirmation(toEmail, name, interestedInWorkshop, interestedInCohort, interestedInCommunity) {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) return;
   const greeting = name ? `Hey ${name},` : 'Hey,';
 
   let middle = '';
-  if (interestedInWorkshop && interestedInCohort) {
+  if (interestedInCommunity) {
+    middle = "You're on the list for the community. I'll send the details when it opens.";
+  } else if (interestedInWorkshop && interestedInCohort) {
     middle = "You're on the list for both the online workshop and the 6-week cohort. When dates and prices lock, you'll be first to know.";
   } else if (interestedInWorkshop) {
     middle = "You're on the list for the online workshop. When the date and price lock, you'll be first to know.";
@@ -115,11 +117,12 @@ export default async function handler(req, res) {
   const firstName = (f.firstName || '').trim();
   const interestedInWorkshop = !!f.interest_workshop;
   const interestedInCohort = !!f.interest_cohort;
+  const interestedInCommunity = !!f.interest_community;
 
   if (!email) return res.status(400).json({ error: 'Email is required' });
   if (!firstName || firstName.length < 1) return res.status(400).json({ error: 'First name is required' });
-  if (!interestedInWorkshop && !interestedInCohort) {
-    return res.status(400).json({ error: 'Select at least one interest' });
+  if (!interestedInWorkshop && !interestedInCohort && !interestedInCommunity) {
+    return res.status(400).json({ error: 'Interest required' });
   }
 
   if (/^[A-Za-z]{15,}$/.test(firstName) && /[A-Z]/.test(firstName) && /[a-z]/.test(firstName)) {
@@ -171,6 +174,11 @@ export default async function handler(req, res) {
       tagPromises.push(applyTag(AC_URL, headers, contactId, 'interest:cohort'));
       tagPromises.push(applyTag(AC_URL, headers, contactId, 'path:cohort'));
       tagPromises.push(applyTag(AC_URL, headers, contactId, 'cohort:waitlist'));
+    }
+    if (interestedInCommunity) {
+      tagPromises.push(applyTag(AC_URL, headers, contactId, 'interest:skool-community'));
+      tagPromises.push(applyTag(AC_URL, headers, contactId, 'path:skool-public'));
+      tagPromises.push(applyTag(AC_URL, headers, contactId, 'skool:waitlist'));
     }
     if (interestedInWorkshop && interestedInCohort) {
       tagPromises.push(applyTag(AC_URL, headers, contactId, 'interest:both'));

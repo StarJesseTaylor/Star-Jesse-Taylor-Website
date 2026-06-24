@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Workshop | Star Jesse Taylor</title>
-  <meta name="description" content="Online workshop coming August. Get on the list." />
+  <title>Community Coming Soon | Star Jesse Taylor</title>
+  <meta name="description" content="Community opening in July. Weekly live calls with me. Get on the list." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -20,10 +20,11 @@
 <body style="background:linear-gradient(160deg,#0a1929 0%,#0d2540 100%);color:#fff;min-height:100vh;">
 
 <section style="padding:80px 0 40px;text-align:center;">
-  <div style="max-width:520px;margin:0 auto;padding:0 24px;">
+  <div style="max-width:540px;margin:0 auto;padding:0 24px;">
     <a href="index.html" style="display:inline-block;color:#7dd3fc;text-decoration:none;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;font-size:0.78rem;margin-bottom:32px;">Star Jesse Taylor</a>
-    <h1 style="font-size:clamp(1.7rem,4.2vw,2.4rem);font-weight:800;line-height:1.2;margin:0 0 16px;color:#fff;">Online workshop coming in August.</h1>
-    <p style="font-size:1.05rem;line-height:1.6;color:rgba(255,255,255,0.82);margin:0;">Get on the list. I'll send the date when it's locked.</p>
+    <h1 style="font-size:clamp(1.7rem,4.2vw,2.4rem);font-weight:800;line-height:1.2;margin:0 0 18px;color:#fff;">Tired of fighting your brain alone?</h1>
+    <p style="font-size:1.05rem;line-height:1.6;color:rgba(255,255,255,0.85);margin:0 0 8px;">I'm opening a community in July. Weekly live calls with me.</p>
+    <p style="font-size:1rem;line-height:1.6;color:rgba(255,255,255,0.7);margin:0;">Get on the list and I'll send the details when it opens.</p>
   </div>
 </section>
 
@@ -57,10 +58,11 @@
     const data = {
       firstName: fd.get('firstName') || '',
       email: fd.get('email') || '',
-      interest_workshop: true,
+      interest_community: true,
+      interest_workshop: false,
       interest_cohort: false,
       website_url: fd.get('website_url') || '',
-      source: 'whats-next'
+      source: 'whats-next-community'
     };
 
     const btn = form.querySelector('button[type="submit"]');
@@ -77,7 +79,7 @@
       });
       const json = await res.json().catch(() => ({}));
       if (res.ok && json.success) {
-        form.innerHTML = '<div style="text-align:center;padding:24px 0;"><div style="font-size:2.4rem;margin-bottom:12px;">✓</div><div style="color:#fff;font-size:1.15rem;font-weight:700;margin-bottom:8px;">You\'re on the list.</div><div style="color:rgba(255,255,255,0.78);font-size:0.95rem;">I\'ll send the date when it\'s locked.</div></div>';
+        form.innerHTML = '<div style="text-align:center;padding:24px 0;"><div style="font-size:2.4rem;margin-bottom:12px;">✓</div><div style="color:#fff;font-size:1.15rem;font-weight:700;margin-bottom:8px;">You\'re on the list.</div><div style="color:rgba(255,255,255,0.78);font-size:0.95rem;">I\'ll send the details when the community opens.</div></div>';
       } else {
         status.textContent = json.error || 'Something went wrong. Try again.';
         btn.disabled = false;
