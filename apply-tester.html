@@ -137,6 +137,7 @@
     /* honeypot */
     .hp { position: absolute; left: -9999px; opacity: 0; pointer-events: none; }
   </style>
+  <script src="/js/posthog-init.js"></script>
 </head>
 <body>
 <header class="site-header">
@@ -351,6 +352,45 @@
           <label for="appleEmail" style="font-size: 0.88rem; font-weight: 600; display: block; margin-bottom: 6px;">Apple ID email</label>
           <input class="apply-input" id="appleEmail" name="appleEmail" type="email" autocomplete="email" required />
           <p class="help-text">The email connected to your iPhone, where TestFlight invitations go. Open Settings, tap your name at the top, the email shown there is the right one. Many people use a different iCloud email here than their personal email.</p>
+        </div>
+
+        <div style="margin-top: 18px;">
+          <label for="country" style="font-size: 0.88rem; font-weight: 600; display: block; margin-bottom: 6px;">Country</label>
+          <select class="apply-input" id="country" name="country" required>
+            <option value="" disabled selected>Select your country</option>
+            <option value="United States">United States</option>
+            <option value="Canada">Canada</option>
+            <option value="United Kingdom">United Kingdom</option>
+            <option value="Australia">Australia</option>
+            <option value="Germany">Germany</option>
+            <option value="Netherlands">Netherlands</option>
+            <option value="Switzerland">Switzerland</option>
+            <option value="Sweden">Sweden</option>
+            <option value="Norway">Norway</option>
+            <option value="Denmark">Denmark</option>
+            <option value="Belgium">Belgium</option>
+            <option value="Austria">Austria</option>
+            <option value="France">France</option>
+            <option value="Spain">Spain</option>
+            <option value="Italy">Italy</option>
+            <option value="Ireland">Ireland</option>
+            <option value="New Zealand">New Zealand</option>
+            <option value="Singapore">Singapore</option>
+            <option value="UAE">United Arab Emirates</option>
+            <option value="Israel">Israel</option>
+            <option value="Mexico">Mexico</option>
+            <option value="Brazil">Brazil</option>
+            <option value="Argentina">Argentina</option>
+            <option value="Chile">Chile</option>
+            <option value="South Africa">South Africa</option>
+            <option value="India">India</option>
+            <option value="Japan">Japan</option>
+            <option value="South Korea">South Korea</option>
+            <option value="Hong Kong">Hong Kong</option>
+            <option value="Other">Other (type below)</option>
+          </select>
+          <input class="apply-input" id="countryOther" name="countryOther" type="text" placeholder="Type your country" style="display:none; margin-top: 8px;" />
+          <p class="help-text">So Star knows which time zone you're in and where future workshops might land.</p>
         </div>
 
         <label style="font-size: 0.88rem; font-weight: 600; display: block; margin: 18px 0 8px;">Anything else I should know? (optional)</label>

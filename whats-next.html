@@ -16,6 +16,7 @@
     gtag('js', new Date());
     gtag('config', 'G-T0T1Z0VBT8');
   </script>
+  <script src="/js/posthog-init.js"></script>
 </head>
 <body style="background:linear-gradient(160deg,#0a1929 0%,#0d2540 100%);color:#fff;min-height:100vh;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;">
 
@@ -189,6 +190,12 @@
       });
       const json = await res.json().catch(() => ({}));
       if (res.ok && json.success) {
+        if (window.starPosthogIdentify) {
+          window.starPosthogIdentify(data.email, { firstName: data.firstName, lastName: data.lastName, source: data.source });
+        }
+        if (window.posthog && window.posthog.capture) {
+          window.posthog.capture('whats_next_signup', { source: data.source, interest_community: true });
+        }
         form.innerHTML = '<div style="text-align:center;padding:24px 0;"><div style="font-size:2.4rem;margin-bottom:12px;">&#10003;</div><div style="color:#fff;font-size:1.15rem;font-weight:700;margin-bottom:8px;">You\'re on the list.</div><div style="color:rgba(255,255,255,0.78);font-size:0.95rem;">I\'ll send the details when the community opens.</div></div>';
       } else {
         status.textContent = json.error || 'Something went wrong. Try again.';
