@@ -116,6 +116,7 @@ export default async function handler(req, res) {
   const email = (f.email || '').trim();
   const firstName = (f.firstName || '').trim();
   const lastName = (f.lastName || '').trim();
+  const source = (f.source || '').trim();
   const interestedInWorkshop = !!f.interest_workshop;
   const interestedInCohort = !!f.interest_cohort;
   const interestedInCommunity = !!f.interest_community;
@@ -185,6 +186,9 @@ export default async function handler(req, res) {
     }
     if (interestedInWorkshop && interestedInCohort) {
       tagPromises.push(applyTag(AC_URL, headers, contactId, 'interest:both'));
+    }
+    if (source === 'mailchimp_burn' || source === 'mailchimp-migration') {
+      tagPromises.push(applyTag(AC_URL, headers, contactId, 'source:mailchimp-migration'));
     }
     await Promise.all(tagPromises);
 

@@ -177,7 +177,7 @@
       interest_workshop: false,
       interest_cohort: false,
       website_url: fd.get('website_url') || '',
-      source: 'whats-next-community'
+      source: (new URLSearchParams(window.location.search).get('source') || 'whats-next-community')
     };
 
     const btn = form.querySelector('button[type="submit"]');
