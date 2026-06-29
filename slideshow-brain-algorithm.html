@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>From the Battlefield to the Garden | Star Jesse Taylor</title>
-<meta name="description" content="Get off the battlefield in your head. Walk in a new direction. The community opens July 1." />
+<title>Tired of fighting what's in your head? | Star Jesse Taylor</title>
+<meta name="description" content="You do not have to be fixed before you can live. Stop feeding the fire. Grow the garden. The community opens July 1." />
 <meta name="robots" content="noindex" />
 
 <!-- Open Graph so the link looks good when shared -->
-<meta property="og:title" content="From the Battlefield to the Garden" />
-<meta property="og:description" content="Stop fighting what's in your head. Walk in a new direction. The community opens July 1." />
+<meta property="og:title" content="Tired of watching everyone else live carefree?" />
+<meta property="og:description" content="You do not have to be fixed before you can live. The community opens July 1." />
 <meta property="og:image" content="images/email/star-hero.jpg" />
 <meta property="og:type" content="website" />
 
@@ -106,7 +106,7 @@
       linear-gradient(to right, rgba(5, 12, 18, 0.85) 0%, rgba(5, 12, 18, 0.35) 55%, rgba(5, 12, 18, 0.1) 100%);
   }
   .slide--center .slide__scrim {
-    background: linear-gradient(to bottom, rgba(5, 12, 18, 0.55) 0%, rgba(5, 12, 18, 0.72) 100%);
+    background: linear-gradient(to bottom, rgba(5, 12, 18, 0.55) 0%, rgba(5, 12, 18, 0.74) 100%);
   }
 
   /* ---------- Content ---------- */
@@ -131,15 +131,14 @@
     color: var(--sky);
     margin-bottom: clamp(14px, 2.4vw, 26px);
   }
-  .slide--center .eyebrow { color: var(--sky); }
 
   .headline {
     font-family: "Fraunces", Georgia, serif;
     font-weight: 600;
     line-height: 1.04;
     letter-spacing: -0.01em;
-    font-size: clamp(30px, 6.4vw, 76px);
-    max-width: 16ch;
+    font-size: clamp(31px, 6.6vw, 78px);
+    max-width: 17ch;
     text-wrap: balance;
   }
   .slide--center .headline { max-width: 18ch; margin-inline: auto; }
@@ -149,7 +148,7 @@
     line-height: 1.45;
     font-weight: 400;
     color: var(--cream);
-    max-width: 30ch;
+    max-width: 32ch;
     margin-top: clamp(16px, 2.6vw, 30px);
   }
   .slide--center .body { max-width: 36ch; margin-inline: auto; }
@@ -172,41 +171,31 @@
     color: var(--sky);
   }
 
-  /* Question / benefit lists */
+  /* Benefit list */
   .qlist {
     list-style: none;
-    margin-top: clamp(18px, 3vw, 34px);
+    margin-top: clamp(18px, 3vw, 32px);
     display: grid;
-    gap: clamp(10px, 1.6vw, 16px);
-    max-width: 760px;
+    gap: clamp(10px, 1.5vw, 15px);
+    max-width: 780px;
   }
   .qlist li {
-    font-size: clamp(16px, 2.3vw, 27px);
+    font-size: clamp(16px, 2.1vw, 25px);
     line-height: 1.3;
     font-weight: 500;
-    padding-left: 1.4em;
+    padding-left: 1.5em;
     position: relative;
     color: var(--cream);
   }
-  .qlist li::before {
+  .qlist.benefits li::before {
     content: "";
     position: absolute;
     left: 0;
-    top: 0.62em;
-    width: 0.5em;
-    height: 0.5em;
-    border-radius: 50%;
+    top: 0.5em;
+    width: 0.62em;
+    height: 0.62em;
+    border-radius: 3px;
     background: var(--sky);
-  }
-  .qlist.stuck li::before { background: rgba(245, 166, 35, 0.85); }
-  .qlist.healthy li::before { background: var(--green); }
-  .qlist.benefits li::before {
-    content: "";
-    width: 0.6em;
-    height: 0.6em;
-    border-radius: 2px;
-    background: var(--sky);
-    top: 0.55em;
   }
 
   /* CTA */
@@ -226,11 +215,6 @@
     transition: transform 0.25s var(--slide-ease), box-shadow 0.25s var(--slide-ease);
   }
   .cta:hover { transform: translateY(-3px); box-shadow: 0 26px 60px rgba(0, 0, 0, 0.55); }
-  .fineprint {
-    margin-top: clamp(16px, 2.2vw, 24px);
-    font-size: clamp(13px, 1.5vw, 17px);
-    color: var(--muted);
-  }
   .signoff {
     font-family: "Fraunces", Georgia, serif;
     font-size: clamp(20px, 2.4vw, 30px);
@@ -238,7 +222,7 @@
     color: var(--sky);
   }
   .ps {
-    margin-top: clamp(20px, 3vw, 34px);
+    margin-top: clamp(18px, 2.6vw, 30px);
     font-size: clamp(14px, 1.7vw, 20px);
     color: var(--muted);
     letter-spacing: 0.01em;
@@ -253,10 +237,9 @@
     animation: rise 0.7s var(--slide-ease) forwards;
   }
   .slide.is-active .content > *:nth-child(1) { animation-delay: 0.12s; }
-  .slide.is-active .content > *:nth-child(2) { animation-delay: 0.22s; }
-  .slide.is-active .content > *:nth-child(3) { animation-delay: 0.32s; }
-  .slide.is-active .content > *:nth-child(4) { animation-delay: 0.42s; }
-  .slide.is-active .content > *:nth-child(5) { animation-delay: 0.5s; }
+  .slide.is-active .content > *:nth-child(2) { animation-delay: 0.24s; }
+  .slide.is-active .content > *:nth-child(3) { animation-delay: 0.36s; }
+  .slide.is-active .content > *:nth-child(4) { animation-delay: 0.46s; }
   @keyframes rise {
     to { opacity: 1; transform: translateY(0); }
   }
@@ -350,7 +333,7 @@
   }
   @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
 
-  /* Tap zones (do not cover chrome / links visually, just capture taps) */
+  /* Tap zones */
   .tapzone {
     position: fixed;
     top: 0; bottom: 0;
@@ -360,7 +343,7 @@
   .tapzone--prev { left: 0; width: 22%; }
   .tapzone--next { right: 0; width: 30%; }
 
-  /* ---------- No-JS fallback: show everything stacked ---------- */
+  /* ---------- No-JS fallback ---------- */
   .no-js .deck { position: static; }
   .no-js .slide {
     position: relative;
@@ -383,7 +366,7 @@
   @media (max-width: 640px) {
     .nav__btn { width: 44px; height: 44px; }
     .tapzone--next { width: 34%; }
-    .body, .quote { max-width: 90%; }
+    .body, .quote { max-width: 92%; }
   }
 </style>
 </head>
@@ -392,191 +375,65 @@
 
 <div class="deck" id="deck">
 
-  <!-- 1. COVER -->
+  <!-- 1. HOOK (locked Hook C, consequence of pain) -->
   <section class="slide slide--center is-active">
-    <div class="slide__bg" style="background-image:url('images/email/star-hero.jpg')"></div>
+    <div class="slide__bg" style="background-image:url('images/email/brain-overthinking.jpg')"></div>
     <div class="slide__scrim"></div>
     <div class="content">
       <p class="eyebrow">Star Jesse Taylor</p>
-      <h1 class="headline">Are you tired of watching everyone else live carefree while you fight what's in your head?</h1>
+      <h1 class="headline">Tired of watching everyone else live carefree while you fight what's in your head?</h1>
+      <p class="body sub">You cancel the plans. You stay in the safe job. You shrink in the room.</p>
     </div>
     <div class="hint">Swipe &nbsp;&rsaquo;</div>
   </section>
 
-  <!-- 2. EVERYONE FLOWS -->
+  <!-- 2. KILL THE ENEMY (you are not broken) -->
   <section class="slide slide--bottom">
     <div class="slide__bg bg-deep"></div>
     <div class="content">
-      <h2 class="headline">You see everyone moving forward.</h2>
-      <p class="body">They are not avoiding their passion. They are not staying in the safe job. They are not playing small in the room. Why do they flow through life so easily?</p>
+      <h2 class="headline">You are not broken.</h2>
+      <p class="body">No one told you the truth. You do not have to fix yourself before you can live. You have been treating your life like a waiting room.</p>
     </div>
   </section>
 
-  <!-- 3. THE DIFFERENCE -->
+  <!-- 3. THE MECHANISM -->
   <section class="slide slide--bottom">
     <div class="slide__bg bg-blue"></div>
     <div class="content">
-      <p class="eyebrow">The difference</p>
-      <p class="body">They do not take their thoughts and emotions as seriously as you do. When something intense comes up they say, "Oh, what a weird thing. Whatever. Let's keep moving forward with our valued actions."</p>
+      <h2 class="headline">Every time you fight a thought, you feed it.</h2>
+      <p class="body">Your brain speaks one language. Engagement. Fight the anxiety and you train it to send more. The more you fight, the more you get.</p>
     </div>
   </section>
 
-  <!-- 4. YOU TAKE THEM SERIOUSLY -->
-  <section class="slide slide--bottom">
-    <div class="slide__bg" style="background-image:url('images/email/brain-overthinking.jpg')"></div>
-    <div class="slide__scrim"></div>
-    <div class="content">
-      <p class="eyebrow">But you take them seriously</p>
-      <ul class="qlist stuck">
-        <li>"What does that mean about me?"</li>
-        <li>"What if this anxiety never goes away?"</li>
-        <li>"What if I'm losing my mind?"</li>
-        <li>"Why am I like this?"</li>
-        <li>"What if I never feel normal again?"</li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- 5. ENGAGEMENT -->
-  <section class="slide slide--center">
-    <div class="slide__bg bg-deep"></div>
-    <div class="slide__scrim"></div>
-    <div class="content">
-      <h2 class="headline">The brain's language is engagement.</h2>
-      <p class="body">By engaging, you showed your brain you love the battlefield. So the brain gives you more of the battlefield.</p>
-    </div>
-  </section>
-
-  <!-- 6. MORE YOU FIGHT -->
+  <!-- 4. FIRE ANALOGY (the problem made visible) -->
   <section class="slide slide--bottom">
     <div class="slide__bg" style="background-image:url('images/email/fire.jpg')"></div>
     <div class="slide__scrim"></div>
     <div class="content">
-      <h2 class="headline">The more you fight, the more you get.</h2>
-      <p class="body">You need to stop fighting. Get off the battlefield. Walk in a different direction. That is how you show your brain you do not care about fighting anymore.</p>
+      <h2 class="headline">It is a fire. Your attention is the firewood.</h2>
+      <p class="body">You kept feeding it for years without knowing. Stop adding wood and, in time, it runs out of oxygen.</p>
     </div>
   </section>
 
-  <!-- 7. STOP ASKING -->
-  <section class="slide slide--bottom">
-    <div class="slide__bg bg-deep"></div>
-    <div class="content">
-      <p class="eyebrow">Stop asking the questions that keep you stuck</p>
-      <ul class="qlist stuck">
-        <li>How do I fix this?</li>
-        <li>What's wrong with me?</li>
-        <li>What if it gets worse?</li>
-        <li>What if these thoughts never go away?</li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- 8. START ASKING -->
+  <!-- 5. THE TURN (solution mechanism) -->
   <section class="slide slide--bottom">
     <div class="slide__bg bg-hope"></div>
     <div class="content">
-      <p class="eyebrow">Start asking the questions that move you forward</p>
-      <ul class="qlist healthy">
-        <li>What do I want to grow?</li>
-        <li>What is my excitement?</li>
-        <li>What would I do if I were already confident?</li>
-        <li>How would I act if I did not have these thoughts?</li>
-      </ul>
+      <h2 class="headline">So you stop fighting and walk the other way.</h2>
+      <p class="body">You stop asking how to fix yourself. You start asking what you want to grow. Your attention goes to your life instead of the fire.</p>
     </div>
   </section>
 
-  <!-- 9. QUESTION MACHINE -->
-  <section class="slide slide--center">
-    <div class="slide__bg bg-blue"></div>
-    <div class="content">
-      <h2 class="headline">Your brain is a question-answering machine.</h2>
-      <p class="body">Ask the questions that move you in a healthy direction. Once you have the answer, you navigate your life that way.</p>
-    </div>
-  </section>
-
-  <!-- 10. JUSTINA -->
-  <section class="slide slide--bottom">
-    <div class="slide__bg" style="background-image:url('images/email/image20.jpg')"></div>
-    <div class="slide__scrim"></div>
-    <div class="content">
-      <p class="quote">"Thank you so much for the in-person workshop in LA. It was so transformative. I unlocked something I had been struggling with for years. One of the most welcoming events I have ever been to, and I have been to many."</p>
-      <p class="cite">Justina, May 30 LA workshop</p>
-    </div>
-  </section>
-
-  <!-- 11. FIRE METAPHOR -->
-  <section class="slide slide--bottom">
-    <div class="slide__bg" style="background-image:url('images/email/fire.jpg')"></div>
-    <div class="slide__scrim"></div>
-    <div class="content">
-      <h2 class="headline">The battlefield is a fire.</h2>
-      <p class="body">Your engagement is the firewood. Stop feeding it and, in time, the fire runs out of oxygen. The oxygen is the engagement.</p>
-    </div>
-  </section>
-
-  <!-- 12. GARDEN -->
+  <!-- 6. GARDEN ANALOGY (the payoff made visible) -->
   <section class="slide slide--bottom">
     <div class="slide__bg bg-garden"></div>
     <div class="content">
-      <h2 class="headline">Walk away from the fire and grow a garden.</h2>
-      <p class="body">A garden you nurture with water and sunshine through your actions. A garden that grows over time and ends up supporting you.</p>
+      <h2 class="headline">You leave the fire and grow a garden.</h2>
+      <p class="body">Watered with sunshine through small daily actions. It grows over time. One day it is the thing holding you up.</p>
     </div>
   </section>
 
-  <!-- 13. CAREFREE -->
-  <section class="slide slide--bottom">
-    <div class="slide__bg" style="background-image:url('images/email/image30.jpg')"></div>
-    <div class="slide__scrim"></div>
-    <div class="content">
-      <h2 class="headline">Then you live carefree.</h2>
-      <p class="body">You follow your passions. You walk into a room as yourself. You have conversations being yourself. No more head on the battleground.</p>
-    </div>
-  </section>
-
-  <!-- 14. LAUNCH -->
-  <section class="slide slide--bottom">
-    <div class="slide__bg" style="background-image:url('images/email/image25.jpg')"></div>
-    <div class="slide__scrim"></div>
-    <div class="content">
-      <p class="eyebrow">Launching July 1</p>
-      <h2 class="headline">I built a place to keep you off the battlefield.</h2>
-      <p class="body">Over six years of coaching, I have seen one thing again and again. People need support to stay on track. So I created a community, a place I nurture like a garden, where everyone grows their own.</p>
-    </div>
-  </section>
-
-  <!-- 15. WHAT YOU GET -->
-  <section class="slide slide--bottom">
-    <div class="slide__bg" style="background-image:url('images/email/image15.jpg')"></div>
-    <div class="slide__scrim"></div>
-    <div class="content">
-      <p class="eyebrow">Inside the community</p>
-      <ul class="qlist benefits">
-        <li>Weekly live calls with me, recordings included</li>
-        <li>Member discount on the From Anxiety to Confidence Workshop</li>
-        <li>Early access to test Audacity, my upcoming app</li>
-        <li>Emotional Freedom Technique classes</li>
-        <li>Q&amp;A in the feed, answered with Loom videos</li>
-        <li>A community of good-hearted people who want to grow</li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- 16. WORKSHOP -->
-  <section class="slide slide--bottom">
-    <div class="slide__bg bg-blue"></div>
-    <div class="content">
-      <p class="eyebrow">From Anxiety to Confidence &nbsp;&middot;&nbsp; Saturday, August 15</p>
-      <ul class="qlist benefits">
-        <li>Expose the patterns of anxiety</li>
-        <li>Break the anxiety algorithm</li>
-        <li>Build confidence on a new direction</li>
-        <li>Practice confidence in your day to day life</li>
-        <li>Live hot seat coaching with me</li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- 17. ANNABELLE -->
+  <!-- 7. PROOF -->
   <section class="slide slide--bottom">
     <div class="slide__bg" style="background-image:url('images/Client%20Pictures/Anabelle1.jpeg')"></div>
     <div class="slide__scrim"></div>
@@ -586,25 +443,32 @@
     </div>
   </section>
 
-  <!-- 18. OFFER -->
-  <section class="slide slide--center">
-    <div class="slide__bg bg-hope"></div>
+  <!-- 8. THE OFFER (value stack) -->
+  <section class="slide slide--bottom">
+    <div class="slide__bg" style="background-image:url('images/email/image25.jpg')"></div>
+    <div class="slide__scrim"></div>
     <div class="content">
-      <p class="eyebrow">The community</p>
-      <h2 class="headline">$49 a month.</h2>
-      <p class="body">7-day free trial. Cancel in one click.</p>
-      <a class="cta" href="https://www.skool.com/the-brain-algorithm" target="_blank" rel="noopener">Join the community &rsaquo;</a>
+      <p class="eyebrow">The community &middot; Opens July 1</p>
+      <h2 class="headline">The brain pulls you back. This keeps you walking forward.</h2>
+      <ul class="qlist benefits">
+        <li>Weekly live calls with me, recordings included</li>
+        <li>A member discount on the From Anxiety to Confidence Workshop, August 15</li>
+        <li>First access to test Audacity, my app</li>
+        <li>EFT classes, plus Q&amp;A I answer on video</li>
+        <li>A room of good-hearted people, personally curated</li>
+      </ul>
     </div>
   </section>
 
-  <!-- 19. CLOSE -->
+  <!-- 9. CTA (close + risk reversal) -->
   <section class="slide slide--center">
     <div class="slide__bg" style="background-image:url('images/email/star-hero.jpg')"></div>
     <div class="slide__scrim"></div>
     <div class="content">
-      <h2 class="headline">I'm excited to see you in the community.</h2>
-      <p class="signoff">Star</p>
-      <p class="ps">P.S. First call is July 1st.</p>
+      <h2 class="headline">Your life has been on pause long enough.</h2>
+      <p class="body">$49 a month. 7-day free trial. Cancel in one click.</p>
+      <a class="cta" href="https://www.skool.com/the-brain-algorithm" target="_blank" rel="noopener">Join the community &rsaquo;</a>
+      <p class="ps">First call is July 1st. I'll see you in the room.</p>
     </div>
   </section>
 
@@ -612,7 +476,7 @@
 
 <!-- Chrome -->
 <button class="autoplay" id="autoplay" aria-label="Toggle autoplay"><span id="autoplayIcon">&#9658;</span> <span id="autoplayLabel">Play</span></button>
-<div class="counter"><b id="cur">01</b> / <span id="total">19</span></div>
+<div class="counter"><b id="cur">01</b> / <span id="total">09</span></div>
 <div class="nav">
   <button class="nav__btn" id="prev" aria-label="Previous slide">&lsaquo;</button>
   <button class="nav__btn" id="next" aria-label="Next slide">&rsaquo;</button>
@@ -645,7 +509,7 @@
   function go(n) {
     index = Math.max(0, Math.min(total - 1, n));
     slides.forEach((s, i) => s.classList.toggle('is-active', i === index));
-    progress.style.width = ((index) / (total - 1)) * 100 + '%';
+    progress.style.width = (index / (total - 1)) * 100 + '%';
     curEl.textContent = pad(index + 1);
     prevBtn.disabled = index === 0;
     nextBtn.disabled = index === total - 1;
