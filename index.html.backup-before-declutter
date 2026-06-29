@@ -128,7 +128,6 @@
   </style>
 </section>
 
-<div style="display:none" data-hidden-jun29="true">
 <!-- APPLY FOR COACHING CTA -->
 <section style="background:linear-gradient(160deg, var(--cobalt) 0%, var(--turquoise) 100%);padding:80px 0;text-align:center;">
   <div class="container">
@@ -139,9 +138,7 @@
     </div>
   </div>
 </section>
-</div>
 
-<div style="display:none" data-hidden-jun29="true">
 <!-- FEATURED TESTIMONIAL · NESREEN TAFESH -->
 <section style="background:var(--white);padding:100px 0;">
   <div class="container">
@@ -182,9 +179,7 @@
     }
   </style>
 </section>
-</div>
 
-<div style="display:none" data-hidden-jun29="true">
 <!-- MARISSA VSL SECTION · MORE PROOF -->
 <section class="vsl-section">
   <div class="container">
@@ -207,7 +202,6 @@
     </div>
   </div>
 </section>
-</div>
 
 <!-- FEATURED TESTIMONIAL · ANNABELLE TWIGT (PSYCHOLOGIST) -->
 <section style="background:var(--off-white);padding:90px 0;">
@@ -250,7 +244,6 @@
   </div>
 </section>
 
-<div style="display:none" data-hidden-jun29="true">
 <!-- FEATURED ENDORSEMENT · JON PRINCE -->
 <section style="background:linear-gradient(160deg, #ffffff 0%, #f0f6fb 100%);padding:100px 0;">
   <div class="container">
@@ -294,9 +287,7 @@
     }
   </style>
 </section>
-</div>
 
-<div style="display:none" data-hidden-jun29="true">
 <!-- SOCIAL PROOF BAR -->
 <section class="social-proof">
   <div class="container">
@@ -320,9 +311,7 @@
     </div>
   </div>
 </section>
-</div>
 
-<div style="display:none" data-hidden-jun29="true">
 <!-- TESTIMONIALS -->
 <section class="testimonials-section">
   <div class="container">
@@ -480,9 +469,7 @@
     </div>
   </div>
 </section>
-</div>
 
-<div style="display:none" data-hidden-jun29="true">
 <!-- VIDEO TESTIMONIALS -->
 <section style="background:var(--light-gray);padding:80px 0;">
   <div class="container">
@@ -560,9 +547,7 @@
     </div>
   </div>
 </section>
-</div>
 
-<div style="display:none" data-hidden-jun29="true">
 <!-- LIVED IT VS STUDIED IT -->
 <section style="background:var(--white);padding:100px 0;">
   <div class="container">
@@ -590,9 +575,7 @@
     </div>
   </div>
 </section>
-</div>
 
-<div style="display:none" data-hidden-jun29="true">
 <!-- WHY THIS APPROACH IS DIFFERENT -->
 <section style="background:#F0F6FB;padding:100px 0;">
   <div class="container">
@@ -622,7 +605,6 @@
     </div>
   </div>
 </section>
-</div>
 
 <!-- THREE WAYS TO WORK WITH STAR -->
 <section class="offerings-section">
@@ -680,7 +662,6 @@
   </div>
 </section>
 
-<div style="display:none" data-hidden-jun29="true">
 <!-- WHATS COMING NEXT WAITLISTS -->
 <section style="background:linear-gradient(160deg, #0a1929 0%, #1b6ca8 100%);color:#fff;padding:80px 0;">
   <div class="container" style="max-width:880px;text-align:center;">
@@ -699,12 +680,10 @@
     </div>
   </div>
 </section>
-</div>
 <style>
   @media (max-width: 600px) { #waitlistGrid { grid-template-columns: 1fr !important; } }
 </style>
 
-<div style="display:none" data-hidden-jun29="true">
 <!-- ASK STAR DIRECTLY -->
 <section style="background:var(--white);padding:100px 0;">
   <div class="container">
@@ -733,9 +712,7 @@
     </div>
   </div>
 </section>
-</div>
 
-<div style="display:none" data-hidden-jun29="true">
 <!-- BOOK STANDALONE CTA -->
 <section style="background:var(--light-gray);padding:80px 0;">
   <div class="container">
@@ -748,9 +725,7 @@
     </div>
   </div>
 </section>
-</div>
 
-<div style="display:none" data-hidden-jun29="true">
 <!-- BOOK SECTION -->
 <section class="book-section section-pad" id="book">
   <div class="container">
@@ -771,9 +746,7 @@
     </div>
   </div>
 </section>
-</div>
 
-<div style="display:none" data-hidden-jun29="true">
 <!-- BOOK REVIEWS -->
 <section class="book-reviews-section">
   <div class="container">
@@ -843,9 +816,7 @@
     </div>
   </div>
 </section>
-</div>
 
-<div style="display:none" data-hidden-jun29="true">
 <!-- SMS OPT-IN · DIRECT FROM STAR -->
 <section id="sms-optin" style="background:linear-gradient(160deg, #0a1f3a 0%, #1b6ca8 100%);padding:90px 0;color:#fff;">
   <div class="container" style="max-width:680px;">
@@ -876,7 +847,6 @@
     </form>
   </div>
 </section>
-</div>
 
 <!-- BOTTOM CTA -->
 <section class="bottom-cta">
