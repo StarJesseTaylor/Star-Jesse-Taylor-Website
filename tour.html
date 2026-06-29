@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The Workshop Tour | Star Jesse Taylor</title>
-  <meta name="description" content="Tell Star where you want him to come. Multi-city Emotional Fitness workshop tour. LA, New York, Miami, Austin, online — or write in your city." />
+  <meta name="description" content="Tell Star where you want him to come. Multi-city Emotional Fitness workshop tour. LA, New York, Miami, Austin, online Â· or write in your city." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -452,7 +452,7 @@
       <span class="tour-eyebrow">The Workshop Tour</span>
       <h1>From Anxiety to Confidence <span>in One Day.</span></h1>
       <p class="lede">
-        Los Angeles · New York · Austin · Miami · Online. Get on the waitlist for your city — or write yours in. If there's enough demand, I'll come.
+        Los Angeles Â· New York Â· Austin Â· Miami Â· Online. Get on the waitlist for your city Â· or write yours in. If there's enough demand, I'll come.
       </p>
     </div>
   </section>
@@ -506,7 +506,7 @@
               <label class="tour-city" data-city="other">
                 <input type="checkbox" name="cities" value="other" id="otherCheckbox" />
                 <span class="checkbox-vis"></span>
-                <span>Other — which city?</span>
+                <span>Other Â· which city?</span>
               </label>
             </div>
             <div class="tour-other-input" id="otherInputWrap">
@@ -641,7 +641,7 @@
         if (!firstName) { showError('Please add your first name.'); return; }
         if (!email || !/.+@.+\..+/.test(email)) { showError('Please add a valid email.'); return; }
         if (cities.length === 0) { showError('Pick at least one city or the online workshop.'); return; }
-        if (cities.includes('other') && !otherCityValue) { showError('You picked Other — which city?'); return; }
+        if (cities.includes('other') && !otherCityValue) { showError('You picked Other Â· which city?'); return; }
 
         submitBtn.disabled = true;
         submitBtn.textContent = 'Sending...';
