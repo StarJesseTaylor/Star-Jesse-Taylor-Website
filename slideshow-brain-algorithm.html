@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>From the Battlefield to the Garden | Star Jesse Taylor</title>
+<meta name="description" content="Get off the battlefield in your head. Walk in a new direction. The community opens July 1." />
+<meta name="robots" content="noindex" />
+
+<!-- Open Graph so the link looks good when shared -->
+<meta property="og:title" content="From the Battlefield to the Garden" />
+<meta property="og:description" content="Stop fighting what's in your head. Walk in a new direction. The community opens July 1." />
+<meta property="og:image" content="images/email/star-hero.jpg" />
+<meta property="og:type" content="website" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+<!-- Preload the heaviest hero images for smooth transitions -->
+<link rel="preload" as="image" href="images/email/star-hero.jpg" />
+<link rel="preload" as="image" href="images/email/fire.jpg" />
+<link rel="preload" as="image" href="images/email/brain-overthinking.jpg" />
+
+<style>
+  :root {
+    --ink: #07131d;
+    --ink2: #0b1e2d;
+    --blue: #1b6ca8;
+    --sky: #5b9bd5;
+    --cream: #f6f1e7;
+    --white: #ffffff;
+    --amber: #f5a623;
+    --green: #6cc18a;
+    --teal: #2a9d8f;
+    --muted: rgba(246, 241, 231, 0.72);
+    --slide-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body { height: 100%; }
+
+  body {
+    background: var(--ink);
+    color: var(--cream);
+    font-family: "Inter", system-ui, -apple-system, sans-serif;
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  .deck {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  /* ---------- Slides ---------- */
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.7s var(--slide-ease), visibility 0.7s var(--slide-ease);
+    will-change: opacity;
+  }
+  .slide.is-active {
+    opacity: 1;
+    visibility: visible;
+    z-index: 2;
+  }
+
+  .slide__bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    transform: scale(1.001);
+    z-index: 0;
+  }
+  .slide.is-active .slide__bg {
+    animation: kenburns 12s var(--slide-ease) forwards;
+  }
+  @keyframes kenburns {
+    from { transform: scale(1.001); }
+    to { transform: scale(1.1); }
+  }
+
+  /* Gradient backgrounds for text-only slides */
+  .bg-deep   { background: radial-gradient(120% 120% at 70% 20%, #11324a 0%, #0b1e2d 45%, #06121b 100%); }
+  .bg-blue   { background: linear-gradient(135deg, #0b1e2d 0%, #134a73 55%, #1b6ca8 100%); }
+  .bg-hope   { background: linear-gradient(135deg, #0b1e2d 0%, #14695f 55%, #2a9d8f 100%); }
+  .bg-garden { background: linear-gradient(135deg, #08190f 0%, #1f6b43 60%, #6cc18a 100%); }
+
+  /* Legibility scrim over photos */
+  .slide__scrim {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+      linear-gradient(to top, rgba(5, 12, 18, 0.94) 0%, rgba(5, 12, 18, 0.55) 42%, rgba(5, 12, 18, 0.35) 100%),
+      linear-gradient(to right, rgba(5, 12, 18, 0.85) 0%, rgba(5, 12, 18, 0.35) 55%, rgba(5, 12, 18, 0.1) 100%);
+  }
+  .slide--center .slide__scrim {
+    background: linear-gradient(to bottom, rgba(5, 12, 18, 0.55) 0%, rgba(5, 12, 18, 0.72) 100%);
+  }
+
+  /* ---------- Content ---------- */
+  .content {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: clamp(28px, 6vw, 96px);
+    padding-bottom: clamp(96px, 12vh, 150px);
+  }
+  .slide--center { justify-content: center; text-align: center; }
+  .slide--center .content { text-align: center; }
+  .slide--bottom { align-items: flex-end; }
+
+  .eyebrow {
+    font-size: clamp(11px, 1.4vw, 14px);
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--sky);
+    margin-bottom: clamp(14px, 2.4vw, 26px);
+  }
+  .slide--center .eyebrow { color: var(--sky); }
+
+  .headline {
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 600;
+    line-height: 1.04;
+    letter-spacing: -0.01em;
+    font-size: clamp(30px, 6.4vw, 76px);
+    max-width: 16ch;
+    text-wrap: balance;
+  }
+  .slide--center .headline { max-width: 18ch; margin-inline: auto; }
+
+  .body {
+    font-size: clamp(17px, 2.5vw, 30px);
+    line-height: 1.45;
+    font-weight: 400;
+    color: var(--cream);
+    max-width: 30ch;
+    margin-top: clamp(16px, 2.6vw, 30px);
+  }
+  .slide--center .body { max-width: 36ch; margin-inline: auto; }
+  .body.sub { color: var(--muted); }
+
+  .quote {
+    font-family: "Fraunces", Georgia, serif;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.32;
+    font-size: clamp(22px, 4vw, 48px);
+    max-width: 22ch;
+    text-wrap: balance;
+  }
+  .cite {
+    margin-top: clamp(18px, 2.6vw, 32px);
+    font-size: clamp(14px, 1.7vw, 20px);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--sky);
+  }
+
+  /* Question / benefit lists */
+  .qlist {
+    list-style: none;
+    margin-top: clamp(18px, 3vw, 34px);
+    display: grid;
+    gap: clamp(10px, 1.6vw, 16px);
+    max-width: 760px;
+  }
+  .qlist li {
+    font-size: clamp(16px, 2.3vw, 27px);
+    line-height: 1.3;
+    font-weight: 500;
+    padding-left: 1.4em;
+    position: relative;
+    color: var(--cream);
+  }
+  .qlist li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.62em;
+    width: 0.5em;
+    height: 0.5em;
+    border-radius: 50%;
+    background: var(--sky);
+  }
+  .qlist.stuck li::before { background: rgba(245, 166, 35, 0.85); }
+  .qlist.healthy li::before { background: var(--green); }
+  .qlist.benefits li::before {
+    content: "";
+    width: 0.6em;
+    height: 0.6em;
+    border-radius: 2px;
+    background: var(--sky);
+    top: 0.55em;
+  }
+
+  /* CTA */
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6em;
+    margin-top: clamp(24px, 3.4vw, 40px);
+    padding: clamp(16px, 1.9vw, 22px) clamp(30px, 3.6vw, 46px);
+    background: var(--white);
+    color: var(--ink2);
+    font-weight: 700;
+    font-size: clamp(16px, 1.9vw, 22px);
+    border-radius: 999px;
+    text-decoration: none;
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+    transition: transform 0.25s var(--slide-ease), box-shadow 0.25s var(--slide-ease);
+  }
+  .cta:hover { transform: translateY(-3px); box-shadow: 0 26px 60px rgba(0, 0, 0, 0.55); }
+  .fineprint {
+    margin-top: clamp(16px, 2.2vw, 24px);
+    font-size: clamp(13px, 1.5vw, 17px);
+    color: var(--muted);
+  }
+  .signoff {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: clamp(20px, 2.4vw, 30px);
+    margin-top: clamp(12px, 1.8vw, 20px);
+    color: var(--sky);
+  }
+  .ps {
+    margin-top: clamp(20px, 3vw, 34px);
+    font-size: clamp(14px, 1.7vw, 20px);
+    color: var(--muted);
+    letter-spacing: 0.01em;
+  }
+
+  /* ---------- Entrance animation for active content ---------- */
+  .slide .content > * {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  .slide.is-active .content > * {
+    animation: rise 0.7s var(--slide-ease) forwards;
+  }
+  .slide.is-active .content > *:nth-child(1) { animation-delay: 0.12s; }
+  .slide.is-active .content > *:nth-child(2) { animation-delay: 0.22s; }
+  .slide.is-active .content > *:nth-child(3) { animation-delay: 0.32s; }
+  .slide.is-active .content > *:nth-child(4) { animation-delay: 0.42s; }
+  .slide.is-active .content > *:nth-child(5) { animation-delay: 0.5s; }
+  @keyframes rise {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ---------- Chrome: progress, nav, counter ---------- */
+  .progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 4px;
+    width: 0%;
+    background: linear-gradient(90deg, var(--sky), var(--white));
+    z-index: 30;
+    transition: width 0.6s var(--slide-ease);
+    box-shadow: 0 0 14px rgba(91, 155, 213, 0.6);
+  }
+
+  .nav {
+    position: fixed;
+    bottom: clamp(18px, 3vh, 34px);
+    right: clamp(18px, 3vw, 40px);
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .nav__btn {
+    width: clamp(46px, 6vw, 56px);
+    height: clamp(46px, 6vw, 56px);
+    border-radius: 50%;
+    border: 1px solid rgba(246, 241, 231, 0.28);
+    background: rgba(7, 19, 29, 0.5);
+    backdrop-filter: blur(8px);
+    color: var(--cream);
+    font-size: 22px;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    transition: background 0.2s, transform 0.2s, opacity 0.2s;
+  }
+  .nav__btn:hover { background: rgba(27, 108, 168, 0.7); transform: scale(1.06); }
+  .nav__btn:disabled { opacity: 0.3; cursor: default; transform: none; }
+
+  .counter {
+    position: fixed;
+    bottom: clamp(22px, 3.4vh, 40px);
+    left: clamp(18px, 3vw, 40px);
+    z-index: 30;
+    font-size: clamp(13px, 1.5vw, 16px);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .counter b { color: var(--cream); }
+
+  .autoplay {
+    position: fixed;
+    top: clamp(16px, 2.6vh, 26px);
+    right: clamp(16px, 3vw, 34px);
+    z-index: 30;
+    border: 1px solid rgba(246, 241, 231, 0.28);
+    background: rgba(7, 19, 29, 0.5);
+    backdrop-filter: blur(8px);
+    color: var(--cream);
+    border-radius: 999px;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .autoplay:hover { background: rgba(27, 108, 168, 0.7); }
+
+  .hint {
+    position: absolute;
+    bottom: clamp(80px, 13vh, 130px);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+
+  /* Tap zones (do not cover chrome / links visually, just capture taps) */
+  .tapzone {
+    position: fixed;
+    top: 0; bottom: 0;
+    z-index: 10;
+    cursor: pointer;
+  }
+  .tapzone--prev { left: 0; width: 22%; }
+  .tapzone--next { right: 0; width: 30%; }
+
+  /* ---------- No-JS fallback: show everything stacked ---------- */
+  .no-js .deck { position: static; }
+  .no-js .slide {
+    position: relative;
+    opacity: 1;
+    visibility: visible;
+    min-height: 100vh;
+  }
+  .no-js .slide .content > * { opacity: 1; transform: none; }
+  .no-js .progress, .no-js .nav, .no-js .counter, .no-js .autoplay, .no-js .tapzone { display: none; }
+  .no-js body { overflow: auto; }
+
+  /* ---------- Reduced motion ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    .slide.is-active .slide__bg { animation: none; transform: scale(1.04); }
+    .slide.is-active .content > * { animation: none; opacity: 1; transform: none; }
+    .hint { animation: none; }
+    .slide { transition: opacity 0.3s linear; }
+  }
+
+  @media (max-width: 640px) {
+    .nav__btn { width: 44px; height: 44px; }
+    .tapzone--next { width: 34%; }
+    .body, .quote { max-width: 90%; }
+  }
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+
+<div class="deck" id="deck">
+
+  <!-- 1. COVER -->
+  <section class="slide slide--center is-active">
+    <div class="slide__bg" style="background-image:url('images/email/star-hero.jpg')"></div>
+    <div class="slide__scrim"></div>
+    <div class="content">
+      <p class="eyebrow">Star Jesse Taylor</p>
+      <h1 class="headline">Are you tired of watching everyone else live carefree while you fight what's in your head?</h1>
+    </div>
+    <div class="hint">Swipe &nbsp;&rsaquo;</div>
+  </section>
+
+  <!-- 2. EVERYONE FLOWS -->
+  <section class="slide slide--bottom">
+    <div class="slide__bg bg-deep"></div>
+    <div class="content">
+      <h2 class="headline">You see everyone moving forward.</h2>
+      <p class="body">They are not avoiding their passion. They are not staying in the safe job. They are not playing small in the room. Why do they flow through life so easily?</p>
+    </div>
+  </section>
+
+  <!-- 3. THE DIFFERENCE -->
+  <section class="slide slide--bottom">
+    <div class="slide__bg bg-blue"></div>
+    <div class="content">
+      <p class="eyebrow">The difference</p>
+      <p class="body">They do not take their thoughts and emotions as seriously as you do. When something intense comes up they say, "Oh, what a weird thing. Whatever. Let's keep moving forward with our valued actions."</p>
+    </div>
+  </section>
+
+  <!-- 4. YOU TAKE THEM SERIOUSLY -->
+  <section class="slide slide--bottom">
+    <div class="slide__bg" style="background-image:url('images/email/brain-overthinking.jpg')"></div>
+    <div class="slide__scrim"></div>
+    <div class="content">
+      <p class="eyebrow">But you take them seriously</p>
+      <ul class="qlist stuck">
+        <li>"What does that mean about me?"</li>
+        <li>"What if this anxiety never goes away?"</li>
+        <li>"What if I'm losing my mind?"</li>
+        <li>"Why am I like this?"</li>
+        <li>"What if I never feel normal again?"</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 5. ENGAGEMENT -->
+  <section class="slide slide--center">
+    <div class="slide__bg bg-deep"></div>
+    <div class="slide__scrim"></div>
+    <div class="content">
+      <h2 class="headline">The brain's language is engagement.</h2>
+      <p class="body">By engaging, you showed your brain you love the battlefield. So the brain gives you more of the battlefield.</p>
+    </div>
+  </section>
+
+  <!-- 6. MORE YOU FIGHT -->
+  <section class="slide slide--bottom">
+    <div class="slide__bg" style="background-image:url('images/email/fire.jpg')"></div>
+    <div class="slide__scrim"></div>
+    <div class="content">
+      <h2 class="headline">The more you fight, the more you get.</h2>
+      <p class="body">You need to stop fighting. Get off the battlefield. Walk in a different direction. That is how you show your brain you do not care about fighting anymore.</p>
+    </div>
+  </section>
+
+  <!-- 7. STOP ASKING -->
+  <section class="slide slide--bottom">
+    <div class="slide__bg bg-deep"></div>
+    <div class="content">
+      <p class="eyebrow">Stop asking the questions that keep you stuck</p>
+      <ul class="qlist stuck">
+        <li>How do I fix this?</li>
+        <li>What's wrong with me?</li>
+        <li>What if it gets worse?</li>
+        <li>What if these thoughts never go away?</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 8. START ASKING -->
+  <section class="slide slide--bottom">
+    <div class="slide__bg bg-hope"></div>
+    <div class="content">
+      <p class="eyebrow">Start asking the questions that move you forward</p>
+      <ul class="qlist healthy">
+        <li>What do I want to grow?</li>
+        <li>What is my excitement?</li>
+        <li>What would I do if I were already confident?</li>
+        <li>How would I act if I did not have these thoughts?</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 9. QUESTION MACHINE -->
+  <section class="slide slide--center">
+    <div class="slide__bg bg-blue"></div>
+    <div class="content">
+      <h2 class="headline">Your brain is a question-answering machine.</h2>
+      <p class="body">Ask the questions that move you in a healthy direction. Once you have the answer, you navigate your life that way.</p>
+    </div>
+  </section>
+
+  <!-- 10. JUSTINA -->
+  <section class="slide slide--bottom">
+    <div class="slide__bg" style="background-image:url('images/email/image20.jpg')"></div>
+    <div class="slide__scrim"></div>
+    <div class="content">
+      <p class="quote">"Thank you so much for the in-person workshop in LA. It was so transformative. I unlocked something I had been struggling with for years. One of the most welcoming events I have ever been to, and I have been to many."</p>
+      <p class="cite">Justina, May 30 LA workshop</p>
+    </div>
+  </section>
+
+  <!-- 11. FIRE METAPHOR -->
+  <section class="slide slide--bottom">
+    <div class="slide__bg" style="background-image:url('images/email/fire.jpg')"></div>
+    <div class="slide__scrim"></div>
+    <div class="content">
+      <h2 class="headline">The battlefield is a fire.</h2>
+      <p class="body">Your engagement is the firewood. Stop feeding it and, in time, the fire runs out of oxygen. The oxygen is the engagement.</p>
+    </div>
+  </section>
+
+  <!-- 12. GARDEN -->
+  <section class="slide slide--bottom">
+    <div class="slide__bg bg-garden"></div>
+    <div class="content">
+      <h2 class="headline">Walk away from the fire and grow a garden.</h2>
+      <p class="body">A garden you nurture with water and sunshine through your actions. A garden that grows over time and ends up supporting you.</p>
+    </div>
+  </section>
+
+  <!-- 13. CAREFREE -->
+  <section class="slide slide--bottom">
+    <div class="slide__bg" style="background-image:url('images/email/image30.jpg')"></div>
+    <div class="slide__scrim"></div>
+    <div class="content">
+      <h2 class="headline">Then you live carefree.</h2>
+      <p class="body">You follow your passions. You walk into a room as yourself. You have conversations being yourself. No more head on the battleground.</p>
+    </div>
+  </section>
+
+  <!-- 14. LAUNCH -->
+  <section class="slide slide--bottom">
+    <div class="slide__bg" style="background-image:url('images/email/image25.jpg')"></div>
+    <div class="slide__scrim"></div>
+    <div class="content">
+      <p class="eyebrow">Launching July 1</p>
+      <h2 class="headline">I built a place to keep you off the battlefield.</h2>
+      <p class="body">Over six years of coaching, I have seen one thing again and again. People need support to stay on track. So I created a community, a place I nurture like a garden, where everyone grows their own.</p>
+    </div>
+  </section>
+
+  <!-- 15. WHAT YOU GET -->
+  <section class="slide slide--bottom">
+    <div class="slide__bg" style="background-image:url('images/email/image15.jpg')"></div>
+    <div class="slide__scrim"></div>
+    <div class="content">
+      <p class="eyebrow">Inside the community</p>
+      <ul class="qlist benefits">
+        <li>Weekly live calls with me, recordings included</li>
+        <li>Member discount on the From Anxiety to Confidence Workshop</li>
+        <li>Early access to test Audacity, my upcoming app</li>
+        <li>Emotional Freedom Technique classes</li>
+        <li>Q&amp;A in the feed, answered with Loom videos</li>
+        <li>A community of good-hearted people who want to grow</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 16. WORKSHOP -->
+  <section class="slide slide--bottom">
+    <div class="slide__bg bg-blue"></div>
+    <div class="content">
+      <p class="eyebrow">From Anxiety to Confidence &nbsp;&middot;&nbsp; Saturday, August 15</p>
+      <ul class="qlist benefits">
+        <li>Expose the patterns of anxiety</li>
+        <li>Break the anxiety algorithm</li>
+        <li>Build confidence on a new direction</li>
+        <li>Practice confidence in your day to day life</li>
+        <li>Live hot seat coaching with me</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 17. ANNABELLE -->
+  <section class="slide slide--bottom">
+    <div class="slide__bg" style="background-image:url('images/Client%20Pictures/Anabelle1.jpeg')"></div>
+    <div class="slide__scrim"></div>
+    <div class="content">
+      <p class="quote">"I have tried so many things for mental health. I have read so many self-help books, and I am a psychologist. But this is what actually changed things."</p>
+      <p class="cite">Annabelle, Psychologist</p>
+    </div>
+  </section>
+
+  <!-- 18. OFFER -->
+  <section class="slide slide--center">
+    <div class="slide__bg bg-hope"></div>
+    <div class="content">
+      <p class="eyebrow">The community</p>
+      <h2 class="headline">$49 a month.</h2>
+      <p class="body">7-day free trial. Cancel in one click.</p>
+      <a class="cta" href="https://www.skool.com/the-brain-algorithm" target="_blank" rel="noopener">Join the community &rsaquo;</a>
+    </div>
+  </section>
+
+  <!-- 19. CLOSE -->
+  <section class="slide slide--center">
+    <div class="slide__bg" style="background-image:url('images/email/star-hero.jpg')"></div>
+    <div class="slide__scrim"></div>
+    <div class="content">
+      <h2 class="headline">I'm excited to see you in the community.</h2>
+      <p class="signoff">Star</p>
+      <p class="ps">P.S. First call is July 1st.</p>
+    </div>
+  </section>
+
+</div>
+
+<!-- Chrome -->
+<button class="autoplay" id="autoplay" aria-label="Toggle autoplay"><span id="autoplayIcon">&#9658;</span> <span id="autoplayLabel">Play</span></button>
+<div class="counter"><b id="cur">01</b> / <span id="total">19</span></div>
+<div class="nav">
+  <button class="nav__btn" id="prev" aria-label="Previous slide">&lsaquo;</button>
+  <button class="nav__btn" id="next" aria-label="Next slide">&rsaquo;</button>
+</div>
+<div class="tapzone tapzone--prev" id="tapPrev"></div>
+<div class="tapzone tapzone--next" id="tapNext"></div>
+
+<script>
+  document.documentElement.classList.remove('no-js');
+
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  const progress = document.getElementById('progress');
+  const curEl = document.getElementById('cur');
+  const totalEl = document.getElementById('total');
+  const prevBtn = document.getElementById('prev');
+  const nextBtn = document.getElementById('next');
+  const autoBtn = document.getElementById('autoplay');
+  const autoIcon = document.getElementById('autoplayIcon');
+  const autoLabel = document.getElementById('autoplayLabel');
+
+  let index = 0;
+  let autoTimer = null;
+  const AUTO_MS = 7000;
+
+  totalEl.textContent = String(total).padStart(2, '0');
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  function go(n) {
+    index = Math.max(0, Math.min(total - 1, n));
+    slides.forEach((s, i) => s.classList.toggle('is-active', i === index));
+    progress.style.width = ((index) / (total - 1)) * 100 + '%';
+    curEl.textContent = pad(index + 1);
+    prevBtn.disabled = index === 0;
+    nextBtn.disabled = index === total - 1;
+    if (index === total - 1) stopAuto();
+  }
+
+  function next() { if (index < total - 1) go(index + 1); else stopAuto(); }
+  function prev() { go(index - 1); }
+
+  function startAuto() {
+    stopAuto();
+    autoTimer = setInterval(next, AUTO_MS);
+    autoIcon.innerHTML = '&#10073;&#10073;';
+    autoLabel.textContent = 'Pause';
+  }
+  function stopAuto() {
+    if (autoTimer) clearInterval(autoTimer);
+    autoTimer = null;
+    autoIcon.innerHTML = '&#9658;';
+    autoLabel.textContent = 'Play';
+  }
+  function toggleAuto() { autoTimer ? stopAuto() : startAuto(); }
+
+  prevBtn.addEventListener('click', () => { stopAuto(); prev(); });
+  nextBtn.addEventListener('click', () => { stopAuto(); next(); });
+  autoBtn.addEventListener('click', toggleAuto);
+
+  document.getElementById('tapPrev').addEventListener('click', () => { stopAuto(); prev(); });
+  document.getElementById('tapNext').addEventListener('click', () => { stopAuto(); next(); });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); stopAuto(); next(); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); stopAuto(); prev(); }
+    else if (e.key === 'Home') { stopAuto(); go(0); }
+    else if (e.key === 'End') { stopAuto(); go(total - 1); }
+  });
+
+  // Touch swipe
+  let touchX = null, touchY = null;
+  const deck = document.getElementById('deck');
+  deck.addEventListener('touchstart', (e) => {
+    touchX = e.changedTouches[0].clientX;
+    touchY = e.changedTouches[0].clientY;
+  }, { passive: true });
+  deck.addEventListener('touchend', (e) => {
+    if (touchX === null) return;
+    const dx = e.changedTouches[0].clientX - touchX;
+    const dy = e.changedTouches[0].clientY - touchY;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
+      stopAuto();
+      dx < 0 ? next() : prev();
+    }
+    touchX = touchY = null;
+  }, { passive: true });
+
+  go(0);
+</script>
+</body>
+</html>
