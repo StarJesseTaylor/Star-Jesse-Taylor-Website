@@ -146,6 +146,36 @@ async function sendBookEmail(toEmail, firstName, downloadUrl) {
   }
 }
 
+async function notifyStarOfSale(buyerEmail, buyerName, amountCents, sessionId) {
+  const apiKey = process.env.RESEND_API_KEY;
+  const notifyTo = process.env.STAR_NOTIFY_EMAIL || 'star@starjessetaylor.com';
+  if (!apiKey) return;
+  const amount = (amountCents / 100).toFixed(2);
+  const text = [
+    `New book sale.`,
+    '',
+    `Buyer: ${buyerName || '(no name)'} <${buyerEmail}>`,
+    `Amount: $${amount}`,
+    `Time: ${new Date().toISOString()}`,
+    '',
+    `Stripe session: https://dashboard.stripe.com/payments/${sessionId}`,
+  ].join('\n');
+  try {
+    await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from: 'Book Sales <star@starjessetaylor.com>',
+        to: [notifyTo],
+        subject: `Book sold ($${amount}) — ${buyerEmail}`,
+        text
+      })
+    });
+  } catch (err) {
+    console.error('Star notify failed:', err);
+  }
+}
+
 export const config = { api: { bodyParser: false } };
 
 export default async function handler(req, res) {
@@ -184,13 +214,17 @@ export default async function handler(req, res) {
     return res.status(200).json({ warning: 'No email' });
   }
 
-  const bookUrl = process.env.BOOK_PDF_URL || 'https://starjessetaylor.com/book';
+  // Buyer downloads via the proxy endpoint using their session ID
+  const host = req.headers?.host || 'starjessetaylor.com';
+  const protocol = host.includes('localhost') ? 'http' : 'https';
+  const bookUrl = `${protocol}://${host}/api/book-download?session_id=${encodeURIComponent(session.id)}`;
 
   // Fire everything in parallel (fire-and-forget where safe)
   const AC_URL = process.env.AC_API_URL;
   const AC_TOKEN = process.env.AC_API_TOKEN;
 
   await sendBookEmail(email, firstName, bookUrl);
+  await notifyStarOfSale(email, firstName, session.amount_total || 2900, session.id);
 
   if (AC_URL && AC_TOKEN) {
     const acHeaders = {
