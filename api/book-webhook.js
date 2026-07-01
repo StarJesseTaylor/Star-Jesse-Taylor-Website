@@ -125,8 +125,6 @@ async function sendBookEmail(toEmail, firstName, downloadUrl) {
     '',
     "https://www.skool.com/star-jesse-taylor-3703",
     '',
-    "You have nothing to lose.",
-    '',
     "Star"
   ].join('\n');
 
