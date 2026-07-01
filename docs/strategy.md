@@ -50,6 +50,6 @@ Author the teaching once, deploy it three ways. This is the central content leve
 4. Keep `CLAUDE.md`, `docs/`, and this file current; prompt Star to update when something significant changes.
 
 ## Open strategic flags (to resolve with Star)
-- **Community brand name.** Star refers to the $49 community as "Audacity," but `community.html` and `slideshow-brain-algorithm.html` currently redirect to `skool.com/the-brain-algorithm`, and "Audacity" has been the app's name. Confirm the intended brand for community vs app so the funnel reads coherently.
+- **Community brand name.** Star refers to the $49 community as "Audacity," which is also the app's name. The live Skool room is **`https://www.skool.com/star-jesse-taylor-3703`** (confirmed 2026-07-01; the old `the-brain-algorithm` URL is dead and has been removed from the site). Open question: is the public-facing community name "Audacity," and does it stay distinct from the app of the same name?
 - **Book funnel may be leaking at the entrance.** The newly built `/api/book-webhook` has unverified AC tagging (wrong env-var names) and PDF delivery (`BOOK_PDF_URL` fallback is a page, not a file). Details in `docs/state-and-todos.md`. A leak here wastes every dollar spent driving book sales.
 - **No unified funnel measurement.** The $50k–$100k/month goal needs a visible denominator: of N book buyers, how many enter the community, then the workshop, then the cohort. Today that path is spread across ActiveCampaign tags and PostHog with no single view.

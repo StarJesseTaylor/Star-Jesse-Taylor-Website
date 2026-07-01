@@ -19,7 +19,7 @@ Untracked at root / in `scripts/`: the entire `scripts/*.mjs` toolkit is untrack
 |---|---|
 | Static marketing/funnel pages | **Live.** ~40 pages, all wired to form APIs. |
 | Form → ActiveCampaign + Resend pipeline | **Live** across all lead forms. |
-| Stripe **book** checkout + webhook | **Newly added** (latest commit `7b3af6a`, files dated today). See webhook risks below. |
+| Stripe **book** checkout + webhook + Blob download | **Live & verified-configured** (2026-07-01). Checkout → webhook → `book-download` stream all deployed; Stripe live key + webhook secret + Blob token confirmed set via production probes. One real/promo purchase still needed to confirm the PDF actually delivers and the webhook endpoint is registered. |
 | Course sales via Stripe **payment links** | **Live** (links + redirect targets in `STRIPE_REDIRECT_URLS.txt`). |
 | Supabase tester-application triage + admin UI | **Live.** Table `tester_applications`, `admin/testers.html`. |
 | Health-check / digest crons (4) | **Live** in `vercel.json`. |
@@ -32,9 +32,9 @@ Untracked at root / in `scripts/`: the entire `scripts/*.mjs` toolkit is untrack
 ## Confirmed bugs / risks (in code)
 
 1. **`api/email-writer/send.js` audience targeting is broken.** The tag-based segment is created but never linked to the campaign, and the computed per-tag `conditions` are never sent to AC. Result: campaigns send to the **entire `AC_AUDACITY_LIST_ID` list**, not the selected tags. Also sends `logic:'"or"'` (double-quoted string). **This can mis-send email to everyone — verify before using the email-writer "send" button.**
-2. **`api/book-webhook.js` uses the wrong AC env-var names** (`AC_API_URL`/`AC_API_TOKEN` vs the standard `ACTIVECAMPAIGN_API_URL`/`_KEY`). If those aren't separately set in Vercel, book buyers are **not tagged in AC** (email still sends). **(open question: are `AC_API_*` provisioned in Vercel?)**
-3. **`api/book-webhook.js` signature handling is fragile:** verification is **skipped entirely if `STRIPE_WEBHOOK_SECRET` is unset**; `verifyStripeSignature` isn't in a try/catch (a `timingSafeEqual` length mismatch throws → 500 not 400); no timestamp/replay tolerance.
-4. **`BOOK_PDF_URL` fallback is a web page, not a PDF** — if the env var is unset, buyers get a link to `/book`, not the actual download. **(open question: is `BOOK_PDF_URL` set, and to a real file?)**
+2. **Book funnel — VERIFIED live & configured (2026-07-01).** The live code is newer than the initial audit. `book-webhook.js` uses the correct `ACTIVECAMPAIGN_API_URL/KEY` + `Api-Token` header and tags buyers `book-buyer`, `owns:emotional-fitness-book`, `path:book-purchase`, etc.; delivery is via `api/book-download.js` (Stripe-session-authenticated stream from a private Vercel Blob store), not a `BOOK_PDF_URL` link. Production probes confirmed `STRIPE_SECRET_KEY` (live mode), `STRIPE_WEBHOOK_SECRET`, and `BLOB_READ_WRITE_TOKEN` are all set; checkout builds a real `cs_live_` session; webhook signature verification is active. **Still unverified (needs one real or 100%-off-promo purchase):** that the Stripe webhook endpoint is actually registered in the Stripe dashboard, and that the Blob holds the PDF at `BOOK_BLOB_PATHNAME` (default `'EMOTIONAL FITNESS BOOK PDF'`) — a mismatch yields a 502 "email star@" instead of the book.
+3. **Minor (book):** `verifyStripeSignature` isn't wrapped in try/catch (a `timingSafeEqual` length mismatch on malformed input throws → 500 instead of 400); low priority since the secret is set and real Stripe signatures are well-formed. Price defaults to `2999` (=$29.99) in `book-checkout.js`/`book-webhook.js` while a comment says 2900; effective price is $29.99 unless `BOOK_PRICE_USD` is set.
+4. **Skool community URL split — FIXED (2026-07-01).** `community.html` and `slideshow-brain-algorithm.html` pointed at `skool.com/the-brain-algorithm`, which returns **HTTP 404 (dead)**. The live community is `skool.com/star-jesse-taylor-3703` (HTTP 200; used by `index.html`, `book-webhook.js`, `book-thank-you.html`). Both stale pages were repointed to the live URL. **Canonical community URL going forward: `https://www.skool.com/star-jesse-taylor-3703`.** Any new page that links to the community must use this.
 5. **`api/tour-interest.js` is inconsistent and cross-origin-fragile:** only CommonJS handler, **no CORS headers / no OPTIONS**, and notifies `jessetaylortraxxx@gmail.com` instead of the usual address.
 6. **Two open LLM endpoints on `ANTHROPIC_API_KEY`:** `/api/chat` has **no auth and no rate limiting**; `/api/yt-agent` only gates when `YT_AGENT_PASSWORD` is set. Cost/abuse exposure. (Chat is currently unreachable from the UI because the widget is disabled, but the endpoint is public.)
 7. **`/api/health-check` has no auth** (publicly triggerable); `video-health-check` and `whats-next-digest` bypass auth on any `GET`.
@@ -69,7 +69,7 @@ Untracked at root / in `scripts/`: the entire `scripts/*.mjs` toolkit is untrack
 ## Things a fresh session can't determine from code alone (open questions)
 
 1. Which env vars are **actually set in the Vercel dashboard** — the local `.env.production` is a partial snapshot (missing e.g. `SUPABASE_*`, `AC_*_LIST_ID`, `BOOK_*`, `STRIPE_WEBHOOK_SECRET`). Confirm the full set in Vercel.
-2. Whether `AC_API_URL`/`AC_API_TOKEN` (book-webhook) and `BOOK_PDF_URL` are provisioned (bugs #2, #4 depend on this).
+2. Whether the Stripe webhook endpoint is registered in the Stripe dashboard pointing at `/api/book-webhook` for `checkout.session.completed`, and whether the Blob store holds the PDF at the expected pathname. Confirm both with one 100%-off promo-code test purchase (checkout has promo codes enabled, so this is free).
 3. Whether the uncommitted `star@` email edits + the `scripts/` toolkit should be committed.
 4. The exact Stripe webhook endpoints configured in the Stripe dashboard (code expects `/api/book-webhook` and `/api/blue/stripe-webhook`) and whether their signing secrets are set.
 5. Whether the 3 Anthropic model IDs in code (`claude-haiku-4-5-20251001`, `claude-sonnet-4-6`, `claude-opus-4-7`) are all currently valid/intended.
