@@ -5,20 +5,27 @@
  *   https://starjessetaylor.com/api/book-download?session_id=cs_test_xxx
  *
  * We verify with Stripe that this session was actually paid, then fetch the
- * book PDF from the private Vercel Blob store (using our token) and stream
- * it to the buyer. No one without a real Stripe session ID can access the PDF.
+ * book PDF from the private Vercel Blob store (using our BLOB_READ_WRITE_TOKEN)
+ * and stream it back to the buyer. Only real paid sessions can trigger this.
+ *
+ * Vercel Blob private URL pattern:
+ *   https://{storeHash}.private.blob.vercel-storage.com/{pathname}
+ *   with Authorization: Bearer {BLOB_READ_WRITE_TOKEN}
  *
  * Env vars:
  *   STRIPE_SECRET_KEY — to verify the session
- *   BLOB_READ_WRITE_TOKEN — to fetch from the private Blob store
- *   BOOK_BLOB_PATHNAME — the blob path (default: "EMOTIONAL FITNESS BOOK PDF")
+ *   BLOB_READ_WRITE_TOKEN — auto-added when the Blob store was connected
+ *   BOOK_BLOB_STORE_HASH — the private store hash (extractable from the store URL)
+ *     defaults to 'xilphdnwuyepatjj' which is Star's BOOKSTORAGE store
+ *   BOOK_BLOB_PATHNAME — the file's pathname in the store
+ *     defaults to 'EMOTIONAL FITNESS BOOK PDF'
  */
 
 const STRIPE_API_BASE = 'https://api.stripe.com/v1';
 
 export const config = {
   api: {
-    responseLimit: false, // allow streaming responses larger than the default 4.5MB
+    responseLimit: false, // allow streaming large PDFs past the default 4.5MB
   },
 };
 
@@ -31,14 +38,15 @@ export default async function handler(req, res) {
 
   const stripeKey = process.env.STRIPE_SECRET_KEY;
   const blobToken = process.env.BLOB_READ_WRITE_TOKEN;
-  const pathname = process.env.BOOK_BLOB_PATHNAME || 'emotional-fitness-book.pdf';
+  const storeHash = process.env.BOOK_BLOB_STORE_HASH || 'xilphdnwuyepatjj';
+  const pathname = process.env.BOOK_BLOB_PATHNAME || 'EMOTIONAL FITNESS BOOK PDF';
 
   if (!stripeKey || !blobToken) {
     console.error('Missing env: stripe=', !!stripeKey, 'blob=', !!blobToken);
     return res.status(500).send('Download not configured');
   }
 
-  // Step 1: verify the Stripe session was paid
+  // Step 1: verify the Stripe session was actually paid
   let stripeSession;
   try {
     const stripeRes = await fetch(`${STRIPE_API_BASE}/checkout/sessions/${encodeURIComponent(session_id)}`, {
@@ -58,21 +66,16 @@ export default async function handler(req, res) {
     return res.status(403).send('Payment not completed');
   }
 
-  // Step 2: fetch the PDF from Vercel Blob using our token
+  // Step 2: fetch the PDF directly from the private Blob store using our token.
   //
-  // Vercel Blob's private URLs require the read-write token via Bearer auth,
-  // or use the head() endpoint to get a short-lived signed URL. We use the
-  // simpler direct-fetch pattern here since we already have the token.
-  //
-  // The Blob store URL pattern: https://{storeId}.private.blob.vercel-storage.com/{pathname}
-  // We extract the storeId from the token's JWT payload OR use the public API endpoint.
-  //
-  // Simpler: use the Vercel Blob API to get metadata + downloadUrl
-  const blobApiUrl = `https://blob.vercel-storage.com/${encodeURIComponent(pathname)}`;
+  // Private Blob URLs are addressable via {storeHash}.private.blob.vercel-storage.com
+  // The BLOB_READ_WRITE_TOKEN in the Authorization header authenticates us as
+  // the store owner and grants read access to any blob in the store.
+  const blobUrl = `https://${storeHash}.private.blob.vercel-storage.com/${encodeURIComponent(pathname)}`;
 
   let blobRes;
   try {
-    blobRes = await fetch(blobApiUrl, {
+    blobRes = await fetch(blobUrl, {
       headers: { Authorization: `Bearer ${blobToken}` }
     });
   } catch (err) {
@@ -81,9 +84,9 @@ export default async function handler(req, res) {
   }
 
   if (!blobRes.ok) {
-    const errText = await blobRes.text();
-    console.error('Blob returned non-200:', blobRes.status, errText.slice(0, 300));
-    return res.status(502).send('Book file not available. Please email support.');
+    const errText = await blobRes.text().catch(() => '(no body)');
+    console.error('Blob returned non-200:', blobRes.status, errText.slice(0, 300), 'for URL:', blobUrl);
+    return res.status(502).send('Book file not available. Please email star@starjessetaylor.com for help.');
   }
 
   // Step 3: stream the PDF to the buyer
@@ -91,8 +94,9 @@ export default async function handler(req, res) {
   res.setHeader('Content-Disposition', 'attachment; filename="Emotional-Fitness-by-Star-Taylor.pdf"');
   const contentLength = blobRes.headers.get('content-length');
   if (contentLength) res.setHeader('Content-Length', contentLength);
+  res.setHeader('Cache-Control', 'private, max-age=0, no-store');
 
-  // Node.js stream the body through
+  // Stream the body chunk-by-chunk to avoid buffering the whole 80+MB file in memory
   if (blobRes.body) {
     const reader = blobRes.body.getReader();
     while (true) {
@@ -103,7 +107,7 @@ export default async function handler(req, res) {
     return res.end();
   }
 
-  // Fallback: buffer + send
+  // Fallback if streaming isn't available for some reason
   const buffer = Buffer.from(await blobRes.arrayBuffer());
   return res.status(200).send(buffer);
 }
