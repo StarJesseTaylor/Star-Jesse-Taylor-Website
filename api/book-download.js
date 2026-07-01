@@ -31,7 +31,7 @@ export default async function handler(req, res) {
 
   const stripeKey = process.env.STRIPE_SECRET_KEY;
   const blobToken = process.env.BLOB_READ_WRITE_TOKEN;
-  const pathname = process.env.BOOK_BLOB_PATHNAME || 'EMOTIONAL FITNESS BOOK PDF';
+  const pathname = process.env.BOOK_BLOB_PATHNAME || 'emotional-fitness-book.pdf';
 
   if (!stripeKey || !blobToken) {
     console.error('Missing env: stripe=', !!stripeKey, 'blob=', !!blobToken);
