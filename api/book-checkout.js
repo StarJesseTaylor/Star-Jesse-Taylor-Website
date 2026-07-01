@@ -26,7 +26,7 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'Stripe not configured' });
   }
 
-  const priceInCents = parseInt(process.env.BOOK_PRICE_USD || '2900', 10);
+  const priceInCents = parseInt(process.env.BOOK_PRICE_USD || '2999', 10);
   const host = req.headers?.host || 'starjessetaylor.com';
   const protocol = host.includes('localhost') ? 'http' : 'https';
   const origin = `${protocol}://${host}`;

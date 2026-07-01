@@ -72,7 +72,7 @@ async function sendConfirmation(toEmail, name) {
       body: JSON.stringify({
         from: 'Star Jesse Taylor <hello@starjessetaylor.com>',
         to: [toEmail],
-        reply_to: 'starjessetaylor@gmail.com',
+        reply_to: 'star@starjessetaylor.com',
         subject: name ? `${name}, you are signed up for Star's Letters` : "You are signed up for Star's Letters",
         html, text
       })
@@ -105,7 +105,8 @@ async function notifyStar(name, email, phone, smsOptIn, sourceTag) {
       headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         from: "Star's Letters <hello@starjessetaylor.com>",
-        to: ['starjessetaylor@gmail.com'],
+        to: ['star@starjessetaylor.com'],
+        cc: ['starjessetaylor@gmail.com'],
         subject: "New Star's Letters signup: " + (name || email),
         text
       })

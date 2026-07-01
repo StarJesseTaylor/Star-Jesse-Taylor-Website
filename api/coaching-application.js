@@ -139,7 +139,8 @@ async function emailStar(applicantName, applicantEmail, bodyText) {
       headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         from: 'Coaching Application <hello@starjessetaylor.com>',
-        to: ['starjessetaylor@gmail.com'],
+        to: ['star@starjessetaylor.com'],
+        cc: ['starjessetaylor@gmail.com'],
         reply_to: applicantEmail || undefined,
         subject: (bodyText.indexOf('NEW PACKAGE APPLICATION') >= 0 ? 'New Package Application: ' : 'New Coaching Application: ') + (applicantName || applicantEmail || 'Unnamed Applicant'),
         text: bodyText
@@ -183,7 +184,7 @@ async function emailApplicantConfirmation(toEmail, name) {
       body: JSON.stringify({
         from: 'Star Jesse Taylor <hello@starjessetaylor.com>',
         to: [toEmail],
-        reply_to: 'starjessetaylor@gmail.com',
+        reply_to: 'star@starjessetaylor.com',
         subject: name ? `${name}, your application is in` : 'Your coaching application is in',
         html, text
       })
@@ -286,7 +287,7 @@ export default async function handler(req, res) {
   // The email to Star is the success criteria. If that failed, surface it
   // so the form can show an error instead of pretending it worked.
   if (!emailedStar) {
-    return res.status(500).json({ error: 'We hit a problem sending your application. Please email starjessetaylor@gmail.com directly and we will not lose your message.' });
+    return res.status(500).json({ error: 'We hit a problem sending your application. Please email star@starjessetaylor.com directly and we will not lose your message.' });
   }
 
   return res.status(200).json({ success: true });
