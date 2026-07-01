@@ -10,7 +10,9 @@
     { "source": "/preview/garden", "destination": "/preview/garden.html" },
     { "source": "/whats-next", "destination": "/whats-next.html" },
     { "source": "/community", "destination": "/community.html" },
-    { "source": "/slideshow", "destination": "/slideshow-brain-algorithm.html" }
+    { "source": "/slideshow", "destination": "/slideshow-brain-algorithm.html" },
+    { "source": "/book", "destination": "/book.html" },
+    { "source": "/book-thank-you", "destination": "/book-thank-you.html" }
   ],
   "crons": [
     {
