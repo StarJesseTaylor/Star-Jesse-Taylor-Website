@@ -145,7 +145,7 @@ async function sendBookEmail(toEmail, firstName, downloadUrl) {
   }
 }
 
-async function notifyStarOfSale(buyerEmail, buyerName, amountCents, sessionId) {
+async function notifyStarOfSale(buyerEmail, buyerName, amountCents, sessionId, downloadUrl) {
   const apiKey = process.env.RESEND_API_KEY;
   const notifyTo = process.env.STAR_NOTIFY_EMAIL || 'star@starjessetaylor.com';
   if (!apiKey) return;
@@ -158,6 +158,9 @@ async function notifyStarOfSale(buyerEmail, buyerName, amountCents, sessionId) {
     `Time: ${new Date().toISOString()}`,
     '',
     `Stripe session: https://dashboard.stripe.com/payments/${sessionId}`,
+    '',
+    `Buyer's book download link (forward this if they say they didn't get it):`,
+    downloadUrl,
   ].join('\n');
   try {
     await fetch('https://api.resend.com/emails', {
@@ -224,7 +227,7 @@ export default async function handler(req, res) {
   const AC_KEY = process.env.ACTIVECAMPAIGN_API_KEY;
 
   await sendBookEmail(email, firstName, bookUrl);
-  await notifyStarOfSale(email, firstName, session.amount_total || 2999, session.id);
+  await notifyStarOfSale(email, firstName, session.amount_total || 2999, session.id, bookUrl);
 
   if (AC_KEY) {
     const acHeaders = {
