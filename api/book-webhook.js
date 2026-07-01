@@ -12,7 +12,8 @@
  *   STRIPE_SECRET_KEY — for retrieving the full session object
  *   BOOK_PDF_URL — link to the book PDF (Vercel Blob signed URL, Google Drive, S3, whatever Star chooses)
  *   RESEND_API_KEY — for sending the delivery email
- *   AC_API_URL, AC_API_TOKEN — ActiveCampaign
+ *   ACTIVECAMPAIGN_API_URL, ACTIVECAMPAIGN_API_KEY — ActiveCampaign (matches the rest of the codebase)
+ *   STAR_NOTIFY_EMAIL — where to send sale notifications (defaults to star@starjessetaylor.com)
  *
  * Configure the Stripe webhook at https://dashboard.stripe.com/webhooks:
  *   Endpoint URL: https://starjessetaylor.com/api/book-webhook
@@ -220,29 +221,36 @@ export default async function handler(req, res) {
   const bookUrl = `${protocol}://${host}/api/book-download?session_id=${encodeURIComponent(session.id)}`;
 
   // Fire everything in parallel (fire-and-forget where safe)
-  const AC_URL = process.env.AC_API_URL;
-  const AC_TOKEN = process.env.AC_API_TOKEN;
+  // Env var names MUST match the rest of the codebase (audacity-waitlist, etc.)
+  const AC_URL = (process.env.ACTIVECAMPAIGN_API_URL || 'https://starjessetaylor92181.api-us1.com').replace(/\/$/, '');
+  const AC_KEY = process.env.ACTIVECAMPAIGN_API_KEY;
 
   await sendBookEmail(email, firstName, bookUrl);
-  await notifyStarOfSale(email, firstName, session.amount_total || 2900, session.id);
+  await notifyStarOfSale(email, firstName, session.amount_total || 2999, session.id);
 
-  if (AC_URL && AC_TOKEN) {
+  if (AC_KEY) {
     const acHeaders = {
-      'Api-Token': AC_TOKEN,
+      'Api-Token': AC_KEY,
       'Content-Type': 'application/json'
     };
     try {
       const contactId = await acFindOrCreateContact(AC_URL, acHeaders, email, firstName);
       if (contactId) {
         await acAddToList(AC_URL, acHeaders, contactId, AC_DEFAULT_LIST_ID);
+        // Ladder-machinery tags (drive AC automation flows):
+        await acApplyTag(AC_URL, acHeaders, contactId, 'book-buyer');
+        await acApplyTag(AC_URL, acHeaders, contactId, 'owns:emotional-fitness-book');
+        // Historical convention tag (preserved for legacy segments):
         await acApplyTag(AC_URL, acHeaders, contactId, 'Emotional Fitness Book Buyer');
+        // Source tracking:
         await acApplyTag(AC_URL, acHeaders, contactId, 'source:direct-website');
+        await acApplyTag(AC_URL, acHeaders, contactId, 'path:book-purchase');
       }
     } catch (err) {
       console.error('AC integration failed:', err);
     }
   } else {
-    console.warn('AC env vars missing — skipping AC integration');
+    console.warn('ACTIVECAMPAIGN_API_KEY missing — skipping AC integration. This means buyers pay but do not get tagged.');
   }
 
   return res.status(200).json({ received: true });
