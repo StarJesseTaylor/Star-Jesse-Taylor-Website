@@ -255,38 +255,12 @@ if (waitlistForm) {
   });
 }
 
-// ===== EMAIL CAPTURE FORM — Free Chapter Lead Magnet =====
-const emailCaptureForm = document.getElementById('emailCaptureForm');
-const emailCaptureConfirmation = document.getElementById('emailCaptureConfirmation');
-
-if (emailCaptureForm) {
-  emailCaptureForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const submitBtn = emailCaptureForm.querySelector('button[type="submit"]');
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Sending...';
-
-    const data = new FormData(emailCaptureForm);
-    const firstName = data.get('first_name') || '';
-    const email = data.get('subscriber_email') || '';
-    const interests = data.getAll('interests');
-    const website_url = data.get('website_url') || '';
-
-    try {
-      const res = await fetch('/api/free-chapter', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, firstName, interests, website_url })
-      });
-      if (!res.ok) throw new Error('Subscribe failed');
-    } catch (err) {
-      console.warn('Email capture error:', err);
-    }
-
-    emailCaptureForm.style.display = 'none';
-    if (emailCaptureConfirmation) emailCaptureConfirmation.style.display = 'block';
-  });
-}
+// ===== EMAIL CAPTURE FORM — REMOVED 2026-07-03 =====
+// The free-chapter lead magnet was retired. No HTML page references
+// emailCaptureForm anymore, so the handler + selector were dead code
+// pointing at a deliberately-410 endpoint. Star confirmed: "we don't
+// give away free chapters." Endpoint /api/free-chapter stays at HTTP 410
+// as a tombstone for old bookmarks; nothing on-site can reach it.
 
 // ===== INTENSIVE WAITLIST FORMS =====
 ['intensiveWaitlist', 'intensiveWaitlistServices'].forEach(function(id) {
