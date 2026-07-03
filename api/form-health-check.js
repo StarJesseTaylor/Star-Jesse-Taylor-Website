@@ -103,9 +103,9 @@ const CHECKS = [
     name: 'free-chapter',
     method: 'GET',
     url: `${SITE_URL}/api/free-chapter`,
-    expectStatus: 405,
-    critical: true,
-    description: 'Free Chapter Download form'
+    expectStatus: 410,
+    critical: false,
+    description: 'Free Chapter Download form (RETIRED — returns 410 by design)'
   },
   {
     name: 'join-letter',
@@ -199,9 +199,9 @@ const CHECKS = [
     name: 'event-seats',
     method: 'GET',
     url: `${SITE_URL}/api/event-seats`,
-    expectStatus: 405,
+    expectStatus: 200,
     critical: false,
-    description: 'Event Seats (read-only info endpoint)'
+    description: 'Event Seats (read-only GET endpoint that returns seat availability)'
   }
 ];
 
