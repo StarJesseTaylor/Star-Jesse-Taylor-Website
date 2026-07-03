@@ -97,6 +97,111 @@ const CHECKS = [
     expectStatus: 200,
     critical: false,
     description: 'Site-level health check'
+  },
+  // === Expanded coverage added 2026-07-03 (Star asked for health checks on ALL forms) ===
+  {
+    name: 'free-chapter',
+    method: 'GET',
+    url: `${SITE_URL}/api/free-chapter`,
+    expectStatus: 405,
+    critical: true,
+    description: 'Free Chapter Download form'
+  },
+  {
+    name: 'join-letter',
+    method: 'GET',
+    url: `${SITE_URL}/api/join-letter`,
+    expectStatus: 405,
+    critical: true,
+    description: 'Join Letter subscribe form'
+  },
+  {
+    name: 'la-meetup-waitlist',
+    method: 'GET',
+    url: `${SITE_URL}/api/la-meetup-waitlist`,
+    expectStatus: 405,
+    critical: true,
+    description: 'LA Meetup Waitlist form'
+  },
+  {
+    name: 'qualify',
+    method: 'GET',
+    url: `${SITE_URL}/api/qualify`,
+    expectStatus: 405,
+    critical: true,
+    description: 'Qualify (cohort/coaching qualifier) form'
+  },
+  {
+    name: 'quiz-submit',
+    method: 'GET',
+    url: `${SITE_URL}/api/quiz-submit`,
+    expectStatus: 405,
+    critical: true,
+    description: 'Quiz funnel submission (primary funnel entry)'
+  },
+  {
+    name: 'sms-optin',
+    method: 'GET',
+    url: `${SITE_URL}/api/sms-optin`,
+    expectStatus: 405,
+    critical: true,
+    description: 'SMS opt-in form'
+  },
+  {
+    name: 'speaking-inquiry',
+    method: 'GET',
+    url: `${SITE_URL}/api/speaking-inquiry`,
+    expectStatus: 405,
+    critical: true,
+    description: 'Speaking Inquiry form'
+  },
+  {
+    name: 'subscribe',
+    method: 'GET',
+    url: `${SITE_URL}/api/subscribe`,
+    expectStatus: 405,
+    critical: true,
+    description: 'Email subscribe form'
+  },
+  {
+    name: 'tour-interest',
+    method: 'GET',
+    url: `${SITE_URL}/api/tour-interest`,
+    expectStatus: 405,
+    critical: true,
+    description: 'Tour Interest form (LA #2 / NY / Miami / Austin)'
+  },
+  {
+    name: 'whats-next',
+    method: 'GET',
+    url: `${SITE_URL}/api/whats-next`,
+    expectStatus: 405,
+    critical: true,
+    description: "What's Next signup form"
+  },
+  {
+    name: 'workshop-questionnaire',
+    method: 'GET',
+    url: `${SITE_URL}/api/workshop-questionnaire`,
+    expectStatus: 405,
+    critical: true,
+    description: 'Workshop Questionnaire form'
+  },
+  {
+    name: 'zoom-rsvp',
+    method: 'GET',
+    url: `${SITE_URL}/api/zoom-rsvp`,
+    expectStatus: 405,
+    critical: true,
+    description: 'Zoom RSVP form'
+  },
+  {
+    name: 'event-seats',
+    method: 'GET',
+    url: `${SITE_URL}/api/event-seats`,
+    expectStatus: 405,
+    critical: false,
+    description: 'Event Seats (read-only info endpoint)'
   }
 ];
 
