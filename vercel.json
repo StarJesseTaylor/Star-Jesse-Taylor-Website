@@ -13,7 +13,8 @@
     { "source": "/slideshow", "destination": "/slideshow-brain-algorithm.html" },
     { "source": "/book", "destination": "/book.html" },
     { "source": "/book-thank-you", "destination": "/book-thank-you.html" },
-    { "source": "/breakthrough-blueprint", "destination": "/breakthrough-blueprint.html" }
+    { "source": "/breakthrough-blueprint", "destination": "/breakthrough-blueprint.html" },
+    { "source": "/emotional-fitness-course", "destination": "/emotional-fitness-course.html" }
   ],
   "crons": [
     {

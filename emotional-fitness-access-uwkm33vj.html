@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Emotional Fitness Course · Members Only</title>
+  <meta name="description" content="Members-only access to The Emotional Fitness Course by Star Taylor." />
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet" />
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:#0a1929;color:#eee;font-family:'Inter',sans-serif;min-height:100vh}
+    .header{background:rgba(10,25,41,0.95);border-bottom:1px solid rgba(242,213,166,0.2);padding:20px 24px;position:sticky;top:0;z-index:10}
+    .header-inner{max-width:1400px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+    .header h1{font-family:'Playfair Display',serif;font-size:1.35rem;color:#F2D5A6;font-weight:800;letter-spacing:.02em}
+    .header-nav{display:flex;gap:20px;align-items:center;font-size:0.92rem;color:rgba(255,255,255,0.7)}
+    .header-nav a{color:#F2D5A6;text-decoration:none;font-weight:700}
+
+    .layout{max-width:1400px;margin:0 auto;padding:32px 24px 60px;display:grid;grid-template-columns:320px 1fr;gap:32px}
+    @media (max-width:900px){.layout{grid-template-columns:1fr}}
+
+    .sidebar{background:rgba(255,255,255,0.03);border:1px solid rgba(242,213,166,0.15);border-radius:14px;padding:20px;position:sticky;top:100px;align-self:start;max-height:calc(100vh - 130px);overflow-y:auto}
+    @media (max-width:900px){.sidebar{position:static;max-height:none}}
+    .sidebar-title{font-family:'Playfair Display',serif;font-size:1.1rem;color:#F2D5A6;font-weight:800;margin-bottom:14px;letter-spacing:.04em;text-transform:uppercase}
+    .lesson-btn{width:100%;text-align:left;display:flex;gap:12px;align-items:center;background:transparent;border:1px solid rgba(242,213,166,0.15);color:rgba(255,255,255,0.85);padding:12px 14px;border-radius:8px;font-size:0.92rem;font-weight:600;cursor:pointer;margin-bottom:8px;transition:all 0.12s;font-family:inherit}
+    .lesson-btn:hover{background:rgba(242,213,166,0.08);border-color:rgba(242,213,166,0.35)}
+    .lesson-btn.active{background:rgba(242,213,166,0.14);border-color:#F2D5A6;color:#F2D5A6}
+    .lesson-btn .num{font-family:'Playfair Display',serif;color:#F2D5A6;font-weight:800;font-size:1.05rem;min-width:26px}
+    .lesson-btn .check{margin-left:auto;color:#7fce8a;font-weight:900;opacity:0}
+    .lesson-btn.completed .check{opacity:1}
+
+    .main{background:rgba(255,255,255,0.03);border:1px solid rgba(242,213,166,0.15);border-radius:14px;padding:24px}
+    .now-playing{font-family:'Playfair Display',serif;font-size:1.4rem;color:#F2D5A6;font-weight:800;margin-bottom:16px}
+    .player-wrap{position:relative;padding-top:56.25%;background:#000;border-radius:10px;overflow:hidden;margin-bottom:20px}
+    .player-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
+    .lesson-actions{display:flex;gap:12px;flex-wrap:wrap}
+    .btn{background:transparent;border:1.5px solid rgba(242,213,166,0.4);color:#F2D5A6;padding:10px 22px;border-radius:100px;font-weight:700;cursor:pointer;font-family:inherit;font-size:0.92rem;transition:all 0.12s}
+    .btn:hover{background:rgba(242,213,166,0.1)}
+    .btn.primary{background:linear-gradient(90deg,#c9a84c,#f5d478);color:#0a1929;border:none;font-weight:900}
+    .footer-note{margin-top:22px;padding:18px;background:rgba(30,90,158,0.14);border:1px solid rgba(30,90,158,0.35);border-radius:10px;font-size:0.9rem;color:rgba(255,255,255,0.75)}
+    .footer-note a{color:#F2D5A6;font-weight:700;text-decoration:none}
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <h1>The Emotional Fitness Course</h1>
+    <div class="header-nav">
+      <span>Members Only</span>
+      <a href="/">Home</a>
+    </div>
+  </div>
+</div>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-title">10 Lessons</div>
+    <button class="lesson-btn active" data-vid="ciFQdJgPROo" data-num="1"><span class="num">01</span><span>Part 1</span><span class="check">✓</span></button>
+    <button class="lesson-btn" data-vid="5Gff5Pg-k_4" data-num="2"><span class="num">02</span><span>Part 2</span><span class="check">✓</span></button>
+    <button class="lesson-btn" data-vid="7OyCdHsSvbE" data-num="3"><span class="num">03</span><span>Part 3</span><span class="check">✓</span></button>
+    <button class="lesson-btn" data-vid="8n4kqScbnO0" data-num="4"><span class="num">04</span><span>Part 4</span><span class="check">✓</span></button>
+    <button class="lesson-btn" data-vid="TbRPIMI-m6I" data-num="5"><span class="num">05</span><span>Part 5</span><span class="check">✓</span></button>
+    <button class="lesson-btn" data-vid="5a0QwIZ8OsI" data-num="6"><span class="num">06</span><span>Part 6</span><span class="check">✓</span></button>
+    <button class="lesson-btn" data-vid="lQOx39AtswA" data-num="7"><span class="num">07</span><span>Part 7</span><span class="check">✓</span></button>
+    <button class="lesson-btn" data-vid="msXsfUK6Ypo" data-num="8"><span class="num">08</span><span>Part 8</span><span class="check">✓</span></button>
+    <button class="lesson-btn" data-vid="L-5hnVR6NxA" data-num="9"><span class="num">09</span><span>Part 9</span><span class="check">✓</span></button>
+    <button class="lesson-btn" data-vid="LomHJixm6ps" data-num="10"><span class="num">10</span><span>Part 10</span><span class="check">✓</span></button>
+  </aside>
+
+  <main class="main">
+    <div class="now-playing" id="now-playing">Part 1</div>
+    <div class="player-wrap">
+      <iframe id="player" src="https://www.youtube-nocookie.com/embed/ciFQdJgPROo?rel=0&playsinline=1&modestbranding=1" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share" allowfullscreen></iframe>
+    </div>
+    <div class="lesson-actions">
+      <button class="btn" id="prev-btn">← Previous</button>
+      <button class="btn primary" id="mark-complete-btn">Mark Complete</button>
+      <button class="btn" id="next-btn">Next →</button>
+    </div>
+    <div class="footer-note">
+      Want to go deeper? <a href="https://www.skool.com/star-jesse-taylor-3703">Join the Audacity community</a> — weekly live call with me plus everything else.
+    </div>
+  </main>
+</div>
+
+<script>
+  const COURSE_KEY = 'ef-course-progress';
+  const buttons = document.querySelectorAll('.lesson-btn');
+  const player = document.getElementById('player');
+  const nowPlaying = document.getElementById('now-playing');
+  const markBtn = document.getElementById('mark-complete-btn');
+  const prevBtn = document.getElementById('prev-btn');
+  const nextBtn = document.getElementById('next-btn');
+
+  let progress = {};
+  try { progress = JSON.parse(localStorage.getItem(COURSE_KEY) || '{}'); } catch(e){}
+
+  function renderCompleted(){
+    buttons.forEach(btn => {
+      const n = btn.dataset.num;
+      if (progress[n]) btn.classList.add('completed');
+      else btn.classList.remove('completed');
+    });
+  }
+  renderCompleted();
+
+  function loadLesson(idx){
+    if (idx < 0 || idx >= buttons.length) return;
+    const btn = buttons[idx];
+    const vid = btn.dataset.vid;
+    const num = btn.dataset.num;
+    buttons.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    player.src = 'https://www.youtube-nocookie.com/embed/' + vid + '?rel=0&playsinline=1&modestbranding=1&autoplay=1';
+    nowPlaying.textContent = 'Part ' + num;
+    markBtn.textContent = progress[num] ? '✓ Completed' : 'Mark Complete';
+    // Track current index for prev/next
+    window.__currentIdx = idx;
+  }
+
+  buttons.forEach((btn, idx) => btn.addEventListener('click', () => loadLesson(idx)));
+  prevBtn.addEventListener('click', () => loadLesson((window.__currentIdx || 0) - 1));
+  nextBtn.addEventListener('click', () => loadLesson((window.__currentIdx || 0) + 1));
+  markBtn.addEventListener('click', () => {
+    const idx = window.__currentIdx || 0;
+    const num = buttons[idx].dataset.num;
+    progress[num] = !progress[num];
+    localStorage.setItem(COURSE_KEY, JSON.stringify(progress));
+    renderCompleted();
+    markBtn.textContent = progress[num] ? '✓ Completed' : 'Mark Complete';
+  });
+
+  window.__currentIdx = 0;
+</script>
+
+</body>
+</html>
