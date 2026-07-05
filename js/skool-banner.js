@@ -29,21 +29,22 @@
       position: fixed; top: 0; left: 0; right: 0;
       z-index: 1001;
       height: ${BANNER_HEIGHT}px;
-      background: linear-gradient(90deg, #FBF3E5 0%, #F5D9BE 100%);
-      color: #0D2C4F;
+      background: linear-gradient(90deg, #1E5A9E 0%, #0D2C4F 100%);
+      color: #FFFFFF;
       font-family: 'Inter', system-ui, sans-serif;
-      border-bottom: 1px solid rgba(13, 44, 79, 0.15);
+      border-bottom: 2px solid #F2D5A6;
       display: flex; align-items: center; justify-content: center; gap: 16px;
       padding: 0 44px 0 16px;
     }
     #skool-banner-message {
       font-size: 0.94rem; font-weight: 700;
       letter-spacing: -0.01em;
+      color: #FFFFFF;
     }
     #skool-banner-btn {
       display: inline-block;
-      background: #0D2C4F;
-      color: #FBF3E5;
+      background: #F2D5A6;
+      color: #0D2C4F;
       font-family: inherit;
       font-size: 0.82rem;
       font-weight: 900;
@@ -52,15 +53,15 @@
       padding: 7px 16px;
       border-radius: 100px;
       text-decoration: none;
-      transition: background 0.15s;
+      transition: background 0.15s, transform 0.15s;
       white-space: nowrap;
     }
-    #skool-banner-btn:hover { background: #1E5A9E; }
+    #skool-banner-btn:hover { background: #FBF3E5; transform: translateY(-1px); }
     #skool-banner-close {
       position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
-      background: transparent; border: none; color: #0D2C4F;
+      background: transparent; border: none; color: #FFFFFF;
       font-size: 1.3rem; font-weight: 700; cursor: pointer;
-      padding: 4px 10px; line-height: 1; opacity: 0.55;
+      padding: 4px 10px; line-height: 1; opacity: 0.7;
     }
     #skool-banner-close:hover { opacity: 1; }
     /* Push down the fixed nav so the banner isn't hidden behind it */
