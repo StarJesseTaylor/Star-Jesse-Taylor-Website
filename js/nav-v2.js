@@ -92,12 +92,13 @@
     }
     .nav-dropdown-menu a:hover { background: rgba(13, 44, 79, 0.06); }
     .nav-item-primary a { color: #C97552 !important; font-weight: 800 !important; }
-    /* Mobile menu overlay */
+    /* Mobile menu overlay - FULLSCREEN, appended to body to escape nav stacking */
     .nav-mobile {
       display: none;
       position: fixed; top: 68px; left: 0; right: 0; bottom: 0;
-      background: #fff; z-index: 999;
-      overflow-y: auto; padding: 20px 24px 40px;
+      background: #fff; z-index: 1500;
+      overflow-y: auto; padding: 20px 24px 60px;
+      -webkit-overflow-scrolling: touch;
     }
     body.has-skool-banner .nav-mobile { top: calc(68px + 44px); }
     @media (max-width: 720px) {
@@ -158,7 +159,13 @@
     // .nav-mobile.open, which would cancel out my toggle causing no visible
     // change when Star tapped it on mobile.
     let hamburger = oldNav.querySelector('.nav-hamburger');
-    const mobileMenu = oldNav.querySelector('.nav-mobile');
+    let mobileMenu = oldNav.querySelector('.nav-mobile');
+    // ALSO CRITICAL: move .nav-mobile OUT of nav.nav (which is position:fixed
+    // and creates its own stacking context, trapping the fullscreen menu).
+    // Append to body so it can go fullscreen properly.
+    if (mobileMenu) {
+      document.body.appendChild(mobileMenu);
+    }
     if (hamburger && mobileMenu) {
       const cleanHamburger = hamburger.cloneNode(true);
       hamburger.parentNode.replaceChild(cleanHamburger, hamburger);
