@@ -14,7 +14,9 @@
     { "source": "/book", "destination": "/book.html" },
     { "source": "/book-thank-you", "destination": "/book-thank-you.html" },
     { "source": "/breakthrough-blueprint", "destination": "/breakthrough-blueprint.html" },
-    { "source": "/emotional-fitness-course", "destination": "/emotional-fitness-course.html" }
+    { "source": "/emotional-fitness-course", "destination": "/emotional-fitness-course.html" },
+    { "source": "/coaching", "destination": "/coaching.html" },
+    { "source": "/ask-star", "destination": "/virtual-events.html" }
   ],
   "crons": [
     {
