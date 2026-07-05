@@ -108,6 +108,19 @@ const CHECKS = [
     critical: true,
     description: 'Book checkout endpoint must redirect to Stripe (303)'
   },
+  // EVERY NAV LINK must return 200 (or a valid redirect). This catches the
+  // "clicked Group Coaching, got 404" class of breakage that made Star look bad.
+  { name: 'nav-home', url: `${SITE_URL}/`, expectStatus: 200, critical: true, description: 'Nav: Home' },
+  { name: 'nav-about', url: `${SITE_URL}/about`, expectStatus: 200, critical: true, description: 'Nav: About' },
+  { name: 'nav-community', url: `${SITE_URL}/community`, expectStatus: 200, critical: true, description: 'Nav: Live Calls with Star (community)' },
+  { name: 'nav-coaching', url: `${SITE_URL}/coaching`, expectStatus: 200, critical: true, description: 'Nav dropdown: 1-on-1 Coaching' },
+  { name: 'nav-cohort', url: `${SITE_URL}/cohort`, expectStatus: 200, critical: true, description: 'Nav dropdown: Cohort / Group Program' },
+  { name: 'nav-event', url: `${SITE_URL}/event`, expectStatus: 200, critical: true, description: 'Nav dropdown: Workshops' },
+  { name: 'nav-ask-star', url: `${SITE_URL}/ask-star`, expectStatus: 200, critical: true, description: 'Nav: Ask Star' },
+  { name: 'nav-courses', url: `${SITE_URL}/courses`, expectStatus: 200, critical: true, description: 'Nav: Courses' },
+  { name: 'nav-book', url: `${SITE_URL}/book`, expectStatus: 200, critical: true, description: 'Nav: Book' },
+  { name: 'nav-apply', url: `${SITE_URL}/apply`, expectStatus: 200, critical: true, description: 'Coaching applications' },
+  { name: 'nav-apply-package', url: `${SITE_URL}/apply-package`, expectStatus: 200, critical: true, description: 'Coaching package apply' },
 ];
 
 async function runCheck(check) {

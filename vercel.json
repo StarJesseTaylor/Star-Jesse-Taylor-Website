@@ -16,32 +16,26 @@
     { "source": "/breakthrough-blueprint", "destination": "/breakthrough-blueprint.html" },
     { "source": "/emotional-fitness-course", "destination": "/emotional-fitness-course.html" },
     { "source": "/coaching", "destination": "/coaching.html" },
-    { "source": "/ask-star", "destination": "/virtual-events.html" }
+    { "source": "/ask-star", "destination": "/virtual-events.html" },
+    { "source": "/about", "destination": "/about.html" },
+    { "source": "/cohort", "destination": "/cohort.html" },
+    { "source": "/event", "destination": "/event.html" },
+    { "source": "/courses", "destination": "/courses.html" },
+    { "source": "/apply", "destination": "/apply.html" },
+    { "source": "/apply-package", "destination": "/apply-package.html" },
+    { "source": "/services", "destination": "/coaching.html" },
+    { "source": "/quiz", "destination": "/quiz.html" },
+    { "source": "/speak", "destination": "/speak.html" },
+    { "source": "/qualify", "destination": "/qualify.html" },
+    { "source": "/healthy-relationship", "destination": "/healthy-relationship.html" },
+    { "source": "/self-worth-course", "destination": "/self-worth-course.html" }
   ],
   "crons": [
-    {
-      "path": "/api/health-check",
-      "schedule": "0 13 * * *"
-    },
-    {
-      "path": "/api/feedback-health-check",
-      "schedule": "0 14 * * *"
-    },
-    {
-      "path": "/api/video-health-check",
-      "schedule": "0 15 * * *"
-    },
-    {
-      "path": "/api/whats-next-digest",
-      "schedule": "0 14 * * *"
-    },
-    {
-      "path": "/api/form-health-check",
-      "schedule": "0 12 * * *"
-    },
-    {
-      "path": "/api/ui-health-check",
-      "schedule": "10 12 * * *"
-    }
+    { "path": "/api/health-check", "schedule": "0 13 * * *" },
+    { "path": "/api/feedback-health-check", "schedule": "0 14 * * *" },
+    { "path": "/api/video-health-check", "schedule": "0 15 * * *" },
+    { "path": "/api/whats-next-digest", "schedule": "0 14 * * *" },
+    { "path": "/api/form-health-check", "schedule": "0 12 * * *" },
+    { "path": "/api/ui-health-check", "schedule": "10 12 * * *" }
   ]
 }
