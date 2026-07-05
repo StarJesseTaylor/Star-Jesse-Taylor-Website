@@ -1,7 +1,7 @@
-// New dropdown nav v2. Replaces the existing <nav.nav> block on every page.
-// Structure locked with Star Jul 5 2026:
+// New dropdown nav v2. Replaces existing nav on every page.
+// Locked with Star Jul 5 2026:
 //   Home | About | Community | Work With Star (dropdown) | Ask Star | Courses | Book
-// Dropdown: 1-on-1 Coaching | Group Coaching | Cohort | Workshops
+//   Dropdown: 1-on-1 Coaching | Group Coaching | Cohort | Workshops
 
 (function() {
   const NAV_HTML = `
@@ -35,6 +35,28 @@
           <span></span><span></span><span></span>
         </button>
       </div>
+      <div class="nav-mobile">
+        <ul class="nav-mobile-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/about">About</a></li>
+          <li class="nav-item-primary"><a href="/community">Community</a></li>
+          <li class="nav-mobile-group">
+            <div class="nav-mobile-group-label">Work With Star</div>
+            <ul>
+              <li><a href="/coaching">1-on-1 Coaching</a></li>
+              <li><a href="/cohort">Group Coaching</a></li>
+              <li><a href="/cohort">Cohort</a></li>
+              <li><a href="/event">Workshops</a></li>
+            </ul>
+          </li>
+          <li><a href="/ask-star">Ask Star</a></li>
+          <li><a href="/courses">Courses</a></li>
+          <li><a href="/book">Book</a></li>
+          <li class="nav-mobile-cta">
+            <a href="/community" class="btn btn-primary">Try Community · 7 Days Free</a>
+          </li>
+        </ul>
+      </div>
     </div>
   `;
 
@@ -54,7 +76,7 @@
       list-style: none; min-width: 190px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.12);
       opacity: 0; visibility: hidden; transition: opacity 0.15s, visibility 0.15s;
-      z-index: 100;
+      z-index: 1002;
     }
     .nav-dropdown[data-open="true"] .nav-dropdown-menu,
     .nav-dropdown:hover .nav-dropdown-menu {
@@ -67,20 +89,35 @@
       white-space: nowrap; transition: background 0.12s;
     }
     .nav-dropdown-menu a:hover { background: rgba(13, 44, 79, 0.06); }
-    .nav-item-primary a {
-      color: #C97552 !important; font-weight: 800 !important;
+    .nav-item-primary a { color: #C97552 !important; font-weight: 800 !important; }
+    /* Mobile menu overlay */
+    .nav-mobile {
+      display: none;
+      position: fixed; top: 68px; left: 0; right: 0; bottom: 0;
+      background: #fff; z-index: 999;
+      overflow-y: auto; padding: 20px 24px 40px;
     }
-    @media (max-width: 900px) {
-      .nav-dropdown-menu {
-        position: static; transform: none; box-shadow: none;
-        margin: 4px 0 8px 12px; padding: 4px 0;
-        border: none; border-left: 2px solid rgba(0,0,0,0.1);
-        border-radius: 0; background: transparent; min-width: 0;
-        opacity: 1; visibility: visible;
-        display: none;
-      }
-      .nav-dropdown[data-open="true"] .nav-dropdown-menu { display: block; }
-      .nav-dropdown-toggle { padding: 8px 0; width: 100%; text-align: left; justify-content: flex-start; }
+    .nav-mobile.open { display: block; }
+    .nav-mobile-links { list-style: none; padding: 0; margin: 0; }
+    .nav-mobile-links > li { padding: 14px 4px; border-bottom: 1px solid rgba(0,0,0,0.08); }
+    .nav-mobile-links > li > a {
+      display: block; color: #0D2C4F; text-decoration: none;
+      font-size: 1.15rem; font-weight: 700; padding: 4px 0;
+    }
+    .nav-mobile-links > li.nav-item-primary > a { color: #C97552; }
+    .nav-mobile-group-label {
+      font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em;
+      color: rgba(13, 44, 79, 0.5); font-weight: 800; margin-bottom: 8px;
+    }
+    .nav-mobile-group ul { list-style: none; padding: 0; margin: 4px 0 0 12px; }
+    .nav-mobile-group ul li { padding: 8px 0; }
+    .nav-mobile-group ul li a {
+      color: #0D2C4F; text-decoration: none; font-size: 1rem; font-weight: 600;
+    }
+    .nav-mobile-cta { text-align: center; padding-top: 20px !important; }
+    .nav-mobile-cta .btn { display: inline-block; width: auto; padding: 14px 28px !important; }
+    @media (min-width: 901px) {
+      .nav-mobile { display: none !important; }
     }
   `;
 
@@ -91,6 +128,8 @@
     style.textContent = NAV_CSS;
     document.head.appendChild(style);
     oldNav.innerHTML = NAV_HTML;
+
+    // Desktop dropdown click handler
     const dropdowns = oldNav.querySelectorAll('[data-nav-dropdown]');
     dropdowns.forEach(dd => {
       const toggle = dd.querySelector('.nav-dropdown-toggle');
@@ -108,6 +147,31 @@
         if (t) t.setAttribute('aria-expanded', 'false');
       });
     });
+
+    // Mobile hamburger handler (override the one from main.js)
+    const hamburger = oldNav.querySelector('.nav-hamburger');
+    const mobileMenu = oldNav.querySelector('.nav-mobile');
+    if (hamburger && mobileMenu) {
+      hamburger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        mobileMenu.classList.toggle('open');
+        const spans = hamburger.querySelectorAll('span');
+        if (mobileMenu.classList.contains('open')) {
+          spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+          spans[1].style.opacity = '0';
+          spans[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
+        } else {
+          spans.forEach(s => { s.style.transform = ''; s.style.opacity = ''; });
+        }
+      });
+      // Close mobile menu on any link click
+      mobileMenu.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+          mobileMenu.classList.remove('open');
+          hamburger.querySelectorAll('span').forEach(s => { s.style.transform = ''; s.style.opacity = ''; });
+        });
+      });
+    }
   }
 
   if (document.readyState === 'loading') {
