@@ -42,21 +42,23 @@
       color: #FFFFFF;
     }
     #skool-banner-btn {
-      display: inline-block;
-      background: #F2D5A6;
-      color: #0D2C4F;
+      display: inline-block !important;
+      background: #FFD447 !important;
+      color: #0D2C4F !important;
       font-family: inherit;
-      font-size: 0.82rem;
-      font-weight: 900;
-      letter-spacing: 0.02em;
+      font-size: 0.86rem !important;
+      font-weight: 900 !important;
+      letter-spacing: 0.03em;
       text-transform: uppercase;
-      padding: 7px 16px;
-      border-radius: 100px;
-      text-decoration: none;
+      padding: 7px 18px !important;
+      border-radius: 100px !important;
+      border: 2px solid #FFFFFF !important;
+      text-decoration: none !important;
       transition: background 0.15s, transform 0.15s;
       white-space: nowrap;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
     }
-    #skool-banner-btn:hover { background: #FBF3E5; transform: translateY(-1px); }
+    #skool-banner-btn:hover { background: #FFE070 !important; transform: translateY(-1px); }
     #skool-banner-close {
       position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
       background: transparent; border: none; color: #FFFFFF;
