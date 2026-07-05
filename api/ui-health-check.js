@@ -63,7 +63,8 @@ const CHECKS = [
       'nav-hamburger',
       'nav-mobile',
       'nav-dropdown-menu',
-      'Try Community'
+      'Live Calls with Star',
+      '7 Days Free'
     ],
     critical: true,
     description: 'js/nav-v2.js must contain hamburger handler + mobile menu + dropdown code'
@@ -99,6 +100,24 @@ const CHECKS = [
     requiredSubstrings: ['buy.stripe.com/cN2eYg7kHepv1uocNw'],
     critical: true,
     description: 'Coaching page must contain the live Clarity Session Stripe payment link'
+  },
+  // Katie Hayman + Marissa video testimonials must be on /coaching (Star's rule:
+  // Katie is at TOP of page, Marissa follows. Any regression removes these).
+  {
+    name: 'coaching-katie-video',
+    url: `${SITE_URL}/coaching`,
+    expectStatus: 200,
+    requiredSubstrings: ['KJcgDLzLTgo', 'Katie Hayman'],
+    critical: true,
+    description: 'Coaching page MUST feature Katie Hayman video testimonial at top'
+  },
+  {
+    name: 'coaching-marissa-video',
+    url: `${SITE_URL}/coaching`,
+    expectStatus: 200,
+    requiredSubstrings: ['_PRq3vqmUQU', 'Marissa'],
+    critical: true,
+    description: 'Coaching page MUST feature Marissa video testimonial'
   },
   // Book funnel end-to-end
   {
