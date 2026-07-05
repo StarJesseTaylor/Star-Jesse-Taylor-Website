@@ -23,9 +23,9 @@
             </button>
             <ul class="nav-dropdown-menu" role="menu">
               <li><a href="/coaching" role="menuitem">1-on-1 Coaching</a></li>
-              <li><a href="/cohort" role="menuitem">Group Program</a></li>
-              <li><a href="/cohort" role="menuitem">Cohort</a></li>
+              <li><a href="/community" role="menuitem">Live Calls with Star</a></li>
               <li><a href="/event" role="menuitem">Workshops</a></li>
+              <li><a href="/cohort" role="menuitem">Cohort</a></li>
             </ul>
           </li>
           <li><a href="/ask-star">Ask Star</a></li>
@@ -46,9 +46,9 @@
             <div class="nav-mobile-group-label">Work With Star</div>
             <ul>
               <li><a href="/coaching">1-on-1 Coaching</a></li>
-              <li><a href="/cohort">Group Program</a></li>
-              <li><a href="/cohort">Cohort</a></li>
+              <li><a href="/community">Live Calls with Star</a></li>
               <li><a href="/event">Workshops</a></li>
+              <li><a href="/cohort">Cohort</a></li>
             </ul>
           </li>
           <li><a href="/ask-star">Ask Star</a></li>
