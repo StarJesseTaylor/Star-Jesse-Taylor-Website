@@ -153,11 +153,19 @@
       });
     });
 
-    const hamburger = oldNav.querySelector('.nav-hamburger');
+    // CRITICAL: strip any existing listeners from old main.js by cloning
+    // the hamburger element. Old main.js binds to .nav-hamburger and toggles
+    // .nav-mobile.open, which would cancel out my toggle causing no visible
+    // change when Star tapped it on mobile.
+    let hamburger = oldNav.querySelector('.nav-hamburger');
     const mobileMenu = oldNav.querySelector('.nav-mobile');
     if (hamburger && mobileMenu) {
+      const cleanHamburger = hamburger.cloneNode(true);
+      hamburger.parentNode.replaceChild(cleanHamburger, hamburger);
+      hamburger = cleanHamburger;
       hamburger.addEventListener('click', (e) => {
         e.stopPropagation();
+        e.preventDefault();
         mobileMenu.classList.toggle('open');
         const spans = hamburger.querySelectorAll('span');
         if (mobileMenu.classList.contains('open')) {
