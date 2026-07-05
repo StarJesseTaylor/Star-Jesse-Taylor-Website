@@ -154,7 +154,7 @@ export default async function handler(req, res) {
 
   const AC_KEY = process.env.ACTIVECAMPAIGN_API_KEY;
   const AC_URL = (process.env.ACTIVECAMPAIGN_API_URL || 'https://starjessetaylor92181.api-us1.com').replace(/\/$/, '');
-  const LIST_ID = process.env.AC_COHORT_LIST_ID || DEFAULT_LIST_ID;
+  const LIST_ID = '3'; // Master Contact List — every lead lands here, tagged path:cohort so we know the source
 
   if (!AC_KEY) {
     return res.status(200).json({ success: true, note: 'AC not configured, captured to logs and emails only' });

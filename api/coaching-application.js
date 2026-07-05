@@ -240,7 +240,7 @@ export default async function handler(req, res) {
   // ActiveCampaign tagging
   const AC_KEY = process.env.ACTIVECAMPAIGN_API_KEY;
   const AC_URL = (process.env.ACTIVECAMPAIGN_API_URL || 'https://starjessetaylor92181.api-us1.com').replace(/\/$/, '');
-  const LIST_ID = process.env.AC_COACHING_LIST_ID || DEFAULT_LIST_ID;
+  const LIST_ID = '3'; // Master Contact List — every lead lands here, tagged coaching:applicant so we know the source
 
   if (AC_KEY) {
     const headers = { 'Api-Token': AC_KEY, 'Content-Type': 'application/json' };
