@@ -123,10 +123,34 @@ async function sendBookEmail(toEmail, firstName, downloadUrl) {
     '',
     "I built a community called Audacity for people ready to actually live what the book teaches. Weekly calls with me, real teaching, real conversations. First 7 days are free.",
     '',
-    "https://www.skool.com/star-jesse-taylor-3703",
+    "Join here: https://www.skool.com/star-jesse-taylor-3703",
     '',
     "Star"
   ].join('\n');
+
+  const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Your book is ready</title></head>
+<body style="margin:0;padding:0;background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;color:#1a1a1a;line-height:1.55">
+<div style="max-width:560px;margin:0 auto;padding:36px 24px;background:#ffffff">
+  <p style="font-size:16px;margin:0 0 20px">${greeting}</p>
+  <p style="font-size:16px;margin:0 0 12px"><strong>Your book is ready.</strong></p>
+  <p style="font-size:16px;margin:0 0 24px">Here is your download link:</p>
+  <div style="text-align:center;margin:0 0 28px">
+    <a href="${downloadUrl}" style="display:inline-block;background:#0D2C4F;color:#ffffff;padding:14px 32px;border-radius:100px;font-weight:800;text-decoration:none;font-size:16px">Download the Book</a>
+  </div>
+  <p style="font-size:15px;color:#4a5568;margin:0 0 32px">Save it to your phone and your computer so you can read it anywhere, anytime.</p>
+
+  <div style="border-top:1px solid #e2e8f0;padding-top:28px;margin-top:8px">
+    <p style="font-size:16px;margin:0 0 8px"><strong>One thing before you dive in:</strong></p>
+    <p style="font-size:15px;margin:0 0 20px;color:#333">I built a community called <strong>Audacity</strong> for people ready to actually live what the book teaches. Weekly live calls with me. Real teaching. Real conversations with people going in the same direction.</p>
+    <div style="text-align:center;margin:0 0 12px">
+      <a href="https://www.skool.com/star-jesse-taylor-3703" style="display:inline-block;background:#F2D5A6;color:#0D2C4F;padding:14px 32px;border-radius:100px;font-weight:900;text-decoration:none;font-size:15px;border:2px solid #0D2C4F">Try Audacity Free for 7 Days</a>
+    </div>
+    <p style="font-size:13px;color:#718096;text-align:center;margin:0">Then $49/month. Cancel anytime.</p>
+  </div>
+
+  <p style="font-size:16px;margin:36px 0 0">Star</p>
+</div>
+</body></html>`;
 
   try {
     const res = await fetch('https://api.resend.com/emails', {
@@ -136,7 +160,8 @@ async function sendBookEmail(toEmail, firstName, downloadUrl) {
         from: 'Star Taylor <star@starjessetaylor.com>',
         to: [toEmail],
         subject: 'Your book is ready',
-        text
+        text,
+        html
       })
     });
     if (!res.ok) console.error('Resend send failed', await res.text());
