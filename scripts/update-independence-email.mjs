@@ -117,7 +117,7 @@ const HTML = `<!DOCTYPE html>
 <p style="${S}">That's the real cost. Not one bad day. A whole life spent on the sidelines of your own life, watching everyone else live theirs.</p>
 <p style="${S}">Or you start breaking the pattern now, with people doing the exact same thing right beside you.</p>
 
-<div style="margin:26px 0;padding:20px;background:#f6f6f4;border-radius:12px;"><p style="font-style:italic;color:#333;margin:0 0 14px 0;">"I'm a psychologist. I've read so many self-help books. But this is what actually changed things."</p><table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right:12px;"><img src="https://mcusercontent.com/215226e39658cbe754f52f270/images/1b514e96-0050-ad89-8ce2-34e556d84aeb.jpg" alt="Annabelle Twigt" width="54" height="54" style="width:54px;height:54px;border-radius:50%;object-fit:cover;display:block;"></td><td style="vertical-align:middle;"><div style="font-weight:700;color:#1a1a1a;font-size:15px;">Annabelle Twigt</div><div style="font-size:13px;color:#777;">Psychologist</div></td></tr></table></div>
+<div style="margin:26px 0;padding:20px;background:#f6f6f4;border-radius:12px;"><p style="font-style:italic;color:#333;margin:0 0 14px 0;">"I'm a psychologist. I've read so many self-help books. But this is what actually changed things."</p><table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right:12px;"><img src="https://mcusercontent.com/215226e39658cbe754f52f270/images/1b514e96-0050-ad89-8ce2-34e556d84aeb.jpg" alt="Annabelle T" width="54" height="54" style="width:54px;height:54px;border-radius:50%;object-fit:cover;display:block;"></td><td style="vertical-align:middle;"><div style="font-weight:700;color:#1a1a1a;font-size:15px;">Annabelle T</div><div style="font-size:13px;color:#777;">Psychologist</div></td></tr></table></div>
 
 <p style="margin:28px 0 12px 0;font-weight:700;">Inside the community:</p>
 <p style="margin:0 0 10px 0;">✓&nbsp; A weekly live call with me</p>
@@ -305,7 +305,7 @@ That's the real cost. Not one bad day. A whole life spent on the sidelines of yo
 Or you start breaking the pattern now, with people doing the exact same thing right beside you.
 
 "I'm a psychologist. I've read so many self-help books. But this is what actually changed things."
-- Annabelle Twigt, Psychologist
+- Annabelle T, Psychologist
 
 INSIDE THE COMMUNITY:
 - A weekly live call with me
