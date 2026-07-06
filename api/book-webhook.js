@@ -119,11 +119,15 @@ async function sendBookEmail(toEmail, firstName, downloadUrl) {
     '',
     "Save it to your phone and your computer so you can read it anywhere, anytime.",
     '',
-    "One thing before you dive in:",
+    "If you didn't know, I have a community where I teach weekly live calls to help you practically implement the tools from the book and more and answer your questions so you have more support with your challenges and goals.",
     '',
-    "I built a community called Audacity for people ready to actually live what the book teaches. Weekly calls with me, real teaching, real conversations. First 7 days are free.",
+    "It's called the Audacity Community because I want to help you have the audacity to live the life that you want to live.",
     '',
-    "Join here: https://www.skool.com/star-jesse-taylor-3703",
+    "Here's a free one-week trial for you:",
+    '',
+    "https://www.skool.com/star-jesse-taylor-3703",
+    '',
+    "Then $49/month. Cancel anytime.",
     '',
     "Star"
   ].join('\n');
@@ -140,8 +144,9 @@ async function sendBookEmail(toEmail, firstName, downloadUrl) {
   <p style="font-size:15px;color:#4a5568;margin:0 0 32px">Save it to your phone and your computer so you can read it anywhere, anytime.</p>
 
   <div style="border-top:1px solid #e2e8f0;padding-top:28px;margin-top:8px">
-    <p style="font-size:16px;margin:0 0 8px"><strong>One thing before you dive in:</strong></p>
-    <p style="font-size:15px;margin:0 0 20px;color:#333">I built a community called <strong>Audacity</strong> for people ready to actually live what the book teaches. Weekly live calls with me. Real teaching. Real conversations with people going in the same direction.</p>
+    <p style="font-size:16px;margin:0 0 18px;color:#333">If you didn't know, I have a community where I teach weekly live calls to help you practically implement the tools from the book and more and answer your questions so you have more support with your challenges and goals.</p>
+    <p style="font-size:16px;margin:0 0 22px;color:#333">It's called the Audacity Community because I want to help you have the audacity to live the life that you want to live.</p>
+    <p style="font-size:16px;margin:0 0 16px;color:#333"><strong>Here's a free one-week trial for you:</strong></p>
     <div style="text-align:center;margin:0 0 12px">
       <a href="https://www.skool.com/star-jesse-taylor-3703" style="display:inline-block;background:#F2D5A6;color:#0D2C4F;padding:14px 32px;border-radius:100px;font-weight:900;text-decoration:none;font-size:15px;border:2px solid #0D2C4F">Try Audacity Free for 7 Days</a>
     </div>
