@@ -208,6 +208,37 @@ async function notifyStarOfSale(buyerEmail, buyerName, amountCents, sessionId, d
   }
 }
 
+// Positively identify a book purchase. Book checkout sessions are created by
+// api/book-checkout.js with product name "Emotional Fitness" and (going forward)
+// metadata.product = "emotional-fitness-book". Everything else that hits this
+// endpoint (the $500 Clarity Session, $97/$347 event tickets, future products)
+// is NOT a book and must not trigger book delivery / book-buyer tagging.
+async function sessionIsBook(session) {
+  if (session?.metadata?.product === 'emotional-fitness-book') return true;
+
+  const secretKey = process.env.STRIPE_SECRET_KEY;
+  if (secretKey) {
+    try {
+      const r = await fetch(`${STRIPE_API_BASE}/checkout/sessions/${session.id}/line_items?limit=10`, {
+        headers: { Authorization: `Bearer ${secretKey}` }
+      });
+      if (r.ok) {
+        const data = await r.json();
+        const names = (data.data || []).map(li => (li.description || '').toLowerCase());
+        if (names.some(n => n.includes('emotional fitness'))) return true;
+        if (names.length > 0) return false; // has line items, none are the book
+      }
+    } catch (err) {
+      console.error('book-webhook: line_items lookup failed, falling back to price check', err);
+    }
+  }
+
+  // Backstop when line items can't be inspected: only the exact book price counts,
+  // so coaching ($500) and event ($97/$347) amounts never slip through as books.
+  const bookPrice = parseInt(process.env.BOOK_PRICE_USD || '2999', 10);
+  return (session.amount_total || 0) === bookPrice;
+}
+
 export const config = { api: { bodyParser: false } };
 
 export default async function handler(req, res) {
@@ -238,6 +269,17 @@ export default async function handler(req, res) {
   }
 
   const session = event.data.object;
+
+  // Guard: only real book purchases trigger book delivery + book-buyer tagging.
+  // The $500 Clarity Session and $97/$347 event tickets ALSO fire
+  // checkout.session.completed; they were being mislabeled as book sales, sending
+  // coaching/event buyers a "Your book is ready" email and tagging them as
+  // book-buyers in ActiveCampaign. Positively identify the book first.
+  if (!(await sessionIsBook(session))) {
+    console.log('book-webhook: ignoring non-book checkout', session.id, session.amount_total);
+    return res.status(200).json({ ignored: 'not-a-book-purchase', amount: session.amount_total });
+  }
+
   const email = session.customer_details?.email || session.customer_email;
   const firstName = session.customer_details?.name?.split(' ')[0] || '';
 

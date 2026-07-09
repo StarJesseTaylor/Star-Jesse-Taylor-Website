@@ -45,6 +45,9 @@ export default async function handler(req, res) {
   params.append('phone_number_collection[enabled]', 'false');
   params.append('allow_promotion_codes', 'true');
   params.append('billing_address_collection', 'auto');
+  // Tag the session so the webhook can positively identify a book purchase and
+  // never confuse it with other Stripe products (Clarity Session, event tickets).
+  params.append('metadata[product]', 'emotional-fitness-book');
   // Enable order bump (optional upsells at checkout) later by adding line_items[1]
 
   try {
