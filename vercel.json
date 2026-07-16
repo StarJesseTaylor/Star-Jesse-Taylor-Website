@@ -16,6 +16,9 @@
     { "source": "/breakthrough-blueprint", "destination": "/breakthrough-blueprint.html" },
     { "source": "/emotional-fitness-course", "destination": "/emotional-fitness-course.html" }
   ],
+  "redirects": [
+    { "source": "/join", "destination": "https://www.skool.com/star-jesse-taylor-3703", "permanent": false }
+  ],
   "crons": [
     {
       "path": "/api/health-check",
