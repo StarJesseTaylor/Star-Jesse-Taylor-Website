@@ -11,7 +11,12 @@
  * Env: STRIPE_SECRET_KEY, CRON_SECRET, RESEND_API_KEY, BOOK_PRICE_USD (default 2999)
  */
 
+import crypto from 'crypto';
+
 const STRIPE_API = 'https://api.stripe.com/v1';
+// Scoped book-orders access token (sha256 hash only; raw token never stored in repo).
+// Lets Star open the dashboard on his phone without the powerful CRON_SECRET.
+const BOOK_KEY_HASH = '9209d9d7159226e12ac705ac4f3515a0f22080b4bc3089c75b3fc037f7d96bee';
 
 async function stripeGet(path) {
   const r = await fetch(`${STRIPE_API}${path}`, {
@@ -74,8 +79,10 @@ async function sendBookEmail(toEmail, firstName, downloadUrl) {
 }
 
 export default async function handler(req, res) {
-  const key = req.query?.key || req.body?.key;
-  if (!process.env.CRON_SECRET || key !== process.env.CRON_SECRET) {
+  const key = req.query?.key || req.body?.key || '';
+  const keyHash = crypto.createHash('sha256').update(key).digest('hex');
+  const authed = (process.env.CRON_SECRET && key === process.env.CRON_SECRET) || keyHash === BOOK_KEY_HASH;
+  if (!authed) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
   if (!process.env.STRIPE_SECRET_KEY) return res.status(500).json({ error: 'Stripe not configured' });
