@@ -7,6 +7,7 @@
     { "source": "/testers", "destination": "/admin/testers.html" },
     { "source": "/email-writer", "destination": "/admin/email-writer.html" },
     { "source": "/relationships", "destination": "/admin/relationships.html" },
+    { "source": "/book-orders", "destination": "/admin/book-orders.html" },
     { "source": "/preview/garden", "destination": "/preview/garden.html" },
     { "source": "/whats-next", "destination": "/whats-next.html" },
     { "source": "/community", "destination": "/community.html" },
