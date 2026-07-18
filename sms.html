@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SMS Reminders from Star Taylor — Opt In</title>
+<meta name="description" content="Opt in to receive SMS reminders and tips from Star Taylor. Reply STOP to unsubscribe, HELP for help. Message frequency varies. Msg & data rates may apply.">
+<meta name="robots" content="noindex">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: linear-gradient(160deg, #0a1f3a 0%, #1b6ca8 100%);
+    color:#fff; min-height:100vh;
+    display:flex; align-items:center; justify-content:center;
+    padding:32px 20px; line-height:1.55;
+  }
+  .wrap { width:100%; max-width:560px; }
+  .brand { text-align:center; margin-bottom:26px; }
+  .brand-name { font-size:1.15rem; font-weight:800; letter-spacing:.02em; }
+  .brand-sub { font-size:.72rem; font-weight:700; letter-spacing:.2em; text-transform:uppercase; opacity:.7; margin-top:4px; }
+  .eyebrow {
+    display:inline-block; background:rgba(255,255,255,.14); font-size:.72rem;
+    font-weight:700; letter-spacing:.18em; text-transform:uppercase;
+    padding:8px 20px; border-radius:50px; margin-bottom:16px;
+  }
+  h1 { font-size:2rem; line-height:1.18; margin-bottom:14px; }
+  .lead { font-size:1.05rem; opacity:.9; margin-bottom:28px; }
+  .head { text-align:center; }
+  form {
+    background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.18);
+    border-radius:18px; padding:28px;
+  }
+  .row { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; }
+  input[type=text], input[type=email], input[type=tel] {
+    width:100%; padding:14px 16px; border-radius:10px;
+    border:1px solid rgba(255,255,255,.25); background:rgba(255,255,255,.96);
+    color:#1a1a1a; font-size:1rem;
+  }
+  input[type=tel] { margin-bottom:16px; }
+  .consent {
+    display:flex; align-items:flex-start; gap:12px; font-size:.85rem;
+    opacity:.9; line-height:1.55; margin-bottom:20px; cursor:pointer;
+  }
+  .consent input { flex-shrink:0; margin-top:4px; width:18px; height:18px; cursor:pointer; }
+  .consent a { color:#fff; text-decoration:underline; }
+  button {
+    width:100%; padding:16px 20px; border-radius:10px; border:none;
+    background:#fff; color:#0a1f3a; font-size:1.05rem; font-weight:700;
+    cursor:pointer; letter-spacing:.02em;
+  }
+  button:disabled { opacity:.7; cursor:default; }
+  .status { text-align:center; margin-top:14px; font-size:.85rem; opacity:.75; min-height:20px; }
+  .fineprint { text-align:center; font-size:.78rem; opacity:.6; margin-top:22px; line-height:1.6; }
+  .hp { position:absolute; left:-9999px; }
+  @media (max-width:460px){ .row { grid-template-columns:1fr; } h1 { font-size:1.7rem; } }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="brand">
+      <div class="brand-name">Star Jesse Taylor</div>
+      <div class="brand-sub">Emotional Fitness</div>
+    </div>
+
+    <div class="head">
+      <span class="eyebrow">Direct from Star</span>
+      <h1>Get text reminders from Star to stay on track.</h1>
+      <p class="lead">Reminders that pull you back to what actually matters, right when you need them. Opt in below.</p>
+    </div>
+
+    <form id="sms-form">
+      <input type="text" name="website_url" tabindex="-1" autocomplete="off" class="hp" />
+
+      <div class="row">
+        <input type="text" name="firstName" placeholder="First name" required />
+        <input type="email" name="email" placeholder="Email address" required />
+      </div>
+      <input type="tel" name="phone" placeholder="Mobile number" required />
+
+      <label class="consent">
+        <input type="checkbox" name="consent" required />
+        <span>Yes, send me Star's SMS reminders, tips, and updates. Message frequency varies. Reply STOP to unsubscribe, HELP for help. Msg &amp; data rates may apply. Consent is not a condition of purchase. See our <a href="/privacy" target="_blank">Privacy Policy</a> and <a href="/terms" target="_blank">Terms</a>.</span>
+      </label>
+
+      <button type="submit">Get text reminders</button>
+      <p class="status" id="sms-status"></p>
+    </form>
+
+    <p class="fineprint">
+      By providing your mobile number and checking the box, you agree to receive recurring automated SMS reminders and tips from Star Taylor. Consent is not a condition of any purchase. Message frequency varies. Message and data rates may apply. Reply STOP to cancel, HELP for help.
+    </p>
+  </div>
+
+<script>
+(function () {
+  const form = document.getElementById('sms-form');
+  const status = document.getElementById('sms-status');
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const fd = new FormData(form);
+    const data = {
+      firstName: fd.get('firstName') || '',
+      email: fd.get('email') || '',
+      phone: fd.get('phone') || '',
+      consent: fd.get('consent') === 'on',
+      website_url: fd.get('website_url') || '',
+      source: 'sms_optin_page'
+    };
+    if (!data.consent) { status.textContent = 'Please check the box to confirm consent.'; return; }
+    const btn = form.querySelector('button[type="submit"]');
+    const orig = btn.textContent;
+    btn.disabled = true; btn.textContent = 'Sending...'; status.textContent = '';
+    try {
+      const res = await fetch('/api/sms-optin', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+      const json = await res.json().catch(() => ({}));
+      if (res.ok && json.success) {
+        form.innerHTML = '<div style="text-align:center;padding:22px 0;"><div style="font-size:1.2rem;font-weight:700;margin-bottom:8px;">You are in.</div><div style="opacity:.85;font-size:.95rem;">Your first reminder from Star comes soon.</div></div>';
+      } else {
+        status.textContent = (json && json.error) || 'Something went wrong. Please try again in a moment.';
+        btn.disabled = false; btn.textContent = orig;
+      }
+    } catch (err) {
+      status.textContent = 'Connection issue. Please try again.';
+      btn.disabled = false; btn.textContent = orig;
+    }
+  });
+})();
+</script>
+</body>
+</html>
