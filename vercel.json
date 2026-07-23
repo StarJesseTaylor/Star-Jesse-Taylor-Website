@@ -27,7 +27,9 @@
     { "source": "/emotional-fitness-course", "destination": "/emotional-fitness-course.html" }
   ],
   "redirects": [
-    { "source": "/join", "destination": "https://www.skool.com/star-jesse-taylor-3703", "permanent": false }
+    { "source": "/join", "destination": "https://www.skool.com/star-jesse-taylor-3703", "permanent": false },
+    { "source": "/start", "destination": "https://www.skool.com/star-jesse-taylor-3703?utm_source=book&utm_medium=book", "permanent": false },
+    { "source": "/free", "destination": "https://www.skool.com/star-jesse-taylor-3703?utm_source=book&utm_medium=book", "permanent": false }
   ],
   "crons": [
     {
