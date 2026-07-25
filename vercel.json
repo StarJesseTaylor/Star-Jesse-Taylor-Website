@@ -24,7 +24,13 @@
     { "source": "/book", "destination": "/book.html" },
     { "source": "/book-thank-you", "destination": "/book-thank-you.html" },
     { "source": "/breakthrough-blueprint", "destination": "/breakthrough-blueprint.html" },
-    { "source": "/emotional-fitness-course", "destination": "/emotional-fitness-course.html" }
+    { "source": "/emotional-fitness-course", "destination": "/emotional-fitness-course.html" },
+    { "source": "/workshop-welcome", "destination": "/workshop-welcome.html" },
+    { "source": "/event", "destination": "/event.html" },
+    { "source": "/qualify", "destination": "/qualify.html" },
+    { "source": "/quiz", "destination": "/quiz.html" },
+    { "source": "/free-chapter", "destination": "/free-chapter.html" },
+    { "source": "/speak", "destination": "/speak.html" }
   ],
   "redirects": [
     { "source": "/join", "destination": "https://www.skool.com/star-jesse-taylor-3703", "permanent": false },
