@@ -123,7 +123,14 @@ async function fetchAllStripeBookPayments(stripeKey, days) {
 export default async function handler(req, res) {
   const secret = process.env.CRON_SECRET;
   const key = req.query?.key || (req.url?.includes('key=') ? new URL(req.url, 'http://x').searchParams.get('key') : null);
-  if (!secret || key !== secret) return res.status(403).json({ error: 'forbidden' });
+  // Accept EITHER ?key=CRON_SECRET (manual/admin call) OR the Authorization: Bearer
+  // <CRON_SECRET> header that Vercel automatically attaches to scheduled cron
+  // invocations. This lets the daily safety-net cron (vercel.json) run without
+  // putting the secret in the repo.
+  const authHeader = req.headers?.authorization || '';
+  const keyOk = secret && key === secret;
+  const bearerOk = secret && authHeader === `Bearer ${secret}`;
+  if (!secret || (!keyOk && !bearerOk)) return res.status(403).json({ error: 'forbidden' });
 
   const STRIPE_KEY = process.env.STRIPE_SECRET_KEY;
   const AC_URL = (process.env.ACTIVECAMPAIGN_API_URL || '').replace(/\/$/, '');
