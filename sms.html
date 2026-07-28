@@ -26,11 +26,23 @@
   h1 { font-size:2rem; line-height:1.18; margin-bottom:14px; }
   .lead { font-size:1.05rem; opacity:.9; margin-bottom:28px; }
   .head { text-align:center; }
+  .skip-top {
+    text-align:center; margin-bottom:20px;
+  }
+  .skip-btn {
+    display:inline-block; background:rgba(255,255,255,.14);
+    color:#fff; text-decoration:none; font-size:.9rem; font-weight:600;
+    padding:12px 22px; border-radius:50px;
+    border:1px solid rgba(255,255,255,.28);
+    transition:background .15s ease;
+  }
+  .skip-btn:hover { background:rgba(255,255,255,.22); }
   .optional-note {
     background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.22);
     border-radius:14px; padding:16px 20px; margin-bottom:22px;
     font-size:.9rem; line-height:1.55; opacity:.95; text-align:center;
   }
+  .optional-note strong { display:block; font-size:1rem; margin-bottom:6px; }
   form {
     background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.18);
     border-radius:18px; padding:28px;
@@ -68,13 +80,18 @@
     </div>
 
     <div class="head">
-      <span class="eyebrow">Direct from Star</span>
-      <h1>Get text reminders from Star to stay on track.</h1>
-      <p class="lead">Reminders that pull you back to what actually matters, right when you need them. Opting in is completely optional.</p>
+      <span class="eyebrow">Optional SMS</span>
+      <h1>Want text reminders from Star?</h1>
+      <p class="lead">If yes, sign up below. If no, skip this page. Everything on Star's site works without SMS.</p>
+    </div>
+
+    <div class="skip-top">
+      <a href="https://www.starjessetaylor.com" class="skip-btn">No thanks, take me to Star's site</a>
     </div>
 
     <div class="optional-note">
-      Signing up for text reminders is entirely optional. Your mobile number is used for one thing only: to send you these text reminders. You never need to give your phone number to read the book, join a workshop, or use anything on this site. Nothing is required to get anything else.
+      <strong>SMS is entirely optional.</strong>
+      You can read the book, join a workshop, use the app, or access anything on Star's site without ever giving your phone number. This page exists only for people who want text reminders. Nothing else is gated behind it.
     </div>
 
     <form id="sms-form">
@@ -96,7 +113,7 @@
     </form>
 
     <p class="fineprint">
-      By providing your mobile number and checking the box, you agree to receive recurring automated SMS reminders and tips from Star Taylor. Consent is not a condition of any purchase. Message frequency varies. Message and data rates may apply. Reply STOP to cancel, HELP for help.
+      By providing your mobile number and checking the box, you agree to receive recurring automated SMS reminders and tips from Star Taylor. Consent is not a condition of any purchase, service, or access to any content on this site. Message frequency varies. Message and data rates may apply. Reply STOP to cancel, HELP for help. Not interested? <a href="https://www.starjessetaylor.com" style="color:#fff;">Return to Star's site here</a>.
     </p>
   </div>
 
