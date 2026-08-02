@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SMS Reminders from Star Taylor — Opt In</title>
-<meta name="description" content="Opt in to receive SMS reminders and tips from Star Taylor. Reply STOP to unsubscribe, HELP for help. Message frequency varies. Msg & data rates may apply.">
+<title>Reminders from Star Taylor</title>
+<meta name="description" content="Get practice reminders and tips from Star Taylor by email. Text messages are an optional extra. Reply STOP to unsubscribe, HELP for help. Message frequency varies. Msg &amp; data rates may apply.">
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
   body {
@@ -14,60 +14,48 @@
     display:flex; align-items:center; justify-content:center;
     padding:32px 20px; line-height:1.55;
   }
-  .wrap { width:100%; max-width:560px; }
-  .brand { text-align:center; margin-bottom:26px; }
+  .wrap { width:100%; max-width:580px; }
+  .brand { text-align:center; margin-bottom:24px; }
   .brand-name { font-size:1.15rem; font-weight:800; letter-spacing:.02em; }
   .brand-sub { font-size:.72rem; font-weight:700; letter-spacing:.2em; text-transform:uppercase; opacity:.7; margin-top:4px; }
-  .eyebrow {
-    display:inline-block; background:rgba(255,255,255,.14); font-size:.72rem;
-    font-weight:700; letter-spacing:.18em; text-transform:uppercase;
-    padding:8px 20px; border-radius:50px; margin-bottom:16px;
-  }
-  h1 { font-size:2rem; line-height:1.18; margin-bottom:14px; }
-  .lead { font-size:1.05rem; opacity:.9; margin-bottom:28px; }
-  .head { text-align:center; }
-  .skip-top {
-    text-align:center; margin-bottom:20px;
-  }
-  .skip-btn {
-    display:inline-block; background:rgba(255,255,255,.14);
-    color:#fff; text-decoration:none; font-size:.9rem; font-weight:600;
-    padding:12px 22px; border-radius:50px;
-    border:1px solid rgba(255,255,255,.28);
-    transition:background .15s ease;
-  }
-  .skip-btn:hover { background:rgba(255,255,255,.22); }
-  .optional-note {
-    background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.22);
-    border-radius:14px; padding:16px 20px; margin-bottom:22px;
-    font-size:.9rem; line-height:1.55; opacity:.95; text-align:center;
-  }
-  .optional-note strong { display:block; font-size:1rem; margin-bottom:6px; }
+  .head { text-align:center; margin-bottom:26px; }
+  h1 { font-size:2rem; line-height:1.18; margin-bottom:12px; }
+  .lead { font-size:1.05rem; opacity:.9; }
   form {
     background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.18);
-    border-radius:18px; padding:28px;
+    border-radius:18px; padding:26px;
   }
-  .row { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; }
+  .step { font-size:.72rem; font-weight:800; letter-spacing:.16em; text-transform:uppercase;
+          opacity:.75; margin-bottom:10px; }
+  .row { display:grid; grid-template-columns:1fr 1fr; gap:13px; }
   input[type=text], input[type=email], input[type=tel] {
     width:100%; padding:14px 16px; border-radius:10px;
     border:1px solid rgba(255,255,255,.25); background:rgba(255,255,255,.96);
     color:#1a1a1a; font-size:1rem;
   }
-  input[type=tel] { margin-bottom:16px; }
-  .consent {
-    display:flex; align-items:flex-start; gap:12px; font-size:.85rem;
-    opacity:.9; line-height:1.55; margin-bottom:20px; cursor:pointer;
+  .optional-block {
+    margin-top:26px; padding:20px; border-radius:14px;
+    background:rgba(255,255,255,.07); border:1px dashed rgba(255,255,255,.34);
   }
-  .consent input { flex-shrink:0; margin-top:4px; width:18px; height:18px; cursor:pointer; }
+  .optional-head { font-size:1rem; font-weight:800; margin-bottom:4px; }
+  .optional-sub { font-size:.87rem; opacity:.85; margin-bottom:14px; }
+  .consent {
+    display:flex; align-items:flex-start; gap:12px; font-size:.83rem;
+    opacity:.92; line-height:1.55; margin-top:14px; cursor:pointer;
+  }
+  .consent input { flex-shrink:0; margin-top:3px; width:18px; height:18px; cursor:pointer; }
   .consent a { color:#fff; text-decoration:underline; }
   button {
-    width:100%; padding:16px 20px; border-radius:10px; border:none;
+    width:100%; margin-top:22px; padding:16px 20px; border-radius:10px; border:none;
     background:#fff; color:#0a1f3a; font-size:1.05rem; font-weight:700;
     cursor:pointer; letter-spacing:.02em;
   }
   button:disabled { opacity:.7; cursor:default; }
-  .status { text-align:center; margin-top:14px; font-size:.85rem; opacity:.75; min-height:20px; }
-  .fineprint { text-align:center; font-size:.78rem; opacity:.6; margin-top:22px; line-height:1.6; }
+  .status { text-align:center; margin-top:14px; font-size:.85rem; opacity:.8; min-height:20px; }
+  .fineprint { text-align:center; font-size:.78rem; opacity:.62; margin-top:20px; line-height:1.65; }
+  .fineprint a { color:#fff; }
+  .leave { text-align:center; margin-top:18px; font-size:.88rem; }
+  .leave a { color:#fff; opacity:.8; }
   .hp { position:absolute; left:-9999px; }
   @media (max-width:460px){ .row { grid-template-columns:1fr; } h1 { font-size:1.7rem; } }
 </style>
@@ -80,70 +68,102 @@
     </div>
 
     <div class="head">
-      <span class="eyebrow">Optional SMS</span>
-      <h1>Want text reminders from Star?</h1>
-      <p class="lead">If yes, sign up below. If no, skip this page. Everything on Star's site works without SMS.</p>
-    </div>
-
-    <div class="skip-top">
-      <a href="https://starjessetaylor.com" class="skip-btn">No thanks, take me to Star's site</a>
-    </div>
-
-    <div class="optional-note">
-      <strong>SMS is entirely optional.</strong>
-      You can read the book, join a workshop, use the app, or access anything on Star's site without ever giving your phone number. This page exists only for people who want text reminders. Nothing else is gated behind it.
+      <h1>Reminders from Star</h1>
+      <p class="lead">Short reminders and tips to get out of your head and back into your life. Sent by email. Text messages are optional.</p>
     </div>
 
     <form id="sms-form">
       <input type="text" name="website_url" tabindex="-1" autocomplete="off" class="hp" />
 
+      <div class="step">Step 1 &middot; Required</div>
       <div class="row">
         <input type="text" name="firstName" placeholder="First name" required />
         <input type="email" name="email" placeholder="Email address" required />
       </div>
-      <input type="tel" name="phone" placeholder="Mobile number" required />
 
-      <label class="consent">
-        <input type="checkbox" name="consent" />
-        <span>Yes, send me Star's SMS reminders, tips, and updates. Message frequency varies. Reply STOP to unsubscribe, HELP for help. Msg &amp; data rates may apply. Consent is not a condition of purchase. See our <a href="/privacy" target="_blank">Privacy Policy</a> and <a href="/terms" target="_blank">Terms</a>.</span>
-      </label>
+      <div class="optional-block">
+        <div class="step">Step 2 &middot; Optional</div>
+        <div class="optional-head">Also want them as text messages?</div>
+        <div class="optional-sub">
+          Completely optional. Leave this blank and you will still get your reminders by email.
+          You do not need to give a phone number to receive anything from Star, to buy anything,
+          or to use any part of this site.
+        </div>
 
-      <button type="submit">Get text reminders</button>
+        <input type="tel" name="phone" placeholder="Mobile number (optional)" />
+
+        <label class="consent">
+          <input type="checkbox" name="consent" />
+          <span>Yes, text me too. I agree to receive recurring automated SMS reminders, tips and updates from Star Taylor at the number above. Message frequency varies. Msg &amp; data rates may apply. Reply STOP to unsubscribe, HELP for help. Consent is not a condition of any purchase. See our <a href="/privacy" target="_blank">Privacy Policy</a> and <a href="/terms" target="_blank">Terms</a>.</span>
+        </label>
+      </div>
+
+      <button type="submit">Get my reminders</button>
       <p class="status" id="sms-status"></p>
     </form>
 
     <p class="fineprint">
-      By providing your mobile number and checking the box, you agree to receive recurring automated SMS reminders and tips from Star Taylor. Consent is not a condition of any purchase, service, or access to any content on this site. Message frequency varies. Message and data rates may apply. Reply STOP to cancel, HELP for help. Not interested? <a href="https://starjessetaylor.com" style="color:#fff;">Return to Star's site here</a>.
+      Email reminders are the service on this page. SMS is an optional add-on and is never required.
+      Consent to receive text messages is not a condition of any purchase, service, account, or access
+      to any content on this site. Message frequency varies. Message and data rates may apply.
+      Reply STOP to cancel, HELP for help.
     </p>
+
+    <p class="leave"><a href="https://starjessetaylor.com">Not interested? Return to Star's site</a></p>
   </div>
 
 <script>
 (function () {
-  const form = document.getElementById('sms-form');
+  const form   = document.getElementById('sms-form');
   const status = document.getElementById('sms-status');
+
+  function done(html){
+    form.innerHTML = '<div style="text-align:center;padding:22px 4px;">' + html + '</div>';
+  }
+
   form.addEventListener('submit', async function (e) {
     e.preventDefault();
     const fd = new FormData(form);
+    const phone   = (fd.get('phone') || '').trim();
+    const consent = fd.get('consent') === 'on';
+
+    // SMS is only ever recorded when BOTH a number and an explicit tick are present.
+    const smsOptIn = !!(phone && consent);
+
+    if (phone && !consent) {
+      status.textContent = 'To receive texts, please tick the SMS box. Or clear the phone field and continue with email only.';
+      return;
+    }
+
     const data = {
       firstName: fd.get('firstName') || '',
-      email: fd.get('email') || '',
-      phone: fd.get('phone') || '',
-      consent: fd.get('consent') === 'on',
+      email:     fd.get('email') || '',
+      phone:     smsOptIn ? phone : '',
+      consent:   smsOptIn,
       website_url: fd.get('website_url') || '',
       source: 'sms_optin_page'
     };
-    if (!data.consent) {
-      form.innerHTML = '<div style="text-align:center;padding:22px 0;"><div style="font-size:1.1rem;font-weight:700;margin-bottom:8px;">No problem. SMS is optional.</div><div style="opacity:.85;font-size:.95rem;">Everything on Star\'s site works without it. <a href="https://starjessetaylor.com" style="color:#fff;text-decoration:underline;">Continue to the site</a>.</div></div>';
-      return;
-    }
-    const btn = form.querySelector('button[type="submit"]');
+
+    const btn  = form.querySelector('button[type="submit"]');
     const orig = btn.textContent;
     btn.disabled = true; btn.textContent = 'Sending...'; status.textContent = '';
+
     try {
-      const res = await fetch('/api/sms-optin', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+      const res  = await fetch('/api/sms-optin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
       const json = await res.json().catch(() => ({}));
+
       if (res.ok && json.success) {
-        form.innerHTML = '<div style="text-align:center;padding:22px 0;"><div style="font-size:1.2rem;font-weight:700;margin-bottom:8px;">You are in.</div><div style="opacity:.85;font-size:.95rem;">Your first reminder from Star comes soon.</div></div>';
+        if (smsOptIn) {
+          done('<div style="font-size:1.2rem;font-weight:700;margin-bottom:8px;">You are in.</div>'
+             + '<div style="opacity:.85;font-size:.95rem;">You will get reminders by email and by text. Reply STOP to any text to stop them, and you will still keep the emails.</div>');
+        } else {
+          done('<div style="font-size:1.2rem;font-weight:700;margin-bottom:8px;">You are in.</div>'
+             + '<div style="opacity:.85;font-size:.95rem;">You will get Star\'s reminders and tips by email. You did not sign up for text messages, and you do not need to.</div>');
+        }
       } else {
         status.textContent = (json && json.error) || 'Something went wrong. Please try again in a moment.';
         btn.disabled = false; btn.textContent = orig;

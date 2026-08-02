@@ -24,9 +24,16 @@ export default async function handler(req, res) {
     return res.status(200).json({ success: true });
   }
 
+  // Email is the service on this page. Phone + consent are an OPTIONAL add-on.
+  // A submission with no phone must succeed — that is the non-SMS path a carrier
+  // reviewer needs to be able to complete. (A2P 10DLC error 30923.)
   if (!email) return res.status(400).json({ error: 'Email is required' });
-  if (!phone) return res.status(400).json({ error: 'Phone is required' });
-  if (!consent) return res.status(400).json({ error: 'Consent is required' });
+
+  // SMS is only ever recorded when BOTH a number and an explicit tick are present.
+  const smsOptIn = !!(phone && consent);
+  if (phone && !consent) {
+    return res.status(400).json({ error: 'To receive texts, please tick the SMS consent box.' });
+  }
 
   // Bot pattern detector
   if (firstName && /^[A-Za-z]{15,}$/.test(firstName) && /[A-Z]/.test(firstName) && /[a-z]/.test(firstName)) {
@@ -34,9 +41,12 @@ export default async function handler(req, res) {
     return res.status(200).json({ success: true });
   }
 
-  // Normalize phone (strip non-digits, store with leading + if missing)
-  const phoneDigits = String(phone).replace(/[^\d+]/g, '');
-  const normalizedPhone = phoneDigits.startsWith('+') ? phoneDigits : (phoneDigits.length === 10 ? `+1${phoneDigits}` : `+${phoneDigits}`);
+  // Normalize phone (strip non-digits, store with leading + if missing). Empty when email-only.
+  let normalizedPhone = '';
+  if (smsOptIn) {
+    const phoneDigits = String(phone).replace(/[^\d+]/g, '');
+    normalizedPhone = phoneDigits.startsWith('+') ? phoneDigits : (phoneDigits.length === 10 ? `+1${phoneDigits}` : `+${phoneDigits}`);
+  }
 
   const headers = { 'Api-Token': AC_KEY, 'Content-Type': 'application/json' };
 
@@ -46,11 +56,10 @@ export default async function handler(req, res) {
       method: 'POST',
       headers,
       body: JSON.stringify({
-        contact: {
-          email,
-          firstName: firstName || '',
-          phone: normalizedPhone
-        }
+        contact: Object.assign(
+          { email, firstName: firstName || '' },
+          normalizedPhone ? { phone: normalizedPhone } : {}
+        )
       })
     });
 
@@ -73,24 +82,26 @@ export default async function handler(req, res) {
       })
     }).catch(() => {});
 
-    // Apply SMS consent tag
-    const tags = ['sms:consented', `source:${source || 'website'}`];
+    // Tag. Only tag sms:consented when they actually ticked the box AND gave a number.
+    const tags = [`source:${source || 'website'}`, smsOptIn ? 'sms:consented' : 'sms:declined'];
     await applyTags(AC_URL, headers, contactId, tags);
 
-    // Log consent for legal record (TCPA compliance)
-    await fetch(`${AC_URL}/api/3/notes`, {
-      method: 'POST',
-      headers,
-      body: JSON.stringify({
-        note: {
-          note: `SMS consent recorded ${new Date().toISOString()}. Source: ${source || 'website'}. Phone: ${normalizedPhone}. Disclosure: practice reminders, tips, updates about Star's offerings including workshops, cohorts, courses, coaching, books, and live events. Max 5/week. Reply STOP to unsubscribe.`,
-          relid: contactId,
-          reltype: 'Subscriber'
-        }
-      })
-    }).catch(() => {});
+    // Log consent for legal record (TCPA compliance) — only when SMS was actually opted into.
+    if (smsOptIn) {
+      await fetch(`${AC_URL}/api/3/notes`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          note: {
+            note: `SMS consent recorded ${new Date().toISOString()}. Source: ${source || 'website'}. Phone: ${normalizedPhone}. Opt-in was optional: user completed the form's email service and separately ticked an unchecked SMS consent box. Disclosure: practice reminders, tips, updates about Star's offerings including workshops, cohorts, courses, coaching, books, and live events. Max 5/week. Reply STOP to unsubscribe.`,
+            relid: contactId,
+            reltype: 'Subscriber'
+          }
+        })
+      }).catch(() => {});
+    }
 
-    return res.status(200).json({ success: true });
+    return res.status(200).json({ success: true, sms: smsOptIn });
   } catch (err) {
     console.error('SMS opt-in error:', err);
     return res.status(500).json({ error: 'Sign up failed' });

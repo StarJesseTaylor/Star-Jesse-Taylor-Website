@@ -1,0 +1,13 @@
+Star Taylor sends SMS reminders, tips, and occasional updates about his programs, offerings, and events (which may include sign-up links) to end users who voluntarily opt in through the web form at https://starjessetaylor.com/sms.
+
+The service offered on that page is EMAIL reminders. The form has two parts. Step 1 asks for first name and email address and is required. Step 2 is clearly labelled "Optional" and asks for a mobile number and a separate, unchecked SMS consent checkbox.
+
+A user can complete the form, submit it successfully, and receive the email reminder service while leaving the phone number field completely blank and the SMS checkbox unticked. Doing so returns a success confirmation reading "Your reminders will come by email. You did not sign up for text messages, and you do not need to." SMS consent is therefore never required to complete the form or to receive the service.
+
+SMS is only recorded when BOTH a phone number is entered AND the unchecked consent box is ticked. Ticking that box is the only way to opt in.
+
+The consent checkbox reads: "Yes, text me too. I agree to receive recurring automated SMS reminders, tips and updates from Star Taylor at the number above. Message frequency varies. Msg & data rates may apply. Reply STOP to unsubscribe, HELP for help. Consent is not a condition of any purchase."
+
+No product, service, account, purchase, or event registration is gated behind providing a phone number or consenting to SMS. A user can buy the book, join any program, attend any event, and use every part of the website without ever providing a phone number.
+
+Users can reply STOP at any time to unsubscribe and HELP for support.
