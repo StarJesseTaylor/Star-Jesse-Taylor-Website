@@ -2,7 +2,7 @@ Star Taylor sends SMS reminders, tips, and occasional updates about his programs
 
 The service offered on that page is EMAIL reminders. The form has two parts. Step 1 asks for first name and email address and is required. Step 2 is clearly labelled "Optional" and asks for a mobile number and a separate, unchecked SMS consent checkbox.
 
-A user can complete the form, submit it successfully, and receive the email reminder service while leaving the phone number field completely blank and the SMS checkbox unticked. Doing so returns a success confirmation reading "Your reminders will come by email. You did not sign up for text messages, and you do not need to." SMS consent is therefore never required to complete the form or to receive the service.
+A user can complete the form, submit it successfully, and receive the email reminder service while leaving the phone number field completely blank and the SMS checkbox unticked. Doing so returns a success confirmation reading "You will get Star's reminders and tips by email. You did not sign up for text messages, and you do not need to." SMS consent is therefore never required to complete the form or to receive the service.
 
 SMS is only recorded when BOTH a phone number is entered AND the unchecked consent box is ticked. Ticking that box is the only way to opt in.
 
