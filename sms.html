@@ -86,7 +86,7 @@
     </div>
 
     <div class="skip-top">
-      <a href="https://www.starjessetaylor.com" class="skip-btn">No thanks, take me to Star's site</a>
+      <a href="https://starjessetaylor.com" class="skip-btn">No thanks, take me to Star's site</a>
     </div>
 
     <div class="optional-note">
@@ -104,7 +104,7 @@
       <input type="tel" name="phone" placeholder="Mobile number" required />
 
       <label class="consent">
-        <input type="checkbox" name="consent" required />
+        <input type="checkbox" name="consent" />
         <span>Yes, send me Star's SMS reminders, tips, and updates. Message frequency varies. Reply STOP to unsubscribe, HELP for help. Msg &amp; data rates may apply. Consent is not a condition of purchase. See our <a href="/privacy" target="_blank">Privacy Policy</a> and <a href="/terms" target="_blank">Terms</a>.</span>
       </label>
 
@@ -113,7 +113,7 @@
     </form>
 
     <p class="fineprint">
-      By providing your mobile number and checking the box, you agree to receive recurring automated SMS reminders and tips from Star Taylor. Consent is not a condition of any purchase, service, or access to any content on this site. Message frequency varies. Message and data rates may apply. Reply STOP to cancel, HELP for help. Not interested? <a href="https://www.starjessetaylor.com" style="color:#fff;">Return to Star's site here</a>.
+      By providing your mobile number and checking the box, you agree to receive recurring automated SMS reminders and tips from Star Taylor. Consent is not a condition of any purchase, service, or access to any content on this site. Message frequency varies. Message and data rates may apply. Reply STOP to cancel, HELP for help. Not interested? <a href="https://starjessetaylor.com" style="color:#fff;">Return to Star's site here</a>.
     </p>
   </div>
 
@@ -132,7 +132,10 @@
       website_url: fd.get('website_url') || '',
       source: 'sms_optin_page'
     };
-    if (!data.consent) { status.textContent = 'Please check the box to confirm consent.'; return; }
+    if (!data.consent) {
+      form.innerHTML = '<div style="text-align:center;padding:22px 0;"><div style="font-size:1.1rem;font-weight:700;margin-bottom:8px;">No problem. SMS is optional.</div><div style="opacity:.85;font-size:.95rem;">Everything on Star\'s site works without it. <a href="https://starjessetaylor.com" style="color:#fff;text-decoration:underline;">Continue to the site</a>.</div></div>';
+      return;
+    }
     const btn = form.querySelector('button[type="submit"]');
     const orig = btn.textContent;
     btn.disabled = true; btn.textContent = 'Sending...'; status.textContent = '';
