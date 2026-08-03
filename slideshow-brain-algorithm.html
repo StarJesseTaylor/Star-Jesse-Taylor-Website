@@ -522,13 +522,13 @@
   function startAuto() {
     stopAuto();
     autoTimer = setInterval(next, AUTO_MS);
-    autoIcon.innerHTML = '&#10073;&#10073;';
+    autoIcon.innerHTML = '❙❙';
     autoLabel.textContent = 'Pause';
   }
   function stopAuto() {
     if (autoTimer) clearInterval(autoTimer);
     autoTimer = null;
-    autoIcon.innerHTML = '&#9658;';
+    autoIcon.innerHTML = '►';
     autoLabel.textContent = 'Play';
   }
   function toggleAuto() { autoTimer ? stopAuto() : startAuto(); }

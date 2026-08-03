@@ -200,7 +200,7 @@
         if (window.posthog && window.posthog.capture) {
           window.posthog.capture('whats_next_signup', { source: data.source, interest_community: true });
         }
-        form.innerHTML = '<div style="text-align:center;padding:24px 0;"><div style="font-size:2.4rem;margin-bottom:12px;">&#10003;</div><div style="color:#fff;font-size:1.15rem;font-weight:700;margin-bottom:8px;">You\'re on the list.</div><div style="color:rgba(255,255,255,0.78);font-size:0.95rem;">I\'ll send the details when the community opens.</div></div>';
+        form.innerHTML = '<div style="text-align:center;padding:24px 0;"><div style="font-size:2.4rem;margin-bottom:12px;">✓</div><div style="color:#fff;font-size:1.15rem;font-weight:700;margin-bottom:8px;">You\'re on the list.</div><div style="color:rgba(255,255,255,0.78);font-size:0.95rem;">I\'ll send the details when the community opens.</div></div>';
       } else {
         status.textContent = json.error || 'Something went wrong. Try again.';
         btn.disabled = false;
