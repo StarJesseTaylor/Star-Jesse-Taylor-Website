@@ -18,6 +18,7 @@
     { "source": "/about", "destination": "/about.html" },
     { "source": "/services", "destination": "/services.html" },
     { "source": "/apply", "destination": "/apply.html" },
+    { "source": "/apply-package", "destination": "/apply-package.html" },
     { "source": "/cohort", "destination": "/cohort.html" },
     { "source": "/courses", "destination": "/courses.html" },
     { "source": "/virtual-events", "destination": "/virtual-events.html" },
