@@ -35,7 +35,19 @@
   "redirects": [
     { "source": "/join", "destination": "https://www.skool.com/star-jesse-taylor-3703", "permanent": false },
     { "source": "/start", "destination": "https://www.skool.com/star-jesse-taylor-3703?utm_source=book&utm_medium=book", "permanent": false },
-    { "source": "/free", "destination": "https://www.skool.com/star-jesse-taylor-3703?utm_source=book&utm_medium=book", "permanent": false }
+    { "source": "/free", "destination": "https://www.skool.com/star-jesse-taylor-3703?utm_source=book&utm_medium=book", "permanent": false },
+    { "source": "/event", "destination": "/community", "permanent": false },
+    { "source": "/event.html", "destination": "/community", "permanent": false },
+    { "source": "/cohort", "destination": "/community", "permanent": false },
+    { "source": "/cohort.html", "destination": "/community", "permanent": false },
+    { "source": "/courses", "destination": "/book", "permanent": false },
+    { "source": "/courses.html", "destination": "/book", "permanent": false },
+    { "source": "/virtual-events", "destination": "/community", "permanent": false },
+    { "source": "/virtual-events.html", "destination": "/community", "permanent": false },
+    { "source": "/quiz", "destination": "/community", "permanent": false },
+    { "source": "/quiz.html", "destination": "/community", "permanent": false },
+    { "source": "/qualify", "destination": "/community", "permanent": false },
+    { "source": "/qualify.html", "destination": "/community", "permanent": false }
   ],
   "crons": [
     {

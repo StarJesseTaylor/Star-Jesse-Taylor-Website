@@ -36,10 +36,9 @@
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
         <li><a href="about.html">About</a></li>
+        <li><a href="community.html">Community</a></li>
+        <li><a href="book.html">Book</a></li>
         <li><a href="services.html">Work With Star</a></li>
-        <li><a href="book.html">Star's Book</a></li>
-        <li><a href="event.html">Workshop</a></li>
-        <li><a href="speak.html">Speaking</a></li>
       </ul>
       <a href="community.html" class="btn btn-primary btn-sm nav-cta">Join the Community</a>
       <button class="nav-hamburger" aria-label="Menu">
@@ -53,10 +52,9 @@
 <div class="nav-mobile">
   <a href="index.html">Home</a>
   <a href="about.html">About</a>
+  <a href="community.html">Community</a>
+  <a href="book.html">Book</a>
   <a href="services.html">Work With Star</a>
-  <a href="book.html">Star's Book</a>
-  <a href="event.html">Workshop</a>
-  <a href="speak.html">Speaking</a>
   <a href="community.html">Join the Community</a>
 </div>
 
@@ -83,11 +81,10 @@
       <!-- INVESTMENT FLOOR ROUTING NOTICE -->
       <div class="fade-up" style="background:#fff7ed;border:1.5px solid #f59e0b;border-radius:12px;padding:18px 22px;margin-bottom:24px;font-size:0.96rem;line-height:1.65;color:#7a3e00;">
         <strong style="display:block;color:#7a3e00;margin-bottom:6px;font-size:1.02rem;">1-on-1 coaching with Star starts at $500.</strong>
-        Under that, you can still ask Star a question directly via paid voice memo ($55 or $99), join the 10-Week Cohort waitlist ($2,200 paid in full or 3 payments of $797), or start with the book ($29.99) and courses ($97 to $197). <strong>Ongoing 1-on-1 coaching is not offered under $500.</strong>
+        If you are not ready for 1-on-1 yet, the Community ($59/mo) and the book ($29.99) are the best places to begin. <strong>Ongoing 1-on-1 coaching is not offered under $500.</strong>
         <div style="margin-top:10px;display:flex;gap:14px;flex-wrap:wrap;">
-          <a href="https://ask.meanything.co/starjessetaylor" target="_blank" rel="noopener" style="color:#9a4d00;font-weight:700;text-decoration:underline;">Ask Star directly &rarr;</a>
-          <a href="services.html#waitlistForm" style="color:#9a4d00;font-weight:700;text-decoration:underline;">Join the Cohort waitlist &rarr;</a>
-          <a href="courses.html" style="color:#9a4d00;font-weight:700;text-decoration:underline;">See the courses &rarr;</a>
+          <a href="community.html" style="color:#9a4d00;font-weight:700;text-decoration:underline;">Join the Community &rarr;</a>
+          <a href="book.html" style="color:#9a4d00;font-weight:700;text-decoration:underline;">Get the book &rarr;</a>
         </div>
       </div>
 
@@ -133,7 +130,7 @@
                 <option value="CST (UTC-6) Chicago, Mexico City">CST (UTC-6) Chicago, Mexico City</option>
                 <option value="EST (UTC-5) New York, Toronto">EST (UTC-5) New York, Toronto</option>
                 <option value="AST (UTC-4) Atlantic, Caracas">AST (UTC-4) Atlantic, Caracas</option>
-                <option value="BRT (UTC-3) S·o Paulo, Buenos Aires">BRT (UTC-3) S·o Paulo, Buenos Aires</option>
+                <option value="BRT (UTC-3) S&atilde;o Paulo, Buenos Aires">BRT (UTC-3) S&atilde;o Paulo, Buenos Aires</option>
                 <option value="GMT (UTC+0) London, Lisbon">GMT (UTC+0) London, Lisbon</option>
                 <option value="CET (UTC+1) Paris, Berlin, Madrid">CET (UTC+1) Paris, Berlin, Madrid</option>
                 <option value="EET (UTC+2) Athens, Cairo, Johannesburg">EET (UTC+2) Athens, Cairo, Johannesburg</option>
@@ -261,19 +258,16 @@
             <label for="investment">What investment level fits you right now? <span>*</span></label>
             <select id="investment" name="investment" required>
               <option value="" disabled selected>Select one</option>
-              <option value="Under $500 (book or course path, no 1-on-1)">Under $500. I want to start with the book or a course. (No 1-on-1 coaching at this level.)</option>
               <option value="$500 · Clarity Session">$500. I am ready for a Clarity Session with Star.</option>
-              <option value="$2,200 · 10-Week Cohort waitlist">$2,200. I want the 10-Week Cohort when it opens.</option>
               <option value="$3,497 · 1-on-1 Six Week Package">$3,497. I am ready for the 1-on-1 Six Week Package.</option>
               <option value="$4,997 · 1-on-1 Ten Week Package">$4,997. I am ready for the 1-on-1 Ten Week Package.</option>
               <option value="$9,997 · 1-on-1 Five Month Package">$9,997. I am ready for the 1-on-1 Five Month Package.</option>
               <option value="Results matter more than cost">Results matter more than cost. Star, tell me what fits.</option>
-              <option value="Message Star first (ask.meanything.co)">I want to message Star first before deciding.</option>
             </select>
           </div>
 
           <div class="form-group">
-            <label>On a scale of 1·10, how committed are you to doing this work? <span>*</span></label>
+            <label>On a scale of 1 to 10, how committed are you to doing this work? <span>*</span></label>
             <div class="scale-options">
               <input type="radio" id="scale1" name="commitment_scale" value="1" class="scale-option" />
               <label for="scale1" class="scale-label">1</label>
@@ -336,63 +330,9 @@
         <a href="index.html" class="btn btn-outline" style="margin-top:18px;">Return Home</a>
       </div>
 
-      <!-- CONFIRMATION MESSAGE (under $500 path) -->
-      <div class="form-confirmation" id="formConfirmationCourses" style="display:none;">
-        <div class="confirm-icon"></div>
-        <h3>Thank you for applying.</h3>
-        <p>Ongoing 1-on-1 coaching with Star is not the right fit yet at this investment level. Four things you can still do:</p>
-        <ol style="text-align:left;max-width:560px;margin:14px auto 18px;line-height:1.8;font-size:1rem;color:var(--charcoal);">
-          <li><strong>Ask Star a question directly via paid voice memo ($55 or $99).</strong> If you continue into coaching later, that investment credits toward your package. One credit per person.</li>
-          <li><strong>Join the 10-Week Cohort waitlist ($2,200 paid in full or 3 payments of $797).</strong> Group coaching with Star, opens a few times a year, waitlist members get first access.</li>
-          <li><strong>Start with a course ($97 to $197).</strong> Same framework Star teaches in 1-on-1, just self-paced.</li>
-          <li><strong>Get the book ($29.99).</strong> The whole foundation in one read.</li>
-        </ol>
-        <p style="font-size:0.95rem;">When you are ready for coaching, come back here.</p>
-        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:18px;">
-          <a href="https://ask.meanything.co/starjessetaylor" target="_blank" rel="noopener" class="btn btn-primary">Ask Star Directly</a>
-          <a href="services.html#waitlistForm" class="btn btn-outline">Join Cohort Waitlist</a>
-          <a href="courses.html" class="btn btn-outline">See the Courses</a>
-          <a href="book.html" class="btn btn-outline">Get the Book</a>
-        </div>
-
-        <div style="margin-top:24px;padding:20px;background:var(--off-white);border:1px solid var(--light-gray);border-radius:10px;text-align:center;">
-          <p style="margin:0 0 14px;font-weight:600;color:var(--charcoal);">Send Star a DM so he knows your application came through.</p>
-          <a href="https://www.instagram.com/starjessetaylor" target="_blank" rel="noopener" class="btn btn-primary" style="margin:6px 4px;">Message Star on Instagram</a>
-          <p style="margin:12px 0 0;font-size:0.92rem;color:var(--mid-gray);">No Instagram? <a href="https://www.tiktok.com/@starjessetaylor" target="_blank" rel="noopener" style="color:var(--cobalt);font-weight:600;">Message him on TikTok instead</a>.</p>
-        </div>
-      </div>
-
-      <!-- CONFIRMATION MESSAGE (cohort selected path) -->
-      <div class="form-confirmation" id="formConfirmationCohort" style="display:none;">
-        <div class="confirm-icon"></div>
-        <h3>You are on the cohort waitlist.</h3>
-        <p>Star personally reviews every application. You will hear back within 48 hours about your fit.</p>
-        <p style="margin-top:12px;">In the meantime, you have been added to the <strong>10-Week Emotional Fitness Cohort waitlist</strong>. When the next cohort opens for limited enrollment, you get the announcement before the public. Standard price is <strong>$2,200 paid in full or 3 payments of $797</strong>. Waitlist members get first access.</p>
-        <p style="margin-top:12px;font-size:0.95rem;color:var(--mid-gray);">A confirmation email is on its way to you now.</p>
-
-        <div style="margin-top:24px;padding:20px;background:var(--off-white);border:1px solid var(--light-gray);border-radius:10px;text-align:center;">
-          <p style="margin:0 0 14px;font-weight:600;color:var(--charcoal);">One more step: send Star a DM so he knows your application is in.</p>
-          <a href="https://www.instagram.com/starjessetaylor" target="_blank" rel="noopener" class="btn btn-primary" style="margin:6px 4px;">Message Star on Instagram</a>
-          <p style="margin:12px 0 0;font-size:0.92rem;color:var(--mid-gray);">No Instagram? <a href="https://www.tiktok.com/@starjessetaylor" target="_blank" rel="noopener" style="color:var(--cobalt);font-weight:600;">Message him on TikTok instead</a>.</p>
-        </div>
-
-        <a href="index.html" class="btn btn-outline" style="margin-top:18px;">Return Home</a>
-      </div>
-
-      <!-- CONFIRMATION MESSAGE (message Star first path) -->
-      <div class="form-confirmation" id="formConfirmationAsk" style="display:none;">
-        <div class="confirm-icon"></div>
-        <h3>Send Star a voice memo.</h3>
-        <p>For a fast, paid voice memo from Star, ask your question here.</p>
-        <p style="margin-top:12px;font-size:0.95rem;color:var(--charcoal);"><strong>Your voice memo investment credits toward coaching if you continue. One credit per person, not stacked.</strong></p>
-        <a href="https://ask.meanything.co/starjessetaylor" target="_blank" rel="noopener" class="btn btn-primary" style="margin-top:14px;">Ask Star Directly</a>
-
-        <div style="margin-top:24px;padding:20px;background:var(--off-white);border:1px solid var(--light-gray);border-radius:10px;text-align:center;">
-          <p style="margin:0 0 14px;font-weight:600;color:var(--charcoal);">Also: send Star a DM so he's looking out for you.</p>
-          <a href="https://www.instagram.com/starjessetaylor" target="_blank" rel="noopener" class="btn btn-primary" style="margin:6px 4px;">Message Star on Instagram</a>
-          <p style="margin:12px 0 0;font-size:0.92rem;color:var(--mid-gray);">No Instagram? <a href="https://www.tiktok.com/@starjessetaylor" target="_blank" rel="noopener" style="color:var(--cobalt);font-weight:600;">Message him on TikTok instead</a>.</p>
-        </div>
-      </div>
+      <!-- Retired-offer confirmation paths (courses / cohort / voice memo) removed.
+           All applicants now see the default "Application Received" confirmation above;
+           js/main.js pickConfirmation() falls back to it safely when those IDs are absent. -->
 
     </div>
   </div>
@@ -407,11 +347,10 @@
           <div class="footer-brand-name">Star Jesse Taylor</div>
           <div class="footer-brand-sub">Emotional Fitness</div>
         </div>
-        <p class="footer-brand-desc">High Performer and Mental Health Coach, Author, and Speaker based in Los Angeles.</p>
+        <p class="footer-brand-desc">Emotional Fitness coach and author based in Los Angeles.</p>
         <div class="social-links">
           <a href="https://www.instagram.com/starjessetaylor" class="social-link" aria-label="Instagram" target="_blank" rel="noopener">IG</a>
           <a href="https://www.tiktok.com/@starjessetaylor" class="social-link" aria-label="TikTok" target="_blank" rel="noopener">TK</a>
-          <a href="#" class="social-link" aria-label="YouTube">YT</a>
         </div>
       </div>
       <div class="footer-col">
@@ -428,9 +367,7 @@
         <h4>Work Together</h4>
         <ul class="footer-links">
           <li><a href="services.html">1-on-1 Coaching</a></li>
-          <li><a href="services.html">10-Week Cohort (Waitlist)</a></li>
-          <li><a href="courses.html">Courses</a></li>
-          <li><a href="virtual-events.html">Free Virtual Event</a></li>
+          <li><a href="community.html">Community ($59/mo)</a></li>
           <li><a href="/api/book-checkout" target="_blank" rel="noopener">The Book ($29.99)</a></li>
         </ul>
       </div>
@@ -438,7 +375,6 @@
         <h4>Contact</h4>
         <ul class="footer-links">
           <li><a href="mailto:starjessetaylor@gmail.com">starjessetaylor@gmail.com</a></li>
-          <li><a href="mailto:starjessetaylor@gmail.com">Speaking Inquiries</a></li>
           <li><a href="https://www.instagram.com/starjessetaylor" target="_blank" rel="noopener">Instagram @starjessetaylor</a></li>
           <li><a href="https://www.tiktok.com/@starjessetaylor" target="_blank" rel="noopener">TikTok @starjessetaylor</a></li>
         </ul>

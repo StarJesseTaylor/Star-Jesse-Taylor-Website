@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Work With Star | Emotional Fitness Coaching Services</title>
-  <meta name="description" content="Choose your path with Star Jesse Taylor. Monthly group sessions, workshops, six-week intensives, and the full 10-week Emotional Fitness Cohort." />
+  <title>Work With Star | 1-on-1 Emotional Fitness Coaching</title>
+  <meta name="description" content="Apply for private 1-on-1 Emotional Fitness coaching with Star Jesse Taylor. Weekly sessions with the full framework applied to your specific patterns, plus WhatsApp support between sessions." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -20,6 +20,39 @@
   <script src="js/tracking.js" async></script>
   <script src="js/announcement-bar.js" defer></script>
   <script src="/js/posthog-init.js"></script>
+  <style>
+    /* PAGE-LOCAL LAYOUT · Work With Star */
+    .wws-steps { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; max-width:1080px; margin:0 auto; }
+    .wws-step { background:var(--white); border:1px solid var(--light-gray); border-radius:var(--radius); padding:32px 30px; box-shadow:var(--shadow); }
+    .wws-step-num { width:40px; height:40px; border-radius:50%; background:var(--cobalt); color:var(--white); font-weight:900; font-size:1.05rem; display:flex; align-items:center; justify-content:center; margin-bottom:18px; }
+    .wws-step h3 { font-size:1.2rem; margin-bottom:10px; }
+    .wws-step p { font-size:0.96rem; color:var(--mid-gray); line-height:1.7; margin:0; }
+
+    .wws-packages { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; max-width:1120px; margin:0 auto; align-items:start; }
+    .wws-pkg { position:relative; background:rgba(255,255,255,0.05); border:1px solid rgba(201,168,76,0.28); border-radius:14px; padding:30px 26px 26px; display:flex; flex-direction:column; height:100%; }
+    .wws-pkg.is-recommended { border:2px solid #c9a84c; background:rgba(255,255,255,0.09); box-shadow:0 0 34px rgba(201,168,76,0.22); }
+    .wws-pkg-badge { position:absolute; top:-12px; left:50%; transform:translateX(-50%); background:linear-gradient(90deg,#c9a84c,#f5d478); color:#1a1a2e; font-size:0.66rem; font-weight:900; letter-spacing:0.16em; text-transform:uppercase; padding:5px 16px; border-radius:50px; white-space:nowrap; }
+    .wws-pkg-term { font-size:0.72rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#f5d478; margin-bottom:8px; }
+    .wws-pkg-price { font-size:2.1rem; font-weight:900; color:#fff; line-height:1; margin-bottom:12px; }
+    .wws-pkg-desc { color:rgba(255,255,255,0.74); font-size:0.9rem; line-height:1.7; margin:0 0 18px; }
+    .wws-pkg ul { padding:0; margin:0 0 22px; display:flex; flex-direction:column; gap:8px; flex:1; }
+    .wws-pkg li { display:flex; gap:9px; font-size:0.87rem; color:rgba(255,255,255,0.8); line-height:1.55; }
+    .wws-pkg li span:first-child { color:#f5d478; flex-shrink:0; font-weight:900; }
+    .wws-pkg-cta { background:linear-gradient(90deg,#c9a84c,#f5d478); color:#1a1a2e; font-weight:800; padding:13px 22px; border-radius:8px; font-size:0.92rem; text-align:center; display:block; }
+
+    .wws-videos { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; max-width:920px; margin:0 auto; }
+    .wws-quotes { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; max-width:1120px; margin:0 auto; }
+    .wws-quote { background:var(--white); border:1px solid rgba(27,108,168,0.14); border-left:5px solid var(--cobalt); border-radius:14px; padding:30px 30px 26px; box-shadow:0 12px 40px rgba(27,108,168,0.08); display:flex; flex-direction:column; }
+    .wws-avatar { width:48px; height:48px; border-radius:50%; background:linear-gradient(135deg,var(--cobalt) 0%,var(--turquoise) 100%); color:var(--white); display:flex; align-items:center; justify-content:center; font-weight:900; font-size:1.05rem; flex-shrink:0; }
+    .wws-split { display:grid; grid-template-columns:1fr 1.15fr; gap:44px; align-items:center; max-width:1080px; margin:0 auto; }
+    .wws-split.split-wide { grid-template-columns:1.15fr 1fr; }
+
+    @media (max-width:900px) {
+      .wws-steps, .wws-packages, .wws-videos, .wws-quotes { grid-template-columns:1fr; }
+      .wws-split, .wws-split.split-wide { grid-template-columns:1fr; gap:28px; }
+      .wws-pkg.is-recommended { order:-1; }
+    }
+  </style>
 </head>
 <body>
 <!-- Meta Pixel noscript fallback -->
@@ -36,12 +69,11 @@
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
         <li><a href="about.html">About</a></li>
-        <li><a href="services.html">Work With Star</a></li>
-        <li><a href="book.html">Star's Book</a></li>
-        <li><a href="event.html">Workshop</a></li>
-        <li><a href="speak.html">Speaking</a></li>
+        <li><a href="/community">Community</a></li>
+        <li><a href="book.html">Book</a></li>
+        <li><a href="/services">Work With Star</a></li>
       </ul>
-      <a href="community.html" class="btn btn-primary btn-sm nav-cta">Join the Community</a>
+      <a href="/community" class="btn btn-primary btn-sm nav-cta">Join the Community</a>
       <button class="nav-hamburger" aria-label="Menu">
         <span></span><span></span><span></span>
       </button>
@@ -53,35 +85,38 @@
 <div class="nav-mobile">
   <a href="index.html">Home</a>
   <a href="about.html">About</a>
-  <a href="services.html">Work With Star</a>
-  <a href="book.html">Star's Book</a>
-  <a href="event.html">Workshop</a>
-  <a href="speak.html">Speaking</a>
-  <a href="community.html">Join the Community</a>
+  <a href="/community">Community</a>
+  <a href="book.html">Book</a>
+  <a href="/services">Work With Star</a>
+  <a href="/community">Join the Community</a>
 </div>
 
-<!-- HERO PHOTO · STAR COACHING BLANCA AT THE LA WORKSHOP -->
-<section style="background:#000;padding:calc(var(--nav-height) + 24px) 0 0;">
-  <div style="max-width:1280px;margin:0 auto;">
-    <img src="images/LA%20Workshop%20May%2030/star-speaking-workshop.png" alt="Star Jesse Taylor coaching Blanca at the LA workshop" style="display:block;width:100%;height:auto;" />
+<!-- HERO · ONE PAGE, ONE OFFER -->
+<section style="position:relative;background-image:url('images/LA%20Workshop%20May%2030/star-speaking-workshop.png');background-size:cover;background-position:center;min-height:70vh;display:flex;align-items:center;padding:calc(var(--nav-height) + 90px) 0 90px;overflow:hidden;">
+  <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.58) 0%,rgba(0,0,0,0.45) 45%,rgba(0,0,0,0.85) 100%);z-index:0;"></div>
+  <div class="container" style="position:relative;z-index:1;text-align:center;">
+    <div class="fade-up" style="color:#f6f4ef;opacity:0.92;letter-spacing:0.14em;font-size:0.82rem;font-weight:700;text-transform:uppercase;margin-bottom:24px;">Private Coaching &middot; Application Only</div>
+    <h1 class="fade-up fade-up-delay-1" style="color:#ffffff;font-size:clamp(2rem,4.4vw,3.2rem);max-width:880px;margin:0 auto 20px;text-shadow:0 4px 32px rgba(0,0,0,0.7);">One-on-one coaching with Star.</h1>
+    <p class="fade-up fade-up-delay-2" style="color:rgba(255,255,255,0.92);font-size:clamp(1.02rem,2.1vw,1.22rem);line-height:1.7;max-width:660px;margin:0 auto 34px;text-shadow:0 2px 18px rgba(0,0,0,0.6);">The full Emotional Fitness practice built around your exact patterns, week by week, with Star. The goal is that you become your own coach.</p>
+    <a href="apply.html" class="btn btn-primary btn-lg fade-up fade-up-delay-2" style="font-weight:800;">Apply for 1-on-1 Coaching &rarr;</a>
+    <p class="fade-up fade-up-delay-2" style="color:rgba(255,255,255,0.7);font-size:0.9rem;margin:18px 0 0;">Star reads every application and responds within 48 hours.</p>
   </div>
 </section>
 
-<!-- WATCH FIRST · INTRO NOTE -->
-<section style="background:var(--off-white);padding:48px 0 32px;text-align:center;">
+<!-- WATCH FIRST · STAR'S INSTRUCTION -->
+<section style="background:var(--off-white);padding:64px 0 24px;text-align:center;">
   <div class="container" style="max-width:760px;">
-    <p class="fade-up" style="font-size:1.08rem;color:var(--charcoal);line-height:1.7;margin:0;">Before applying for coaching, please watch this video so you know what my coaching is like.</p>
+    <span class="section-label fade-up">Watch This First</span>
+    <p class="fade-up" style="font-size:1.08rem;color:var(--charcoal);line-height:1.7;margin:12px 0 0;">Before applying for coaching, please watch this video so you know what my coaching is like.</p>
   </div>
 </section>
 
-<!-- KATIE HAYMAN VIDEO TESTIMONIAL · TOP OF PAGE PROOF -->
-<section class="vsl-section">
+<section style="background:var(--off-white);padding:26px 0 74px;">
   <div class="container">
-    <div class="vsl-wrapper fade-up fade-up-delay-2" style="max-width:380px;margin:0 auto;">
-      <div style="position:relative;width:100%;padding-bottom:177.78%;border-radius:18px;overflow:hidden;box-shadow:0 18px 60px rgba(0,0,0,0.22);">
+    <div class="fade-up" style="max-width:360px;margin:0 auto;">
+      <div class="video-embed ratio-9x16" style="border-radius:18px;box-shadow:0 18px 60px rgba(0,0,0,0.22);">
         <iframe
           src="https://www.youtube-nocookie.com/embed/KJcgDLzLTgo?rel=0&playsinline=1&modestbranding=1"
-          style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowfullscreen
           title="Katie Hayman: 1-on-1 Coaching Client Story"
@@ -95,132 +130,133 @@
   </div>
 </section>
 
-<!-- APPLY FOR COACHING CTA -->
-<section style="background:linear-gradient(160deg, var(--cobalt) 0%, var(--turquoise) 100%);padding:80px 0;text-align:center;">
-  <div class="container">
-    <div class="fade-up" style="max-width:680px;margin:0 auto;">
-      <h2 style="font-size:clamp(1.8rem,3.6vw,2.4rem);color:#ffffff;margin-bottom:18px;line-height:1.2;">Apply to Work With Star.</h2>
-      <p style="font-size:1.08rem;color:rgba(255,255,255,0.92);line-height:1.75;margin-bottom:32px;">Star personally reviews every application. 1-on-1 coaching is the most direct way to do this work, with the full framework applied to your specific situation.</p>
-      <a href="apply.html" class="btn btn-lg" style="background:#ffffff;color:var(--cobalt);font-weight:800;padding:18px 44px;border-radius:50px;font-size:1.05rem;text-decoration:none;display:inline-block;">Apply for 1-on-1 Coaching &rarr;</a>
-    </div>
-  </div>
-</section>
-
-<!-- ANNABELLE SHORT QUOTE · AFTER APPLY CTA -->
-<section style="background:#ffffff;padding:56px 0 56px;">
-  <div class="container">
-    <div style="max-width:820px;margin:0 auto;padding:28px 30px;background:rgba(27,108,168,0.05);border-left:4px solid var(--cobalt);border-radius:10px;text-align:left;display:grid;grid-template-columns:240px 1fr;gap:30px;align-items:center;" class="fade-up annabelle-strip">
-      <img src="images/Client%20Pictures/Anabelle1.jpeg" alt="Annabelle T, psychologist and Star Jesse Taylor course graduate" style="width:100%;max-width:240px;border-radius:14px;object-fit:cover;aspect-ratio:4/5;box-shadow:0 12px 36px rgba(27,108,168,0.22);" onerror="this.style.display='none'" />
-      <div>
-        <p style="font-size:1.08rem;color:var(--charcoal);line-height:1.7;font-style:italic;margin:0 0 14px;">"I've tried so many things for mental health. I've read so many self-help books, and I'm a psychologist. But this is what actually changed things."</p>
-        <p style="font-size:0.92rem;color:var(--mid-gray);margin:0;"><strong style="color:var(--charcoal);font-size:1rem;">Annabelle T</strong> · Psychologist</p>
-      </div>
-    </div>
-  </div>
-  <style>
-    @media (max-width: 720px) {
-      .annabelle-strip { grid-template-columns: 1fr !important; gap: 22px !important; text-align: center; }
-      .annabelle-strip img { max-width: 220px !important; margin: 0 auto; }
-    }
-  </style>
-</section>
-
-<!-- MARISSA VSL SECTION · MORE PROOF -->
-<section class="vsl-section">
-  <div class="container">
-    <span class="vsl-label fade-up">Real Client. Real Change.</span>
-    <h2 class="vsl-headline fade-up fade-up-delay-1">Marissa did years of therapy. Nothing changed. Then she did the work with me.</h2>
-    <div class="vsl-wrapper fade-up fade-up-delay-2" style="max-width:380px;margin:0 auto;">
-      <div style="position:relative;width:100%;padding-bottom:177.78%;border-radius:18px;overflow:hidden;box-shadow:0 18px 60px rgba(0,0,0,0.22);">
-        <iframe
-          src="https://www.youtube-nocookie.com/embed/_PRq3vqmUQU?rel=0&playsinline=1&modestbranding=1"
-          style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowfullscreen
-          title="Marissa: 1-on-1 Coaching Client Transformation Story"
-        ></iframe>
-      </div>
-      <div style="text-align:center;margin-top:18px;">
-        <div style="font-weight:800;color:var(--charcoal);font-size:1rem;">Marissa</div>
-        <div style="font-size:0.85rem;color:var(--cobalt);font-weight:700;margin-top:3px;">1-on-1 Coaching Client</div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- WHY THIS WORK EXISTS -->
-<section style="background:var(--off-white);padding:80px 0 70px;">
+<section style="background:var(--white);padding:88px 0 78px;">
   <div class="container">
     <div style="max-width:780px;margin:0 auto;text-align:center;" class="fade-up">
       <span class="section-label">Why This Work Exists</span>
-      <h2 style="font-size:clamp(1.8rem,3.6vw,2.4rem);color:var(--charcoal);line-height:1.2;margin-bottom:28px;">Most People Never Live Their Own Life.</h2>
+      <h2 style="font-size:clamp(1.8rem,3.6vw,2.4rem);color:var(--charcoal);line-height:1.2;margin:12px 0 28px;">Most People Never Live Their Own Life.</h2>
     </div>
     <div style="max-width:740px;margin:0 auto;font-size:1.05rem;line-height:1.85;color:var(--charcoal);" class="fade-up fade-up-delay-1">
       <p style="margin-bottom:22px;">Most people are reactive to their thoughts and emotions. They let whatever shows up in their head decide what they do. They believe those thoughts and feelings are who they are.</p>
       <p style="margin-bottom:22px;">But the thoughts and emotions running them are not theirs. They are patterns from the past. From childhood. From the people around them. From the trauma they carry. The old algorithm is still running, and most people never knew they could change it.</p>
       <p style="margin-bottom:22px;">So they live a life shaped by everyone except themselves. They please people. They chase validation. They stay quiet to avoid being hurt. They never become who they actually are.</p>
       <p style="margin-bottom:18px;font-weight:800;color:var(--cobalt);font-size:1.12rem;">This work is the change of that algorithm. From the patterns of the past to your authentic self.</p>
-      <p style="margin-bottom:0;font-size:1.05rem;line-height:1.85;color:var(--charcoal);">Along the way of changing that algorithm and moving in a new direction, you will achieve goal after goal because now you do not have any brakes holding you back.</p>
+      <p style="margin-bottom:0;">Along the way of changing that algorithm and moving in a new direction, you will achieve goal after goal because now you do not have any brakes holding you back.</p>
     </div>
   </div>
 </section>
 
+<!-- PROOF · MARISSA VSL -->
+<section class="vsl-section">
+  <div class="container">
+    <span class="vsl-label fade-up">Real Client. Real Change.</span>
+    <h2 class="vsl-headline fade-up fade-up-delay-1">Marissa did years of therapy. Nothing changed. Then she did the work with me.</h2>
+    <div class="fade-up fade-up-delay-2" style="max-width:360px;margin:0 auto;">
+      <div class="video-embed ratio-9x16" style="border-radius:18px;box-shadow:0 18px 60px rgba(0,0,0,0.5);">
+        <iframe
+          src="https://www.youtube-nocookie.com/embed/_PRq3vqmUQU?rel=0&playsinline=1&modestbranding=1"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen
+          title="Marissa: 1-on-1 Coaching Client Transformation Story"
+        ></iframe>
+      </div>
+      <div style="text-align:center;margin-top:18px;">
+        <div style="font-weight:800;color:#fff;font-size:1rem;">Marissa</div>
+        <div style="font-size:0.85rem;color:var(--turquoise);font-weight:700;margin-top:3px;">1-on-1 Coaching Client</div>
+      </div>
+    </div>
+  </div>
+</section>
 
-<!-- FEATURED CLIENT · NESREEN -->
-<section style="background:var(--white);padding:80px 0 60px;">
+<!-- PROOF · 1-ON-1 CLIENT VIDEOS -->
+<section style="background:var(--off-white);padding:80px 0 88px;">
   <div class="container">
     <div class="text-center fade-up" style="margin-bottom:44px;">
-      <span class="section-label">Real Clients. Real Shifts.</span>
-      <h2 style="font-size:clamp(1.6rem,3.2vw,2.2rem);color:var(--charcoal);">One of the Middle East's Most Watched Women<br>Chose Star as Her Coach.</h2>
-      <p style="color:var(--mid-gray);max-width:680px;margin:18px auto 0;font-size:1rem;line-height:1.7;">When you can hire any coach in the world, who you choose tells you everything.</p>
+      <span class="section-label">Watch What Happens</span>
+      <h2 style="font-size:clamp(1.6rem,3.2vw,2.1rem);color:var(--charcoal);margin-top:12px;">These People Did the Work.<br>Watch What Happened.</h2>
+      <p style="color:var(--mid-gray);max-width:620px;margin:18px auto 0;font-size:1rem;line-height:1.7;">Every person here did 1-on-1 coaching with Star.</p>
     </div>
 
-    <div style="max-width:1080px;margin:0 auto;display:grid;grid-template-columns:1fr 1.2fr;gap:48px;align-items:center;" class="featured-endorsement-grid fade-up">
+    <div class="wws-videos fade-up">
 
-      <div style="text-align:center;">
-        <img src="images/Client%20Pictures/Nesreen%201.jpg" alt="Nesreen Tafesh, award-winning actress and Star Jesse Taylor coaching client" style="width:100%;max-width:360px;border-radius:18px;box-shadow:0 18px 56px rgba(27,108,168,0.22);object-fit:cover;aspect-ratio:4/5;" onerror="this.style.display='none'" />
-        <div style="margin-top:22px;">
-          <div style="font-weight:900;color:var(--charcoal);font-size:1.4rem;">Nesreen Tafesh</div>
-          <div style="font-size:0.96rem;color:var(--cobalt);font-weight:700;margin-top:6px;">Award-Winning Actress &amp; Recording Artist</div>
-          <ul style="list-style:none;padding:0;margin:18px 0 0;text-align:left;display:inline-block;">
-            <li style="display:flex;gap:10px;align-items:flex-start;font-size:0.9rem;color:var(--charcoal);line-height:1.55;margin-bottom:8px;"><span style="color:var(--cobalt);font-weight:900;flex-shrink:0;">&#10003;</span><span><strong>17M+ followers across all platforms.</strong> One of the most watched women in the Arab world.</span></li>
-            <li style="display:flex;gap:10px;align-items:flex-start;font-size:0.9rem;color:var(--charcoal);line-height:1.55;margin-bottom:8px;"><span style="color:var(--cobalt);font-weight:900;flex-shrink:0;">&#10003;</span><span><strong>50+ leading roles</strong> in television dramas.</span></li>
-            <li style="display:flex;gap:10px;align-items:flex-start;font-size:0.9rem;color:var(--charcoal);line-height:1.55;margin-bottom:8px;"><span style="color:var(--cobalt);font-weight:900;flex-shrink:0;">&#10003;</span><span><strong>Multiple feature films.</strong></span></li>
-            <li style="display:flex;gap:10px;align-items:flex-start;font-size:0.9rem;color:var(--charcoal);line-height:1.55;margin-bottom:8px;"><span style="color:var(--cobalt);font-weight:900;flex-shrink:0;">&#10003;</span><span><strong>Recording artist.</strong></span></li>
-            <li style="display:flex;gap:10px;align-items:flex-start;font-size:0.9rem;color:var(--cobalt);line-height:1.55;font-weight:700;"><span style="color:var(--cobalt);font-weight:900;flex-shrink:0;">&#10003;</span><span>Private 1-on-1 coaching client of Star Jesse Taylor.</span></li>
-          </ul>
+      <div>
+        <div class="video-embed ratio-9x16" style="border-radius:14px;box-shadow:0 12px 36px rgba(0,0,0,0.18);">
+          <iframe src="https://www.youtube-nocookie.com/embed/yAfmECWvSQ0?rel=0&playsinline=1&modestbranding=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen title="Janice · 1-on-1 Coaching"></iframe>
+        </div>
+        <div style="text-align:center;margin-top:14px;">
+          <div style="font-weight:800;color:var(--charcoal);font-size:0.98rem;">Janice</div>
+          <div style="font-size:0.8rem;color:var(--cobalt);font-weight:700;margin-top:3px;">1-on-1 Coaching</div>
+          <div style="font-size:0.78rem;color:var(--mid-gray);margin-top:4px;font-style:italic;">Real shift after years of stuck</div>
         </div>
       </div>
 
       <div>
-        <div style="font-size:3.5rem;color:var(--cobalt);line-height:0.8;margin-bottom:14px;font-family:Georgia,serif;">&ldquo;</div>
-        <p style="font-size:1.1rem;line-height:1.8;color:var(--charcoal);margin-bottom:18px;font-style:italic;">Star is one of the most genuine coaches who helped me during a very difficult time. Unlike many theories from some coaches that are filled with polished, positive talk but leave you stuck in a vicious cycle that only makes things worse, Star helps you heal in a practical, honest, and effective way, by training the mind through action and helping you regain control of your radiant spirit so you can truly flourish and achieve your goals.</p>
-        <p style="font-size:1rem;color:var(--mid-gray);line-height:1.7;margin-top:20px;">When you have 17 million people watching you, you can hire any coach on Earth. You do not pick someone for a photo op. You pick the one person you trust to actually do the work with you.</p>
+        <div class="video-embed ratio-9x16" style="border-radius:14px;box-shadow:0 12px 36px rgba(0,0,0,0.18);">
+          <iframe src="https://www.youtube-nocookie.com/embed/DUX2n8on2LA?rel=0&playsinline=1&modestbranding=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen title="Kristina · 1-on-1 Coaching"></iframe>
+        </div>
+        <div style="text-align:center;margin-top:14px;">
+          <div style="font-weight:800;color:var(--charcoal);font-size:0.98rem;">Kristina</div>
+          <div style="font-size:0.8rem;color:var(--cobalt);font-weight:700;margin-top:3px;">1-on-1 Coaching</div>
+          <div style="font-size:0.78rem;color:var(--mid-gray);margin-top:4px;font-style:italic;">The answer other coaches couldn't give</div>
+        </div>
+      </div>
+
+      <div>
+        <div class="video-embed ratio-9x16" style="border-radius:14px;box-shadow:0 12px 36px rgba(0,0,0,0.18);">
+          <iframe src="https://www.youtube-nocookie.com/embed/dDiRg1dGkLs?rel=0&playsinline=1&modestbranding=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen title="Jennifer · 1-on-1 Coaching"></iframe>
+        </div>
+        <div style="text-align:center;margin-top:14px;">
+          <div style="font-weight:800;color:var(--charcoal);font-size:0.98rem;">Jennifer</div>
+          <div style="font-size:0.8rem;color:var(--cobalt);font-weight:700;margin-top:3px;">1-on-1 Coaching</div>
+          <div style="font-size:0.78rem;color:var(--mid-gray);margin-top:4px;font-style:italic;">In her own words</div>
+        </div>
       </div>
 
     </div>
   </div>
-  <style>
-    @media (max-width: 820px) {
-      .featured-endorsement-grid { grid-template-columns: 1fr !important; gap: 28px !important; }
-    }
-  </style>
 </section>
 
-<!-- FEATURED ENDORSEMENT · JON PRINCE -->
-<section style="background:linear-gradient(160deg, #ffffff 0%, #f0f6fb 100%);padding:90px 0;">
+<!-- PROOF · NESREEN TAFESH -->
+<section style="background:var(--white);padding:88px 0;">
+  <div class="container">
+    <div class="text-center fade-up" style="margin-bottom:44px;">
+      <span class="section-label">Who Chooses Star</span>
+      <h2 style="font-size:clamp(1.6rem,3.2vw,2.2rem);color:var(--charcoal);margin-top:12px;">One of the Middle East's Most Watched Women<br>Chose Star as Her Coach.</h2>
+      <p style="color:var(--mid-gray);max-width:640px;margin:18px auto 0;font-size:1rem;line-height:1.7;">When you can hire any coach in the world, who you choose tells you everything.</p>
+    </div>
+
+    <div class="wws-split fade-up">
+      <div style="text-align:center;">
+        <img src="images/Client%20Pictures/Nesreen%201.jpg" alt="Nesreen Tafesh, award-winning actress and Star Jesse Taylor coaching client" style="width:100%;max-width:340px;margin:0 auto;border-radius:18px;box-shadow:0 18px 56px rgba(27,108,168,0.22);object-fit:cover;aspect-ratio:4/5;" onerror="this.style.display='none'" />
+        <div style="margin-top:20px;">
+          <div style="font-weight:900;color:var(--charcoal);font-size:1.3rem;">Nesreen Tafesh</div>
+          <div style="font-size:0.94rem;color:var(--cobalt);font-weight:700;margin-top:6px;">Award-Winning Actress &amp; Recording Artist</div>
+          <div style="font-size:0.88rem;color:var(--mid-gray);margin-top:10px;line-height:1.6;">17M+ followers &middot; 50+ leading roles<br>Private 1-on-1 client of Star Jesse Taylor</div>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-size:3.4rem;color:var(--cobalt);line-height:0.8;margin-bottom:14px;font-family:var(--font-serif);">&ldquo;</div>
+        <p style="font-size:1.08rem;line-height:1.8;color:var(--charcoal);margin-bottom:18px;font-style:italic;">Star is one of the most genuine coaches who helped me during a very difficult time. Unlike many theories from some coaches that are filled with polished, positive talk but leave you stuck in a vicious cycle that only makes things worse, Star helps you heal in a practical, honest, and effective way, by training the mind through action and helping you regain control of your radiant spirit so you can truly flourish and achieve your goals.</p>
+        <p style="font-size:1rem;color:var(--mid-gray);line-height:1.7;margin:0;">When you have 17 million people watching you, you can hire any coach on Earth. You do not pick someone for a photo op. You pick the one person you trust to actually do the work with you.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROOF · JON PRINCE -->
+<section style="background:linear-gradient(160deg,#ffffff 0%,#f0f6fb 100%);padding:88px 0;">
   <div class="container">
     <div class="text-center fade-up" style="margin-bottom:40px;">
       <h2 style="font-size:clamp(1.6rem,3.2vw,2.1rem);color:var(--charcoal);">From a Fellow Coach Who Walks This Path</h2>
-      <p style="font-size:1rem;color:var(--mid-gray);margin-top:14px;max-width:680px;margin-left:auto;margin-right:auto;line-height:1.65;">Hay House author, successful coach, and friend of Star who knows his work.</p>
+      <p style="font-size:1rem;color:var(--mid-gray);margin:14px auto 0;max-width:640px;line-height:1.65;">Hay House author, successful coach, and friend of Star who knows his work.</p>
     </div>
 
-    <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.15fr 1fr;gap:44px;align-items:center;" class="featured-endorsement-grid fade-up">
-
-      <div style="position:relative;width:100%;padding-bottom:56.25%;border-radius:16px;overflow:hidden;box-shadow:0 16px 56px rgba(27,108,168,0.22);">
+    <div class="wws-split split-wide fade-up">
+      <div class="video-embed ratio-16x9" style="border-radius:16px;box-shadow:0 16px 56px rgba(27,108,168,0.22);">
         <iframe
           src="https://www.youtube-nocookie.com/embed/av0ln_4dOok?rel=0&playsinline=1&modestbranding=1"
-          style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowfullscreen
           title="Jon Prince Testimonial for Star Jesse Taylor"
@@ -228,7 +264,7 @@
       </div>
 
       <div>
-        <div style="font-size:3.2rem;color:var(--cobalt);line-height:0.8;margin-bottom:12px;font-family:Georgia,serif;">&ldquo;</div>
+        <div style="font-size:3.2rem;color:var(--cobalt);line-height:0.8;margin-bottom:12px;font-family:var(--font-serif);">&ldquo;</div>
         <p style="font-size:1.02rem;line-height:1.8;color:var(--charcoal);margin-bottom:16px;">Star Taylor isn't just a coach, he's a rare force. There truly is no one else like him.</p>
         <p style="font-size:1.02rem;line-height:1.8;color:var(--charcoal);margin-bottom:16px;">His Emotional Fitness book isn't just insightful, it's transformational. The tools inside are practical, powerful, and actually work. I've personally applied them in my own life and seen real shifts, and I now recommend them to my clients because they create genuine change.</p>
         <p style="font-size:1.05rem;line-height:1.8;color:var(--charcoal);font-weight:700;margin-bottom:0;">If you ever get the opportunity to work with him, take it. It's the kind of decision that changes the direction of your life.</p>
@@ -239,300 +275,138 @@
           <div style="font-size:0.84rem;color:var(--mid-gray);margin-top:3px;font-style:italic;">Author of <em>Start Before You're Ready</em> (Hay House)</div>
         </div>
       </div>
-
     </div>
   </div>
 </section>
 
-<!-- VIDEO TESTIMONIALS -->
-<section style="background:var(--off-white);padding:70px 0 90px;">
+<!-- PROOF · ANNABELLE T -->
+<section style="background:var(--white);padding:64px 0;">
   <div class="container">
-    <div class="text-center fade-up" style="margin-bottom:44px;">
-      <span class="section-label">Watch What Happens</span>
-      <h2 style="font-size:clamp(1.6rem,3.2vw,2.1rem);color:var(--charcoal);">These People Did the Work.<br>Watch What Happened.</h2>
-      <p style="color:var(--mid-gray);max-width:680px;margin:18px auto 0;font-size:1rem;line-height:1.7;">1-on-1 coaching, group sessions, courses. Different paths in. Same shift on the other side.</p>
+    <div class="fade-up" style="max-width:820px;margin:0 auto;padding:28px 30px;background:rgba(27,108,168,0.05);border-left:4px solid var(--cobalt);border-radius:10px;display:grid;grid-template-columns:220px 1fr;gap:30px;align-items:center;" id="annabelle-strip">
+      <img src="images/Client%20Pictures/Anabelle1.jpeg" alt="Annabelle T, psychologist and Star Jesse Taylor client" style="width:100%;max-width:220px;border-radius:14px;object-fit:cover;aspect-ratio:4/5;box-shadow:0 12px 36px rgba(27,108,168,0.22);" onerror="this.style.display='none'" />
+      <div>
+        <p style="font-size:1.08rem;color:var(--charcoal);line-height:1.7;font-style:italic;margin:0 0 14px;">"I've tried so many things for mental health. I've read so many self-help books, and I'm a psychologist. But this is what actually changed things."</p>
+        <p style="font-size:0.92rem;color:var(--mid-gray);margin:0;"><strong style="color:var(--charcoal);font-size:1rem;">Annabelle T</strong> &middot; Psychologist</p>
+      </div>
     </div>
-
-    <div style="max-width:1180px;margin:0 auto;display:grid;grid-template-columns:repeat(4, 1fr);gap:22px;" class="services-video-grid fade-up">
-
-      <div>
-        <div style="position:relative;width:100%;padding-bottom:177.78%;border-radius:14px;overflow:hidden;box-shadow:0 12px 36px rgba(0,0,0,0.18);background:#000;">
-          <iframe src="https://www.youtube-nocookie.com/embed/yAfmECWvSQ0?rel=0&playsinline=1&modestbranding=1" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen title="Janice · 1-on-1 Coaching"></iframe>
-        </div>
-        <div style="text-align:center;margin-top:14px;">
-          <div style="font-weight:800;color:var(--charcoal);font-size:0.98rem;">Janice</div>
-          <div style="font-size:0.8rem;color:var(--cobalt);font-weight:700;margin-top:3px;">1-on-1 Coaching</div>
-          <div style="font-size:0.78rem;color:var(--mid-gray);margin-top:4px;font-style:italic;">Real shift after years of stuck</div>
-        </div>
-      </div>
-
-      <div>
-        <div style="position:relative;width:100%;padding-bottom:177.78%;border-radius:14px;overflow:hidden;box-shadow:0 12px 36px rgba(0,0,0,0.18);background:#000;">
-          <iframe src="https://www.youtube-nocookie.com/embed/DUX2n8on2LA?rel=0&playsinline=1&modestbranding=1" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen title="Kristina · 1-on-1 Coaching"></iframe>
-        </div>
-        <div style="text-align:center;margin-top:14px;">
-          <div style="font-weight:800;color:var(--charcoal);font-size:0.98rem;">Kristina</div>
-          <div style="font-size:0.8rem;color:var(--cobalt);font-weight:700;margin-top:3px;">1-on-1 Coaching</div>
-          <div style="font-size:0.78rem;color:var(--mid-gray);margin-top:4px;font-style:italic;">The answer other coaches couldn't give</div>
-        </div>
-      </div>
-
-      <div>
-        <div style="position:relative;width:100%;padding-bottom:177.78%;border-radius:14px;overflow:hidden;box-shadow:0 12px 36px rgba(0,0,0,0.18);background:#000;">
-          <iframe src="https://www.youtube-nocookie.com/embed/rkUe3mAxhhI?rel=0&playsinline=1&modestbranding=1" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen title="Annabelle · Group Coaching"></iframe>
-        </div>
-        <div style="text-align:center;margin-top:14px;">
-          <div style="font-weight:800;color:var(--charcoal);font-size:0.98rem;">Annabelle T</div>
-          <div style="font-size:0.8rem;color:var(--cobalt);font-weight:700;margin-top:3px;">Group Coaching</div>
-          <div style="font-size:0.78rem;color:var(--mid-gray);margin-top:4px;font-style:italic;">No depression for the first time in 30 years</div>
-        </div>
-      </div>
-
-      <div>
-        <div style="position:relative;width:100%;padding-bottom:177.78%;border-radius:14px;overflow:hidden;box-shadow:0 12px 36px rgba(0,0,0,0.18);background:#000;">
-          <iframe src="https://www.youtube-nocookie.com/embed/GJIQ0UlFeXQ?rel=0&playsinline=1&modestbranding=1" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen title="Mana · Group Coaching"></iframe>
-        </div>
-        <div style="text-align:center;margin-top:14px;">
-          <div style="font-weight:800;color:var(--charcoal);font-size:0.98rem;">Mana</div>
-          <div style="font-size:0.8rem;color:var(--cobalt);font-weight:700;margin-top:3px;">Group Coaching</div>
-          <div style="font-size:0.78rem;color:var(--mid-gray);margin-top:4px;font-style:italic;">No depression for the first time in 30 years</div>
-        </div>
-      </div>
-
-    </div>
-
   </div>
   <style>
-    @media (max-width: 1024px) {
-      .services-video-grid { grid-template-columns: repeat(2, 1fr) !important; }
-    }
-    @media (max-width: 540px) {
-      .services-video-grid { grid-template-columns: 1fr !important; gap: 28px !important; }
-      .services-quote-grid { grid-template-columns: 1fr !important; }
+    @media (max-width:720px) {
+      #annabelle-strip { grid-template-columns:1fr !important; gap:22px !important; text-align:center; }
+      #annabelle-strip img { max-width:200px !important; margin:0 auto; }
     }
   </style>
 </section>
 
-<!-- CARIE POLASEK · FEATURED WRITTEN TESTIMONIAL · FINAL PROOF BEFORE PACKAGES -->
-<section style="background:linear-gradient(180deg, var(--off-white) 0%, #ffffff 100%);padding:90px 0;">
+<!-- PROOF · CARIE POLASEK LETTER -->
+<section style="background:linear-gradient(180deg,var(--off-white) 0%,#ffffff 100%);padding:88px 0;">
   <div class="container">
-    <div class="text-center fade-up" style="margin-bottom:40px;max-width:680px;margin-left:auto;margin-right:auto;">
+    <div class="text-center fade-up" style="margin:0 auto 40px;max-width:680px;">
       <span class="section-label">Written by a Client</span>
       <h2 style="font-size:clamp(1.6rem,3.2vw,2.1rem);color:var(--charcoal);line-height:1.25;margin-top:14px;">"Mental strength isn't something you simply have or don't have. It's a skill that you can and must train."</h2>
     </div>
 
-    <div class="fade-up fade-up-delay-1" style="max-width:780px;margin:0 auto;background:#ffffff;border:1px solid rgba(27,108,168,0.14);border-left:5px solid var(--cobalt);border-radius:14px;padding:48px 52px;box-shadow:0 16px 50px rgba(27,108,168,0.10);">
-
-      <div style="font-size:4rem;color:var(--cobalt);line-height:0.7;margin-bottom:18px;font-family:Georgia,serif;opacity:0.85;">&ldquo;</div>
-
+    <div class="fade-up fade-up-delay-1" style="max-width:780px;margin:0 auto;background:var(--white);border:1px solid rgba(27,108,168,0.14);border-left:5px solid var(--cobalt);border-radius:14px;padding:44px 48px;box-shadow:0 16px 50px rgba(27,108,168,0.10);">
+      <div style="font-size:3.8rem;color:var(--cobalt);line-height:0.7;margin-bottom:18px;font-family:var(--font-serif);opacity:0.85;">&ldquo;</div>
       <p style="font-size:1.06rem;line-height:1.85;color:var(--charcoal);margin:0 0 20px;">Above all, the coaching of Star helped me refocus and see more clearly what really matters to me in life and where my energy needs to go to. Instead of some abstract theoretical concepts, you're given concrete tools that you can use right away in your daily life. The best part is that the methods are flexible and can always be adapted to your own situation.</p>
-
       <p style="font-size:1.06rem;line-height:1.85;color:var(--charcoal);margin:0 0 20px;">The shift in perspective was particularly valuable for me. You learn to view situations differently and consciously change your own mindset. It quickly becomes clear that mental strength isn't something you simply have or don't have. It's a skill that you can and must train.</p>
-
       <p style="font-size:1.06rem;line-height:1.85;color:var(--charcoal);margin:0 0 20px;">One of the most important insights from the coaching for me was: no one can do the work for you. You are the one who has to take action. Change doesn't happen overnight, it's a continuous process. But that's exactly what makes you stronger, more self-confident, and more resilient in the long run.</p>
-
       <p style="font-size:1.06rem;line-height:1.85;color:var(--charcoal);font-weight:600;margin:0 0 32px;">Anyone willing to work on themselves and grow will not only gain valuable insights here but also practical tools that can truly make a difference in everyday life. Highly recommended!</p>
 
       <div style="display:flex;align-items:center;gap:16px;padding-top:24px;border-top:1px solid rgba(27,108,168,0.18);">
-        <div style="width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,var(--cobalt) 0%,var(--turquoise) 100%);color:#ffffff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.4rem;letter-spacing:-0.5px;flex-shrink:0;">CP</div>
+        <div class="wws-avatar" style="width:54px;height:54px;font-size:1.3rem;">CP</div>
         <div>
           <div style="font-weight:800;color:var(--charcoal);font-size:1.05rem;">Carie Polasek</div>
           <div style="font-size:0.88rem;color:var(--cobalt);font-weight:700;margin-top:2px;">1-on-1 Coaching Client</div>
         </div>
       </div>
-
     </div>
 
-    <div class="fade-up fade-up-delay-2" style="text-align:center;margin-top:36px;">
+    <div class="fade-up fade-up-delay-2" style="text-align:center;margin-top:32px;">
       <p style="font-size:0.96rem;color:var(--mid-gray);font-style:italic;margin:0;">Real client. Real words. Sent to Star unprompted.</p>
     </div>
   </div>
-
-  <style>
-    @media (max-width: 720px) {
-      section .container > div[style*="border-left:5px solid"] { padding: 36px 28px !important; }
-    }
-  </style>
 </section>
 
-<!-- SERVICES GRID -->
-<section class="section-pad" style="background:var(--off-white);" id="services">
+<!-- PROOF · WRITTEN CARDS -->
+<section style="background:var(--off-white);padding:80px 0 88px;">
   <div class="container">
-    <div class="text-center fade-up" style="margin-bottom:36px;max-width:680px;margin-left:auto;margin-right:auto;">
-      <p style="font-size:0.98rem;color:var(--mid-gray);line-height:1.7;margin:0;font-style:italic;">Payment plans are available after talking with Star.</p>
+    <div class="text-center fade-up" style="margin:0 auto 44px;max-width:720px;">
+      <span class="section-label">In Their Own Words</span>
+      <h2 style="font-size:clamp(1.6rem,3.2vw,2.1rem);color:var(--charcoal);line-height:1.25;margin-top:12px;">Written by People Who Did the 1-on-1 Work With Star.</h2>
     </div>
-    <div class="services-grid">
 
-      <!-- 1-on-1 Coaching · Most Premium, Full Width, Dark/Gold Background -->
-      <div class="service-card fade-up" style="grid-column:1/-1;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);border:2px solid #c9a84c;color:white;padding:40px;">
-        <div style="display:flex;gap:40px;align-items:flex-start;flex-wrap:wrap;">
-          <div style="flex:1;min-width:260px;">
-            <div style="display:inline-block;background:linear-gradient(90deg,#c9a84c,#f5d478);color:#1a1a2e;font-size:0.72rem;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;padding:5px 16px;border-radius:50px;margin-bottom:20px;">Most Exclusive · Application Only</div>
-            <h2 style="color:white;font-size:1.9rem;margin-bottom:16px;line-height:1.2;">One on One Coaching</h2>
-            <p style="color:rgba(255,255,255,0.82);font-size:1rem;line-height:1.75;margin-bottom:20px;">This is the most direct, most transformative way to work with me. You get my complete attention and my full methodology applied specifically to your situation. I take on a limited number of 1-on-1 clients at a time.</p>
-            <div style="background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.3);border-radius:10px;padding:16px 20px;margin-bottom:20px;">
-              <p style="color:rgba(255,255,255,0.82);font-size:0.92rem;margin:0;line-height:1.7;font-style:italic;">"Most coaches want you to need them. My entire approach is built around the opposite. I teach you how to become your own coach, your own authority, and how to trust your own instincts. The goal is not dependency. The goal is that you graduate."</p>
-            </div>
-            <div style="background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2);border-radius:10px;padding:14px 18px;margin-bottom:24px;">
-              <p style="color:rgba(255,255,255,0.7);font-size:0.87rem;margin:0;line-height:1.6;"><strong style="color:#f5d478;">Requirements:</strong> You must be a respectful, good-hearted person who is willing to practice the tools I give you. I care deeply about who I work with.</p>
-            </div>
-            <a href="apply.html" class="btn" style="background:linear-gradient(90deg,#c9a84c,#f5d478);color:#1a1a2e;border:none;font-weight:800;padding:14px 28px;display:inline-block;border-radius:8px;font-size:1rem;">Apply for 1 on 1 Coaching</a>
-          </div>
-          <div style="flex:1;min-width:260px;display:flex;flex-direction:column;gap:14px;">
-            <div style="background:rgba(255,255,255,0.09);border:2px solid #c9a84c;border-radius:12px;padding:22px 22px;box-shadow:0 0 32px rgba(201,168,76,0.22);position:relative;">
-              <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(90deg,#c9a84c,#f5d478);color:#1a1a2e;font-size:0.66rem;font-weight:900;letter-spacing:0.16em;text-transform:uppercase;padding:5px 16px;border-radius:50px;white-space:nowrap;">Most Comprehensive</div>
-              <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#f5d478;margin-bottom:6px;margin-top:6px;">Five Months · 1-on-1 With Star</div>
-              <div style="font-size:1.9rem;font-weight:900;color:white;margin-bottom:8px;">$9,997</div>
-              <p style="color:rgba(255,255,255,0.78);font-size:0.87rem;line-height:1.65;margin:0 0 14px;">The deepest version of this work. Twenty-two weekly 1-on-1 sessions, WhatsApp support across all five months, and lifetime access to all courses and cohort recordings.</p>
-              <ul style="list-style:none;padding:0;margin:0 0 16px;display:flex;flex-direction:column;gap:6px;">
-                <li style="display:flex;gap:8px;font-size:0.82rem;color:rgba(255,255,255,0.78);line-height:1.5;"><span style="color:#f5d478;flex-shrink:0;">?·</span><span>22 weekly 1-on-1 sessions</span></li>
-                <li style="display:flex;gap:8px;font-size:0.82rem;color:rgba(255,255,255,0.78);line-height:1.5;"><span style="color:#f5d478;flex-shrink:0;">?·</span><span>WhatsApp support across all 5 months</span></li>
-                <li style="display:flex;gap:8px;font-size:0.82rem;color:rgba(255,255,255,0.78);line-height:1.5;"><span style="color:#f5d478;flex-shrink:0;">?·</span><span>Lifetime access to all courses + cohort recordings</span></li>
-              </ul>
-              <a href="apply-package.html" class="btn" style="background:linear-gradient(90deg,#c9a84c,#f5d478);color:#1a1a2e;border:none;font-weight:800;padding:11px 22px;display:inline-flex;border-radius:8px;font-size:0.88rem;">Apply for This Package</a>
-            </div>
-            <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(201,168,76,0.25);border-radius:12px;padding:20px 22px;">
-              <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#f5d478;margin-bottom:6px;">The Clarity Session</div>
-              <div style="font-size:1.9rem;font-weight:900;color:white;margin-bottom:8px;">$500</div>
-              <p style="color:rgba(255,255,255,0.72);font-size:0.87rem;line-height:1.6;margin:0 0 12px;">Walk in unclear. Walk out with a real map of your patterns and the first action to take. I ask specific questions to uncover your compulsions, behavioral blocks, and exactly what is keeping you stuck. Real coaching from minute one. Not a consultation.</p>
-              <div style="display:inline-block;background:rgba(245,212,120,0.14);color:#f5d478;font-size:0.74rem;font-weight:700;padding:5px 12px;border-radius:50px;margin-bottom:12px;border:1px solid rgba(245,212,120,0.3);">100% credits toward any 1-on-1 package</div>
-              <a href="https://buy.stripe.com/cN2eYg7kHepv1uocNw" class="btn btn-primary" style="font-size:0.85rem;padding:10px 20px;display:inline-flex;" target="_blank" rel="noopener">Book Your Clarity Session</a>
-              <p style="color:rgba(255,255,255,0.5);font-size:0.78rem;margin-top:10px;">Have a question? <a href="mailto:starjessetaylor@gmail.com" style="color:#f5d478;">starjessetaylor@gmail.com</a></p>
-            </div>
-            <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(201,168,76,0.25);border-radius:12px;padding:20px 22px;">
-              <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#f5d478;margin-bottom:6px;">6 Week Package</div>
-              <div style="font-size:1.9rem;font-weight:900;color:white;margin-bottom:8px;">$3,497</div>
-              <p style="color:rgba(255,255,255,0.72);font-size:0.87rem;line-height:1.6;margin:0 0 14px;">A deep transformation built around your specific goals and the patterns uncovered in your Clarity Session. We remove what is blocking you and build structure that moves you forward with clarity and momentum.</p>
-              <ul style="list-style:none;padding:0;margin:0 0 16px;display:flex;flex-direction:column;gap:6px;">
-                <li style="display:flex;gap:8px;font-size:0.82rem;color:rgba(255,255,255,0.78);line-height:1.5;"><span style="color:#f5d478;flex-shrink:0;">?·</span><span>6 weekly 1-on-1 sessions with Star</span></li>
-                <li style="display:flex;gap:8px;font-size:0.82rem;color:rgba(255,255,255,0.78);line-height:1.5;"><span style="color:#f5d478;flex-shrink:0;">?·</span><span>WhatsApp support between sessions</span></li>
-                <li style="display:flex;gap:8px;font-size:0.82rem;color:rgba(255,255,255,0.78);line-height:1.5;"><span style="color:#f5d478;flex-shrink:0;">?·</span><span>Built around your specific patterns from the Clarity Session</span></li>
-                <li style="display:flex;gap:8px;font-size:0.82rem;color:rgba(255,255,255,0.78);line-height:1.5;"><span style="color:#f5d478;flex-shrink:0;">?·</span><span>The Emotional Fitness framework applied to you specifically</span></li>
-              </ul>
-              <a href="apply-package.html" class="btn btn-primary" style="font-size:0.85rem;padding:10px 20px;display:inline-flex;">Apply for This Package</a>
-            </div>
-            <div style="position:relative;background:rgba(255,255,255,0.07);border:1.5px solid rgba(201,168,76,0.5);border-radius:12px;padding:26px 22px 20px;box-shadow:0 0 20px rgba(201,168,76,0.12);">
-              <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(90deg,#c9a84c,#f5d478);color:#1a1a2e;font-size:0.66rem;font-weight:900;letter-spacing:0.16em;text-transform:uppercase;padding:5px 16px;border-radius:50px;white-space:nowrap;">? Most Recommended</div>
-              <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#f5d478;margin-bottom:6px;">10 Week Package</div>
-              <div style="font-size:1.9rem;font-weight:900;color:white;margin-bottom:8px;">$4,997</div>
-              <p style="color:rgba(255,255,255,0.72);font-size:0.87rem;line-height:1.6;margin:0 0 14px;">Everything in the 6-Week Package, plus I teach you how to become your own coach. You leave not just transformed but equipped to keep moving forward by yourself with stability and skill.</p>
-              <ul style="list-style:none;padding:0;margin:0 0 16px;display:flex;flex-direction:column;gap:6px;">
-                <li style="display:flex;gap:8px;font-size:0.82rem;color:rgba(255,255,255,0.78);line-height:1.5;"><span style="color:#f5d478;flex-shrink:0;">?·</span><span>10 weekly 1-on-1 sessions with Star</span></li>
-                <li style="display:flex;gap:8px;font-size:0.82rem;color:rgba(255,255,255,0.78);line-height:1.5;"><span style="color:#f5d478;flex-shrink:0;">?·</span><span>WhatsApp support between sessions</span></li>
-                <li style="display:flex;gap:8px;font-size:0.82rem;color:rgba(255,255,255,0.78);line-height:1.5;"><span style="color:#f5d478;flex-shrink:0;">?·</span><span>Everything in the 6 Week Package</span></li>
-                <li style="display:flex;gap:8px;font-size:0.82rem;color:rgba(255,255,255,0.78);line-height:1.5;"><span style="color:#f5d478;flex-shrink:0;">?·</span><span>I teach you to become your own coach</span></li>
-                <li style="display:flex;gap:8px;font-size:0.82rem;color:rgba(255,255,255,0.78);line-height:1.5;"><span style="color:#f5d478;flex-shrink:0;">?·</span><span>Tools to keep moving forward on your own after we finish</span></li>
-              </ul>
-              <a href="apply-package.html" class="btn btn-primary" style="font-size:0.85rem;padding:10px 20px;display:inline-flex;">Apply for This Package</a>
-            </div>
-          </div>
-        </div>
+    <div class="wws-quotes fade-up">
 
-        <div style="margin-top:36px;padding:22px 26px;background:rgba(245,212,120,0.07);border:1px solid rgba(245,212,120,0.22);border-radius:12px;">
-          <p style="color:rgba(255,255,255,0.85);font-size:0.94rem;line-height:1.7;margin:0;text-align:center;"><strong style="color:#f5d478;">Every 1-on-1 package begins with a Clarity Session.</strong> It is how we get to know each other, make sure we are a good fit to work together, and how I get a clear picture of where you are before we go deep. Your $500 Clarity Session investment credits 100% toward whichever package you choose. If you sent Star a paid voice memo on ask.meanything.co, that investment also credits toward your package. One voice memo credit per person.</p>
-        </div>
-      </div>
-
-      <!-- IF 1-ON-1 IS NOT IN YOUR BUDGET · GUIDANCE -->
-      <div class="service-card fade-up" style="grid-column:1/-1;background:var(--white);border:1px solid var(--light-gray);padding:36px;">
-        <div style="text-align:center;margin-bottom:24px;">
-          <span class="section-label">Other Ways In</span>
-          <h2 style="font-size:1.5rem;color:var(--charcoal);margin:8px 0 12px;">If 1-on-1 is not in your budget right now.</h2>
-          <p style="color:var(--mid-gray);font-size:1rem;max-width:620px;margin:0 auto;line-height:1.75;">There are still real ways to work with me and get tools that change your life. Start where you are. You can always step up later.</p>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:860px;margin:0 auto;">
-          <div style="background:var(--off-white);border:1px solid var(--light-gray);border-radius:14px;padding:28px 24px;display:flex;flex-direction:column;gap:12px;">
-            <div style="font-size:0.72rem;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:var(--cobalt);">Self-Paced</div>
-            <h3 style="font-size:1.2rem;color:var(--charcoal);margin:0;">Online Courses</h3>
-            <p style="color:var(--mid-gray);font-size:0.92rem;line-height:1.7;margin:0;">The Emotional Fitness framework, broken into focused courses you can start any time. Real tools, instant access, lifetime use.</p>
-            <a href="courses.html" class="btn btn-outline" style="text-align:center;margin-top:auto;">Browse Courses</a>
-          </div>
-          <div style="background:var(--off-white);border:1px solid var(--light-gray);border-radius:14px;padding:28px 24px;display:flex;flex-direction:column;gap:12px;">
-            <div style="font-size:0.72rem;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:var(--cobalt);">Free</div>
-            <h3 style="font-size:1.2rem;color:var(--charcoal);margin:0;">The Free Virtual Event</h3>
-            <p style="color:var(--mid-gray);font-size:0.92rem;line-height:1.7;margin:0;">A free Zoom where I go deeper on the teachings you have loved from my videos. Tools for daily mental noise. Tools to live a freer life.</p>
-            <a href="virtual-events.html" class="btn btn-outline" style="text-align:center;margin-top:auto;">See the Next Free Event</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- 10-Week Cohort · MOST POPULAR, Waitlist Only, Full Width -->
-      <div class="service-card featured-card fade-up" style="grid-column:1/-1;">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;">
+      <div class="wws-quote">
+        <div style="font-size:2.6rem;color:var(--cobalt);line-height:0.6;margin-bottom:12px;font-family:var(--font-serif);opacity:0.85;">&ldquo;</div>
+        <p style="font-size:0.98rem;line-height:1.75;color:var(--charcoal);margin:0 0 22px;flex:1;">Hands down, Star has been one of the biggest catalysts for change in my life. I still struggled with intrusive thoughts, foggy brain, extreme anxiety. There were days I couldn't even be productive. My life now has never ever been so clear, and free. My emotions no longer rule my life. I can't recommend him enough to ANYONE who wants their life to finally be peaceful.</p>
+        <div style="display:flex;align-items:center;gap:14px;padding-top:20px;border-top:1px solid rgba(27,108,168,0.16);">
+          <div class="wws-avatar">LK</div>
           <div>
-            <div style="display:inline-block;background:var(--cobalt);color:white;font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:5px 14px;border-radius:50px;margin-bottom:16px;">Most Popular · Complete Transformation</div>
-            <div class="service-title">Ten-Week Emotional Fitness Cohort</div>
-            <div style="margin-top:16px;">
-              <div class="service-price">$2,200 <span>paid in full</span></div>
-              <div style="font-size:0.9rem;color:var(--mid-gray);margin-top:4px;">or 3 payments of <strong style="color:var(--cobalt);">$797</strong></div>
-            </div>
-            <ul class="service-features" style="margin-top:20px;">
-              <li class="service-feature"><span class="check-icon">?·</span> 10 weekly group coaching sessions with Star</li>
-              <li class="service-feature"><span class="check-icon">?·</span> 1 private 1-on-1 session with Star directly</li>
-              <li class="service-feature"><span class="check-icon">?·</span> Replay access to all sessions</li>
-              <li class="service-feature"><span class="check-icon">?·</span> Community support throughout</li>
-              <li class="service-feature"><span class="check-icon">?·</span> Full Emotional Fitness framework over 10 weeks</li>
-              <li class="service-feature"><span class="check-icon">?·</span> Payment plan available</li>
-            </ul>
+            <div style="font-weight:800;color:var(--charcoal);font-size:1rem;">Lara Kinslow</div>
+            <div style="font-size:0.84rem;color:var(--cobalt);font-weight:700;margin-top:2px;">ADHD &amp; Anxiety Coach &middot; 1-on-1 Client</div>
           </div>
+        </div>
+      </div>
+
+      <div class="wws-quote">
+        <div style="font-size:2.6rem;color:var(--cobalt);line-height:0.6;margin-bottom:12px;font-family:var(--font-serif);opacity:0.85;">&ldquo;</div>
+        <p style="font-size:0.98rem;line-height:1.75;color:var(--charcoal);margin:0 0 22px;flex:1;">I have had 8 sessions with Star, what an incredible experience! Star is such a great person, really compassionate. I broke down in tears a couple of times. I didn't feel judged one bit. I can't believe it has only been 8 weeks and I feel like a completely different person. You're a wonderful person and a genius!</p>
+        <div style="display:flex;align-items:center;gap:14px;padding-top:20px;border-top:1px solid rgba(27,108,168,0.16);">
+          <div class="wws-avatar">KR</div>
           <div>
-            <p class="service-desc">The complete Emotional Fitness framework built out over ten weeks in a group setting, plus one private 1-on-1 session with me directly. This is the container where real, lasting transformation happens.</p>
-            <div style="background:var(--light-gray);border-radius:12px;padding:24px;margin-top:20px;">
-              <p style="font-size:0.92rem;color:var(--charcoal);line-height:1.7;margin-bottom:20px;">The 10 Week Emotional Fitness Cohort opens for limited enrollment only a few times per year. Join the waitlist to be first to know when the next cohort opens and get early access before the public.</p>
-              <form id="waitlistForm" style="display:flex;flex-direction:column;gap:12px;">
-                <div class="hp-field" aria-hidden="true"><label>Website (do not fill): <input type="text" name="website_url" tabindex="-1" autocomplete="off"></label></div>
-                <input type="text" name="waitlist_first_name" placeholder="First Name" required minlength="2" autocomplete="given-name" style="padding:12px 16px;border:2px solid #ddd;border-radius:8px;font-size:0.95rem;font-family:inherit;outline:none;" />
-                <input type="text" name="waitlist_last_name" placeholder="Last Name" required minlength="1" autocomplete="family-name" style="padding:12px 16px;border:2px solid #ddd;border-radius:8px;font-size:0.95rem;font-family:inherit;outline:none;" />
-                <input type="email" name="waitlist_email" placeholder="Your Email" required style="padding:12px 16px;border:2px solid #ddd;border-radius:8px;font-size:0.95rem;font-family:inherit;outline:none;" />
-                <input type="text" name="waitlist_country" placeholder="Country" required list="countries" autocomplete="country-name" style="padding:12px 16px;border:2px solid #ddd;border-radius:8px;font-size:0.95rem;font-family:inherit;outline:none;" />
-                <input type="tel" name="waitlist_phone" placeholder="Phone (optional)" autocomplete="tel" style="padding:12px 16px;border:2px solid #ddd;border-radius:8px;font-size:0.95rem;font-family:inherit;outline:none;" />
-                <p style="font-size:0.82rem;color:var(--mid-gray);margin:-4px 0 6px;line-height:1.5;">Optional. I'll text helpful reminders here that keep you on track with your practice. No calls.</p>
-                <button type="submit" class="btn btn-primary" style="width:100%;cursor:pointer;border:none;">Add Me to the Waitlist</button>
-              </form>
-              <div id="waitlistConfirmation" style="display:none;text-align:center;padding:20px;background:rgba(27,108,168,0.08);border-radius:8px;border:1px solid rgba(27,108,168,0.2);">
-                <p style="color:var(--cobalt);font-weight:600;margin:0;">You are on the list. We will reach out when enrollment opens.</p>
-              </div>
-            </div>
+            <div style="font-weight:800;color:var(--charcoal);font-size:1rem;">Kaye Radcliffe</div>
+            <div style="font-size:0.84rem;color:var(--cobalt);font-weight:700;margin-top:2px;">1-on-1 Client</div>
           </div>
         </div>
       </div>
 
-      <!-- Courses · Self-Paced -->
-      <div class="service-card fade-up fade-up-delay-1">
-        <div>
-          <div class="service-price" style="font-size:1.5rem;">$97 · $197</div>
-          <div style="font-size:0.85rem;color:var(--mid-gray);margin-top:4px;">Self-paced · Instant access</div>
+      <div class="wws-quote">
+        <div style="font-size:2.6rem;color:var(--cobalt);line-height:0.6;margin-bottom:12px;font-family:var(--font-serif);opacity:0.85;">&ldquo;</div>
+        <p style="font-size:0.98rem;line-height:1.75;color:var(--charcoal);margin:0 0 22px;flex:1;">You tell it like it is. You don't sugarcoat in your 1:1 sessions and that forces us to take accountability for our actions. It's the most actionable advice I've ever received or seen on the internet. And once followed, progress is so easy to see.</p>
+        <div style="display:flex;align-items:center;gap:14px;padding-top:20px;border-top:1px solid rgba(27,108,168,0.16);">
+          <div class="wws-avatar">KM</div>
+          <div>
+            <div style="font-weight:800;color:var(--charcoal);font-size:1rem;">Karina Marshall</div>
+            <div style="font-size:0.84rem;color:var(--cobalt);font-weight:700;margin-top:2px;">1-on-1 Client</div>
+          </div>
         </div>
-        <div class="service-title">Online Courses</div>
-        <p class="service-desc">Self-paced courses built on the Emotional Fitness framework. Start at any time, go at your own pace, and get real tools that work. From the Foundation course to focused workshops on self-worth and anxiety · there is a course for where you are right now.</p>
-        <ul class="service-features">
-          <li class="service-feature"><span class="check-icon">?·</span> The Emotional Fitness Foundation · $97</li>
-          <li class="service-feature"><span class="check-icon">?·</span> The Self Worth Workshop · $147</li>
-          <li class="service-feature"><span class="check-icon">?·</span> Anxiety &amp; OCD: The EF Approach · $197</li>
-          <li class="service-feature"><span class="check-icon">?·</span> Lifetime access</li>
-          <li class="service-feature"><span class="check-icon">?·</span> No coaching commitment required</li>
-        </ul>
-        <a href="courses.html" class="btn btn-outline" style="width:100%;text-align:center;">Browse Courses</a>
       </div>
 
-      <!-- The Book · $29 -->
-      <div class="service-card fade-up fade-up-delay-2">
-        <div>
-          <div class="service-price">$29</div>
-          <div style="font-size:0.85rem;color:var(--mid-gray);margin-top:4px;">The lowest entry point · Start today</div>
-        </div>
-        <div class="service-title">The Emotional Fitness Book</div>
-        <p class="service-desc">Start here if you are not ready for coaching yet. Everything Star teaches starts here. The Value Garden, the No Brain Method, the daily practices · it is all in this book, written from the middle of Star's own transformation.</p>
-        <ul class="service-features">
-          <li class="service-feature"><span class="check-icon">?·</span> The complete Emotional Fitness framework</li>
-          <li class="service-feature"><span class="check-icon">?·</span> The Value Garden exercise</li>
-          <li class="service-feature"><span class="check-icon">?·</span> The No Brain Method</li>
-          <li class="service-feature"><span class="check-icon">?·</span> Daily practice system</li>
-          <li class="service-feature"><span class="check-icon">?·</span> Start reading today</li>
-        </ul>
-        <a href="/api/book-checkout" class="btn btn-outline" style="width:100%;text-align:center;" target="_blank" rel="noopener">Get the Book</a>
-      </div>
+    </div>
+  </div>
+</section>
 
+<!-- HOW IT WORKS · THREE STEPS -->
+<section style="background:var(--white);padding:90px 0 80px;" id="how-it-works">
+  <div class="container">
+    <div class="text-center fade-up" style="margin-bottom:48px;">
+      <span class="section-label">How It Works</span>
+      <h2 class="section-title" style="margin-top:12px;">Three Steps. That's It.</h2>
+    </div>
+
+    <div class="wws-steps fade-up">
+      <div class="wws-step">
+        <div class="wws-step-num">1</div>
+        <h3>You apply.</h3>
+        <p>Star personally reads every application and responds within 48 hours. He takes on a limited number of 1-on-1 clients at a time, so this is how he makes sure you two are a good fit before anything else.</p>
+      </div>
+      <div class="wws-step">
+        <div class="wws-step-num">2</div>
+        <h3>You do a Clarity Session.</h3>
+        <p>Every 1-on-1 package begins here. $500, and it credits 100% toward whichever package you choose. You walk in unclear and walk out with a real map of your patterns and the first action to take.</p>
+      </div>
+      <div class="wws-step">
+        <div class="wws-step-num">3</div>
+        <h3>You choose your depth.</h3>
+        <p>Six weeks, ten weeks, or five months of weekly 1-on-1 sessions with WhatsApp support in between. You pick based on how far you want to go, after Star has seen where you actually are.</p>
+      </div>
+    </div>
+
+    <div class="text-center fade-up" style="margin-top:44px;">
+      <a href="apply.html" class="btn btn-primary btn-lg">Apply for 1-on-1 Coaching &rarr;</a>
+      <p style="font-size:0.95rem;color:var(--mid-gray);margin:16px 0 0;">Already sure? <a href="https://buy.stripe.com/cN2eYg7kHepv1uocNw" target="_blank" rel="noopener" style="color:var(--cobalt);font-weight:700;text-decoration:underline;">Book your Clarity Session directly &rarr;</a></p>
     </div>
   </div>
 </section>
@@ -540,9 +414,10 @@
 <!-- WHAT HAPPENS IN THE CLARITY SESSION -->
 <section class="section-pad" style="background:var(--light-gray);">
   <div class="container">
-    <div class="text-center fade-up" style="margin-bottom:48px;">
+    <div class="text-center fade-up" style="margin-bottom:8px;">
       <span class="section-label">The Clarity Session</span>
-      <h2 class="section-title">What Happens In The Clarity Session.</h2>
+      <h2 class="section-title" style="margin-top:12px;">What Happens In The Clarity Session.</h2>
+      <p style="color:var(--mid-gray);max-width:620px;margin:18px auto 0;font-size:1rem;line-height:1.7;">Real coaching from minute one. Not a consultation.</p>
     </div>
     <div class="values-grid fade-up">
       <div class="value-card">
@@ -564,111 +439,84 @@
   </div>
 </section>
 
-<!-- COMPARISON TABLE -->
-<section class="comparison-section">
+<!-- THE PACKAGES -->
+<section style="background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);padding:90px 0;" id="packages">
   <div class="container">
-    <div class="text-center fade-up">
-      <span class="section-label">Compare</span>
-      <h2 class="section-title">What's Included at Each Level</h2>
-      <p class="section-subtitle" style="max-width:640px;margin:18px auto 0;">A clear side-by-side of the four ways to work with Star directly.</p>
-    </div>
-    <div style="overflow-x:auto;margin-top:48px;" class="fade-up fade-up-delay-1">
-      <table class="comparison-table">
-        <thead>
-          <tr>
-            <th>Feature</th>
-            <th>10-Week Cohort<br/><span style="font-weight:400;opacity:0.8;">$2,200</span></th>
-            <th>1-on-1 · 6 Weeks<br/><span style="font-weight:400;opacity:0.8;">$3,497</span></th>
-            <th>1-on-1 · 10 Weeks<br/><span style="font-weight:400;opacity:0.8;">$4,997</span></th>
-            <th>1-on-1 · 5 Months<br/><span style="font-weight:400;opacity:0.8;">$9,997</span></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Payment plan</td>
-            <td>3 · $797</td>
-            <td>3 · $1,197</td>
-            <td>3 · $1,697</td>
-            <td>5 · $2,097</td>
-          </tr>
-          <tr>
-            <td>Format</td>
-            <td>Group</td>
-            <td>1-on-1</td>
-            <td>1-on-1</td>
-            <td>1-on-1</td>
-          </tr>
-          <tr>
-            <td>Live coaching with Star</td>
-            <td><span class="check">?·</span></td>
-            <td><span class="check">?·</span></td>
-            <td><span class="check">?·</span></td>
-            <td><span class="check">?·</span></td>
-          </tr>
-          <tr>
-            <td>Number of sessions</td>
-            <td>10</td>
-            <td>6</td>
-            <td>10</td>
-            <td>22</td>
-          </tr>
-          <tr>
-            <td>WhatsApp support between sessions</td>
-            <td><span class="dash">·</span></td>
-            <td><span class="check">?·</span></td>
-            <td><span class="check">?·</span></td>
-            <td><span class="check">?·</span></td>
-          </tr>
-          <tr>
-            <td>Optional session recordings</td>
-            <td><span class="dash">·</span></td>
-            <td><span class="check">?·</span></td>
-            <td><span class="check">?·</span></td>
-            <td><span class="check">?·</span></td>
-          </tr>
-          <tr>
-            <td>Cohort community access</td>
-            <td><span class="check">?·</span></td>
-            <td><span class="dash">·</span></td>
-            <td><span class="dash">·</span></td>
-            <td><span class="check">?·</span></td>
-          </tr>
-          <tr>
-            <td>$500 Clarity Session credits 100%</td>
-            <td><span class="dash">·</span></td>
-            <td><span class="check">?·</span></td>
-            <td><span class="check">?·</span></td>
-            <td><span class="check">?·</span></td>
-          </tr>
-          <tr>
-            <td>Lifetime access to all courses</td>
-            <td><span class="dash">·</span></td>
-            <td><span class="dash">·</span></td>
-            <td><span class="dash">·</span></td>
-            <td><span class="check">?·</span></td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="text-center fade-up" style="max-width:680px;margin:0 auto 54px;">
+      <span class="section-label" style="color:#f5d478;">Step 3</span>
+      <h2 style="color:#fff;font-size:clamp(1.8rem,3.6vw,2.4rem);margin:12px 0 16px;line-height:1.2;">Choose How Far You Want to Go.</h2>
+      <p style="color:rgba(255,255,255,0.78);font-size:1.05rem;line-height:1.75;margin:0;">Every package is weekly 1-on-1 sessions with Star plus WhatsApp support between them. Your $500 Clarity Session credits 100% toward whichever one you pick.</p>
     </div>
 
-    <div style="max-width:760px;margin:40px auto 0;display:flex;flex-direction:column;gap:14px;" class="fade-up">
-      <div style="background:rgba(27,108,168,0.06);border:1px solid rgba(27,108,168,0.18);border-radius:12px;padding:18px 22px;">
-        <p style="font-size:0.96rem;color:var(--charcoal);line-height:1.7;margin:0;"><strong style="color:var(--cobalt);">Recordings, on you.</strong> Many clients love having their 1-on-1 sessions recorded so they can watch them back, catch what they missed in the moment, and keep practicing with Star's voice in their ear. Recordings are optional and only at your request.</p>
+    <div class="wws-packages fade-up">
+
+      <div class="wws-pkg">
+        <div class="wws-pkg-term">Six Weeks</div>
+        <div class="wws-pkg-price">$3,497</div>
+        <p class="wws-pkg-desc">A deep transformation built around your specific goals and the patterns uncovered in your Clarity Session. We remove what is blocking you and build structure that moves you forward with clarity and momentum.</p>
+        <ul>
+          <li><span>&#10003;</span><span>6 weekly 1-on-1 sessions with Star</span></li>
+          <li><span>&#10003;</span><span>WhatsApp support between sessions</span></li>
+          <li><span>&#10003;</span><span>Built around your specific patterns from the Clarity Session</span></li>
+          <li><span>&#10003;</span><span>The Emotional Fitness framework applied to you specifically</span></li>
+        </ul>
+        <a href="apply-package.html" class="wws-pkg-cta">Apply for This Package</a>
       </div>
-      <div style="background:rgba(27,108,168,0.06);border:1px solid rgba(27,108,168,0.18);border-radius:12px;padding:18px 22px;">
-        <p style="font-size:0.96rem;color:var(--charcoal);line-height:1.7;margin:0;"><strong style="color:var(--cobalt);">Need a custom payment plan?</strong> If the standard plans above do not work for your situation, message Star directly at <a href="mailto:starjessetaylor@gmail.com" style="color:var(--cobalt);font-weight:700;">starjessetaylor@gmail.com</a> and we can figure something out. Results matter. If you are committed to doing the work, Star will work with you to find a way.</p>
+
+      <div class="wws-pkg is-recommended">
+        <div class="wws-pkg-badge">Most Recommended</div>
+        <div class="wws-pkg-term" style="margin-top:8px;">Ten Weeks</div>
+        <div class="wws-pkg-price">$4,997</div>
+        <p class="wws-pkg-desc">Everything in the 6-week package, plus I teach you how to become your own coach. You leave not just transformed but equipped to keep moving forward by yourself with stability and skill.</p>
+        <ul>
+          <li><span>&#10003;</span><span>10 weekly 1-on-1 sessions with Star</span></li>
+          <li><span>&#10003;</span><span>WhatsApp support between sessions</span></li>
+          <li><span>&#10003;</span><span>Everything in the 6-week package</span></li>
+          <li><span>&#10003;</span><span>I teach you to become your own coach</span></li>
+          <li><span>&#10003;</span><span>Tools to keep moving forward on your own after we finish</span></li>
+        </ul>
+        <a href="apply-package.html" class="wws-pkg-cta">Apply for This Package</a>
+      </div>
+
+      <div class="wws-pkg">
+        <div class="wws-pkg-term">Five Months</div>
+        <div class="wws-pkg-price">$9,997</div>
+        <p class="wws-pkg-desc">The deepest version of this work. Twenty-two weekly 1-on-1 sessions and WhatsApp support across all five months.</p>
+        <ul>
+          <li><span>&#10003;</span><span>22 weekly 1-on-1 sessions</span></li>
+          <li><span>&#10003;</span><span>WhatsApp support across all 5 months</span></li>
+        </ul>
+        <a href="apply-package.html" class="wws-pkg-cta">Apply for This Package</a>
+      </div>
+
+    </div>
+
+    <div class="fade-up" id="wws-notes" style="max-width:900px;margin:44px auto 0;display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+      <div style="background:rgba(201,168,76,0.10);border:1px solid rgba(201,168,76,0.28);border-radius:12px;padding:22px 24px;">
+        <p style="color:rgba(255,255,255,0.85);font-size:0.94rem;line-height:1.7;margin:0;"><strong style="color:#f5d478;">Who I work with.</strong> You must be a respectful, good-hearted person who is willing to practice the tools I give you. I care deeply about who I work with.</p>
+      </div>
+      <div style="background:rgba(201,168,76,0.10);border:1px solid rgba(201,168,76,0.28);border-radius:12px;padding:22px 24px;">
+        <p style="color:rgba(255,255,255,0.85);font-size:0.94rem;line-height:1.7;margin:0;"><strong style="color:#f5d478;">Payment plans.</strong> Available after talking with Star. Have a question first? <a href="mailto:starjessetaylor@gmail.com" style="color:#f5d478;text-decoration:underline;">starjessetaylor@gmail.com</a></p>
       </div>
     </div>
+
+    <div class="fade-up" style="max-width:760px;margin:36px auto 0;padding:24px 28px;background:rgba(255,255,255,0.05);border:1px solid rgba(245,212,120,0.22);border-radius:12px;">
+      <p style="color:rgba(255,255,255,0.86);font-size:0.98rem;line-height:1.8;margin:0;font-style:italic;text-align:center;">"Most coaches want you to need them. My entire approach is built around the opposite. I teach you how to become your own coach, your own authority, and how to trust your own instincts. The goal is not dependency. The goal is that you graduate."</p>
+      <p style="color:#f5d478;font-size:0.88rem;font-weight:700;margin:14px 0 0;text-align:center;">Star Jesse Taylor</p>
+    </div>
   </div>
+  <style>
+    @media (max-width:720px) { #wws-notes { grid-template-columns:1fr !important; } }
+  </style>
 </section>
 
 <!-- BOTTOM CTA -->
 <section class="bottom-cta">
   <div class="container">
     <p style="font-size:1.1rem;font-style:italic;opacity:0.8;margin-bottom:16px;" class="fade-up">"Make it a badge of honor to have any feeling and show up anyway."</p>
-    <h2 class="fade-up">Not sure where to start?</h2>
-    <p class="fade-up fade-up-delay-1">Apply and Star will personally help you find the right path. He reads every application and responds within 48 hours.</p>
-    <a href="apply.html" class="btn btn-white btn-lg fade-up fade-up-delay-2">Apply Now</a>
+    <h2 class="fade-up">Ready to work together?</h2>
+    <p class="fade-up fade-up-delay-1">Star reads every application himself and responds within 48 hours.</p>
+    <a href="apply.html" class="btn btn-white btn-lg fade-up fade-up-delay-2">Apply for 1-on-1 Coaching</a>
   </div>
 </section>
 
@@ -681,11 +529,10 @@
           <div class="footer-brand-name">Star Jesse Taylor</div>
           <div class="footer-brand-sub">Emotional Fitness</div>
         </div>
-        <p class="footer-brand-desc">High Performer and Mental Health Coach, Author, and Speaker based in Los Angeles.</p>
+        <p class="footer-brand-desc">Emotional Fitness coach and author based in Los Angeles. Helping thousands get out of their heads and back into their lives.</p>
         <div class="social-links">
           <a href="https://www.instagram.com/starjessetaylor" class="social-link" aria-label="Instagram" target="_blank" rel="noopener">IG</a>
           <a href="https://www.tiktok.com/@starjessetaylor" class="social-link" aria-label="TikTok" target="_blank" rel="noopener">TK</a>
-          <a href="#" class="social-link" aria-label="YouTube">YT</a>
         </div>
       </div>
       <div class="footer-col">
@@ -693,18 +540,16 @@
         <ul class="footer-links">
           <li><a href="index.html">Home</a></li>
           <li><a href="about.html">About</a></li>
-          <li><a href="services.html">Work With Star</a></li>
-          <li><a href="apply.html">Apply</a></li>
-          <li><a href="index.html#book">Book</a></li>
+          <li><a href="book.html">Book</a></li>
+          <li><a href="/services">Work With Star</a></li>
+          <li><a href="/community">Community</a></li>
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Services</h4>
+        <h4>Work Together</h4>
         <ul class="footer-links">
-          <li><a href="services.html">1-on-1 Coaching</a></li>
-          <li><a href="services.html">10-Week Cohort (Waitlist)</a></li>
-          <li><a href="courses.html">Courses</a></li>
-          <li><a href="virtual-events.html">Free Virtual Event</a></li>
+          <li><a href="/services">1-on-1 Coaching</a></li>
+          <li><a href="/community">Community ($59/mo)</a></li>
           <li><a href="/api/book-checkout" target="_blank" rel="noopener">The Book ($29.99)</a></li>
         </ul>
       </div>
@@ -712,7 +557,6 @@
         <h4>Contact</h4>
         <ul class="footer-links">
           <li><a href="mailto:starjessetaylor@gmail.com">starjessetaylor@gmail.com</a></li>
-          <li><a href="mailto:starjessetaylor@gmail.com">Speaking Inquiries</a></li>
           <li><a href="https://www.instagram.com/starjessetaylor" target="_blank" rel="noopener">Instagram @starjessetaylor</a></li>
           <li><a href="https://www.tiktok.com/@starjessetaylor" target="_blank" rel="noopener">TikTok @starjessetaylor</a></li>
         </ul>
@@ -721,6 +565,7 @@
     <div class="footer-bottom">
       <span>&copy; 2026 Star Jesse Taylor Emotional Fitness. All rights reserved.</span>
       <div class="footer-legal">
+        <a href="/sms">SMS Reminders</a>
         <a href="privacy.html">Privacy Policy</a>
         <a href="terms.html">Terms of Service</a>
       </div>

@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Audacity | Star Jesse Taylor</title>
-  <meta name="description" content="Audacity. The daily practice of Emotional Fitness. Coming this summer to iPhone. Built around Star Jesse Taylor's framework: Value Garden, No Brain Method, Spiral Breaker, daily wins." />
+  <meta name="description" content="Audacity. The daily practice of Emotional Fitness. Launching December 2026 on iPhone. Built around Star Jesse Taylor's framework: Value Garden, No Brain Method, Spiral Breaker, daily wins." />
   <meta property="og:title" content="Audacity by Star Jesse Taylor" />
   <meta property="og:description" content="The daily practice of Emotional Fitness. Coming to iPhone." />
   <meta property="og:type" content="website" />
@@ -353,6 +353,40 @@
       color: rgba(255,255,255,0.75);
       line-height: 1.6;
     }
+
+    /* PRICE LINE */
+    .app-price {
+      font-size: 15px;
+      font-weight: 800;
+      color: #115293;
+      margin: 0 auto;
+      letter-spacing: -0.2px;
+    }
+    .app-price span { color: #9CA3AF; font-weight: 600; }
+
+    /* TESTIMONIALS */
+    .app-testimonials { background: #F7FBFE; padding: 80px 24px; }
+    .app-testimonials-inner { max-width: 900px; margin: 0 auto; }
+    .tst-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin-top: 40px;
+    }
+    .tst-card {
+      background: #fff;
+      border-radius: 18px;
+      padding: 28px;
+      border: 1px solid #EEF1F5;
+    }
+    .tst-card.wide { grid-column: 1 / -1; }
+    .tst-quote { font-size: 15.5px; color: #2C2C2C; line-height: 1.65; margin-bottom: 18px; }
+    .tst-quote strong { color: #115293; font-weight: 800; }
+    .tst-name { font-size: 14px; font-weight: 800; color: #1A1A1A; }
+    .tst-role { font-size: 12.5px; color: #6B7280; margin-top: 2px; }
+    .tst-author { display: flex; align-items: center; gap: 12px; margin-top: 16px; }
+    .tst-avatar { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; object-position: center 78%; flex-shrink: 0; border: 2px solid #E4ECF4; }
+    @media (max-width: 700px) { .tst-grid { grid-template-columns: 1fr; } }
   </style>
   <script src="/js/posthog-init.js"></script>
 </head>
@@ -371,10 +405,9 @@
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
         <li><a href="about.html">About</a></li>
+        <li><a href="community.html">Community</a></li>
+        <li><a href="book.html">Book</a></li>
         <li><a href="services.html">Work With Star</a></li>
-        <li><a href="book.html">Star's Book</a></li>
-        <li><a href="event.html">Workshop</a></li>
-        <li><a href="speak.html">Speaking</a></li>
       </ul>
       <a href="community.html" class="btn btn-primary btn-sm nav-cta">Join the Community</a>
       <button class="nav-hamburger" aria-label="Menu">
@@ -388,10 +421,9 @@
 <div class="nav-mobile">
   <a href="index.html">Home</a>
   <a href="about.html">About</a>
+  <a href="community.html">Community</a>
+  <a href="book.html">Book</a>
   <a href="services.html">Work With Star</a>
-  <a href="book.html">Star's Book</a>
-  <a href="event.html">Workshop</a>
-  <a href="speak.html">Speaking</a>
   <a href="community.html">Join the Community</a>
 </div>
 
@@ -399,24 +431,25 @@
 <section class="app-hero">
   <div class="app-status-chip">
     <span class="app-status-dot"></span>
-    Coming this summer
+    Launching December 2026
   </div>
   <div class="app-eyebrow">THE EMOTIONAL FITNESS APP</div>
   <h1 class="app-title">Audacity.</h1>
   <p class="app-tagline">
-    The daily practice that heals through doing, not through waiting to be fixed first.
+    The daily practice that builds emotional fitness by moving forward, not by waiting to be fixed first.
   </p>
   <p class="app-sub">
     Built around Star Jesse Taylor's framework: plant the values that run your life, water them with valued actions, learn what your brain is doing when it loops, and have something to reach for the moment it's loud.
   </p>
+  <p class="app-price">Monthly subscription <span>· iPhone</span></p>
 </section>
 
 <!-- WHAT IT IS -->
 <section class="what-section">
   <div class="what-eyebrow">THE PREMISE</div>
-  <h2 class="what-title">Mental health is healed by moving forward, not by waiting to be fixed first.</h2>
+  <h2 class="what-title">Emotional fitness is built by moving forward, not by waiting to be fixed first.</h2>
   <p class="what-body">
-    Most people think: I have to heal my anxiety, fix my trauma, feel ready, then I can live. Star teaches the opposite. <strong>You live the valued actions, you gain clarity about what matters, and the mental health follows.</strong> Audacity is the app that makes that practice daily.
+    Most people think: I have to heal my anxiety, fix my trauma, feel ready, then I can live. Star teaches the opposite. <strong>You live the valued actions, you gain clarity about what matters, and the emotional fitness follows.</strong> Audacity is the app that makes that practice daily.
   </p>
 </section>
 
@@ -470,13 +503,56 @@
   </div>
 </section>
 
+<!-- TESTIMONIALS -->
+<section class="app-testimonials">
+  <div class="app-testimonials-inner">
+    <div class="what-eyebrow">FROM THE BETA TESTERS</div>
+    <h2 class="what-title">The people already using it.</h2>
+    <div class="tst-grid">
+      <div class="tst-card wide">
+        <div class="tst-quote">
+          "The app is absolutely amazing and so easy to use. You add your schedule based on your valued actions, and it holds me accountable with reminders that my garden needs watering. <strong>The AI feature is an absolute game changer. It's like talking to Star himself 24/7.</strong> The Practice section helped me learn the No Brain Method and apply it to real scenarios, like the thought of skipping a gym session. It's been a game changer for my mental fitness, and <strong>I now do things I wouldn't have done before.</strong>"
+        </div>
+        <div class="tst-author">
+          <img class="tst-avatar" src="images/testimonials/mustafa.jpg" alt="Mustafa Umar" loading="lazy">
+          <div>
+            <div class="tst-name">Mustafa Umar</div>
+            <div class="tst-role">Beta tester</div>
+          </div>
+        </div>
+      </div>
+      <div class="tst-card">
+        <div class="tst-quote">
+          "<strong>WOW!! This app is super cool</strong> and there is so much value and amazing features in there. I love the tree + roots feature, and of course the Value Garden feature. I'm really impressed."
+        </div>
+        <div class="tst-name">Sophie</div>
+        <div class="tst-role">Beta tester</div>
+      </div>
+      <div class="tst-card">
+        <div class="tst-quote">
+          "I'm loving the app and the option to click the spiral option to give you some type of ease. <strong>It's a great tool!</strong>"
+        </div>
+        <div class="tst-name">Leslie McCoy</div>
+        <div class="tst-role">Beta tester</div>
+      </div>
+      <div class="tst-card wide">
+        <div class="tst-quote">
+          "I am loving the reminders on your app also 🥰"
+        </div>
+        <div class="tst-name">Leanne Jones</div>
+        <div class="tst-role">Beta tester</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- WAITLIST -->
 <section class="waitlist">
   <div class="waitlist-inner">
-    <div class="waitlist-eyebrow">FIRST ACCESS · FOUNDING PRICING</div>
-    <h2 class="waitlist-title">Be there at launch.</h2>
+    <div class="waitlist-eyebrow">FIRST ACCESS</div>
+    <h2 class="waitlist-title">Be there when it launches.</h2>
     <p class="waitlist-sub">
-      I'll send you the link the day Audacity goes live on the App Store. Waitlist members get founding pricing locked in for life.
+      Audacity launches December 2026. Get on the list and I'll send you the link the moment it goes live.
     </p>
 
     <form id="waitlistForm" class="waitlist-form" novalidate>
@@ -513,6 +589,11 @@
 <footer class="footer">
   <div class="container">
     <p>&copy; 2026 Star Jesse Taylor. Emotional Fitness.</p>
+    <p>
+      <a href="services.html">1-on-1 Coaching</a> ·
+      <a href="community.html">Community ($59/mo)</a> ·
+      <a href="book.html">The Book ($29.99)</a>
+    </p>
     <p>
       <a href="privacy.html">Privacy</a> ·
       <a href="terms.html">Terms</a>

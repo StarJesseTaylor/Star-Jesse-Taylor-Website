@@ -4,12 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Apply for a Coaching Package | Star Jesse Taylor</title>
-  <meta name="description" content="Apply for the 6-Week or 10-Week Coaching Package with Star Jesse Taylor. Star personally reviews every application." />
+  <meta name="description" content="Apply for the 6-Week, 10-Week, or 5-Month Coaching Package with Star Jesse Taylor. Star personally reviews every application." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/styles.css" />
-  <!-- Google Analytics GA4 · replace G-T0T1Z0VBT8 with your Measurement ID from analytics.google.com -->
+  <!-- Google Analytics GA4 Ã‚Â· replace G-T0T1Z0VBT8 with your Measurement ID from analytics.google.com -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-T0T1Z0VBT8"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -36,12 +36,11 @@
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
         <li><a href="about.html">About</a></li>
-        <li><a href="services.html">Work With Star</a></li>
-        <li><a href="book.html">Star's Book</a></li>
-        <li><a href="event.html">Workshop</a></li>
-        <li><a href="speak.html">Speaking</a></li>
+        <li><a href="/community">Community</a></li>
+        <li><a href="book.html">Book</a></li>
+        <li><a href="/services">Work With Star</a></li>
       </ul>
-      <a href="community.html" class="btn btn-primary btn-sm nav-cta">Join the Community</a>
+      <a href="/community" class="btn btn-primary btn-sm nav-cta">Join the Community</a>
       <button class="nav-hamburger" aria-label="Menu">
         <span></span><span></span><span></span>
       </button>
@@ -53,11 +52,10 @@
 <div class="nav-mobile">
   <a href="index.html">Home</a>
   <a href="about.html">About</a>
-  <a href="services.html">Work With Star</a>
-  <a href="book.html">Star's Book</a>
-  <a href="event.html">Workshop</a>
-  <a href="speak.html">Speaking</a>
-  <a href="community.html">Join the Community</a>
+  <a href="/community">Community</a>
+  <a href="book.html">Book</a>
+  <a href="/services">Work With Star</a>
+  <a href="/community">Join the Community</a>
 </div>
 
 <!-- PAGE HERO -->
@@ -65,14 +63,14 @@
   <div class="container">
     <span class="section-label fade-up">Package Application</span>
     <h1 class="fade-up fade-up-delay-1">Apply for a Coaching Package.</h1>
-    <p class="fade-up fade-up-delay-2">This application is for the 6-Week and 10-Week Coaching Packages. Star personally reads every application.</p>
+    <p class="fade-up fade-up-delay-2">This application is for the 6-Week, 10-Week, and 5-Month Coaching Packages. Star personally reads every application.</p>
   </div>
 </section>
 
 <!-- PACKAGE OVERVIEW -->
 <section style="background:var(--light-gray);padding:56px 0;">
   <div class="container">
-    <div style="max-width:840px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:24px;" class="fade-up">
+    <div class="pkg-overview-grid fade-up" style="max-width:1000px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
       <div style="background:var(--white);border:1px solid var(--light-gray);border-radius:14px;padding:28px 24px;">
         <div style="font-size:0.72rem;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:var(--cobalt);margin-bottom:10px;">6 Week Package</div>
         <div style="font-size:2rem;font-weight:900;color:var(--charcoal);margin-bottom:10px;">$3,497</div>
@@ -83,7 +81,15 @@
         <div style="font-size:2rem;font-weight:900;color:var(--charcoal);margin-bottom:10px;">$4,997</div>
         <p style="color:var(--mid-gray);font-size:0.9rem;line-height:1.7;margin:0;">Everything in the 6-Week, plus I teach you how to become your own coach. You leave not just transformed but equipped. Includes weekly 1-on-1 sessions and WhatsApp support.</p>
       </div>
+      <div style="background:var(--white);border:1px solid var(--light-gray);border-radius:14px;padding:28px 24px;">
+        <div style="font-size:0.72rem;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:var(--cobalt);margin-bottom:10px;">5 Month Package</div>
+        <div style="font-size:2rem;font-weight:900;color:var(--charcoal);margin-bottom:10px;">$9,997</div>
+        <p style="color:var(--mid-gray);font-size:0.9rem;line-height:1.7;margin:0;">The deepest version of this work. Twenty-two weekly 1-on-1 sessions and WhatsApp support across all five months.</p>
+      </div>
     </div>
+    <style>
+      @media (max-width: 880px) { .pkg-overview-grid { grid-template-columns: 1fr !important; } }
+    </style>
     <p style="text-align:center;font-size:0.88rem;color:var(--mid-gray);margin-top:24px;" class="fade-up">All packages begin with a $500 Clarity Session, credited in full toward your package investment.</p>
   </div>
 </section>
@@ -141,7 +147,7 @@
                 <option value="CST (UTC-6) Chicago, Mexico City">CST (UTC-6) Chicago, Mexico City</option>
                 <option value="EST (UTC-5) New York, Toronto">EST (UTC-5) New York, Toronto</option>
                 <option value="AST (UTC-4) Atlantic, Caracas">AST (UTC-4) Atlantic, Caracas</option>
-                <option value="BRT (UTC-3) S·o Paulo, Buenos Aires">BRT (UTC-3) S·o Paulo, Buenos Aires</option>
+                <option value="BRT (UTC-3) SÃ‚Â·o Paulo, Buenos Aires">BRT (UTC-3) SÃ‚Â·o Paulo, Buenos Aires</option>
                 <option value="GMT (UTC+0) London, Lisbon">GMT (UTC+0) London, Lisbon</option>
                 <option value="CET (UTC+1) Paris, Berlin, Madrid">CET (UTC+1) Paris, Berlin, Madrid</option>
                 <option value="EET (UTC+2) Athens, Cairo, Johannesburg">EET (UTC+2) Athens, Cairo, Johannesburg</option>
@@ -244,9 +250,10 @@
             <label for="package_choice">Which package are you applying for? <span>*</span></label>
             <select id="package_choice" name="package_choice" required>
               <option value="" disabled selected>Select one</option>
-              <option value="6-Week Package ($3,497)">6-Week Package · $3,497</option>
-              <option value="10-Week Package ($4,997)">10-Week Package · $4,997</option>
-              <option value="Open to either">I am open to Star's recommendation</option>
+              <option value="6-Week Package ($3,497)">6-Week Package &middot; $3,497</option>
+              <option value="10-Week Package ($4,997)">10-Week Package &middot; $4,997</option>
+              <option value="5-Month Package ($9,997)">5-Month Package &middot; $9,997</option>
+              <option value="Open to Star's recommendation">I am open to Star's recommendation</option>
             </select>
           </div>
 
@@ -261,7 +268,7 @@
           </div>
 
           <div class="form-group">
-            <label>On a scale of 1·10, how committed are you to doing this work? <span>*</span></label>
+            <label>On a scale of 1Ã‚Â·10, how committed are you to doing this work? <span>*</span></label>
             <div class="scale-options">
               <input type="radio" id="scale1" name="commitment_scale" value="1" class="scale-option" />
               <label for="scale1" class="scale-label">1</label>
