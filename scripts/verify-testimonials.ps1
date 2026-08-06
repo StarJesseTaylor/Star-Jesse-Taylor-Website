@@ -68,9 +68,25 @@ foreach ($sec in [regex]::Split($masterRaw, '(?m)^###\s+')) {
   $key = Norm $name
   if (-not $key -or $key -eq 'video only 1 on 1') { continue }
   if (-not $byPerson.ContainsKey($key)) { $byPerson[$key] = @() }
-  foreach ($q in [regex]::Matches($sec, '(?m)^>\s?(.+)$')) {
-    $n = Norm $q.Groups[1].Value
-    if ($n.Length -ge 30) { $byPerson[$key] += $n }
+  # A markdown blockquote that spans several lines is ONE quote. Keep each line
+  # as a block AND the whole consecutive run joined, otherwise a multi-line post
+  # published as one paragraph can never match and the checker cries wolf.
+  $run = @()
+  foreach ($line in ($sec -split "`n")) {
+    if ($line -match '^>\s?(.*)$') {
+      $piece = $Matches[1].Trim()
+      if ($piece) { $run += $piece }
+    } else {
+      if ($run.Count -gt 0) {
+        if ($run.Count -gt 1) { $j = Norm ($run -join ' '); if ($j.Length -ge 30) { $byPerson[$key] += $j } }
+        foreach ($r in $run) { $n = Norm $r; if ($n.Length -ge 30) { $byPerson[$key] += $n } }
+        $run = @()
+      }
+    }
+  }
+  if ($run.Count -gt 0) {
+    if ($run.Count -gt 1) { $j = Norm ($run -join ' '); if ($j.Length -ge 30) { $byPerson[$key] += $j } }
+    foreach ($r in $run) { $n = Norm $r; if ($n.Length -ge 30) { $byPerson[$key] += $n } }
   }
 }
 $people = @($byPerson.Keys | Where-Object { $byPerson[$_].Count -gt 0 })
@@ -160,7 +176,7 @@ Get-ChildItem $Repo -Filter "*.html" -File | ForEach-Object {
     # Who is this attributed to? Look at the element itself and the markup just
     # after it. No named person from the master means it is not a testimonial.
     $tailStart = $m.Index + $m.Length
-    $tail = $html.Substring($tailStart, [Math]::Min(700, $html.Length - $tailStart))
+    $tail = $html.Substring($tailStart, [Math]::Min(480, $html.Length - $tailStart))
     $scope = Norm ($m.Value + ' ' + $tail)
     $who = @()
     foreach ($p in $people) { if ($scope.Contains(" $p ")) { $who += $p } }

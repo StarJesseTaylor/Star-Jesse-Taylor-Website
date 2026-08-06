@@ -11,6 +11,7 @@
     { "source": "/preview/garden", "destination": "/preview/garden.html" },
     { "source": "/whats-next", "destination": "/whats-next.html" },
     { "source": "/community", "destination": "/community.html" },
+    { "source": "/group-coaching", "destination": "/group-coaching.html" },
     { "source": "/slideshow", "destination": "/slideshow-brain-algorithm.html" },
     { "source": "/sms", "destination": "/sms.html" },
     { "source": "/privacy", "destination": "/privacy.html" },
