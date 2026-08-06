@@ -50,20 +50,29 @@
     .wws-intro-credit { display:inline-block; background:rgba(245,212,120,0.16); color:#f5d478; font-size:0.86rem; font-weight:800; padding:8px 16px; border-radius:50px; border:1px solid rgba(245,212,120,0.4); }
     .wws-intro-cta { display:block; background:linear-gradient(90deg,#c9a84c,#f5d478); color:#1a1a2e; font-weight:900; padding:18px 26px; border-radius:10px; font-size:1.05rem; text-align:center; box-shadow:0 10px 30px rgba(201,168,76,0.3); }
 
-    .wws-videos { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; max-width:920px; margin:0 auto; }
+    /* "What they were dealing with" chips. Every chip below is a condition the
+       person names about THEMSELVES in their own recording. Nobody gets a chip
+       for something they did not say. */
+    .wws-cond { display:flex; flex-wrap:wrap; gap:6px; justify-content:center; margin-top:10px; }
+    .wws-cond span { background:rgba(27,108,168,0.08); color:var(--cobalt); font-size:0.72rem; font-weight:700; padding:3px 10px; border-radius:50px; border:1px solid rgba(27,108,168,0.2); line-height:1.4; }
+    .wws-cond-label { display:block; font-size:0.68rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--mid-gray); font-weight:700; margin-top:14px; }
+
+    .wws-videos { display:grid; grid-template-columns:repeat(4,1fr); gap:22px; max-width:1180px; margin:0 auto; }
     .wws-quotes { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; max-width:1120px; margin:0 auto; }
     .wws-quote { background:var(--white); border:1px solid rgba(27,108,168,0.14); border-left:5px solid var(--cobalt); border-radius:14px; padding:30px 30px 26px; box-shadow:0 12px 40px rgba(27,108,168,0.08); display:flex; flex-direction:column; }
     .wws-avatar { width:48px; height:48px; border-radius:50%; background:linear-gradient(135deg,var(--cobalt) 0%,var(--turquoise) 100%); color:var(--white); display:flex; align-items:center; justify-content:center; font-weight:900; font-size:1.05rem; flex-shrink:0; }
     .wws-split { display:grid; grid-template-columns:1fr 1.15fr; gap:44px; align-items:center; max-width:1080px; margin:0 auto; }
     .wws-split.split-wide { grid-template-columns:1.15fr 1fr; }
 
+    @media (max-width:1080px) { .wws-videos { grid-template-columns:repeat(2,1fr); } }
     @media (max-width:900px) {
-      .wws-steps, .wws-packages, .wws-videos, .wws-quotes { grid-template-columns:1fr; }
+      .wws-steps, .wws-packages, .wws-quotes { grid-template-columns:1fr; }
       .wws-split, .wws-split.split-wide { grid-template-columns:1fr; gap:28px; }
       .wws-pkg.is-recommended { order:-1; }
       .wws-intro { grid-template-columns:1fr; gap:24px; padding:34px 26px; }
       .wws-intro-badge { left:50%; transform:translateX(-50%); white-space:nowrap; }
     }
+    @media (max-width:620px) { .wws-videos { grid-template-columns:1fr; gap:28px; } }
   </style>
 </head>
 <body>
@@ -159,23 +168,32 @@
   </div>
 </section>
 
-<!-- PROOF · MARISSA VSL -->
+<!-- PROOF · HOSNIA VSL · community member, labelled as such -->
 <section class="vsl-section">
   <div class="container">
-    <span class="vsl-label fade-up">Real Client. Real Change.</span>
-    <h2 class="vsl-headline fade-up fade-up-delay-1">Marissa did years of therapy. Nothing changed. Then she did the work with me.</h2>
+    <span class="vsl-label fade-up">Real Person. Real Change.</span>
+    <h2 class="vsl-headline fade-up fade-up-delay-1">&ldquo;I was living my life. But I wasn't getting better.&rdquo;</h2>
     <div class="fade-up fade-up-delay-2" style="max-width:360px;margin:0 auto;">
       <div class="video-embed ratio-9x16" style="border-radius:18px;box-shadow:0 18px 60px rgba(0,0,0,0.5);">
         <iframe
-          src="https://www.youtube-nocookie.com/embed/_PRq3vqmUQU?rel=0&playsinline=1&modestbranding=1"
+          src="https://www.youtube-nocookie.com/embed/Iid09DafBXo?rel=0&playsinline=1&modestbranding=1"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowfullscreen
-          title="Marissa: 1-on-1 Coaching Client Transformation Story"
+          title="Hosnia: one month in, on anxiety, DPDR and intrusive thoughts"
         ></iframe>
       </div>
       <div style="text-align:center;margin-top:18px;">
-        <div style="font-weight:800;color:#fff;font-size:1rem;">Marissa</div>
-        <div style="font-size:0.85rem;color:var(--turquoise);font-weight:700;margin-top:3px;">1-on-1 Coaching Client</div>
+        <div style="font-weight:800;color:#fff;font-size:1rem;">Hosnia</div>
+        <div style="font-size:0.85rem;color:var(--turquoise);font-weight:700;margin-top:3px;">Community member &middot; one month in</div>
+        <span class="wws-cond-label" style="color:rgba(255,255,255,0.55);">She came in with</span>
+        <div class="wws-cond">
+          <span style="background:rgba(255,255,255,0.1);color:#fff;border-color:rgba(255,255,255,0.25);">Anxiety</span>
+          <span style="background:rgba(255,255,255,0.1);color:#fff;border-color:rgba(255,255,255,0.25);">DPDR</span>
+          <span style="background:rgba(255,255,255,0.1);color:#fff;border-color:rgba(255,255,255,0.25);">Intrusive thoughts</span>
+          <span style="background:rgba(255,255,255,0.1);color:#fff;border-color:rgba(255,255,255,0.25);">Racing thoughts</span>
+          <span style="background:rgba(255,255,255,0.1);color:#fff;border-color:rgba(255,255,255,0.25);">Low mood</span>
+        </div>
+        <p style="color:rgba(255,255,255,0.6);font-size:0.85rem;line-height:1.6;margin:16px auto 0;max-width:340px;">She had already done exposure therapy and kept living her life. That was not the part that was missing.</p>
       </div>
     </div>
   </div>
@@ -187,7 +205,7 @@
     <div class="text-center fade-up" style="margin-bottom:44px;">
       <span class="section-label">Watch What Happens</span>
       <h2 style="font-size:clamp(1.6rem,3.2vw,2.1rem);color:var(--charcoal);margin-top:12px;">These People Did the Work.<br>Watch What Happened.</h2>
-      <p style="color:var(--mid-gray);max-width:620px;margin:18px auto 0;font-size:1rem;line-height:1.7;">Every person here did 1-on-1 coaching with Star.</p>
+      <p style="color:var(--mid-gray);max-width:620px;margin:18px auto 0;font-size:1rem;line-height:1.7;">Find the one who sounds like you.</p>
     </div>
 
     <div class="wws-videos fade-up">
@@ -198,8 +216,9 @@
         </div>
         <div style="text-align:center;margin-top:14px;">
           <div style="font-weight:800;color:var(--charcoal);font-size:0.98rem;">Janice</div>
-          <div style="font-size:0.8rem;color:var(--cobalt);font-weight:700;margin-top:3px;">1-on-1 Coaching</div>
-          <div style="font-size:0.78rem;color:var(--mid-gray);margin-top:4px;font-style:italic;">Real shift after years of stuck</div>
+          <div style="font-size:0.8rem;color:var(--cobalt);font-weight:700;margin-top:3px;">1-on-1 Coaching &middot; 6 months</div>
+          <span class="wws-cond-label">She came in with</span>
+          <div class="wws-cond"><span>Falling apart</span><span>A toxic relationship</span></div>
         </div>
       </div>
 
@@ -210,7 +229,20 @@
         <div style="text-align:center;margin-top:14px;">
           <div style="font-weight:800;color:var(--charcoal);font-size:0.98rem;">Kristina</div>
           <div style="font-size:0.8rem;color:var(--cobalt);font-weight:700;margin-top:3px;">1-on-1 Coaching</div>
-          <div style="font-size:0.78rem;color:var(--mid-gray);margin-top:4px;font-style:italic;">The answer other coaches couldn't give</div>
+          <span class="wws-cond-label">She came in with</span>
+          <div class="wws-cond"><span>Years of no answers</span><span>&ldquo;I thought I was losing it&rdquo;</span></div>
+        </div>
+      </div>
+
+      <div>
+        <div class="video-embed ratio-9x16" style="border-radius:14px;box-shadow:0 12px 36px rgba(0,0,0,0.18);">
+          <iframe src="https://www.youtube-nocookie.com/embed/_PRq3vqmUQU?rel=0&playsinline=1&modestbranding=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen title="Marissa &middot; 1-on-1 Coaching"></iframe>
+        </div>
+        <div style="text-align:center;margin-top:14px;">
+          <div style="font-weight:800;color:var(--charcoal);font-size:0.98rem;">Marissa</div>
+          <div style="font-size:0.8rem;color:var(--cobalt);font-weight:700;margin-top:3px;">1-on-1 Coaching &middot; a year and a half</div>
+          <span class="wws-cond-label">She came in with</span>
+          <div class="wws-cond"><span>Obsessive thinking</span><span>On-again, off-again relationship</span></div>
         </div>
       </div>
 
@@ -220,8 +252,8 @@
         </div>
         <div style="text-align:center;margin-top:14px;">
           <div style="font-weight:800;color:var(--charcoal);font-size:0.98rem;">Jennifer</div>
-          <div style="font-size:0.8rem;color:var(--cobalt);font-weight:700;margin-top:3px;">1-on-1 Coaching</div>
-          <div style="font-size:0.78rem;color:var(--mid-gray);margin-top:4px;font-style:italic;">In her own words</div>
+          <div style="font-size:0.8rem;color:var(--cobalt);font-weight:700;margin-top:3px;">1-on-1 Coaching &middot; 3 months</div>
+          <div style="font-size:0.78rem;color:var(--mid-gray);margin-top:8px;font-style:italic;">On why it takes practice, not a quick fix</div>
         </div>
       </div>
 
@@ -360,6 +392,8 @@
             <div style="font-size:0.84rem;color:var(--cobalt);font-weight:700;margin-top:2px;">Trauma-informed mental health coach &middot; 1-on-1 client</div>
           </div>
         </div>
+        <span class="wws-cond-label" style="text-align:left;">She came in with</span>
+        <div class="wws-cond" style="justify-content:flex-start;"><span>Anxiety</span><span>Looping thoughts</span><span>Rumination</span><span>Couldn't focus</span><span>Toxic relationships</span></div>
       </div>
 
       <div class="wws-quote">
