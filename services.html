@@ -56,6 +56,9 @@
     .wws-cond { display:flex; flex-wrap:wrap; gap:6px; justify-content:center; margin-top:10px; }
     .wws-cond span { background:rgba(27,108,168,0.08); color:var(--cobalt); font-size:0.72rem; font-weight:700; padding:3px 10px; border-radius:50px; border:1px solid rgba(27,108,168,0.2); line-height:1.4; }
     .wws-cond-label { display:block; font-size:0.68rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--mid-gray); font-weight:700; margin-top:14px; }
+    .wws-cond span.wws-cond-dark { background:rgba(255,255,255,0.1); color:#fff; border-color:rgba(255,255,255,0.25); }
+    .wws-community-videos { display:grid; grid-template-columns:repeat(2,1fr); gap:44px; max-width:820px; margin:0 auto; }
+    @media (max-width:760px) { .wws-community-videos { grid-template-columns:1fr; gap:52px; max-width:360px; } }
 
     .wws-videos { display:grid; grid-template-columns:repeat(4,1fr); gap:22px; max-width:1180px; margin:0 auto; }
     .wws-quotes { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; max-width:1120px; margin:0 auto; }
@@ -168,33 +171,53 @@
   </div>
 </section>
 
-<!-- PROOF · HOSNIA VSL · community member, labelled as such -->
+<!-- PROOF · COMMUNITY VIDEOS · Hosnia + Mona, both labelled community members -->
 <section class="vsl-section">
   <div class="container">
-    <span class="vsl-label fade-up">Real Person. Real Change.</span>
-    <h2 class="vsl-headline fade-up fade-up-delay-1">&ldquo;I was living my life. But I wasn't getting better.&rdquo;</h2>
-    <div class="fade-up fade-up-delay-2" style="max-width:360px;margin:0 auto;">
-      <div class="video-embed ratio-9x16" style="border-radius:18px;box-shadow:0 18px 60px rgba(0,0,0,0.5);">
-        <iframe
-          src="https://www.youtube-nocookie.com/embed/Iid09DafBXo?rel=0&playsinline=1&modestbranding=1"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowfullscreen
-          title="Hosnia: one month in, on anxiety, DPDR and intrusive thoughts"
-        ></iframe>
-      </div>
-      <div style="text-align:center;margin-top:18px;">
-        <div style="font-weight:800;color:#fff;font-size:1rem;">Hosnia</div>
-        <div style="font-size:0.85rem;color:var(--turquoise);font-weight:700;margin-top:3px;">Community member &middot; one month in</div>
-        <span class="wws-cond-label" style="color:rgba(255,255,255,0.55);">She came in with</span>
-        <div class="wws-cond">
-          <span style="background:rgba(255,255,255,0.1);color:#fff;border-color:rgba(255,255,255,0.25);">Anxiety</span>
-          <span style="background:rgba(255,255,255,0.1);color:#fff;border-color:rgba(255,255,255,0.25);">DPDR</span>
-          <span style="background:rgba(255,255,255,0.1);color:#fff;border-color:rgba(255,255,255,0.25);">Intrusive thoughts</span>
-          <span style="background:rgba(255,255,255,0.1);color:#fff;border-color:rgba(255,255,255,0.25);">Racing thoughts</span>
-          <span style="background:rgba(255,255,255,0.1);color:#fff;border-color:rgba(255,255,255,0.25);">Low mood</span>
+    <span class="vsl-label fade-up">Real People. Real Change.</span>
+    <h2 class="vsl-headline fade-up fade-up-delay-1">&ldquo;I feel like my kids have their mom back.&rdquo;</h2>
+    <div class="wws-community-videos fade-up fade-up-delay-2">
+
+      <div>
+        <div class="video-embed ratio-9x16" style="border-radius:18px;box-shadow:0 18px 60px rgba(0,0,0,0.5);">
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/-oII6gqNU1g?rel=0&playsinline=1&modestbranding=1"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+            title="Hosnia: one month in"
+          ></iframe>
         </div>
-        <p style="color:rgba(255,255,255,0.6);font-size:0.85rem;line-height:1.6;margin:16px auto 0;max-width:340px;">She had already done exposure therapy and kept living her life. That was not the part that was missing.</p>
+        <div style="text-align:center;margin-top:18px;">
+          <div style="font-weight:800;color:#fff;font-size:1rem;">Hosnia</div>
+          <div style="font-size:0.85rem;color:var(--turquoise);font-weight:700;margin-top:3px;">Community member &middot; one month in</div>
+          <span class="wws-cond-label" style="color:rgba(255,255,255,0.55);">She came in with</span>
+          <div class="wws-cond">
+            <span class="wws-cond-dark">Anxiety</span><span class="wws-cond-dark">DPDR</span><span class="wws-cond-dark">Intrusive thoughts</span><span class="wws-cond-dark">Racing thoughts</span><span class="wws-cond-dark">Low mood</span>
+          </div>
+          <p style="color:rgba(255,255,255,0.6);font-size:0.85rem;line-height:1.6;margin:16px auto 0;max-width:340px;">She had already done exposure therapy and kept living her life. That was not the part that was missing.</p>
+        </div>
       </div>
+
+      <div>
+        <div class="video-embed ratio-9x16" style="border-radius:18px;box-shadow:0 18px 60px rgba(0,0,0,0.5);">
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/GJIQ0UlFeXQ?rel=0&playsinline=1&modestbranding=1"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+            title="Mona: three weeks in, on 30 years of depression"
+          ></iframe>
+        </div>
+        <div style="text-align:center;margin-top:18px;">
+          <div style="font-weight:800;color:#fff;font-size:1rem;">Mona</div>
+          <div style="font-size:0.85rem;color:var(--turquoise);font-weight:700;margin-top:3px;">Community member &middot; three weeks in</div>
+          <span class="wws-cond-label" style="color:rgba(255,255,255,0.55);">She came in with</span>
+          <div class="wws-cond">
+            <span class="wws-cond-dark">Depression, 30 years</span><span class="wws-cond-dark">Wouldn't leave the house</span><span class="wws-cond-dark">Wouldn't eat</span>
+          </div>
+          <p style="color:rgba(255,255,255,0.6);font-size:0.85rem;line-height:1.6;margin:16px auto 0;max-width:340px;">In therapy since she was twelve. Three weeks in: &ldquo;I haven't been the least bit depressed.&rdquo;</p>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -393,7 +416,7 @@
           </div>
         </div>
         <span class="wws-cond-label" style="text-align:left;">She came in with</span>
-        <div class="wws-cond" style="justify-content:flex-start;"><span>Anxiety</span><span>Looping thoughts</span><span>Rumination</span><span>Couldn't focus</span><span>Toxic relationships</span></div>
+        <div class="wws-cond" style="justify-content:flex-start;"><span>Anxiety</span><span>Looping thoughts</span><span>Rumination</span><span>Couldn't focus</span><span>Toxic relationships</span><span>ADHD symptoms</span><span>On medication</span></div>
       </div>
 
       <div class="wws-quote">
