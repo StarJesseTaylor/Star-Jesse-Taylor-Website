@@ -32,8 +32,23 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   if (req.method === 'OPTIONS') return res.status(200).end();
 
-  const isCron = req.headers['x-vercel-cron'] === '1';
-  if (!isCron && req.query?.key !== process.env.CRON_SECRET) {
+  // 🛑 AUTH. Do NOT reintroduce an `x-vercel-cron` check here.
+  //    v1 trusted `req.headers['x-vercel-cron'] === '1'` as proof the caller was
+  //    Vercel's scheduler. It is an ORDINARY REQUEST HEADER — Vercel does not
+  //    strip it from inbound traffic — so anyone could set it and run this
+  //    endpoint with no secret at all. Verified against production 2026-08-07:
+  //    `curl -H "x-vercel-cron: 1" .../send` returned 200 and a full report.
+  //    With members in the table, `?live=1` on that same request would have
+  //    texted every one of them, on repeat, from Star's number, billed to Star.
+  //
+  //    Vercel's real cron sends `Authorization: Bearer $CRON_SECRET` whenever
+  //    CRON_SECRET is set in the project. That is a shared secret, so that is
+  //    what we trust. The ?key= form stays for manual runs.
+  const secret = process.env.CRON_SECRET;
+  if (!secret) return res.status(500).json({ error: 'CRON_SECRET not configured' });
+  const viaBearer = req.headers.authorization === `Bearer ${secret}`;
+  const viaQuery = req.query?.key === secret;
+  if (!viaBearer && !viaQuery) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
