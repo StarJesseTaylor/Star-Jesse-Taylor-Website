@@ -39,6 +39,12 @@
     .gc-card { break-inside:avoid; background:var(--white); border:1px solid rgba(27,108,168,0.14);
       border-left:5px solid var(--cobalt); border-radius:14px; padding:26px 26px 22px; margin-bottom:24px;
       box-shadow:0 10px 34px rgba(27,108,168,0.08); }
+    /* Star Aug 7 2026: a scannable headline on every card. Nobody reads a wall
+       of paragraphs, but everybody reads the bold line. Each headline is a
+       VERBATIM fragment of that member's own quote below it — never a summary,
+       never our words. */
+    .gc-headline { font-size:1.12rem; line-height:1.35; font-weight:800; color:var(--cobalt);
+      margin:0 0 12px; letter-spacing:-0.01em; }
     .gc-card .gc-quote { font-size:0.97rem; line-height:1.75; color:var(--charcoal); margin:0 0 16px; }
     .gc-who { font-size:0.84rem; color:var(--cobalt); font-weight:800; }
     .gc-who small { display:block; color:var(--mid-gray); font-weight:600; font-size:0.78rem; margin-top:2px; }
@@ -215,38 +221,48 @@
     <div class="gc-wall fade-up">
 
       <div class="gc-card">
+        <p class="gc-headline">&ldquo;More growth and positive change than I ever thought possible.&rdquo;</p>
         <p class="gc-quote">I've spent so much money on therapy over the years, searching for answers and trying to heal. Yet, after only 10 days in your community, I've experienced more growth and positive change than I ever thought possible. I honestly never imagined I could come this far in such a short time.</p>
         <!-- source: Esra Sabedini IG DM Aug 6 2026. Published without her name for now; Star is asking her about using it. raw/Esra_Sabedini_2026-08-06_IG-DM_10-days-more-growth-than-years-of-therapy.PNG -->
         <div class="gc-who">A member of my Skool community</div>
       </div>
 
       <div class="gc-card">
+        <p class="gc-headline">&ldquo;For the first time in a long time, I'm excited about living my life again.&rdquo;</p>
         <p class="gc-quote">I've seen so much improvement already, and I can genuinely feel DPDR fading into the background. For the first time in a long time, I'm excited about living my life again. I'm learning that I don't need to give so much attention to the thoughts, feelings, or emotions that show up&mdash;I can keep moving forward with my valued actions regardless.</p>
         <!-- source: Natalie Krstanoska IG DM Aug 6 2026, 6:38pm. Published without her name for now; Star is asking her about using it. raw/Natalie_Krstanoska_2026-08-06_IG-DM_dpdr-fading-into-the-background_part1.PNG + _part2.PNG. Contiguous run from her third paragraph, nothing spliced. The "little over a month" sentence is deliberately left out so the page sets no timeline. -->
-        <div class="gc-who">A member of my Skool community<small>Came in with DPDR and health anxiety</small></div>
+        <!-- Star Aug 7 2026: DPDR spelled out once here so someone who calls it
+             "derealization" recognises their own word and finds themselves on
+             this page. Her quote is untouched; this attribution line is ours. -->
+        <div class="gc-who">A member of my Skool community<small>Came in with DPDR (depersonalization and derealization) and health anxiety</small></div>
       </div>
 
       <div class="gc-card">
+        <p class="gc-headline">&ldquo;I HAD THE BEST DAY BECAUSE I LIVED!&rdquo;</p>
         <p class="gc-quote">I drove to my dentist appointment without panicking. I went through my entire dentist appointment without fighting and completed the visit! I kept thinking, "I am building a better tomorrow!" &hellip; It feels amazing to know I DID IT!! &hellip; I HAD THE BEST DAY BECAUSE I LIVED!</p>
         <div class="gc-who">Marlee<small>Community member</small></div>
       </div>
 
       <div class="gc-card">
+        <p class="gc-headline">&ldquo;I just decided to go for it.&rdquo;</p>
         <p class="gc-quote">For the past two weeks, I'd been wanting to book a hotel just to get away from home. But because of my anxiety and health anxiety, I kept putting it off, constantly overthinking everything. After our call yesterday, though, I just decided to go for it. I booked the hotel, and now I'm finally here for a few days!</p>
         <div class="gc-who">Angelika Amor<small>Community member</small></div>
       </div>
 
       <div class="gc-card">
+        <p class="gc-headline">&ldquo;Day by day, I got better.&rdquo;</p>
         <p class="gc-quote">I had spent so many years with my psychotherapist going nowhere, analysing my thoughts, my feelings, endlessly. You talked about valued actions. These were something completely new for me. So I trusted you. I followed. Day by day, I got better.</p>
         <div class="gc-who">Anna Lana<small>Community member</small></div>
       </div>
 
       <div class="gc-card">
+        <p class="gc-headline">&ldquo;And it's GONE.&rdquo;</p>
         <p class="gc-quote">You changed my life. I had problems with swallowing for 2 years. No doctor could help me. I did your method. Don't focus on the problem, don't make it a big deal for the brain, just act like it's normal. And it's GONE. 2 years I was suffering. I will never doubt you. Thank you SO MUCH.</p>
         <div class="gc-who">Pinky<small>Community member</small></div>
       </div>
 
       <div class="gc-card">
+        <p class="gc-headline">&ldquo;Today I drove on the highway and felt really good.&rdquo;</p>
         <p class="gc-quote">Wins of the day, 30th July:<br>
         &bull; Today I drove on the highway and felt really good<br>
         &bull; It was my nephew's 3rd birthday, we played a lot, good food and cake 🎂<br>
@@ -255,11 +271,13 @@
       </div>
 
       <div class="gc-card">
+        <p class="gc-headline">&ldquo;I just went to gym with those feelings with me.&rdquo;</p>
         <p class="gc-quote">This morning was my gym day and I noticed I went there with anxiety and fear coming along with me lol but I also noticed I didn't question wether I should go or not I just went to gym with those feelings with me. It still didn't feel amazing but I'm taking it as a win for the day :)</p>
         <div class="gc-who">Ghazaal Monir<small>Community member</small></div>
       </div>
 
       <div class="gc-card">
+        <p class="gc-headline">&ldquo;You were what I needed to crack the code.&rdquo;</p>
         <p class="gc-quote">Man you have changed my life. You were what I needed to crack the code. I couldn't understand anybody else explaining the same thing to me. But you're the one to open my eyes. Thank you so much for that.</p>
         <!-- source: master section 3E, handle disciplined.accountable.loveMe -->
         <div class="gc-who">A member of my Skool community</div>
