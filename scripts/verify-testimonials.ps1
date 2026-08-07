@@ -177,7 +177,19 @@ Get-ChildItem $Repo -Filter "*.html" -File | ForEach-Object {
     # after it. No named person from the master means it is not a testimonial.
     $tailStart = $m.Index + $m.Length
     $tail = $html.Substring($tailStart, [Math]::Min(480, $html.Length - $tailStart))
-    $scope = Norm ($m.Value + ' ' + $tail)
+    # A quote published WITHOUT a name (a member who has not okayed their name yet)
+    # would otherwise be skipped entirely and never checked. Those cards carry an
+    # HTML comment naming the real source, but Norm strips <!-- ... --> like a tag,
+    # taking the name with it. So pull the names out of "source:" comments only.
+    #
+    # ONLY "source:" comments. A section divider like <!-- PROOF · JON PRINCE -->
+    # names the block that FOLLOWS, so trusting every comment blamed Nesreen's
+    # quote on Jon Prince — her own attribution sits ABOVE her quote, out of window.
+    $window = $m.Value + ' ' + $tail
+    $srcNames = ''
+    foreach ($c in [regex]::Matches($window, '(?s)<!--\s*source:(.*?)-->')) { $srcNames += ' ' + $c.Groups[1].Value }
+    $window = [regex]::Replace($window, '(?s)<!--.*?-->', ' ')
+    $scope = Norm ($window + ' ' + $srcNames)
     $who = @()
     foreach ($p in $people) { if ($scope.Contains(" $p ")) { $who += $p } }
     if ($who.Count -eq 0) { $ignored++; continue }
