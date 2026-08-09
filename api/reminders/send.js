@@ -155,6 +155,26 @@ export default async function handler(req, res) {
           // message_prefs has neither column, so the spread can't clobber them.
           const body = render(line, { ...m, ...prefs });
           const channel = m.channel || pickChannel(phone.e164);
+          const slotFilter = `member_id=eq.${m.id}&type=eq.reminder&local_date=eq.${today}&send_at_utc=eq.${encodeURIComponent(slotRow.send_at_utc)}`;
+
+          // ── DEDUPE CLAIM (live only) — the fix for DOUBLE-TEXTING. ──
+          //    Vercel can fire the same cron run twice. v1 SENT first and wrote
+          //    sent_at AFTER, so a second run saw sent_at still null and sent the
+          //    same text again. Now we CLAIM the slot before sending: flip sent_at
+          //    null -> now, but ONLY if it is still null. Postgres does that update
+          //    atomically per row, so exactly one run can win; the loser gets zero
+          //    rows back and skips. Skipped in dry-run so dry-runs stay repeatable
+          //    and never mark anything sent.
+          if (!dryRun) {
+            const claim = await sb(`message_schedule?${slotFilter}&sent_at=is.null`, {
+              method: 'PATCH',
+              headers: { Prefer: 'return=representation' },
+              body: JSON.stringify({ sent_at: new Date().toISOString(), line_id: line.id }),
+            });
+            const claimed = claim.ok ? await claim.json().catch(() => []) : [];
+            if (!claimed.length) { report.skipped.push({ id: m.id, why: 'slot already claimed — duplicate run avoided' }); continue; }
+          }
+
           const out = await sendMessage({ to: phone.e164, body, channel, dryRun });
 
           report.messages.push({ member: m.first_name || m.id, at: slotRow.send_at_utc, slot: slotRow.slot, line: line.id, body });
@@ -169,11 +189,16 @@ export default async function handler(req, res) {
           if (out.sent) {
             report.sent++;
             recent.unshift(line.id);
-            await sb(`message_schedule?member_id=eq.${m.id}&type=eq.reminder&local_date=eq.${today}&send_at_utc=eq.${encodeURIComponent(slotRow.send_at_utc)}`, {
-              method: 'PATCH', body: JSON.stringify({ sent_at: new Date().toISOString(), line_id: line.id }),
-            }).catch(() => {});
+            // sent_at was already stamped by the claim above — nothing more to do.
           } else if (out.error) {
             report.errors.push({ id: m.id, error: out.error });
+            // We claimed the slot but the send failed — RELEASE it so the next run
+            // can retry, instead of it being stuck "sent" but never actually sent.
+            if (!dryRun) {
+              await sb(`message_schedule?${slotFilter}`, {
+                method: 'PATCH', body: JSON.stringify({ sent_at: null, line_id: null }),
+              }).catch(() => {});
+            }
           }
         }
       } catch (e) {
