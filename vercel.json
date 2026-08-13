@@ -83,7 +83,7 @@
     },
     {
       "path": "/api/reminders/send",
-      "schedule": "*/15 * * * *"
+      "schedule": "* * * * *"
     }
   ]
 }

@@ -130,6 +130,13 @@ export async function sendMessage({ to, body, channel, dryRun = false }) {
   if (dryRun) return { sent: false, dryRun: true, channel, sid: undefined };
 
   const params = new URLSearchParams({ To: toAddr, From: fromAddr, Body: body });
+
+  // THE RECEIPT. Without this Twilio tells us "queued" and never speaks again —
+  // and "queued" is not "a human received it". Carriers drop A2P messages
+  // silently, so this callback is the ONLY way to learn a text didn't land.
+  // See api/reminders/status.js.
+  const site = (process.env.SITE_URL || 'https://starjessetaylor.com').replace(/\/$/, '');
+  params.set('StatusCallback', `${site}/api/reminders/status`);
   const res = await fetch(`https://api.twilio.com/2010-04-01/Accounts/${sid}/Messages.json`, {
     method: 'POST',
     headers: {

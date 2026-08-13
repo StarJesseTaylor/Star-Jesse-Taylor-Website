@@ -22,7 +22,8 @@
 //   Documents\Star_Content_Strategy\STAR_REMINDER_LINES_verbatim.txt
 //
 // SLOTS (filled from the member's profile, not invented):
-//   {tomorrow_man}  -> "tomorrow man" | "tomorrow woman"  (Star raised this himself)
+//   {tomorrow_man}  -> "tomorrow you"  (Star's call Aug 13 2026 — was man/woman.
+//                      Token name kept so the 30 lines stay byte-identical.)
 //   {action}        -> their valued action, from opt-in
 //   {seconds}       -> COMPUTED at send: seconds until midnight in their timezone
 //
@@ -118,12 +119,20 @@ export function render(line, member) {
     text = ACTION_VARIANTS[line.id];
   }
 
-  const tm = member?.tomorrow_word === 'woman' ? 'tomorrow woman' : 'tomorrow man';
+  // ⭐ "TOMORROW YOU" — Star's call, Aug 13 2026. Replaces tomorrow man/woman.
+  //    This deliberately IGNORES member_channel.tomorrow_word. The column and its
+  //    CHECK constraint stay in the DB (dropping it needs a migration and buys
+  //    nothing), but nothing reads it any more. Consequence: we no longer have to
+  //    know a member's gender before we can send #5 or #16 — two of Star's five
+  //    priority lines — so those lines are now sendable to everyone from message one.
   const secs = member?.timezone ? secondsLeftToday(member.timezone).toLocaleString('en-US') : '';
 
   return text
-    .replace(/\{tomorrow_man\}/g, tm)
-    .replace(/\{tomorrow_pronoun\}/g, member?.tomorrow_word === 'woman' ? 'her' : 'him')
+    .replace(/\{tomorrow_man\}/g, 'tomorrow you')
+    // "them", not "you" — the whole point of the teaching is that tomorrow you is
+    // a separate person you're doing something FOR. "support you" collapses that
+    // distance and the line stops teaching anything.
+    .replace(/\{tomorrow_pronoun\}/g, 'them')
     .replace(/\{action\}/g, (member?.valued_action || '').trim())
     .replace(/\{seconds\}/g, secs);
 }

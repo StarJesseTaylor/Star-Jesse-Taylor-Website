@@ -24,6 +24,12 @@
 //    anything clever. There is NO MODEL in this file. Phase 2 adds the brain.
 //    This exists so nobody is ever unheard.
 
+import { verifyTwilio } from './_twilio-sig.js';
+// NOTE: only alertStarThrottled is imported. _notify.js also exports escapeHtml,
+// but this file already has its own at the bottom — importing both is a redeclare
+// and the function crashes on cold start.
+import { alertStarThrottled } from './_notify.js';
+
 const TWIML = (msg) =>
   `<?xml version="1.0" encoding="UTF-8"?><Response>${msg ? `<Message>${escapeXml(msg)}</Message>` : ''}</Response>`;
 
@@ -71,7 +77,46 @@ const CRISIS = [
   /\bcant (go on|do this anymore|take it anymore|keep going)\b/i,
   /\bgive (up|in) on life\b/i,
   /\bgoodbye\b.*\b(forever|everyone|all|world)\b/i,
+
+  // ── Added 2026-08-08 after the FIRST EVER test of this gate. ──
+  // Every one of these returned SILENCE before. Real phrasings, all missed:
+  /\btook all (the|my) (pills|tablets|meds)\b/i,        // only take/taking were covered
+  /\bi'?d rather (be dead|die|not be here|not exist)\b/i,
+  /\bwhat'?s the point (of|in) (living|life|it all|any of (it|this))\b/i,
+  /\bdon'?t see the point (any ?more|in living|of living)\b/i,
+  /\bdont see the point (any ?more|in living|of living)\b/i,
+  /\blife (isn'?t|is not|aint|ain'?t) worth\b/i,
+  /\bnot worth living\b/i,
+  /\b(i'?m|im) done with life\b/i,
+  /\bhate being alive\b/i,
+  /\bcan'?t keep (doing this|living|going|holding on)\b/i,
+  /\bcant keep (doing this|living|going|holding on)\b/i,
+  /\bwant it (to stop|to end) (forever|for good)\b/i,
 ];
+
+// 🛑 CONTRACTION NORMALISER — added 2026-08-08, and it is the most important
+//    line in this file after the CRISIS list itself.
+//
+//    Every crisis pattern above is written with "want to". Star's members type
+//    "wanna". So "I wanna die" and "I don't wanna be here anymore" matched
+//    NOTHING and fell through to the chirpy auto-reply. Verified by test.
+//    Star's own reminder #15 is "Do you WANNA spend your time..." — this is
+//    exactly how he and his audience talk. It is not a rare edge case.
+//
+//    Normalising ONCE here beats duplicating every pattern, and it means any
+//    future pattern gets "wanna" cover for free.
+//    ⚠️ Only the MATCHING copy is normalised. The body we log and email to Star
+//       stays exactly as the member typed it. Never alter what someone said.
+function normalise(s) {
+  return String(s)
+    .replace(/[‘’ʼ]/g, "'")   // smart apostrophes from phone keyboards
+    .replace(/\bwanna\b/gi, 'want to')
+    .replace(/\bgonna\b/gi, 'going to')
+    .replace(/\bgotta\b/gi, 'got to')
+    .replace(/\bcuz\b|\bcos\b/gi, 'because')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
 
 // Star's words on the driving case, from the locked design: "pull over safely first".
 const DRIVING = /\b(driving|in the car|on the (motorway|highway|freeway))\b/i;
@@ -116,6 +161,29 @@ export default async function handler(req, res) {
   res.setHeader('Content-Type', 'text/xml');
   if (req.method !== 'POST') return res.status(200).send(TWIML());
 
+  // 🛑 PROVE IT'S TWILIO — before we read a single field.
+  //    This URL is public. Unverified, anyone could POST From=<a member's
+  //    number>&Body=STOP to unsubscribe them behind their back, or fake a
+  //    crisis phrase to set off the 3am alert and flag someone who is fine.
+  //    Fails CLOSED, and tells Star, so a wrong URL in the Twilio console
+  //    shows up as an email rather than as inbound texts vanishing.
+  const sig = verifyTwilio(req);
+  if (!sig.ok) {
+    await alertStarThrottled({
+      kind: 'sig_reject_inbound',
+      subject: '⚠️ Reminder engine: an inbound text failed its signature check',
+      html:
+        `<p>Something POSTed to <code>/api/reminders/inbound</code> and could not be proven to have come from Twilio, so it was rejected.</p>` +
+        `<p><strong>Reason:</strong> ${escapeHtml(sig.reason || 'unknown')}</p>` +
+        `<p>If you just changed the webhook URL in the Twilio console, that's the cause — the URL there must match ` +
+        `<code>https://starjessetaylor.com/api/reminders/inbound</code> exactly. ` +
+        `<strong>While this is failing, replies from members are not being read.</strong></p>`,
+      detail: { reason: sig.reason },
+      throttleMinutes: 60,
+    });
+    return res.status(403).send(TWIML());
+  }
+
   const body = String(req.body?.Body ?? '').trim();
   const from = String(req.body?.From ?? '').replace(/^whatsapp:/, '');
   const channel = String(req.body?.From ?? '').startsWith('whatsapp:') ? 'whatsapp' : 'sms';
@@ -142,9 +210,12 @@ export default async function handler(req, res) {
     }).catch(() => {});
   };
 
+  // Match against the normalised copy; log and alert with the member's own words.
+  const probe = normalise(body);
+
   try {
     // ── 1. CRISIS. Fires before everything. Deterministic. ──
-    if (CRISIS.some((rx) => rx.test(body))) {
+    if (CRISIS.some((rx) => rx.test(probe))) {
       await logIt('crisis', { alerted: true });
       await flagMember(sb, from, { crisis_flagged: true, needs_human: true });
       await alertStar(body, from, channel);          // Star hears about this within seconds
@@ -153,7 +224,7 @@ export default async function handler(req, res) {
     }
 
     // ── 2. STOP / START. Legally required. ──
-    if (STOP_WORDS.test(body)) {
+    if (STOP_WORDS.test(probe)) {
       await logIt('stop');
       await setStatus(sb, from, 'stopped');
       // Twilio auto-replies to STOP on SMS. Staying silent here avoids doubling up.
