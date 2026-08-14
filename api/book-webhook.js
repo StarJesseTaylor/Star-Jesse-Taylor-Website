@@ -25,6 +25,8 @@ import crypto from 'crypto';
 
 const STRIPE_API_BASE = 'https://api.stripe.com/v1';
 const AC_DEFAULT_LIST_ID = '3';
+const COURSE_NAME = 'How to Create a Healthy Relationship';
+const COURSE_ACCESS_URL = 'https://starjessetaylor.com/healthy-relationship-access-3p8x7m9k.html';
 
 // Verify Stripe signature. Raw body verification required.
 function verifyStripeSignature(payload, sigHeader, secret) {
@@ -239,6 +241,137 @@ async function sessionIsBook(session) {
   return (session.amount_total || 0) === bookPrice;
 }
 
+// ── Healthy Relationship course delivery ───────────────────────────────
+// This endpoint receives EVERY checkout.session.completed (book, course,
+// coaching, event tickets). The book path above handles books; this handles
+// the Healthy Relationship course. Matched by line-item name, because $37 is
+// not a unique amount (other courses can share it) — never by amount alone.
+async function sessionIsHealthyRelationshipCourse(session) {
+  if (session?.metadata?.product === 'healthy-relationship-course') return true;
+  const secretKey = process.env.STRIPE_SECRET_KEY;
+  if (secretKey) {
+    try {
+      const r = await fetch(`${STRIPE_API_BASE}/checkout/sessions/${session.id}/line_items?limit=10`, {
+        headers: { Authorization: `Bearer ${secretKey}` }
+      });
+      if (r.ok) {
+        const data = await r.json();
+        const names = (data.data || []).map(li => (li.description || '').toLowerCase());
+        if (names.some(n => n.includes('healthy relationship'))) return true;
+      }
+    } catch (err) {
+      console.error('course-id: line_items lookup failed', err);
+    }
+  }
+  return false;
+}
+
+async function sendCourseEmail(toEmail, firstName, accessUrl) {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) { console.error('RESEND_API_KEY missing'); return; }
+  const greeting = firstName ? `Hey ${firstName},` : 'Hey,';
+  const text = [
+    greeting, '',
+    `Your course is ready: ${COURSE_NAME}.`, '',
+    "Here's your private access link:", '',
+    accessUrl, '',
+    'Bookmark this page so you can come back anytime. Watch it, pause it, and return to any part as often as you want. You have lifetime access.', '',
+    'If you ever want more support putting this into practice, I run a community with weekly live calls where I answer your questions and help you apply it to your own life. Here is a free one-week trial:', '',
+    'https://www.skool.com/star-jesse-taylor-3703', '',
+    'Star'
+  ].join('\n');
+  const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Your course is ready</title></head>
+<body style="margin:0;padding:0;background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;color:#1a1a1a;line-height:1.55">
+<div style="max-width:560px;margin:0 auto;padding:36px 24px;background:#ffffff">
+  <p style="font-size:16px;margin:0 0 20px">${greeting}</p>
+  <p style="font-size:16px;margin:0 0 12px"><strong>Your course is ready: ${COURSE_NAME}.</strong></p>
+  <p style="font-size:16px;margin:0 0 24px">Here is your private access link:</p>
+  <div style="text-align:center;margin:0 0 24px">
+    <a href="${accessUrl}" style="display:inline-block;background:#4a1942;color:#ffffff;padding:14px 32px;border-radius:100px;font-weight:800;text-decoration:none;font-size:16px">Watch the Course</a>
+  </div>
+  <p style="font-size:15px;color:#4a5568;margin:0 0 32px">Bookmark this page so you can come back anytime. Watch it, pause it, and return to any part as often as you want. You have lifetime access.</p>
+  <div style="border-top:1px solid #e2e8f0;padding-top:28px;margin-top:8px">
+    <p style="font-size:15px;margin:0 0 16px;color:#333">If you ever want more support putting this into practice, I run a community with weekly live calls where I answer your questions and help you apply it to your own life.</p>
+    <div style="text-align:center;margin:0 0 6px">
+      <a href="https://www.skool.com/star-jesse-taylor-3703" style="display:inline-block;background:#F2D5A6;color:#0D2C4F;padding:12px 28px;border-radius:100px;font-weight:900;text-decoration:none;font-size:14px;border:2px solid #0D2C4F">Try the Community Free for 7 Days</a>
+    </div>
+  </div>
+  <p style="font-size:16px;margin:32px 0 0">Star</p>
+</div>
+</body></html>`;
+  try {
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from: 'Star Taylor <star@starjessetaylor.com>',
+        to: [toEmail],
+        subject: 'Your course is ready — How to Create a Healthy Relationship',
+        text, html
+      })
+    });
+    if (!res.ok) console.error('Resend course send failed', await res.text());
+  } catch (err) { console.error('Send course email failed:', err); }
+}
+
+async function notifyStarOfCourseSale(buyerEmail, buyerName, amountCents, sessionId) {
+  const apiKey = process.env.RESEND_API_KEY;
+  const notifyTo = process.env.STAR_NOTIFY_EMAIL || 'star@starjessetaylor.com';
+  if (!apiKey) return;
+  const amount = (amountCents / 100).toFixed(2);
+  const text = [
+    `New course sale: ${COURSE_NAME}.`, '',
+    `Buyer: ${buyerName || '(no name)'} <${buyerEmail}>`,
+    `Amount: $${amount}`,
+    `Time: ${new Date().toISOString()}`, '',
+    `Stripe session: https://dashboard.stripe.com/payments/${sessionId}`, '',
+    `Access link (forward if they say they didn't get it):`,
+    COURSE_ACCESS_URL,
+  ].join('\n');
+  try {
+    await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from: 'Course Sales <star@starjessetaylor.com>',
+        to: [notifyTo],
+        subject: `Course sold ($${amount}) — ${buyerEmail}`,
+        text
+      })
+    });
+  } catch (err) { console.error('Course notify failed:', err); }
+}
+
+async function handleHealthyRelationshipCourse(res, session) {
+  const email = session.customer_details?.email || session.customer_email;
+  const firstName = session.customer_details?.name?.split(' ')[0] || '';
+  if (!email) {
+    console.error('No email on course session', session.id);
+    return res.status(200).json({ warning: 'No email' });
+  }
+  await sendCourseEmail(email, firstName, COURSE_ACCESS_URL);
+  await notifyStarOfCourseSale(email, firstName, session.amount_total || 3700, session.id);
+
+  const AC_URL = (process.env.ACTIVECAMPAIGN_API_URL || 'https://starjessetaylor92181.api-us1.com').replace(/\/$/, '');
+  const AC_KEY = process.env.ACTIVECAMPAIGN_API_KEY;
+  if (AC_KEY) {
+    const acHeaders = { 'Api-Token': AC_KEY, 'Content-Type': 'application/json' };
+    try {
+      const contactId = await acFindOrCreateContact(AC_URL, acHeaders, email, firstName);
+      if (contactId) {
+        await acAddToList(AC_URL, acHeaders, contactId, AC_DEFAULT_LIST_ID);
+        await acApplyTag(AC_URL, acHeaders, contactId, 'course-buyer');
+        await acApplyTag(AC_URL, acHeaders, contactId, 'owns:healthy-relationship-course');
+        await acApplyTag(AC_URL, acHeaders, contactId, 'source:direct-website');
+        await acApplyTag(AC_URL, acHeaders, contactId, 'path:course-purchase');
+      }
+    } catch (err) { console.error('AC course integration failed:', err); }
+  } else {
+    console.warn('ACTIVECAMPAIGN_API_KEY missing — course buyer paid but was not tagged.');
+  }
+  return res.status(200).json({ received: true, product: 'healthy-relationship-course' });
+}
+
 export const config = { api: { bodyParser: false } };
 
 export default async function handler(req, res) {
@@ -276,8 +409,12 @@ export default async function handler(req, res) {
   // coaching/event buyers a "Your book is ready" email and tagging them as
   // book-buyers in ActiveCampaign. Positively identify the book first.
   if (!(await sessionIsBook(session))) {
-    console.log('book-webhook: ignoring non-book checkout', session.id, session.amount_total);
-    return res.status(200).json({ ignored: 'not-a-book-purchase', amount: session.amount_total });
+    // Not a book. Is it the Healthy Relationship course? (same endpoint gets all events)
+    if (await sessionIsHealthyRelationshipCourse(session)) {
+      return await handleHealthyRelationshipCourse(res, session);
+    }
+    console.log('book-webhook: ignoring non-book, non-course checkout', session.id, session.amount_total);
+    return res.status(200).json({ ignored: 'not-a-known-product', amount: session.amount_total });
   }
 
   const email = session.customer_details?.email || session.customer_email;
