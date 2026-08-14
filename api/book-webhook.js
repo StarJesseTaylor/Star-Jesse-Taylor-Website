@@ -276,7 +276,7 @@ async function sendCourseEmail(toEmail, firstName, accessUrl) {
     "Here's your private access link:", '',
     accessUrl, '',
     'Bookmark this page so you can come back anytime. Watch it, pause it, and return to any part as often as you want. You have lifetime access.', '',
-    'If you ever want more support putting this into practice, I run a community with weekly live calls where I answer your questions and help you apply it to your own life. Here is a free one-week trial:', '',
+    "If you're not already inside, I run a community with weekly live calls where I answer your questions and help you apply this to your own life. Here is a free one-week trial:", '',
     'https://www.skool.com/star-jesse-taylor-3703', '',
     'Star'
   ].join('\n');
@@ -291,7 +291,7 @@ async function sendCourseEmail(toEmail, firstName, accessUrl) {
   </div>
   <p style="font-size:15px;color:#4a5568;margin:0 0 32px">Bookmark this page so you can come back anytime. Watch it, pause it, and return to any part as often as you want. You have lifetime access.</p>
   <div style="border-top:1px solid #e2e8f0;padding-top:28px;margin-top:8px">
-    <p style="font-size:15px;margin:0 0 16px;color:#333">If you ever want more support putting this into practice, I run a community with weekly live calls where I answer your questions and help you apply it to your own life.</p>
+    <p style="font-size:15px;margin:0 0 16px;color:#333">If you're not already inside, I run a community with weekly live calls where I answer your questions and help you apply this to your own life.</p>
     <div style="text-align:center;margin:0 0 6px">
       <a href="https://www.skool.com/star-jesse-taylor-3703" style="display:inline-block;background:#F2D5A6;color:#0D2C4F;padding:12px 28px;border-radius:100px;font-weight:900;text-decoration:none;font-size:14px;border:2px solid #0D2C4F">Try the Community Free for 7 Days</a>
     </div>
