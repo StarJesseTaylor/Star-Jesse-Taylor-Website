@@ -359,7 +359,9 @@ async function handleHealthyRelationshipCourse(res, session) {
     try {
       const contactId = await acFindOrCreateContact(AC_URL, acHeaders, email, firstName);
       if (contactId) {
-        await acAddToList(AC_URL, acHeaders, contactId, AC_DEFAULT_LIST_ID);
+        // Course buyers are TAG-ONLY for now — deliberately kept OFF the book list (list 3)
+        // so they don't receive book-buyer emails. When a dedicated "Course Buyers" list
+        // exists, add it here via: await acAddToList(AC_URL, acHeaders, contactId, COURSE_LIST_ID);
         await acApplyTag(AC_URL, acHeaders, contactId, 'course-buyer');
         await acApplyTag(AC_URL, acHeaders, contactId, 'owns:healthy-relationship-course');
         await acApplyTag(AC_URL, acHeaders, contactId, 'source:direct-website');
