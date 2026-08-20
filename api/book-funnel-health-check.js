@@ -21,7 +21,11 @@ async function checkBookCheckout() {
     const elapsed = Date.now() - t;
     const location = res.headers.get('location') || '';
     if (res.status !== 303) return { name: 'book-checkout-status', ok: false, failReason: `Expected 303, got ${res.status}`, elapsed };
-    if (!location.startsWith('https://checkout.stripe.com/c/pay/cs_live_')) {
+    // Accept any Stripe-hosted checkout URL that carries a LIVE session id.
+    // Stripe rotates the path (/c/pay/ ... and newer /g/pay/ ...), so match on
+    // the domain + a cs_live_ session rather than a hard-coded path prefix,
+    // otherwise a Stripe format change fires false "funnel broken" alarms.
+    if (!(location.startsWith('https://checkout.stripe.com/') && location.includes('cs_live_'))) {
       return { name: 'book-checkout-stripe-url', ok: false, failReason: `Redirect not to a live Stripe session: ${location.slice(0, 80)}`, elapsed };
     }
     return { name: 'book-checkout', ok: true, elapsed, detail: 'Redirects to live Stripe session' };
