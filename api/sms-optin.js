@@ -109,8 +109,29 @@ export default async function handler(req, res) {
     // Deliberately LAST and deliberately non-fatal: if Supabase is down, the
     // person still gets their email signup and their consent is still recorded
     // in AC. A texting outage must not turn into a failed form.
+    //
+    // 🔴 CLOSED BY DEFAULT. REMINDERS_SIGNUP_OPEN=1 in the Vercel dashboard is
+    //    what opens it. Star's call, Aug 21 2026: the texting side is not ready
+    //    for real people yet (no welcome message, webhook not pointed), and a
+    //    member who ticks the box today, hears nothing for three weeks, then
+    //    suddenly starts getting texts from a number they don't recognise is
+    //    the exact bad first impression this whole engine exists to avoid.
+    //
+    //    NOBODY IS LOST WHILE THIS IS CLOSED. The tick is still honoured: the
+    //    contact is still tagged sms:consented in ActiveCampaign and the TCPA
+    //    consent note is still written above. So when Star opens the door, the
+    //    people who already said yes can be enrolled deliberately, together,
+    //    with a welcome message - instead of trickling in half-onboarded.
+    //
+    //    Kept separate from REMINDERS_LIVE on purpose. Two different questions:
+    //      REMINDERS_SIGNUP_OPEN  - may new people join?
+    //      REMINDERS_LIVE         - does the schedule actually send?
+    //    Star will want signup open and sending armed at different moments (the
+    //    Katie/Ghazaal test is exactly that: sending on, signup still shut).
+    const signupOpen = process.env.REMINDERS_SIGNUP_OPEN === '1';
+
     let enrolled = false;
-    if (smsOptIn) {
+    if (smsOptIn && signupOpen) {
       enrolled = await enrolInReminders({
         phone: normalizedPhone,
         firstName: firstName || null,
