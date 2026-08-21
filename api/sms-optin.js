@@ -101,7 +101,25 @@ export default async function handler(req, res) {
       }).catch(() => {});
     }
 
-    return res.status(200).json({ success: true, sms: smsOptIn });
+    // ── THE DOOR INTO THE TEXTING ENGINE. ──
+    // Before this existed, a member could tick the box, hand over their number,
+    // and land in ActiveCampaign having received exactly zero texts. AC is the
+    // email list; the reminder cron reads member_channel. Nothing joined them.
+    //
+    // Deliberately LAST and deliberately non-fatal: if Supabase is down, the
+    // person still gets their email signup and their consent is still recorded
+    // in AC. A texting outage must not turn into a failed form.
+    let enrolled = false;
+    if (smsOptIn) {
+      enrolled = await enrolInReminders({
+        phone: normalizedPhone,
+        firstName: firstName || null,
+        timezone: (req.body && req.body.timezone) || null,
+        source: source || 'website',
+      });
+    }
+
+    return res.status(200).json({ success: true, sms: smsOptIn, reminders: enrolled });
   } catch (err) {
     console.error('SMS opt-in error:', err);
     return res.status(500).json({ error: 'Sign up failed' });
@@ -140,4 +158,116 @@ async function applyTags(AC_URL, headers, contactId, tagNames) {
       console.warn('Tag apply failed for', tagName, e?.message);
     }
   }
+}
+
+
+/* ───────────────────────────────────────────────────────────────────────────
+   ENROL IN THE SMS REMINDER ENGINE
+   Writes the two rows api/reminders/send.js reads:
+     member_channel  — who they are, their number, their CONSENT timestamp
+     message_prefs   — how often and inside what hours
+
+   🛑 Rules baked in here, do not loosen them:
+     • consent_at is stamped from THIS submission. send.js filters on
+       consent_at is not null, so a row without it can never be texted.
+     • Re-submitting must NOT resurrect someone who replied STOP. Only an
+       inbound START may do that. We check status first and leave 'stopped'
+       alone — a form on a website cannot override a legal opt-out.
+     • Never overwrite an existing consent_at. The FIRST one is the TCPA
+       record; rewriting it destroys the evidence of when they agreed.
+     • Failure is swallowed. The caller already returned the important part.
+   ─────────────────────────────────────────────────────────────────────────── */
+async function enrolInReminders({ phone, firstName, timezone, source }) {
+  const SB_URL = (process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || '').replace(/\/$/, '');
+  const SB_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!SB_URL || !SB_KEY || !phone) return false;
+
+  const sb = (path, init = {}) =>
+    fetch(`${SB_URL}/rest/v1/${path}`, {
+      ...init,
+      headers: {
+        apikey: SB_KEY,
+        Authorization: `Bearer ${SB_KEY}`,
+        'Content-Type': 'application/json',
+        ...(init.headers || {}),
+      },
+    });
+
+  try {
+    // Already known to us?
+    const found = await sb(`member_channel?phone=eq.${encodeURIComponent(phone)}&select=id,status,consent_at`);
+    const existing = found.ok ? (await found.json())[0] : null;
+
+    if (existing) {
+      // 🛑 They replied STOP at some point. A website form does not undo that.
+      if (existing.status === 'stopped') return false;
+
+      await sb(`member_channel?id=eq.${existing.id}`, {
+        method: 'PATCH',
+        body: JSON.stringify({
+          status: 'active',
+          first_name: firstName || undefined,
+          // Only stamp consent if we somehow never had one. Never replace it.
+          consent_at: existing.consent_at || new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        }),
+      });
+      await ensurePrefs(sb, existing.id);
+      return true;
+    }
+
+    // New member. SMS for +1, WhatsApp for everyone else — same rule the
+    // sender uses, decided once here so the row is honest about its rail.
+    const channel = phone.startsWith('+1') ? 'sms' : 'whatsapp';
+
+    const ins = await sb('member_channel', {
+      method: 'POST',
+      headers: { Prefer: 'return=representation' },
+      body: JSON.stringify({
+        phone,
+        first_name: firstName,
+        channel,
+        // No timezone from the browser -> assume Star's. Wrong for some people,
+        // but a null timezone makes send.js skip them entirely, and a member who
+        // silently never gets texted is worse than one who gets texted an hour off.
+        // They can correct it in the app.
+        timezone: timezone || 'America/Los_Angeles',
+        consent_at: new Date().toISOString(),
+        consent_source: source,
+        status: 'active',
+      }),
+    });
+    if (!ins.ok) return false;
+    const row = (await ins.json())[0];
+    if (!row?.id) return false;
+
+    await ensurePrefs(sb, row.id);
+    return true;
+  } catch (e) {
+    console.warn('reminder enrol failed (signup itself still succeeded):', e?.message);
+    return false;
+  }
+}
+
+/* One reminder a day, surprise timing, 8am-9pm. Deliberately the gentlest
+   setting available — a new member should never feel crowded by the thing that
+   was supposed to help. They can turn it up in the app. */
+async function ensurePrefs(sb, memberId) {
+  const has = await sb(`message_prefs?member_id=eq.${memberId}&type=eq.reminder&select=id`);
+  const rows = has.ok ? await has.json() : [];
+  if (rows.length) return;
+
+  await sb('message_prefs', {
+    method: 'POST',
+    headers: { Prefer: 'resolution=ignore-duplicates' },
+    body: JSON.stringify({
+      member_id: memberId,
+      type: 'reminder',
+      enabled: true,
+      frequency: 1,
+      mode: 'random',
+      window_start: 8,
+      window_end: 21,
+    }),
+  }).catch(() => {});
 }

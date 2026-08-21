@@ -149,6 +149,11 @@
     btn.disabled = true; btn.textContent = 'Sending...'; status.textContent = '';
 
     try {
+      // Their real timezone, so a 9am reminder is 9am where THEY are. Without
+      // this the server has to guess, and it guesses Star's timezone — which is
+      // wrong by up to nine hours for anyone outside California.
+      try { data.timezone = Intl.DateTimeFormat().resolvedOptions().timeZone || null; } catch (e) {}
+
       const res  = await fetch('/api/sms-optin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

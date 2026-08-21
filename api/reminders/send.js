@@ -52,7 +52,30 @@ export default async function handler(req, res) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
-  const live = req.query?.live === '1';
+  // ── 🔴 THE ARMING SWITCH. This decides whether anything actually leaves. ──
+  //
+  //    Until now the ONLY way to send for real was ?live=1 on the URL, and the
+  //    cron in vercel.json does not carry it. So the schedule has been running
+  //    every minute, picking the right people, rendering the right line, and
+  //    then throwing it away. The engine has never sent a text on its own.
+  //
+  //    The fix is NOT to put ?live=1 in vercel.json. A send flag committed to
+  //    git is a loaded gun: it arms itself on any deploy, anyone with repo
+  //    access changes it, and turning it off means shipping code.
+  //
+  //    REMINDERS_LIVE lives in the Vercel dashboard instead:
+  //      • Star arms it, not a deploy
+  //      • Star disarms it in ten seconds, no deploy, no developer
+  //      • Nothing goes live just because code got pushed
+  //
+  //    ?live=1 survives as a manual override for testing a single run. It is
+  //    already behind CRON_SECRET, so only Star can fire it.
+  //
+  //    Turning this on does NOT release a backlog: anything older than
+  //    STALE_MIN is dropped and logged, never sent late (see step 3).
+  const armed = process.env.REMINDERS_LIVE === '1';
+  const forced = req.query?.live === '1';
+  const live = armed || forced;
   const dryRun = !live;
 
   const SB_URL = (process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || '').replace(/\/$/, '');
@@ -70,6 +93,10 @@ export default async function handler(req, res) {
 
   const report = {
     ranAt: new Date().toISOString(), dryRun,
+    // How to read this: armed=true means REMINDERS_LIVE is on and the schedule
+    // is sending by itself. armed=false + dryRun=false means someone passed
+    // ?live=1 by hand for this one run.
+    armed, forced,
     considered: 0, rolled: 0, sent: 0,
     notDue: 0, dropped_stale: 0, skipped: [], errors: [], messages: [],
   };
