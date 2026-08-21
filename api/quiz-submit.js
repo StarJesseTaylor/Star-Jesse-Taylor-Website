@@ -13,7 +13,7 @@
  */
 
 const LIST_ID = '4'; // Quiz Funnel List
-const BOOK_PURCHASE_URL = 'https://starjessetaylor.bio/shop/51c9e967-da06-4c5a-adf3-5d79d32e30da';
+const BOOK_PURCHASE_URL = 'https://starjessetaylor.com/book';
 const SITE_URL = 'https://starjessetaylor.com';
 
 const PATH_DETAILS = {
@@ -21,7 +21,7 @@ const PATH_DETAILS = {
     label: 'Start with the book',
     desc: 'The book is where everything Star teaches begins. The Value Garden, the No Brain Method, the daily practice. At $29, it is the highest-leverage thing you can do right now.',
     cta: 'Get the book',
-    url: 'https://starjessetaylor.bio/shop/51c9e967-da06-4c5a-adf3-5d79d32e30da'
+    url: 'https://starjessetaylor.com/book'
   },
   courses: {
     label: 'The self-paced courses',

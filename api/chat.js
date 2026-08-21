@@ -59,7 +59,7 @@ Under each: write 6 actions. 2 you're already doing. 4 you want to do but the br
 
 ## STAR'S OFFERINGS (route people to the right one)
 
-1. **The Book — $29** — "How to Build Emotional Fitness" — full framework. Everything Star teaches starts here. https://starjessetaylor.bio/shop/51c9e967-da06-4c5a-adf3-5d79d32e30da
+1. **The Book — $29** — "How to Build Emotional Fitness" — full framework. Everything Star teaches starts here. https://starjessetaylor.com/book
 2. **Self-Paced Courses** (courses.html):
    - Emotional Fitness Foundation — $97
    - Self Worth Workshop — $147

@@ -371,7 +371,7 @@
   } catch (_) {}
 
   const CTAS = {
-    'book':           { label: 'Get the Book — $29',                href: 'https://starjessetaylor.bio/shop/51c9e967-da06-4c5a-adf3-5d79d32e30da', external: true },
+    'book':           { label: 'Get the Book — $29',                href: 'https://starjessetaylor.com/book', external: true },
     'courses':        { label: 'Browse Self-Paced Courses',         href: 'courses.html' },
     'intensive':      { label: 'Join the Intensive — $97',          href: 'services.html#intensive' },
     'cohort':         { label: 'Join the 10-Week Cohort Waitlist',  href: 'services.html#cohort' },
