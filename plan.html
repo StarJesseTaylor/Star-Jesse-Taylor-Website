@@ -37,6 +37,13 @@
   .day .row2{display:flex;gap:8px;margin-top:8px}
   .day .row2 input{flex:0 0 42%}
   .day .row2 .tlabel{flex:1;display:flex;align-items:center;font-size:12.5px;color:var(--muted)}
+  .entry{display:flex;gap:8px;margin-bottom:8px}
+  .entry .ea{flex:1}
+  .entry .et{flex:0 0 32%}
+  .entry .ck{flex:0 0 auto;width:22px;height:22px;margin-top:11px;accent-color:var(--done);cursor:pointer}
+  .entry.done .ea{text-decoration:line-through;color:var(--muted)}
+  .entry .rm{flex:0 0 auto;width:40px;border:1.5px solid var(--line);background:var(--bg);color:var(--muted);border-radius:10px;font-size:18px;cursor:pointer;font-family:inherit}
+  .addbtn{border:1.5px dashed var(--line);background:transparent;color:var(--blue);border-radius:10px;padding:9px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;width:100%;margin-top:2px}
   .foot{text-align:center;color:var(--muted);font-size:12px;margin-top:18px}
   .foot a{color:var(--blue);font-weight:700;text-decoration:none}
 </style>
@@ -81,11 +88,9 @@ function render(){
   $("who").style.display="flex";$("search").style.display="none";$("claimwrap").innerHTML="";$("foot").style.display="block";
   $("who-name").textContent=me;
   $("intro").innerHTML="Write your <b>action</b> and the <b>exact time</b> for each day. Be specific: not \"the gym\" but \"the big gym, 5pm.\" Vague is what your brain uses to talk you out of it.";
-  let h='<div class="day'+(plan[0]&&plan[0].t?' filled':'')+'" data-d="0" style="border:1.5px solid color-mix(in srgb,var(--gold) 45%,var(--line))"><div class="dh"><span class="dl" style="color:var(--gold)">🌅 Every morning · your anchor</span><span class="saved" data-saved>saved ✓</span></div><div style="font-size:13px;color:var(--muted);margin-bottom:8px;line-height:1.45">Meditation, thankfulness, and your Wins of the Day. This starts every day, before you check how you feel.</div><div class="row2"><input type="text" placeholder="Time (e.g. 8am)" value="'+esc((plan[0]||{}).t||"")+'" oninput="editAnchor()" data-t><span class="tlabel">when you do your morning anchor</span></div></div>';
-  for(let d=1;d<=DAYS;d++){const p=plan[d]||{};const filled=(p.a||p.t)?" filled":"";
-    h+='<div class="day'+filled+'" data-d="'+d+'"><div class="dh"><span class="dl">Day '+d+'</span><span class="saved" data-saved>saved ✓</span></div>'+
-      '<input type="text" placeholder="What will you do? (e.g. big gym, 1 session)" value="'+esc(p.a||"")+'" oninput="edit('+d+')" data-a>'+
-      '<div class="row2"><input type="text" placeholder="Time (e.g. 5pm)" value="'+esc(p.t||"")+'" oninput="edit('+d+')" data-t><span class="tlabel">the exact time you will do it</span></div></div>';
+  let h='<div class="day'+(plan[0]&&plan[0].t?' filled':'')+'" data-d="0" style="border:1.5px solid color-mix(in srgb,var(--gold) 45%,var(--line))"><div class="dh"><span class="dl" style="color:var(--gold)">🌅 Every morning · your anchor</span><span class="saved" data-saved>saved ✓</span></div><div style="font-size:13px;color:var(--muted);margin-bottom:8px;line-height:1.45">Meditation, thankfulness, and your Wins of the Day. This starts every day, before you check how you feel.</div><div class="row2"><input type="text" placeholder="Time (e.g. 8am)" value="'+esc((plan[0]&&plan[0][0]&&plan[0][0].t)||"")+'" oninput="editAnchor()" data-t><span class="tlabel">when you do your morning anchor</span></div></div>';
+  for(let d=1;d<=DAYS;d++){const items=(plan[d]&&plan[d].length)?plan[d]:[{a:"",t:"",done:false}];const filled=(plan[d]&&plan[d].length)?" filled":"";
+    h+='<div class="day'+filled+'" data-d="'+d+'"><div class="dh"><span class="dl">Day '+d+'</span><span class="saved" data-saved>saved ✓</span></div><div class="entries">'+items.map(entryHTML).join("")+'</div><button class="addbtn">+ add another action</button></div>';
   }
   $("days").innerHTML=h;
 }
@@ -104,18 +109,25 @@ async function claim(name){const res=await api({op:"claim",member:name,token});
 
 $("who-change").addEventListener("click",e=>{e.preventDefault();me=null;try{localStorage.removeItem("ag-me")}catch(e){}render();$("search").focus();});
 
+function entryHTML(e){e=e||{a:"",t:"",done:false};return '<div class="entry'+(e.done?' done':'')+'"><input type="checkbox" class="ck"'+(e.done?' checked':'')+'><input type="text" class="ea" placeholder="What will you do? (e.g. big gym)" value="'+esc(e.a)+'"><input type="text" class="et" placeholder="Time (5pm)" value="'+esc(e.t)+'"><button class="rm" title="remove">×</button></div>';}
 let timers={};
 function editAnchor(){const el=document.querySelector('.day[data-d="0"]');const t=el.querySelector("[data-t]").value;
   el.classList.toggle("filled",!!t);clearTimeout(timers[0]);
   timers[0]=setTimeout(async()=>{const res=await api({op:"setplan",member:me,day:0,action:"Morning anchor: meditation, thankfulness, and Wins of the Day",time:t,token});
     if(res.ok){const s=el.querySelector("[data-saved]");s.classList.add("on");setTimeout(()=>s.classList.remove("on"),1200);}},700);}
-function edit(d){const el=document.querySelector('.day[data-d="'+d+'"]');const a=el.querySelector("[data-a]").value;const t=el.querySelector("[data-t]").value;
-  el.classList.toggle("filled",!!(a||t));
-  clearTimeout(timers[d]);
-  timers[d]=setTimeout(async()=>{const res=await api({op:"setplan",member:me,day:d,action:a,time:t,token});
-    if(res.ok){const s=el.querySelector("[data-saved]");s.classList.add("on");setTimeout(()=>s.classList.remove("on"),1200);}
-  },700);
-}
+function scheduleSave(d){const dayEl=document.querySelector('.day[data-d="'+d+'"]');if(!dayEl)return;clearTimeout(timers[d]);
+  timers[d]=setTimeout(async()=>{const items=[...dayEl.querySelectorAll(".entry")].map(en=>({a:en.querySelector(".ea").value,t:en.querySelector(".et").value,done:en.querySelector(".ck").checked})).filter(x=>x.a||x.t);
+    dayEl.classList.toggle("filled",items.length>0);
+    const res=await api({op:"setplan",member:me,day:d,items,token});
+    if(res.ok){const s=dayEl.querySelector("[data-saved]");if(s){s.classList.add("on");setTimeout(()=>s.classList.remove("on"),1200);}}},700);}
+function bindDays(){const c=$("days");
+  c.addEventListener("input",e=>{const day=e.target.closest(".day");if(day&&day.dataset.d!=="0")scheduleSave(+day.dataset.d);});
+  c.addEventListener("change",e=>{if(e.target.classList.contains("ck")){const day=e.target.closest(".day");e.target.closest(".entry").classList.toggle("done",e.target.checked);if(day&&day.dataset.d!=="0")scheduleSave(+day.dataset.d);}});
+  c.addEventListener("click",e=>{
+    if(e.target.classList.contains("addbtn")){const day=e.target.closest(".day");day.querySelector(".entries").insertAdjacentHTML("beforeend",entryHTML());}
+    else if(e.target.classList.contains("rm")){const day=e.target.closest(".day");const ent=e.target.closest(".entry");ent.remove();if(!day.querySelector(".entry"))day.querySelector(".entries").insertAdjacentHTML("beforeend",entryHTML());scheduleSave(+day.dataset.d);}
+  });}
+bindDays();
 
 // theme follows system; nothing to toggle here
 loadMe();

@@ -140,15 +140,22 @@ export default async function handler(req, res) {
   if (op === 'setplan') {
     const day = parseInt(body.day, 10);
     if (!(day >= 0 && day <= 30)) return res.status(400).json({ error: 'bad day' }); // day 0 = the morning anchor
-    const action = (typeof body.action === 'string' ? body.action : '').slice(0, 300);
-    const time = (typeof body.time === 'string' ? body.time : '').slice(0, 40);
+    let items;
+    if (Array.isArray(body.items)) {
+      items = body.items.map((it) => ({ a: String((it && it.a) || '').slice(0, 300), t: String((it && it.t) || '').slice(0, 40), done: !!(it && it.done) }))
+        .filter((it) => it.a || it.t).slice(0, 12);
+    } else {
+      const a = (typeof body.action === 'string' ? body.action : '').slice(0, 300);
+      const t = (typeof body.time === 'string' ? body.time : '').slice(0, 40);
+      items = (a || t) ? [{ a, t }] : [];
+    }
     try {
       const row = await getRow();
       if (!row || !row.owner_token) return res.status(403).json({ error: 'claim your row first' });
       if (row.owner_token !== token) return res.status(403).json({ error: 'not your row' });
       const days = row.days || {};
       if (!days.plan) days.plan = {};
-      if (action || time) days.plan[String(day)] = { a: action, t: time };
+      if (items.length) days.plan[String(day)] = items;
       else delete days.plan[String(day)];
       const r = await fetch(`${REST()}?member_name=eq.${encodeURIComponent(member)}`, {
         method: 'PATCH', headers: sb({ Prefer: 'return=minimal' }),
