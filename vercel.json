@@ -13,6 +13,7 @@
     { "source": "/community", "destination": "/community.html" },
     { "source": "/group-coaching", "destination": "/group-coaching.html" },
     { "source": "/slideshow", "destination": "/slideshow-brain-algorithm.html" },
+    { "source": "/games", "destination": "/games.html" },
     { "source": "/sms", "destination": "/sms.html" },
     { "source": "/privacy", "destination": "/privacy.html" },
     { "source": "/terms", "destination": "/terms.html" },
