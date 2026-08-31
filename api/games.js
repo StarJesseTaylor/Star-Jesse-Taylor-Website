@@ -136,6 +136,29 @@ export default async function handler(req, res) {
     }
   }
 
+  // ---- set a day's plan (action + time), stored in days.plan[day] ----
+  if (op === 'setplan') {
+    const day = parseInt(body.day, 10);
+    if (!(day >= 0 && day <= 30)) return res.status(400).json({ error: 'bad day' }); // day 0 = the morning anchor
+    const action = (typeof body.action === 'string' ? body.action : '').slice(0, 300);
+    const time = (typeof body.time === 'string' ? body.time : '').slice(0, 40);
+    try {
+      const row = await getRow();
+      if (!row || !row.owner_token) return res.status(403).json({ error: 'claim your row first' });
+      if (row.owner_token !== token) return res.status(403).json({ error: 'not your row' });
+      const days = row.days || {};
+      if (!days.plan) days.plan = {};
+      if (action || time) days.plan[String(day)] = { a: action, t: time };
+      else delete days.plan[String(day)];
+      const r = await fetch(`${REST()}?member_name=eq.${encodeURIComponent(member)}`, {
+        method: 'PATCH', headers: sb({ Prefer: 'return=minimal' }),
+        body: JSON.stringify({ days, updated_at: new Date().toISOString() }),
+      });
+      if (!r.ok) return res.status(502).json({ error: 'setplan failed', detail: await r.text().catch(() => '') });
+      return res.status(200).json({ ok: true });
+    } catch (err) { console.error('games setplan error', err); return res.status(500).json({ error: 'setplan error' }); }
+  }
+
   // ---- set main garden (stored in days.main, ignored by score/streak) ----
   if (op === 'setmain') {
     const garden = typeof body.garden === 'string' ? body.garden : '';

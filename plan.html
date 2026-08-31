@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Your 30-Day Plan</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<style>
+  :root{--bg:#eef2f8;--panel:#ffffff;--ink:#152744;--muted:#64748b;--line:#dbe3ef;--blue:#0c6cda;--gold:#e8a33d;--done:#17a34a;--shadow:0 1px 3px rgba(20,40,70,.08),0 8px 24px rgba(20,40,70,.06)}
+  :root[data-theme="dark"]{--bg:#0c1420;--panel:#141f30;--ink:#e8eef7;--muted:#8ea0ba;--line:#26344a;--blue:#4b9bff;--gold:#f0b459;--done:#34d17f;--shadow:0 1px 3px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35)}
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0c1420;--panel:#141f30;--ink:#e8eef7;--muted:#8ea0ba;--line:#26344a;--blue:#4b9bff;--gold:#f0b459;--done:#34d17f;--shadow:0 1px 3px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35)}}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Poppins",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+  header{position:sticky;top:0;z-index:40;background:#12294a;color:#fff;padding:14px 16px 16px;box-shadow:0 4px 18px rgba(10,20,40,.18)}
+  :root[data-theme="dark"] header{background:#0f1a2b}
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) header{background:#0f1a2b}}
+  header h1{font-size:18px;font-weight:800;margin:0;color:#fff}
+  header .sub{font-size:12px;color:#b9cae8;font-weight:500;margin-top:3px;line-height:1.4}
+  .who{margin-top:12px;font-size:13.5px;color:#dbe7fb;display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .who b{color:#fff}
+  .who a{color:#ffcf7a;text-decoration:none;font-weight:700;font-size:12.5px}
+  .search{width:100%;margin-top:12px;padding:12px 14px;border-radius:12px;border:0;font-size:16px;background:rgba(255,255,255,.96);color:#152744;font-family:inherit}
+  .wrap{max-width:640px;margin:0 auto;padding:14px 12px 60px}
+  .intro{background:var(--panel);border-radius:14px;box-shadow:var(--shadow);padding:14px 16px;font-size:13.5px;color:var(--muted);line-height:1.5;margin-bottom:14px}
+  .intro b{color:var(--ink)}
+  .claimlist{background:var(--panel);border-radius:14px;box-shadow:var(--shadow);overflow:hidden;margin-top:12px;max-height:60vh;overflow-y:auto}
+  .cl-item{padding:12px 16px;border-bottom:1px solid var(--line);font-size:15px;font-weight:600;cursor:pointer}
+  .cl-item:hover{background:color-mix(in srgb,var(--blue) 8%,var(--panel))}
+  .day{background:var(--panel);border-radius:14px;box-shadow:var(--shadow);padding:12px 14px;margin-bottom:10px}
+  .day .dh{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+  .day .dl{font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.6px}
+  .day.filled .dl{color:var(--done)}
+  .day .saved{font-size:11px;color:var(--done);font-weight:700;opacity:0;transition:opacity .2s}
+  .day .saved.on{opacity:1}
+  .day input{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:11px 12px;font-size:15px;font-family:inherit;background:var(--bg);color:var(--ink)}
+  .day input:focus{outline:none;border-color:var(--blue)}
+  .day .row2{display:flex;gap:8px;margin-top:8px}
+  .day .row2 input{flex:0 0 42%}
+  .day .row2 .tlabel{flex:1;display:flex;align-items:center;font-size:12.5px;color:var(--muted)}
+  .foot{text-align:center;color:var(--muted);font-size:12px;margin-top:18px}
+  .foot a{color:var(--blue);font-weight:700;text-decoration:none}
+</style>
+</head>
+<body>
+<header>
+  <div><h1>📆 Your 30-Day Plan</h1>
+  <div class="sub">Plan it now. Then do it later, no matter how you feel. That is how you become the boss of your brain.</div></div>
+  <div class="who" id="who" style="display:none"><span>Planning as <b id="who-name"></b></span><a href="#" id="who-change">change</a></div>
+  <input class="search" id="search" placeholder="Find your name to start…" autocomplete="off" style="display:none">
+</header>
+
+<div class="wrap">
+  <div class="intro" id="intro"></div>
+  <div id="claimwrap"></div>
+  <div id="days"></div>
+  <div class="foot" id="foot" style="display:none">That is your month, planned. Now go track it on the <a href="/games">games board</a> and post your wins on Skool.</div>
+</div>
+
+<script>
+const MEMBERS=["Star Taylor","Sarah C","Ali Mehmed","Nicole Knostenbergs","Basma Kabbani","Andreia Vieira","Trevor Ivanits","Drew Bohn","Burmaa Zurgaa","Mussirah Moossun","Grant Armor","Antonija Zuparic","Estella - Maria","Aloe Harris","Michelle Vichith","Martin Bělunek","Abid Mahmood","Hagit Taylor","Acelya Demir","Adriana Deneault","Shihabur Rahman","Paulette Leon","Mike Huq","Juana Niebla","Caitlin Pena","Luisa Pedroso","Sarah Holliday","Emily Tyler","Kayce Latscha","Niels Maas","Claudia Abraham","Danial Yasen","Brooke Wolfe","Meggie Ribagina","Jeanne Coughlin","Christian Aksland","Kinga Lenart","Aljohara Alqahtani","Valera Sony","Mays Tee","Mike Eckler","George Yaguana","Ben Quintana","Nikola Pajovic","Emmanuel Okocha","Emily Bennett","Josefine von Ekensteen","Rose Malherbe","Tiana Morano","Kelly Grant","Sinead Thompson","Kelly Karinen","Lexi Aguilar","Adriano Toccafondi","Mel C","Johno Veach","Lauren Curt","Charles S","Jazmin Rodriguez","Carolina Jimenez","Patrick Swan","Haris Fida","Louie Halkias","Marija Stojanovska","Lal Demir","Aaron Alston","Gillian Brown","Sydney Robertson","Una Mrdjenovic","Brian Salerno","Karina Karyna","Nichole Aldrich","Shamma Khan","Keith Martin","McKenna B","Adam Terki","Michael C","Bryony Cupitt","Jane Gearhart","Rozalija Radelic","Haya Mk","Rebecca Meehan","Dan Al","Pieter Coetzé","L R","Craig Thomson","Marija Vlahović","Ioana Popa","Alyssa Nicole","Erik Disnard","Kylie Jeavons","Richard Gilles","Joe Cummins","Disha Ahluwalia","Norma Hysaw","Dania Munoz","Nareh Nokhoudian","Sophie Black","Huda Adaw","Amy Page","Naira Hart","Gisselle Espinoza","Gagan Chawla","Esra Sabedini","Nilgül Kocabas","Luke Phillips","Giovanni Lotterio","Simon Jensen","Mona Ouartani","Maurice. Kostelijk","Daniel Vonk","Daimon Smith","Leslie McCoy","Chantal Pl","Donatas Balčaitis","Abril Garavi","Andrew Tooze","Madalena Duarte","Gracie Zee","Francesca Rose","Angelika Amor","Natalie Krstanoska","Leander von der Hagen","Kevin Haesen","Corina Ghiatau","Hosnia Qazi","Colleen McShea","Brittany García","Matt Spencer","Danai Danaka","Deep Shah","Ghazaal Monir","Geoff Serrao","Caitlin Fleming","Leanne Jones","Katie Hayman"];
+const DAYS=30;
+let me=null, token=null, plan={};
+try{me=localStorage.getItem("ag-me")||null}catch(e){}
+try{token=localStorage.getItem("ag-token")||null}catch(e){}
+if(!token){token=(Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2)+Date.now().toString(36));try{localStorage.setItem("ag-token",token)}catch(e){}}
+
+const $=id=>document.getElementById(id);
+
+async function api(payload){const r=await fetch("/api/games",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});return {ok:r.ok,status:r.status};}
+async function loadMe(){ if(!me)return; try{const r=await fetch("/api/games",{cache:"no-store"});const j=await r.json();const row=(j.members||[]).find(m=>m.name===me);plan=(row&&row.days&&row.days.plan)?row.days.plan:{};}catch(e){plan={}} render(); }
+
+function esc(s){return (s||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+
+function render(){
+  if(!me){
+    $("who").style.display="none";$("search").style.display="block";$("foot").style.display="none";$("days").innerHTML="";
+    $("intro").innerHTML="<b>First, find your name.</b> This is your own private plan for the 30 days. Pick one thing per day and the exact time you will do it. When you plan it beforehand and then do it no matter how you feel, you show your brain that you are in charge.";
+    renderClaimList("");
+    return;
+  }
+  $("who").style.display="flex";$("search").style.display="none";$("claimwrap").innerHTML="";$("foot").style.display="block";
+  $("who-name").textContent=me;
+  $("intro").innerHTML="Write your <b>action</b> and the <b>exact time</b> for each day. Be specific: not \"the gym\" but \"the big gym, 5pm.\" Vague is what your brain uses to talk you out of it.";
+  let h='<div class="day'+(plan[0]&&plan[0].t?' filled':'')+'" data-d="0" style="border:1.5px solid color-mix(in srgb,var(--gold) 45%,var(--line))"><div class="dh"><span class="dl" style="color:var(--gold)">🌅 Every morning · your anchor</span><span class="saved" data-saved>saved ✓</span></div><div style="font-size:13px;color:var(--muted);margin-bottom:8px;line-height:1.45">Meditation, thankfulness, and your Wins of the Day. This starts every day, before you check how you feel.</div><div class="row2"><input type="text" placeholder="Time (e.g. 8am)" value="'+esc((plan[0]||{}).t||"")+'" oninput="editAnchor()" data-t><span class="tlabel">when you do your morning anchor</span></div></div>';
+  for(let d=1;d<=DAYS;d++){const p=plan[d]||{};const filled=(p.a||p.t)?" filled":"";
+    h+='<div class="day'+filled+'" data-d="'+d+'"><div class="dh"><span class="dl">Day '+d+'</span><span class="saved" data-saved>saved ✓</span></div>'+
+      '<input type="text" placeholder="What will you do? (e.g. big gym, 1 session)" value="'+esc(p.a||"")+'" oninput="edit('+d+')" data-a>'+
+      '<div class="row2"><input type="text" placeholder="Time (e.g. 5pm)" value="'+esc(p.t||"")+'" oninput="edit('+d+')" data-t><span class="tlabel">the exact time you will do it</span></div></div>';
+  }
+  $("days").innerHTML=h;
+}
+
+function renderClaimList(q){
+  const ql=(q||"").trim().toLowerCase();
+  const list=MEMBERS.filter(n=>!ql||n.toLowerCase().includes(ql)).slice(0,60);
+  $("claimwrap").innerHTML='<div class="claimlist">'+list.map(n=>'<div class="cl-item" onclick="claim(\''+n.replace(/'/g,"\\'")+'\')">'+esc(n)+'</div>').join("")+'</div>';
+}
+$("search").addEventListener("input",e=>renderClaimList(e.target.value));
+
+async function claim(name){const res=await api({op:"claim",member:name,token});
+  if(res.ok||res.status===409&&false){me=name;try{localStorage.setItem("ag-me",name)}catch(e){}await loadMe();}
+  else if(res.status===409){alert("That name is already claimed on another phone. If it's you, use the same phone you claimed on, or ask Star to reset it.");}
+  else{alert("Something went wrong, try again.");}}
+
+$("who-change").addEventListener("click",e=>{e.preventDefault();me=null;try{localStorage.removeItem("ag-me")}catch(e){}render();$("search").focus();});
+
+let timers={};
+function editAnchor(){const el=document.querySelector('.day[data-d="0"]');const t=el.querySelector("[data-t]").value;
+  el.classList.toggle("filled",!!t);clearTimeout(timers[0]);
+  timers[0]=setTimeout(async()=>{const res=await api({op:"setplan",member:me,day:0,action:"Morning anchor: meditation, thankfulness, and Wins of the Day",time:t,token});
+    if(res.ok){const s=el.querySelector("[data-saved]");s.classList.add("on");setTimeout(()=>s.classList.remove("on"),1200);}},700);}
+function edit(d){const el=document.querySelector('.day[data-d="'+d+'"]');const a=el.querySelector("[data-a]").value;const t=el.querySelector("[data-t]").value;
+  el.classList.toggle("filled",!!(a||t));
+  clearTimeout(timers[d]);
+  timers[d]=setTimeout(async()=>{const res=await api({op:"setplan",member:me,day:d,action:a,time:t,token});
+    if(res.ok){const s=el.querySelector("[data-saved]");s.classList.add("on");setTimeout(()=>s.classList.remove("on"),1200);}
+  },700);
+}
+
+// theme follows system; nothing to toggle here
+loadMe();
+if(!me)render();
+</script>
+</body>
+</html>
