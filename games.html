@@ -49,6 +49,7 @@
   .name{position:sticky;left:0;z-index:15;background:var(--panel);padding:8px 12px;border-bottom:1px solid var(--line);min-width:206px;max-width:224px;cursor:pointer}
   .nrow{display:flex;align-items:center;gap:8px}
   .rank{flex:0 0 auto;width:24px;font-weight:800;color:var(--muted);font-size:12.5px;text-align:center}
+  .gi{flex:0 0 auto;font-size:14px;line-height:1}
   .nm-t{flex:1;font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .name:hover .nm-t{color:var(--blue)}
   .badges{flex:0 0 auto;display:flex;gap:5px}
@@ -102,7 +103,7 @@
     <div class="me-stats">
       <div class="msx score"><b id="me-score">0</b><span>ACTIONS DONE</span></div>
       <div class="msx streak"><b id="me-streak">0</b><span>🔥 DAY STREAK</span></div>
-      <div class="msx"><b id="me-top">–</b><span>TOP GARDEN</span></div>
+      <div class="msx"><b id="me-top">–</b><span>MAIN GARDEN</span></div>
     </div>
   </div>
   <div class="me-empty" id="me-empty">👇 Tap your name to claim your row, then tap a day and pick what you did</div>
@@ -151,6 +152,7 @@ function streakOf(n){const m=state[n];if(!m||!m.days)return 0;let b=0,r=0;for(le
 function rankOf(n){const s=actionsOf(n);let r=1;for(const nm of MEMBERS)if(nm!==n&&actionsOf(nm)>s)r++;return r;}
 function topGardenOf(n){const m=state[n];if(!m||!m.days)return null;const t={};for(let d=1;d<=DAYS;d++){(m.days[d]||[]).forEach(k=>t[k]=(t[k]||0)+1);}let bk=null,bv=0;for(const k in t)if(t[k]>bv){bv=t[k];bk=k;}return bk?GMAP[bk]:null;}
 function claimed(n){return !!(state[n]&&state[n].claimed);}
+function mainOf(n){const m=state[n];const k=m&&m.days&&m.days.main;return (k&&GMAP[k])?GMAP[k]:null;}
 
 // ---- API ----
 async function api(payload){const r=await fetch("/api/games",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});return {ok:r.ok,status:r.status,body:await r.json().catch(()=>({}))};}
@@ -163,7 +165,7 @@ let cor=document.createElement("th");cor.className="corner";cor.textContent="�
 for(let d=1;d<=DAYS;d++){const th=document.createElement("th");th.className="dh";th.innerHTML="Day<b>"+d+"</b>";head.appendChild(th);}
 MEMBERS.forEach(name=>{state[name]={days:{},claimed:false};const tr=document.createElement("tr");tr.dataset.name=name;rows[name]=tr;
   const nm=document.createElement("td");nm.className="name";nm.onclick=()=>tapName(name);
-  nm.innerHTML='<div class="nrow"><span class="rank" data-rank></span><span class="nm-t">'+esc(name)+'</span>'+
+  nm.innerHTML='<div class="nrow"><span class="rank" data-rank></span><span class="gi" data-gi></span><span class="nm-t">'+esc(name)+'</span>'+
     '<span class="badges"><span class="sc" data-sc>⭐0</span><span class="st" data-st>🔥0</span></span></div>';
   tr.appendChild(nm);
   for(let d=1;d<=DAYS;d++){const td=document.createElement("td");td.className="cell";
@@ -185,11 +187,12 @@ const MEDAL=["🥇","🥈","🥉"];
 function paintAll(){const ranked=[...MEMBERS].sort((a,b)=>actionsOf(b)-actionsOf(a)||streakOf(b)-streakOf(a));
   MEMBERS.forEach(name=>{const tr=rows[name],sc=actionsOf(name),st=streakOf(name);
     tr.querySelector("[data-sc]").textContent="⭐"+sc;tr.querySelector("[data-st]").textContent="🔥"+st;
+    tr.querySelector("[data-gi]").textContent=(mainOf(name)?mainOf(name).e:"");
     const pos=ranked.indexOf(name);tr.querySelector("[data-rank]").textContent=sc>0?(pos<3?MEDAL[pos]:(pos+1)):"·";
     tr.classList.toggle("mine",name===me);paintRow(name);});
   (sortMode==="rank"?ranked:MEMBERS).forEach(name=>body.appendChild(rows[name]));
   const card=document.getElementById("mecard"),empty=document.getElementById("me-empty");
-  if(me){card.classList.add("on");empty.style.display="none";const tg=topGardenOf(me);
+  if(me){card.classList.add("on");empty.style.display="none";const tg=mainOf(me);
     document.getElementById("me-name").textContent=me;
     document.getElementById("me-rank").textContent=actionsOf(me)>0?("· #"+rankOf(me)+" of "+MEMBERS.length):"";
     document.getElementById("me-score").textContent=actionsOf(me);
@@ -203,7 +206,7 @@ function tapCell(name,d){ if(me!==name){openClaim(name);return;} openPicker(name
 async function setMe(name){
   const btn=document.getElementById("claimbtn");if(btn){btn.disabled=true;btn.textContent="Claiming…";}
   const res=await api({op:"claim",member:name,token});
-  if(res.ok){me=name;try{localStorage.setItem("ag-me",name)}catch(e){}state[name].claimed=true;closeSheet();await loadBoard();toast("You're in! Tap a day to log what you did.");}
+  if(res.ok){me=name;try{localStorage.setItem("ag-me",name)}catch(e){}state[name].claimed=true;await loadBoard();openMainPick(name);}
   else if(res.status===409){if(btn){btn.disabled=false;btn.textContent="⭐ This is me — claim my row";}toast("That row is already claimed by someone else.");}
   else{if(btn){btn.disabled=false;btn.textContent="⭐ This is me — claim my row";}toast("Something went wrong, try again.");}
 }
@@ -226,12 +229,20 @@ function openClaim(name){
            '<div class="skoolnote">Claim locks this row to your phone — only you can log it. Then tap a day and pick what you did. Post your success + photo on Skool.</div>');
   scrim.classList.add("open");}
 
-function openMine(){
+function openMine(){const mg=mainOf(me);
   sheet.innerHTML='<div class="sheetbar"><div><h2>'+esc(me)+'</h2><p class="psub">#'+rankOf(me)+' · '+actionsOf(me)+' actions · '+daysOf(me)+'/30 days · 🔥 '+streakOf(me)+'</p></div>'+
     '<button class="xbtn" onclick="closeSheet()">✕</button></div>'+
+    '<button class="mebtn" onclick="openMainPick(\''+jsn(me)+'\')">'+(mg?('Main garden: '+mg.e+' '+mg.l+' — change'):'⭐ Pick your main garden')+'</button>'+
     '<div class="skoolnote">This is your row. Tap any day on the board, then pick everything you did that day. You can pick more than one.</div>'+
-    '<button class="mebtn" style="background:var(--bg);color:var(--muted);margin-top:12px" onclick="clearMe();closeSheet()">This isn\'t me</button>';
+    '<button class="mebtn" style="background:var(--bg);color:var(--muted);margin-top:8px" onclick="clearMe();closeSheet()">This isn\'t me</button>';
   scrim.classList.add("open");}
+function openMainPick(name){const cur=mainOf(name);
+  let h='<div class="sheetbar"><div><h2>Your main garden</h2><p class="psub">Pick the ONE thing you most want to grow in 30 days. It shows next to your name.</p></div>'+
+    '<button class="xbtn" onclick="closeSheet()">✕</button></div>'+
+    '<div class="gpick">'+GARDENS.filter(x=>x.k!=="any").map(x=>'<button class="gbtn'+(cur&&cur.k===x.k?' sel':'')+'" onclick="setMain(\''+x.k+'\')"><span class="e">'+x.e+'</span>'+x.l+(cur&&cur.k===x.k?' ✓':'')+'</button>').join("")+'</div>'+
+    '<button class="mebtn" onclick="closeSheet()">Done</button>';
+  sheet.innerHTML=h;scrim.classList.add("open");}
+async function setMain(k){if(!me){toast("Claim your row first");return;}const res=await api({op:"setmain",member:me,garden:k,token});if(res.ok){if(!state[me].days)state[me].days={};state[me].days.main=k;paintAll();openMainPick(me);toast("Main garden set "+GMAP[k].e);}else toast("Couldn't save, try again");}
 
 let pickCtx=null;
 function openPicker(name,d){pickCtx={name,d};renderPicker();scrim.classList.add("open");}

@@ -136,5 +136,23 @@ export default async function handler(req, res) {
     }
   }
 
+  // ---- set main garden (stored in days.main, ignored by score/streak) ----
+  if (op === 'setmain') {
+    const garden = typeof body.garden === 'string' ? body.garden : '';
+    try {
+      const row = await getRow();
+      if (!row || !row.owner_token) return res.status(403).json({ error: 'claim your row first' });
+      if (row.owner_token !== token) return res.status(403).json({ error: 'not your row' });
+      const days = row.days || {};
+      if (GARDEN_KEYS.includes(garden)) days.main = garden; else delete days.main;
+      const r = await fetch(`${REST()}?member_name=eq.${encodeURIComponent(member)}`, {
+        method: 'PATCH', headers: sb({ Prefer: 'return=minimal' }),
+        body: JSON.stringify({ days, updated_at: new Date().toISOString() }),
+      });
+      if (!r.ok) return res.status(502).json({ error: 'setmain failed', detail: await r.text().catch(() => '') });
+      return res.status(200).json({ ok: true });
+    } catch (err) { console.error('games setmain error', err); return res.status(500).json({ error: 'setmain error' }); }
+  }
+
   return res.status(400).json({ error: 'unknown op' });
 }
