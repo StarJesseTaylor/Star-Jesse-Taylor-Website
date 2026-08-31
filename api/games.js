@@ -25,7 +25,7 @@ function sb(headers = {}) {
   return { Authorization: `Bearer ${SERVICE_KEY}`, apikey: SERVICE_KEY, 'Content-Type': 'application/json', ...headers };
 }
 
-const GARDEN_KEYS = ['fit', 'art', 'content', 'biz', 'connect', 'meditate', 'nature', 'walk', 'read', 'any'];
+const GARDEN_KEYS = ['fit', 'art', 'content', 'biz', 'connect', 'meditate', 'nature', 'any'];
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
