@@ -30,8 +30,11 @@
   .msx.score b{color:var(--gold)} .msx.streak b{color:#ffcf7a}
   .msx span{font-size:10px;color:#c4d3ec;letter-spacing:.4px;margin-top:5px;display:block}
   .me-empty{margin-top:11px;background:rgba(255,255,255,.10);border-radius:12px;padding:10px 12px;font-size:13px;color:#dbe7fb;text-align:center}
-  .legend{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:11px;font-size:11px;color:#cdd9ee}
-  .legend b{font-style:normal}
+  .legend{display:flex;flex-wrap:wrap;gap:5px 6px;margin-top:11px}
+  .legf{background:transparent;border:0;color:#cdd9ee;font-size:11px;font-weight:500;cursor:pointer;padding:3px 8px;border-radius:8px;font-family:inherit}
+  .legf.on{background:rgba(255,255,255,.2);color:#fff;font-weight:700}
+  .legf b{font-style:normal}
+  .leghint{width:100%;font-size:10.5px;color:#8ea6c9;margin-top:2px}
   .search{width:100%;margin-top:10px;padding:11px 14px;border-radius:12px;border:0;font-size:16px;background:rgba(255,255,255,.96);color:#152744;font-family:inherit}
   .search::placeholder{color:#7c8aa3}
   .wrap{padding:12px 8px 44px}
@@ -81,6 +84,8 @@
   .gbtn{display:flex;align-items:center;gap:9px;border:1.5px solid var(--line);background:var(--panel);border-radius:13px;padding:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;color:var(--ink);text-align:left}
   .gbtn .e{font-size:21px}
   .gbtn.sel{border-color:var(--blue);background:color-mix(in srgb,var(--blue) 10%,var(--panel))}
+  .gbtn .glab{display:flex;flex-direction:column;line-height:1.15}
+  .gbtn .gcap{font-size:11px;font-weight:600;color:var(--muted);margin-top:2px}
   .removebtn{width:100%;margin-top:10px;border:1.4px solid var(--line);background:transparent;color:var(--muted);border-radius:12px;padding:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
   .mebtn{width:100%;margin:6px 0 4px;border:0;border-radius:12px;padding:12px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;background:var(--blue);color:#fff}
   .mebtn[disabled]{opacity:.6}
@@ -138,6 +143,8 @@ const GARDENS=[
   {k:"any",e:"🃏",l:"Anything",c:"#ec4899"}
 ];
 const GMAP={};GARDENS.forEach(g=>GMAP[g.k]=g);
+const CAPTAINS={fit:"Natalie & Brittany",content:"Ghazaal & Star",art:"Caitlin",biz:"Star",connect:"Hosnia",meditate:"Katie & Star",relationship:"Star",relax:"Star",nature:"Star",wins:"Star",any:"Star"};
+function captainOf(k){return CAPTAINS[k]||"Star";}
 const MEMBERS=["Star Taylor","Sarah C","Ali Mehmed","Nicole Knostenbergs","Basma Kabbani","Andreia Vieira","Trevor Ivanits","Drew Bohn","Burmaa Zurgaa","Mussirah Moossun","Grant Armor","Antonija Zuparic","Estella - Maria","Aloe Harris","Michelle Vichith","Martin Bělunek","Abid Mahmood","Hagit Taylor","Acelya Demir","Adriana Deneault","Shihabur Rahman","Paulette Leon","Mike Huq","Juana Niebla","Caitlin Pena","Luisa Pedroso","Sarah Holliday","Emily Tyler","Kayce Latscha","Niels Maas","Claudia Abraham","Danial Yasen","Brooke Wolfe","Meggie Ribagina","Jeanne Coughlin","Christian Aksland","Kinga Lenart","Aljohara Alqahtani","Valera Sony","Mays Tee","Mike Eckler","George Yaguana","Ben Quintana","Nikola Pajovic","Emmanuel Okocha","Emily Bennett","Josefine von Ekensteen","Rose Malherbe","Tiana Morano","Kelly Grant","Sinead Thompson","Kelly Karinen","Lexi Aguilar","Adriano Toccafondi","Mel C","Johno Veach","Lauren Curt","Charles S","Jazmin Rodriguez","Carolina Jimenez","Patrick Swan","Haris Fida","Louie Halkias","Marija Stojanovska","Lal Demir","Aaron Alston","Gillian Brown","Sydney Robertson","Una Mrdjenovic","Brian Salerno","Karina Karyna","Nichole Aldrich","Shamma Khan","Keith Martin","McKenna B","Adam Terki","Michael C","Bryony Cupitt","Jane Gearhart","Rozalija Radelic","Haya Mk","Rebecca Meehan","Dan Al","Pieter Coetzé","L R","Craig Thomson","Marija Vlahović","Ioana Popa","Alyssa Nicole","Erik Disnard","Kylie Jeavons","Richard Gilles","Joe Cummins","Disha Ahluwalia","Norma Hysaw","Dania Munoz","Nareh Nokhoudian","Sophie Black","Huda Adaw","Amy Page","Naira Hart","Gisselle Espinoza","Gagan Chawla","Esra Sabedini","Nilgül Kocabas","Luke Phillips","Giovanni Lotterio","Simon Jensen","Mona Ouartani","Maurice. Kostelijk","Daniel Vonk","Daimon Smith","Leslie McCoy","Chantal Pl","Donatas Balčaitis","Abril Garavi","Andrew Tooze","Madalena Duarte","Gracie Zee","Francesca Rose","Angelika Amor","Natalie Krstanoska","Leander von der Hagen","Kevin Haesen","Corina Ghiatau","Hosnia Qazi","Colleen McShea","Brittany García","Matt Spencer","Danai Danaka","Deep Shah","Ghazaal Monir","Geoff Serrao","Caitlin Fleming","Leanne Jones","Katie Hayman"];
 const DAYS=30;
 
@@ -160,7 +167,7 @@ function mainOf(n){const m=state[n];const k=m&&m.days&&m.days.main;return (k&&GM
 async function api(payload){const r=await fetch("/api/games",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});return {ok:r.ok,status:r.status,body:await r.json().catch(()=>({}))};}
 async function loadBoard(){try{const r=await fetch("/api/games",{cache:"no-store"});if(!r.ok)return;const j=await r.json();const ns={};(j.members||[]).forEach(m=>ns[m.name]={days:m.days||{},claimed:m.claimed});state=ns;MEMBERS.forEach(n=>{if(!state[n])state[n]={days:{},claimed:false};});paintAll();}catch(e){}}
 
-document.getElementById("legend").innerHTML=GARDENS.map(g=>'<span>'+g.e+' <b>'+g.l+'</b></span>').join("");
+document.getElementById("legend").innerHTML=GARDENS.map(g=>'<button class="legf" data-g="'+g.k+'" onclick="toggleGardenFilter(\''+g.k+'\')">'+g.e+' <b>'+g.l+'</b></button>').join("")+'<span class="leghint">Captains: tap your garden to see just your team</span>';
 
 const head=document.getElementById("head"),body=document.getElementById("body"),rows={};
 let cor=document.createElement("th");cor.className="corner";cor.textContent="🏆 Player";head.appendChild(cor);
@@ -235,13 +242,14 @@ function openMine(){const mg=mainOf(me);
   sheet.innerHTML='<div class="sheetbar"><div><h2>'+esc(me)+'</h2><p class="psub">#'+rankOf(me)+' · '+actionsOf(me)+' actions · '+daysOf(me)+'/30 days · 🔥 '+streakOf(me)+'</p></div>'+
     '<button class="xbtn" onclick="closeSheet()">✕</button></div>'+
     '<button class="mebtn" onclick="openMainPick(\''+jsn(me)+'\')">'+(mg?('Main garden: '+mg.e+' '+mg.l+' — change'):'⭐ Pick your main garden')+'</button>'+
+    (mg?'<div class="skoolnote">Your captain: <b>'+captainOf(mg.k)+'</b>. Say hi in the challenge post or DM them. You can also lean on Francesca (accountability) and Gagan (skillsets).</div>':'')+
     '<div class="skoolnote">This is your row. Tap any day on the board, then pick everything you did that day. You can pick more than one.</div>'+
     '<button class="mebtn" style="background:var(--bg);color:var(--muted);margin-top:8px" onclick="clearMe();closeSheet()">This isn\'t me</button>';
   scrim.classList.add("open");}
 function openMainPick(name){const cur=mainOf(name);
   let h='<div class="sheetbar"><div><h2>Your main garden</h2><p class="psub">Pick the ONE thing you most want to grow in 30 days. It shows next to your name.</p></div>'+
     '<button class="xbtn" onclick="closeSheet()">✕</button></div>'+
-    '<div class="gpick">'+GARDENS.filter(x=>x.k!=="any").map(x=>'<button class="gbtn'+(cur&&cur.k===x.k?' sel':'')+'" onclick="setMain(\''+x.k+'\')"><span class="e">'+x.e+'</span>'+x.l+(cur&&cur.k===x.k?' ✓':'')+'</button>').join("")+'</div>'+
+    '<div class="gpick">'+GARDENS.filter(x=>x.k!=="any").map(x=>'<button class="gbtn'+(cur&&cur.k===x.k?' sel':'')+'" onclick="setMain(\''+x.k+'\')"><span class="e">'+x.e+'</span><span class="glab">'+x.l+(cur&&cur.k===x.k?' ✓':'')+'<span class="gcap">Captain: '+captainOf(x.k)+'</span></span></button>').join("")+'</div>'+
     '<button class="mebtn" onclick="closeSheet()">Done</button>';
   sheet.innerHTML=h;scrim.classList.add("open");}
 async function setMain(k){if(!me){toast("Claim your row first");return;}const res=await api({op:"setmain",member:me,garden:k,token});if(res.ok){if(!state[me].days)state[me].days={};state[me].days.main=k;paintAll();openMainPick(me);toast("Main garden set "+GMAP[k].e);}else toast("Couldn't save, try again");}
@@ -270,8 +278,14 @@ function pick(k){if(!pickCtx)return;const {name,d}=pickCtx;const a=actsOf(name,d
   if(added){const b=rows[name].querySelector('.box[data-d="'+d+'"]');if(b){b.classList.remove("pop");void b.offsetWidth;b.classList.add("pop");burst(b,GMAP[k].c);}}}
 function pickClear(){if(!pickCtx)return;const {name,d}=pickCtx;commit(name,d,[]);}
 
-document.getElementById("search").addEventListener("input",e=>{const q=e.target.value.trim().toLowerCase();
-  MEMBERS.forEach(name=>{rows[name].style.display=(!q||name.toLowerCase().includes(q))?"":"none";});});
+let gardenFilter=null;
+function toggleGardenFilter(k){gardenFilter=(gardenFilter===k)?null:k;
+  document.querySelectorAll(".legf").forEach(b=>b.classList.toggle("on",b.dataset.g===gardenFilter));applyFilter();}
+function applyFilter(){const q=(document.getElementById("search").value||"").trim().toLowerCase();
+  MEMBERS.forEach(name=>{const okName=!q||name.toLowerCase().includes(q);
+    const mg=mainOf(name);const okG=!gardenFilter||(mg&&mg.k===gardenFilter);
+    rows[name].style.display=(okName&&okG)?"":"none";});}
+document.getElementById("search").addEventListener("input",applyFilter);
 
 const tb=document.getElementById("theme");let stored=null;try{stored=localStorage.getItem("ag-theme")}catch(e){}
 if(stored)document.documentElement.setAttribute("data-theme",stored);
