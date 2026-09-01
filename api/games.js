@@ -17,12 +17,22 @@
  * Env: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, CRON_SECRET
  */
 
+import crypto from 'crypto';
+
 const SUPABASE_URL = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
 const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const REST = () => `${SUPABASE_URL}/rest/v1/games_progress`;
 
 function sb(headers = {}) {
   return { Authorization: `Bearer ${SERVICE_KEY}`, apikey: SERVICE_KEY, 'Content-Type': 'application/json', ...headers };
+}
+
+// The row is owned by whoever knows its PIN, not by a device. We store only a
+// salted hash of the PIN (member name as salt) so the raw PIN is never at rest.
+// This lets a member log in from ANY device with their PIN, and stops someone
+// else from grabbing their row by accident.
+function pinHash(member, pin) {
+  return crypto.createHash('sha256').update(`${member}::${pin}`).digest('hex');
 }
 
 const GARDEN_KEYS = ['fit', 'art', 'content', 'biz', 'connect', 'meditate', 'relationship', 'relax', 'nature', 'wins', 'any'];
@@ -41,13 +51,13 @@ export default async function handler(req, res) {
   // ---- GET: whole board (no tokens leaked) ----
   if (req.method === 'GET') {
     try {
-      const r = await fetch(`${REST()}?select=member_name,days,owner_token`, { headers: sb() });
+      const r = await fetch(`${REST()}?select=member_name,days,pin_hash`, { headers: sb() });
       if (!r.ok) return res.status(502).json({ error: 'read failed' });
       const rows = await r.json();
       const members = (rows || []).map((row) => ({
         name: row.member_name,
         days: row.days || {},
-        claimed: !!row.owner_token,
+        claimed: !!row.pin_hash,
       }));
       res.setHeader('Cache-Control', 'no-store');
       return res.status(200).json({ members });
@@ -79,11 +89,13 @@ export default async function handler(req, res) {
   }
 
   const member = typeof body.member === 'string' ? body.member.slice(0, 120) : '';
-  const token = typeof body.token === 'string' ? body.token.slice(0, 80) : '';
-  if (!member || !token) return res.status(400).json({ error: 'member and token required' });
+  const pin = typeof body.pin === 'string' ? body.pin.trim().slice(0, 12) : '';
+  if (!member || !pin) return res.status(400).json({ error: 'member and pin required' });
+  if (!/^\d{4,8}$/.test(pin)) return res.status(400).json({ error: 'pin must be 4 to 8 digits' });
+  const ph = pinHash(member, pin);
 
   async function getRow() {
-    const r = await fetch(`${REST()}?member_name=eq.${encodeURIComponent(member)}&select=member_name,owner_token,days`, { headers: sb() });
+    const r = await fetch(`${REST()}?member_name=eq.${encodeURIComponent(member)}&select=member_name,pin_hash,days`, { headers: sb() });
     if (!r.ok) return null;
     const rows = await r.json();
     return (rows && rows[0]) || null;
@@ -93,14 +105,17 @@ export default async function handler(req, res) {
   if (op === 'claim') {
     try {
       const row = await getRow();
-      if (row && row.owner_token && row.owner_token !== token) {
-        return res.status(409).json({ error: 'already_claimed' });
+      // Row already has a PIN: it must match (this is a login from any device).
+      if (row && row.pin_hash && row.pin_hash !== ph) {
+        return res.status(409).json({ error: 'wrong_pin' });
       }
-      // upsert with token
+      // First claim sets the PIN. A matching-PIN login just refreshes the row.
+      const payload = { member_name: member, updated_at: new Date().toISOString() };
+      if (!row || !row.pin_hash) payload.pin_hash = ph;
       const r = await fetch(REST(), {
         method: 'POST',
         headers: sb({ Prefer: 'resolution=merge-duplicates,return=minimal' }),
-        body: JSON.stringify({ member_name: member, owner_token: token, updated_at: new Date().toISOString() }),
+        body: JSON.stringify(payload),
       });
       if (!r.ok) return res.status(502).json({ error: 'claim failed', detail: await r.text().catch(() => '') });
       return res.status(200).json({ ok: true, claimed: true });
@@ -118,8 +133,8 @@ export default async function handler(req, res) {
     actions = actions.filter((k) => GARDEN_KEYS.includes(k)).slice(0, 10);
     try {
       const row = await getRow();
-      if (!row || !row.owner_token) return res.status(403).json({ error: 'claim your row first' });
-      if (row.owner_token !== token) return res.status(403).json({ error: 'not your row' });
+      if (!row || !row.pin_hash) return res.status(403).json({ error: 'claim your row first' });
+      if (row.pin_hash !== ph) return res.status(403).json({ error: 'wrong pin' });
       const days = row.days || {};
       if (actions.length) days[String(day)] = actions;
       else delete days[String(day)];
@@ -151,8 +166,8 @@ export default async function handler(req, res) {
     }
     try {
       const row = await getRow();
-      if (!row || !row.owner_token) return res.status(403).json({ error: 'claim your row first' });
-      if (row.owner_token !== token) return res.status(403).json({ error: 'not your row' });
+      if (!row || !row.pin_hash) return res.status(403).json({ error: 'claim your row first' });
+      if (row.pin_hash !== ph) return res.status(403).json({ error: 'wrong pin' });
       const days = row.days || {};
       if (!days.plan) days.plan = {};
       if (items.length) days.plan[String(day)] = items;
@@ -171,8 +186,8 @@ export default async function handler(req, res) {
     const garden = typeof body.garden === 'string' ? body.garden : '';
     try {
       const row = await getRow();
-      if (!row || !row.owner_token) return res.status(403).json({ error: 'claim your row first' });
-      if (row.owner_token !== token) return res.status(403).json({ error: 'not your row' });
+      if (!row || !row.pin_hash) return res.status(403).json({ error: 'claim your row first' });
+      if (row.pin_hash !== ph) return res.status(403).json({ error: 'wrong pin' });
       const days = row.days || {};
       if (GARDEN_KEYS.includes(garden)) days.main = garden; else delete days.main;
       const r = await fetch(`${REST()}?member_name=eq.${encodeURIComponent(member)}`, {

@@ -64,12 +64,11 @@
 </div>
 
 <script>
-const MEMBERS=["Star Taylor","Sarah C","Ali Mehmed","Nicole Knostenbergs","Basma Kabbani","Andreia Vieira","Trevor Ivanits","Drew Bohn","Burmaa Zurgaa","Mussirah Moossun","Grant Armor","Antonija Zuparic","Estella - Maria","Aloe Harris","Michelle Vichith","Martin Bělunek","Abid Mahmood","Hagit Taylor","Acelya Demir","Adriana Deneault","Shihabur Rahman","Paulette Leon","Mike Huq","Juana Niebla","Caitlin Pena","Luisa Pedroso","Sarah Holliday","Emily Tyler","Kayce Latscha","Niels Maas","Claudia Abraham","Danial Yasen","Brooke Wolfe","Meggie Ribagina","Jeanne Coughlin","Christian Aksland","Kinga Lenart","Aljohara Alqahtani","Valera Sony","Mays Tee","Mike Eckler","George Yaguana","Ben Quintana","Nikola Pajovic","Emmanuel Okocha","Emily Bennett","Josefine von Ekensteen","Rose Malherbe","Tiana Morano","Kelly Grant","Sinead Thompson","Kelly Karinen","Lexi Aguilar","Adriano Toccafondi","Mel C","Johno Veach","Lauren Curt","Charles S","Jazmin Rodriguez","Carolina Jimenez","Patrick Swan","Haris Fida","Louie Halkias","Marija Stojanovska","Lal Demir","Aaron Alston","Gillian Brown","Sydney Robertson","Una Mrdjenovic","Brian Salerno","Karina Karyna","Nichole Aldrich","Shamma Khan","Keith Martin","McKenna B","Adam Terki","Michael C","Bryony Cupitt","Jane Gearhart","Rozalija Radelic","Haya Mk","Rebecca Meehan","Dan Al","Pieter Coetzé","L R","Craig Thomson","Marija Vlahović","Ioana Popa","Alyssa Nicole","Erik Disnard","Kylie Jeavons","Richard Gilles","Joe Cummins","Disha Ahluwalia","Norma Hysaw","Dania Munoz","Nareh Nokhoudian","Sophie Black","Huda Adaw","Amy Page","Naira Hart","Gisselle Espinoza","Gagan Chawla","Esra Sabedini","Nilgül Kocabas","Luke Phillips","Giovanni Lotterio","Simon Jensen","Mona Ouartani","Maurice. Kostelijk","Daniel Vonk","Daimon Smith","Leslie McCoy","Chantal Pl","Donatas Balčaitis","Abril Garavi","Andrew Tooze","Madalena Duarte","Gracie Zee","Francesca Rose","Angelika Amor","Natalie Krstanoska","Leander von der Hagen","Kevin Haesen","Corina Ghiatau","Hosnia Qazi","Colleen McShea","Brittany García","Matt Spencer","Danai Danaka","Deep Shah","Ghazaal Monir","Geoff Serrao","Caitlin Fleming","Leanne Jones","Katie Hayman"];
+const MEMBERS=["Star Taylor","Ajamu McCormack","Lj Caley","Saar D","Hana Khan","Johan Cooke","Chiara Pavan","Heather Maier","Michelle Mcpherson","William Bench","Haley Catana","Patricio Quintanilla","Rom K","Carolyn Calhoun","Matthew Bennett","Christina Garcia","Patrick Westrope","Tuvshinbayar Enhamgalan","Mark Renton","Haithem Djeffal","Filia Basic","Sarah C","Ali Mehmed","Nicole Knostenbergs","Basma Kabbani","Andreia Vieira","Trevor Ivanits","Drew Bohn","Burmaa Zurgaa","Mussirah Moossun","Grant Armor","Antonija Zuparic","Estella - Maria","Aloe Harris","Michelle Vichith","Martin Bělunek","Abid Mahmood","Hagit Taylor","Acelya Demir","Adriana Deneault","Shihabur Rahman","Paulette Leon","Mike Huq","Juana Niebla","Caitlin Pena","Luisa Pedroso","Sarah Holliday","Emily Tyler","Kayce Latscha","Niels Maas","Claudia Abraham","Danial Yasen","Brooke Wolfe","Meggie Ribagina","Jeanne Coughlin","Christian Aksland","Kinga Lenart","Aljohara Alqahtani","Valera Sony","Mays Tee","Mike Eckler","George Yaguana","Ben Quintana","Nikola Pajovic","Emmanuel Okocha","Emily Bennett","Josefine von Ekensteen","Rose Malherbe","Tiana Morano","Kelly Grant","Sinead Thompson","Kelly Karinen","Lexi Aguilar","Adriano Toccafondi","Mel C","Johno Veach","Lauren Curt","Charles S","Jazmin Rodriguez","Carolina Jimenez","Patrick Swan","Haris Fida","Louie Halkias","Marija Stojanovska","Lal Demir","Aaron Alston","Gillian Brown","Sydney Robertson","Una Mrdjenovic","Brian Salerno","Karina Karyna","Nichole Aldrich","Shamma Khan","Keith Martin","McKenna B","Adam Terki","Michael C","Bryony Cupitt","Jane Gearhart","Rozalija Radelic","Haya Mk","Rebecca Meehan","Dan Al","Pieter Coetzé","L R","Craig Thomson","Marija Vlahović","Ioana Popa","Alyssa Nicole","Erik Disnard","Kylie Jeavons","Richard Gilles","Joe Cummins","Disha Ahluwalia","Norma Hysaw","Dania Munoz","Nareh Nokhoudian","Sophie Black","Huda Adaw","Amy Page","Naira Hart","Gisselle Espinoza","Gagan Chawla","Esra Sabedini","Nilgül Kocabas","Luke Phillips","Giovanni Lotterio","Simon Jensen","Mona Ouartani","Maurice. Kostelijk","Daniel Vonk","Daimon Smith","Leslie McCoy","Chantal Pl","Donatas Balčaitis","Abril Garavi","Andrew Tooze","Madalena Duarte","Gracie Zee","Francesca Rose","Angelika Amor","Natalie Krstanoska","Leander von der Hagen","Kevin Haesen","Corina Ghiatau","Hosnia Qazi","Colleen McShea","Brittany García","Matt Spencer","Danai Danaka","Deep Shah","Ghazaal Monir","Geoff Serrao","Caitlin Fleming","Leanne Jones","Katie Hayman"];
 const DAYS=30;
-let me=null, token=null, plan={};
+let me=null, pin=null, plan={};
 try{me=localStorage.getItem("ag-me")||null}catch(e){}
-try{token=localStorage.getItem("ag-token")||null}catch(e){}
-if(!token){token=(Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2)+Date.now().toString(36));try{localStorage.setItem("ag-token",token)}catch(e){}}
+try{pin=localStorage.getItem("ag-pin")||null}catch(e){}
 
 const $=id=>document.getElementById(id);
 
@@ -102,23 +101,27 @@ function renderClaimList(q){
 }
 $("search").addEventListener("input",e=>renderClaimList(e.target.value));
 
-async function claim(name){const res=await api({op:"claim",member:name,token});
-  if(res.ok||res.status===409&&false){me=name;try{localStorage.setItem("ag-me",name)}catch(e){}await loadMe();}
-  else if(res.status===409){alert("That name is already claimed on another phone. If it's you, use the same phone you claimed on, or ask Star to reset it.");}
+async function claim(name){
+  const p=(window.prompt("Enter your 4-digit PIN for "+name+".\n\nFirst time? Pick a new 4-digit PIN and remember it. You will use it to open your plan and board from any device.")||"").trim();
+  if(p===""){return;}
+  if(!/^\d{4,8}$/.test(p)){alert("PIN must be 4 to 8 digits.");return;}
+  const res=await api({op:"claim",member:name,pin:p});
+  if(res.ok){me=name;pin=p;try{localStorage.setItem("ag-me",name);localStorage.setItem("ag-pin",p);}catch(e){}await loadMe();}
+  else if(res.status===409){alert("Wrong PIN for that name. If it is you, use the PIN you set on the games board. Forgot it? Ask Star to reset your row.");}
   else{alert("Something went wrong, try again.");}}
 
-$("who-change").addEventListener("click",e=>{e.preventDefault();me=null;try{localStorage.removeItem("ag-me")}catch(e){}render();$("search").focus();});
+$("who-change").addEventListener("click",e=>{e.preventDefault();me=null;pin=null;try{localStorage.removeItem("ag-me");localStorage.removeItem("ag-pin")}catch(e){}render();$("search").focus();});
 
 function entryHTML(e){e=e||{a:"",t:"",done:false};return '<div class="entry'+(e.done?' done':'')+'"><input type="checkbox" class="ck"'+(e.done?' checked':'')+'><input type="text" class="ea" placeholder="What will you do? (e.g. big gym)" value="'+esc(e.a)+'"><input type="text" class="et" placeholder="Time (5pm)" value="'+esc(e.t)+'"><button class="rm" title="remove">×</button></div>';}
 let timers={};
 function editAnchor(){const el=document.querySelector('.day[data-d="0"]');const t=el.querySelector("[data-t]").value;
   el.classList.toggle("filled",!!t);clearTimeout(timers[0]);
-  timers[0]=setTimeout(async()=>{const res=await api({op:"setplan",member:me,day:0,action:"Morning anchor: meditation, thankfulness, and Wins of the Day",time:t,token});
+  timers[0]=setTimeout(async()=>{const res=await api({op:"setplan",member:me,day:0,action:"Morning anchor: meditation, thankfulness, and Wins of the Day",time:t,pin});
     if(res.ok){const s=el.querySelector("[data-saved]");s.classList.add("on");setTimeout(()=>s.classList.remove("on"),1200);}},700);}
 function scheduleSave(d){const dayEl=document.querySelector('.day[data-d="'+d+'"]');if(!dayEl)return;clearTimeout(timers[d]);
   timers[d]=setTimeout(async()=>{const items=[...dayEl.querySelectorAll(".entry")].map(en=>({a:en.querySelector(".ea").value,t:en.querySelector(".et").value,done:en.querySelector(".ck").checked})).filter(x=>x.a||x.t);
     dayEl.classList.toggle("filled",items.length>0);
-    const res=await api({op:"setplan",member:me,day:d,items,token});
+    const res=await api({op:"setplan",member:me,day:d,items,pin});
     if(res.ok){const s=dayEl.querySelector("[data-saved]");if(s){s.classList.add("on");setTimeout(()=>s.classList.remove("on"),1200);}}},700);}
 function bindDays(){const c=$("days");
   c.addEventListener("input",e=>{const day=e.target.closest(".day");if(day&&day.dataset.d!=="0")scheduleSave(+day.dataset.d);});

@@ -149,10 +149,9 @@ const MEMBERS=["Star Taylor","Ajamu McCormack","Lj Caley","Saar D","Hana Khan","
 const DAYS=30;
 
 // state[name] = {days:{day:[keys]}, claimed:bool}
-let state={}, me=null, token=null, sortMode="rank", busy=false;
+let state={}, me=null, pin=null, sortMode="rank", busy=false;
 try{me=localStorage.getItem("ag-me")||null}catch(e){}
-try{token=localStorage.getItem("ag-token")||null}catch(e){}
-if(!token){token=(Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2)+Date.now().toString(36));try{localStorage.setItem("ag-token",token)}catch(e){}}
+try{pin=localStorage.getItem("ag-pin")||null}catch(e){}
 
 function actsOf(n,d){const m=state[n];return (m&&m.days&&m.days[d])?m.days[d]:[];}
 function actionsOf(n){const m=state[n];if(!m||!m.days)return 0;let c=0;for(let d=1;d<=DAYS;d++)if(m.days[d])c+=m.days[d].length;return c;}
@@ -212,14 +211,16 @@ function paintAll(){const ranked=[...MEMBERS].sort((a,b)=>actionsOf(b)-actionsOf
 function tapName(name){ if(me===name)openMine(); else openClaim(name); }
 function tapCell(name,d){ if(me!==name){openClaim(name);return;} openPicker(name,d); }
 
-async function setMe(name){
-  const btn=document.getElementById("claimbtn");if(btn){btn.disabled=true;btn.textContent="Claiming…";}
-  const res=await api({op:"claim",member:name,token});
-  if(res.ok){me=name;try{localStorage.setItem("ag-me",name)}catch(e){}state[name].claimed=true;await loadBoard();openMainPick(name);}
-  else if(res.status===409){if(btn){btn.disabled=false;btn.textContent="⭐ This is me — claim my row";}toast("That row is already claimed by someone else.");}
-  else{if(btn){btn.disabled=false;btn.textContent="⭐ This is me — claim my row";}toast("Something went wrong, try again.");}
+async function submitPin(name){
+  const el=document.getElementById("pinin");const p=(el?el.value:"").trim();
+  if(!/^\d{4,8}$/.test(p)){toast("Enter a 4 to 8 digit PIN");if(el)el.focus();return;}
+  const btn=document.getElementById("claimbtn");if(btn){btn.disabled=true;btn.textContent="…";}
+  const res=await api({op:"claim",member:name,pin:p});
+  if(res.ok){me=name;pin=p;try{localStorage.setItem("ag-me",name);localStorage.setItem("ag-pin",p);}catch(e){}state[name].claimed=true;await loadBoard();openMainPick(name);}
+  else if(res.status===409){if(btn){btn.disabled=false;btn.textContent="Log in to my row";}toast("Wrong PIN. Try again, or ask Star to reset your row.");}
+  else{if(btn){btn.disabled=false;btn.textContent="Try again";}toast("Something went wrong, try again.");}
 }
-function clearMe(){me=null;try{localStorage.removeItem("ag-me")}catch(e){}paintAll();}
+function clearMe(){me=null;pin=null;try{localStorage.removeItem("ag-me");localStorage.removeItem("ag-pin")}catch(e){}paintAll();}
 document.getElementById("me-change").onclick=()=>{clearMe();document.getElementById("search").focus();};
 document.getElementById("sort-rank").onclick=()=>{sortMode="rank";setSortBtns();paintAll();};
 document.getElementById("sort-az").onclick=()=>{sortMode="az";setSortBtns();paintAll();};
@@ -231,12 +232,17 @@ scrim.onclick=e=>{if(e.target===scrim)closeSheet();};
 
 function openClaim(name){
   const taken=claimed(name)&&me!==name;
+  const heading=taken?'Enter your PIN':'Set your 4-digit PIN';
+  const note=taken?'Enter the PIN you picked when you claimed this row. It works on any phone or computer.':'Pick a 4-digit PIN you will remember. You use it to log in to your row from any device, and it stops anyone else from grabbing your row.';
+  const label=taken?'Log in to my row':'⭐ Claim my row';
   sheet.innerHTML='<div class="sheetbar"><div><h2>'+esc(name)+'</h2><p class="psub">#'+rankOf(name)+' · '+actionsOf(name)+' actions · '+daysOf(name)+'/30 days · 🔥 '+streakOf(name)+'</p></div>'+
     '<button class="xbtn" onclick="closeSheet()">✕</button></div>'+
-    (taken?'<div class="skoolnote">This row is already claimed by someone on their device. If this is you and you switched phones, tell Star to reset it.</div>'
-          :'<button class="mebtn" id="claimbtn" onclick="setMe(\''+jsn(name)+'\')">⭐ This is me — claim my row</button>'+
-           '<div class="skoolnote">Claim locks this row to your phone — only you can log it. Then tap a day and pick what you did. Post your success + photo on Skool.</div>');
-  scrim.classList.add("open");}
+    '<div class="skoolnote"><b>'+heading+'.</b> '+note+'</div>'+
+    '<input id="pinin" inputmode="numeric" pattern="[0-9]*" maxlength="8" placeholder="••••" autocomplete="off" style="width:100%;padding:14px;border-radius:12px;border:1.5px solid var(--line);font-size:22px;letter-spacing:8px;text-align:center;margin-bottom:10px;background:var(--bg);color:var(--ink);font-family:inherit">'+
+    '<button class="mebtn" id="claimbtn" onclick="submitPin(\''+jsn(name)+'\')">'+label+'</button>'+
+    (taken?'<div class="skoolnote">Forgot your PIN? Ask Star to reset your row.</div>':'<div class="skoolnote">Then tap a day and pick what you did. Post your success + photo on Skool.</div>');
+  scrim.classList.add("open");
+  setTimeout(function(){var el=document.getElementById("pinin");if(el)el.focus();},60);}
 
 function openMine(){const mg=mainOf(me);
   sheet.innerHTML='<div class="sheetbar"><div><h2>'+esc(me)+'</h2><p class="psub">#'+rankOf(me)+' · '+actionsOf(me)+' actions · '+daysOf(me)+'/30 days · 🔥 '+streakOf(me)+'</p></div>'+
@@ -252,7 +258,7 @@ function openMainPick(name){const cur=mainOf(name);
     '<div class="gpick">'+GARDENS.filter(x=>x.k!=="any").map(x=>'<button class="gbtn'+(cur&&cur.k===x.k?' sel':'')+'" onclick="setMain(\''+x.k+'\')"><span class="e">'+x.e+'</span><span class="glab">'+x.l+(cur&&cur.k===x.k?' ✓':'')+'<span class="gcap">Captain: '+captainOf(x.k)+'</span></span></button>').join("")+'</div>'+
     '<button class="mebtn" onclick="closeSheet()">Done</button>';
   sheet.innerHTML=h;scrim.classList.add("open");}
-async function setMain(k){if(!me){toast("Claim your row first");return;}const res=await api({op:"setmain",member:me,garden:k,token});if(res.ok){if(!state[me].days)state[me].days={};state[me].days.main=k;paintAll();openMainPick(me);toast("Main garden set "+GMAP[k].e);}else toast("Couldn't save, try again");}
+async function setMain(k){if(!me){toast("Claim your row first");return;}const res=await api({op:"setmain",member:me,garden:k,pin});if(res.ok){if(!state[me].days)state[me].days={};state[me].days.main=k;paintAll();openMainPick(me);toast("Main garden set "+GMAP[k].e);}else toast("Couldn't save, try again");}
 
 let pickCtx=null;
 function openPicker(name,d){pickCtx={name,d};renderPicker();scrim.classList.add("open");}
@@ -269,7 +275,7 @@ async function commit(name,d,actions){
   if(!state[name].days)state[name].days={};
   if(actions.length)state[name].days[d]=actions.slice(); else delete state[name].days[d];
   paintRow(name);paintAll();renderPicker();
-  const res=await api({op:"log",member:name,day:d,actions,token});
+  const res=await api({op:"log",member:name,day:d,actions,pin});
   if(!res.ok){toast("Couldn't save, refreshing…");await loadBoard();renderPicker();}
 }
 function pick(k){if(!pickCtx)return;const {name,d}=pickCtx;const a=actsOf(name,d).slice();const i=a.indexOf(k);
