@@ -150,7 +150,7 @@ const MEMBERS=["Star Taylor","Ajamu McCormack","Lj Caley","Saar D","Hana Khan","
 const DAYS=30;
 
 // state[name] = {days:{day:[keys]}, claimed:bool}
-let state={}, me=null, pin=null, sortMode="rank", busy=false;
+let state={}, me=null, pin=null, sortMode="rank", busy=false, pinNudged=false;
 try{me=localStorage.getItem("ag-me")||null}catch(e){}
 try{pin=localStorage.getItem("ag-pin")||null}catch(e){}
 
@@ -165,7 +165,9 @@ function mainOf(n){const m=state[n];const k=m&&m.days&&m.days.main;return (k&&GM
 
 // ---- API ----
 async function api(payload){const r=await fetch("/api/games",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});return {ok:r.ok,status:r.status,body:await r.json().catch(()=>({}))};}
-async function loadBoard(){try{const r=await fetch("/api/games",{cache:"no-store"});if(!r.ok)return;const j=await r.json();const ns={};(j.members||[]).forEach(m=>ns[m.name]={days:m.days||{},claimed:m.claimed});state=ns;MEMBERS.forEach(n=>{if(!state[n])state[n]={days:{},claimed:false};});paintAll();}catch(e){}}
+async function loadBoard(){try{const r=await fetch("/api/games",{cache:"no-store"});if(!r.ok)return;const j=await r.json();const ns={};(j.members||[]).forEach(m=>ns[m.name]={days:m.days||{},claimed:m.claimed});state=ns;MEMBERS.forEach(n=>{if(!state[n])state[n]={days:{},claimed:false};});paintAll();
+  if(me&&state[me]&&!state[me].claimed&&!pinNudged){pinNudged=true;setTimeout(()=>toast("Tap your name to set your 4-digit PIN and unlock your row"),500);}
+  }catch(e){}}
 
 document.getElementById("legend").innerHTML=GARDENS.map(g=>'<button class="legf" data-g="'+g.k+'" onclick="toggleGardenFilter(\''+g.k+'\')">'+g.e+' <b>'+g.l+'</b></button>').join("")+'<span class="leghint">Captains: tap your garden to see just your team</span>';
 
@@ -209,8 +211,8 @@ function paintAll(){const ranked=[...MEMBERS].sort((a,b)=>actionsOf(b)-actionsOf
     document.getElementById("me-top").textContent=tg?tg.e:"–";
   }else{card.classList.remove("on");empty.style.display="block";}}
 
-function tapName(name){ if(me===name)openMine(); else openClaim(name); }
-function tapCell(name,d){ if(me!==name){openClaim(name);return;} openPicker(name,d); }
+function tapName(name){ if(me===name && claimed(name))openMine(); else openClaim(name); }
+function tapCell(name,d){ if(me!==name || !claimed(name)){openClaim(name);return;} openPicker(name,d); }
 
 async function submitPin(name){
   const el=document.getElementById("pinin");const p=(el?el.value:"").trim();
