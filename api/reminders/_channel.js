@@ -100,9 +100,34 @@ export function normalisePhone(raw, countryCode) {
   return { ok: false, reason: 'no country code and not a 10-digit US number' };
 }
 
-/** Which rail should this number use? SMS for US/Canada, WhatsApp for everyone else. */
+/**
+ * Which rail should this number use? SMS — for everyone, everywhere.
+ *
+ * ⭐ CHANGED Sep 3 2026 (Star: "some of them are in Australia"). This used to
+ *    return 'whatsapp' for every non-US number, which meant every Australian
+ *    tester would have failed at send with "no from-number for whatsapp",
+ *    because TWILIO_WHATSAPP_FROM has never been set.
+ *
+ * WHY NOT JUST SET UP WHATSAPP:
+ *   WhatsApp forbids business-initiated messages outside a 24-hour reply window
+ *   unless the exact text is a template Meta approved in advance (error 63016,
+ *   already handled in status.js). Our reminders are unprompted and arrive at
+ *   random times, so essentially every one of them lands outside that window.
+ *   That means all 30 of Star's lines submitted individually for Meta approval,
+ *   plus Meta business verification, plus per-conversation billing that is not
+ *   meaningfully cheaper than SMS. Weeks of work, same text, same phone.
+ *
+ * COST: A2P 10DLC is a US-only regime, so international numbers need no
+ *   registration at all. International SMS costs a few cents per message
+ *   against well under one cent domestically — roughly $1.50/month versus
+ *   $0.25/month for one reminder a day. Real, and trivial at this scale.
+ *
+ * The WhatsApp machinery below is intentionally left intact. A member row can
+ * still carry channel='whatsapp' explicitly (send.js honours m.channel first),
+ * so if a WhatsApp sender is ever approved, nothing here has to be rebuilt.
+ */
 export function pickChannel(e164) {
-  return e164.startsWith('+1') ? 'sms' : 'whatsapp';
+  return 'sms';
 }
 
 /* ─────────────────────────────  SEND  ───────────────────────────── */

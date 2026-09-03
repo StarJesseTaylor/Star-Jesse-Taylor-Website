@@ -237,9 +237,11 @@ async function enrolInReminders({ phone, firstName, timezone, source }) {
       return true;
     }
 
-    // New member. SMS for +1, WhatsApp for everyone else — same rule the
-    // sender uses, decided once here so the row is honest about its rail.
-    const channel = phone.startsWith('+1') ? 'sms' : 'whatsapp';
+    // New member. SMS for everyone, everywhere — same rule the sender uses
+    // (see pickChannel in api/reminders/_channel.js), decided once here so the
+    // row is honest about its rail. This used to route non-US numbers to
+    // WhatsApp, which would have failed at send for every Australian member.
+    const channel = 'sms';
 
     const ins = await sb('member_channel', {
       method: 'POST',
