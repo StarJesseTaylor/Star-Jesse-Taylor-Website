@@ -35,7 +35,7 @@ function pinHash(member, pin) {
   return crypto.createHash('sha256').update(`${member}::${pin}`).digest('hex');
 }
 
-const GARDEN_KEYS = ['fit', 'art', 'content', 'biz', 'connect', 'meditate', 'courage', 'relationship', 'relax', 'nature', 'wins', 'any'];
+const GARDEN_KEYS = ['fit', 'art', 'content', 'biz', 'connect', 'meditate', 'breath', 'courage', 'relationship', 'relax', 'nature', 'wins', 'any'];
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
