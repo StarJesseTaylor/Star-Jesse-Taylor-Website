@@ -57,6 +57,46 @@ export default async function handler(req, res) {
     return res.status(401).json({ error: 'Unauthorized. Add ?key=YOUR_CRON_SECRET to the URL.' });
   }
 
+  /* ── THE ONE-CLICK FIX ──
+        Star kept being told "go into the Twilio console and point the webhook",
+        and then could not log in. He does not need to: the credentials are
+        already here. ?action=point-webhook sets SmsUrl on our own number to our
+        own endpoint. It touches nothing else, and it is idempotent. */
+  if (req.query && req.query.action === 'point-webhook') {
+    const accSid = TW_SID();
+    const site0 = (process.env.SITE_URL || 'https://starjessetaylor.com').replace(/\/$/, '');
+    const want = site0 + '/api/reminders/inbound';
+    const listed = await twilio('https://api.twilio.com/2010-04-01/Accounts/' + accSid + '/IncomingPhoneNumbers.json?PageSize=20');
+    if (!listed.ok) return res.status(502).json({ error: 'Could not read your phone numbers', detail: listed.error });
+    const nums = (listed.data && listed.data.incoming_phone_numbers) || [];
+    const want_num = process.env.TWILIO_FROM_NUMBER;
+    const target = nums.find(n => n.phone_number === want_num) || nums[0];
+    if (!target) return res.status(400).json({ error: 'No phone number on this Twilio account to configure.' });
+    try {
+      const body = new URLSearchParams({ SmsUrl: want, SmsMethod: 'POST' });
+      const r = await fetch('https://api.twilio.com/2010-04-01/Accounts/' + accSid + '/IncomingPhoneNumbers/' + target.sid + '.json', {
+        method: 'POST',
+        headers: {
+          Authorization: 'Basic ' + Buffer.from(accSid + ':' + TW_TOKEN()).toString('base64'),
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: body.toString(),
+      });
+      const data = await r.json().catch(() => ({}));
+      if (!r.ok) return res.status(502).json({ error: 'Twilio refused the change', detail: (data && data.message) || r.status });
+      res.setHeader('Content-Type', 'text/html; charset=utf-8');
+      return res.status(200).send(
+        '<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">' +
+        '<body style="font:17px/1.6 -apple-system,BlinkMacSystemFont,sans-serif;max-width:620px;margin:0 auto;padding:40px 22px">' +
+        '<h1 style="font-size:26px">Done.</h1>' +
+        '<p>Replies to <strong>' + target.phone_number + '</strong> now reach you.</p>' +
+        '<p style="color:#666;font-size:15px">Pointed at <code>' + data.sms_url + '</code></p>' +
+        '<p style="margin-top:30px"><a href="?key=' + encodeURIComponent(req.query.key) + '">← back to the readiness check</a></p>');
+    } catch (e) {
+      return res.status(500).json({ error: String((e && e.message) || e).slice(0, 200) });
+    }
+  }
+
   const checks = [];
   const sid = TW_SID();
 
@@ -167,12 +207,12 @@ export default async function handler(req, res) {
     if (current === wantInbound) {
       checks.push(ok('Replies reach us', numRow.phone_number + ' is pointed at ' + wantInbound + '.'));
     } else {
-      checks.push(bad(
+      const fix = bad(
         'Replies go nowhere',
-        numRow.phone_number + ' is currently pointed at "' + (current || '(nothing)') + '". It needs to be ' + wantInbound +
-        ' — otherwise when a member texts back, you never see it. Fix: Twilio Console → Phone Numbers → click the number →' +
-        ' "A message comes in" → paste that URL → Save.'
-      ));
+        numRow.phone_number + ' is pointed at "' + (current || 'nothing') + '". When a member texts back, you never see it.'
+      );
+      fix.fixUrl = '?key=' + encodeURIComponent(req.query.key) + '&action=point-webhook';
+      checks.push(fix);
     }
   }
 
@@ -212,7 +252,9 @@ export default async function handler(req, res) {
 
   const rows = checks.map(c =>
     '<div class="row"><div class="tag" style="color:' + colour[c.state] + '">' + word[c.state] + '</div>' +
-    '<div><div class="label">' + esc(c.label) + '</div><div class="detail">' + esc(c.detail) + '</div></div></div>'
+    '<div><div class="label">' + esc(c.label) + '</div><div class="detail">' + esc(c.detail) + '</div>' +
+    (c.fixUrl ? '<a class="fix" href="' + esc(c.fixUrl) + '">Fix this for me</a>' : '') +
+    '</div></div>'
   ).join('');
 
   const html = [
@@ -228,6 +270,9 @@ export default async function handler(req, res) {
     '.row{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid #eee;align-items:flex-start}',
     '.tag{flex:0 0 76px;font-size:11px;font-weight:700;letter-spacing:.04em;padding-top:2px}',
     '.label{font-weight:600;margin-bottom:3px}.detail{color:#555;font-size:14px;word-break:break-word}',
+    '.fix{display:inline-block;margin-top:9px;background:#111;color:#fff;text-decoration:none;',
+    'padding:9px 15px;border-radius:8px;font-size:14px;font-weight:600}',
+    '@media(prefers-color-scheme:dark){.fix{background:#fff;color:#111}}',
     '@media(prefers-color-scheme:dark){body{background:#0b0b0c;color:#eee}.row{border-color:#222}.detail{color:#aaa}}',
     '</style>',
     '<h1>SMS readiness</h1>',

@@ -23,6 +23,7 @@
 import { rollDay, dueNow, localDate, localToUtc } from './_schedule.js';
 import { LINES, pickLine, render } from './_lines.js';
 import { normalisePhone, pickChannel, sendMessage } from './_channel.js';
+import { healInboundWebhook } from './_webhook-heal.js';
 
 const MAX_MEMBERS = 200;
 const STALE_MIN = 20;        // a "surprise" 4h late isn't a surprise, it's a bug
@@ -100,6 +101,15 @@ export default async function handler(req, res) {
     considered: 0, rolled: 0, sent: 0,
     notDue: 0, dropped_stale: 0, skipped: [], errors: [], messages: [],
   };
+
+  // Make sure a member's reply can actually reach us. Idempotent, at most once
+  // per cold start, and non-blocking — a Twilio hiccup here must never stop a
+  // send. See _webhook-heal.js for why this is done in code and not by hand.
+  try {
+    report.webhook = (await healInboundWebhook()).state;
+  } catch {
+    report.webhook = 'error';
+  }
 
   try {
     // ── 1. WHO. Active, consented, reminders enabled. ──

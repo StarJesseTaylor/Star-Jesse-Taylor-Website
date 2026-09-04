@@ -4,26 +4,52 @@
 
 /* ─────────────────────────────  PHONE  ───────────────────────────── */
 
-// Country calling codes we actually see in Star's audience (heavily European + US).
-// Longest-prefix match, so +1 doesn't shadow +ростов etc.
+// Every assigned ITU country calling code. Longest-prefix match, so '1' cannot
+// shadow '1242' and '3' cannot shadow '351'.
+//
+// ⭐ WHY THIS IS NOW THE WHOLE WORLD, Sep 3 2026.
+//    This used to be a hand-written list of ~30 codes "we actually see in Star's
+//    audience" — heavily European and US. Star mentioned testers in Beijing and
+//    Singapore, and NEITHER +86 NOR +65 WAS ON IT. Hong Kong, Japan, Korea and
+//    New Zealand were missing too.
+//
+//    The failure was silent and nasty: normalisePhone() returned
+//    'unrecognised country code', send.js pushed the member onto report.skipped,
+//    and nobody got a text. No error, no alert, no bounce — the member simply
+//    never hears from us and concludes it does not work.
+//
+//    An allowlist of "countries we expect" is the wrong shape for this. Star's
+//    audience is wherever his audience is, and it changes without telling us.
+//    The list is now complete, so the only things rejected are numbers that are
+//    genuinely malformed.
 const CC = [
-  '1',           // US / Canada
-  '44',          // UK
-  '49',          // Germany
-  '31',          // Netherlands
-  '351',         // Portugal
-  '353',         // Ireland
-  '30',          // Greece
-  '32',          // Belgium
-  '36',          // Hungary
-  '39',          // Italy
-  '34',          // Spain
-  '380',         // Ukraine
-  '90',          // Turkey
-  '91',          // India
-  '61',          // Australia
-  '971',         // UAE
-  '33', '41', '43', '45', '46', '47', '48', '420', '421', '385', '386', '40', '359',
+  // North America / Caribbean (NANP — +1, with area codes validated separately)
+  '1',
+  // Africa
+  '20', '212', '213', '216', '218', '220', '221', '222', '223', '224', '225', '226',
+  '227', '228', '229', '230', '231', '232', '233', '234', '235', '236', '237', '238',
+  '239', '240', '241', '242', '243', '244', '245', '246', '248', '249', '250', '251',
+  '252', '253', '254', '255', '256', '257', '258', '260', '261', '262', '263', '264',
+  '265', '266', '267', '268', '269', '27', '290', '291', '297', '298', '299',
+  // Europe
+  '30', '31', '32', '33', '34', '350', '351', '352', '353', '354', '355', '356',
+  '357', '358', '359', '36', '370', '371', '372', '373', '374', '375', '376', '377',
+  '378', '379', '380', '381', '382', '383', '385', '386', '387', '389', '39',
+  '40', '41', '420', '421', '423', '43', '44', '45', '46', '47', '48', '49',
+  // Latin America
+  '500', '501', '502', '503', '504', '505', '506', '507', '508', '509', '51', '52',
+  '53', '54', '55', '56', '57', '58', '590', '591', '592', '593', '594', '595',
+  '596', '597', '598', '599',
+  // Southeast Asia / Oceania
+  '60', '61', '62', '63', '64', '65', '66', '670', '672', '673', '674', '675',
+  '676', '677', '678', '679', '680', '681', '682', '683', '685', '686', '687',
+  '688', '689', '690', '691', '692',
+  // East Asia / Russia / Central Asia
+  '7', '81', '82', '84', '850', '852', '853', '855', '856', '86', '880', '886',
+  // Middle East / South Asia
+  '90', '91', '92', '93', '94', '95', '960', '961', '962', '963', '964', '965',
+  '966', '967', '968', '970', '971', '972', '973', '974', '975', '976', '977',
+  '98', '992', '993', '994', '995', '996', '998',
 ];
 
 /**
@@ -63,6 +89,12 @@ function validateNANP(digits) {
  */
 export function normalisePhone(raw, countryCode) {
   if (!raw || typeof raw !== 'string') return { ok: false, reason: 'empty' };
+
+  // Letters are never part of a phone number, and stripping them is DANGEROUS:
+  // "555-1234 ext 99" would collapse to 5551234 99 -> "555123499", a number that
+  // looks plausible, passes every later check, and belongs to nobody. Reject
+  // instead of silently inventing a number for a real person.
+  if (/[a-z]/i.test(raw)) return { ok: false, reason: 'contains letters (extension or typo?)' };
 
   // Keep digits, and a leading + if present. Strip spaces, dashes, brackets, dots.
   let s = raw.trim().replace(/[^\d+]/g, '');
