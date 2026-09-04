@@ -18,7 +18,19 @@
   .brand { text-align:center; margin-bottom:24px; }
   .brand-name { font-size:1.15rem; font-weight:800; letter-spacing:.02em; }
   .brand-sub { font-size:.72rem; font-weight:700; letter-spacing:.2em; text-transform:uppercase; opacity:.7; margin-top:4px; }
-  .head { text-align:center; margin-bottom:26px; }
+  .head { text-align:center; margin-bottom:22px; }
+  .sample {
+    background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.16);
+    border-radius:16px; padding:20px 22px; margin-bottom:22px;
+  }
+  .sample-label { font-size:.72rem; font-weight:800; letter-spacing:.16em;
+                  text-transform:uppercase; opacity:.7; margin-bottom:14px; }
+  .sample-line {
+    font-size:.97rem; line-height:1.5; padding:11px 0 11px 15px;
+    border-left:3px solid rgba(255,255,255,.38);
+  }
+  .sample-line + .sample-line { margin-top:4px; }
+  .sample-foot { font-size:.83rem; opacity:.7; margin-top:15px; }
   h1 { font-size:2rem; line-height:1.18; margin-bottom:12px; }
   .lead { font-size:1.05rem; opacity:.9; }
   form {
@@ -68,8 +80,21 @@
     </div>
 
     <div class="head">
-      <h1>Reminders from Star</h1>
-      <p class="lead">Short reminders and tips to get out of your head and back into your life. Sent by email. Text messages are optional.</p>
+      <h1>Get out of your head, in the middle of your day</h1>
+      <p class="lead">Most of your day happens while you are stuck inside your head. These pull you back out, at a moment you are not expecting one. Sent by email, and to your phone if you want them there.</p>
+    </div>
+
+    <!-- The reminders themselves are the best copy on this page. Star's words,
+         verbatim from api/reminders/_lines.js. Never rewrite these to be
+         punchier. If a line here stops matching the file, this block is a lie
+         about what people are signing up for. -->
+    <div class="sample">
+      <div class="sample-label">What actually arrives</div>
+      <p class="sample-line">Remember, you only have two choices. You can be inside of your head or outside of your head. Now go outside of your head!</p>
+      <p class="sample-line">Move forward with the wrong feeling.</p>
+      <p class="sample-line">Stop trying to get results! Make it about exploring.</p>
+      <p class="sample-line">Confidence comes after the action.</p>
+      <div class="sample-foot">One a day. No advice, no analysis, nothing to reply to.</div>
     </div>
 
     <form id="sms-form">
@@ -83,14 +108,17 @@
 
       <div class="optional-block">
         <div class="step">Step 2 &middot; Optional</div>
-        <div class="optional-head">Also want them as text messages?</div>
+        <div class="optional-head">Want them on your phone as well?</div>
         <div class="optional-sub">
           Completely optional. Leave this blank and you will still get your reminders by email.
           You do not need to give a phone number to receive anything from Star, to buy anything,
           or to use any part of this site.
         </div>
 
-        <input type="tel" name="phone" placeholder="Mobile number (optional)" />
+        <!-- The country code is in the placeholder on purpose. The parser refuses
+             a bare local number rather than guessing a country, so an Australian
+             typing 0412... is rejected. Showing the shape prevents that. -->
+        <input type="tel" name="phone" placeholder="Mobile number with country code, e.g. +1 310 555 1234" />
 
         <label class="consent">
           <input type="checkbox" name="consent" />
