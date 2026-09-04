@@ -251,6 +251,19 @@ async function setStatus(sb, phone, status) {
     method: 'PATCH',
     body: JSON.stringify({ status, updated_at: new Date().toISOString() }),
   }).catch(() => {});
+
+  // Mirror it into ActiveCampaign, which is Star's system of record and the
+  // thing he segments and writes from. Without this, someone who texted STOP
+  // stays tagged sms:consented forever: the list reads bigger than it is, and
+  // the opt-out has no trace anywhere Star would look.
+  //
+  // Imported lazily and awaited but never allowed to throw. An ActiveCampaign
+  // outage must NEVER stop a STOP being honoured — that part is the law, this
+  // part is bookkeeping.
+  try {
+    const { syncSmsStatusToAC } = await import('./_ac-sync.js');
+    await syncSmsStatusToAC(phone, status);
+  } catch { /* bookkeeping only */ }
 }
 
 async function flagMember(sb, phone, flags) {

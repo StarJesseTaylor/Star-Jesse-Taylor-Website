@@ -20,7 +20,7 @@ export default async function handler(req, res) {
   const AC_URL = (process.env.ACTIVECAMPAIGN_API_URL || 'https://starjessetaylor92181.api-us1.com').replace(/\/$/, '');
   if (!AC_KEY) return res.status(500).json({ error: 'Server configuration error' });
 
-  const { firstName, email, phone, consent, website_url, source } = req.body || {};
+  const { firstName, lastName, email, phone, consent, website_url, source } = req.body || {};
 
   // Honeypot
   if (website_url) {
@@ -82,8 +82,13 @@ export default async function handler(req, res) {
       method: 'POST',
       headers,
       body: JSON.stringify({
+        // Only send fields we actually have. AC's contact/sync matches on email
+        // and updates ONLY the keys present, so omitting lastName leaves an
+        // existing last name intact rather than blanking it. Star has people in
+        // AC from years of forms; this must never wipe what is already there.
         contact: Object.assign(
           { email, firstName: firstName || '' },
+          lastName ? { lastName } : {},
           normalizedPhone ? { phone: normalizedPhone } : {}
         )
       })

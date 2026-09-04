@@ -40,6 +40,8 @@
   .step { font-size:.72rem; font-weight:800; letter-spacing:.16em; text-transform:uppercase;
           opacity:.75; margin-bottom:10px; }
   .row { display:grid; grid-template-columns:1fr 1fr; gap:13px; }
+  .row + .row { margin-top:13px; }
+  .row-single { grid-template-columns:1fr; }
   input[type=text], input[type=email], input[type=tel] {
     width:100%; padding:14px 16px; border-radius:10px;
     border:1px solid rgba(255,255,255,.25); background:rgba(255,255,255,.96);
@@ -103,6 +105,13 @@
       <div class="step">Step 1 &middot; Required</div>
       <div class="row">
         <input type="text" name="firstName" placeholder="First name" required />
+        <!-- Last name is OPTIONAL on purpose. Star needs it to tell two Sarahs
+             apart when he looks at the list, but every required field costs
+             signups, and no reminder ever uses it. Optional gets most of the
+             benefit for none of the cost. -->
+        <input type="text" name="lastName" placeholder="Last name (optional)" />
+      </div>
+      <div class="row row-single">
         <input type="email" name="email" placeholder="Email address" required />
       </div>
 
@@ -165,6 +174,7 @@
 
     const data = {
       firstName: fd.get('firstName') || '',
+      lastName:  fd.get('lastName') || '',
       email:     fd.get('email') || '',
       phone:     smsOptIn ? phone : '',
       consent:   smsOptIn,
