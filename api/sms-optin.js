@@ -1,3 +1,7 @@
+// One phone parser for the whole system. The signup door and the sender MUST
+// agree, or we save numbers we can never text. See the note at normalizedPhone.
+import { normalisePhone } from './reminders/_channel.js';
+
 const LIST_ID = '3'; // Master Contact List
 
 export default async function handler(req, res) {
@@ -41,11 +45,33 @@ export default async function handler(req, res) {
     return res.status(200).json({ success: true });
   }
 
-  // Normalize phone (strip non-digits, store with leading + if missing). Empty when email-only.
+  // Normalise the phone using THE SAME function the sender uses.
+  //
+  // 🛑 THIS FILE USED TO ROLL ITS OWN, AND IT CORRUPTED EVERY NON-US NUMBER.
+  //    The old line was:
+  //      digits.startsWith('+') ? digits : (len === 10 ? `+1${digits}` : `+${digits}`)
+  //    An Australian typing "0412 345 678" -> 10 digits -> "+10412345678", a US
+  //    number with area code 041, which does not exist. A UK "07911123456" ->
+  //    "+07911123456", and E.164 never has a zero straight after the +.
+  //    Both got written to ActiveCampaign AND to member_channel, looked fine in
+  //    every dashboard, and were then rejected at send time. The member is on
+  //    the list, has consented, shows as active, and never receives anything.
+  //    Nobody finds out. Star mentioned testers in Beijing, Singapore and
+  //    Australia — this would have hit all of them.
+  //
+  //    normalisePhone() refuses ambiguous input instead of inventing a number,
+  //    so a bad entry now fails loudly at the form where the person can fix it.
   let normalizedPhone = '';
   if (smsOptIn) {
-    const phoneDigits = String(phone).replace(/[^\d+]/g, '');
-    normalizedPhone = phoneDigits.startsWith('+') ? phoneDigits : (phoneDigits.length === 10 ? `+1${phoneDigits}` : `+${phoneDigits}`);
+    const parsed = normalisePhone(String(phone), req.body?.countryCode);
+    if (!parsed.ok) {
+      return res.status(400).json({
+        error: 'phone',
+        message: "That number doesn't look right. Please include your country code, like +61 for Australia or +65 for Singapore.",
+        detail: parsed.reason,
+      });
+    }
+    normalizedPhone = parsed.e164;
   }
 
   const headers = { 'Api-Token': AC_KEY, 'Content-Type': 'application/json' };
