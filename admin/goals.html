@@ -3,51 +3,59 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>30-Day Challenge · Member Goals</title>
+<title>30-Day Challenge · Member Dashboard</title>
 <style>
   :root{
     --bg:#0e1116; --card:#171b22; --card2:#1e232c; --line:#2a313c;
     --ink:#e8ecf2; --dim:#9aa4b2; --accent:#4ade80; --warn:#f59e0b; --cold:#64748b;
+    --blue:#60a5fa; --pink:#f472b6;
   }
   *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
-  .wrap{max-width:1000px;margin:0 auto;padding:22px 16px 80px}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1040px;margin:0 auto;padding:22px 16px 90px}
   h1{font-size:22px;margin:0 0 4px}
   .sub{color:var(--dim);font-size:14px;margin:0 0 18px}
-  .stats{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
-  .stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;min-width:110px}
-  .stat b{display:block;font-size:24px;line-height:1.1}
+  .sub a{color:var(--accent)}
+  .stats{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 15px;min-width:104px}
+  .stat b{display:block;font-size:23px;line-height:1.1}
   .stat span{color:var(--dim);font-size:12px}
-  .stat.green b{color:var(--accent)} .stat.warn b{color:var(--warn)} .stat.cold b{color:var(--cold)}
-  .controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+  .stat.green b{color:var(--accent)} .stat.warn b{color:var(--warn)} .stat.cold b{color:var(--cold)} .stat.blue b{color:var(--blue)}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
   input#q{flex:1;min-width:180px;background:var(--card);border:1px solid var(--line);color:var(--ink);border-radius:10px;padding:10px 12px;font-size:14px}
+  .seg{display:inline-flex;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;flex-wrap:wrap}
+  .seg button{background:none;border:0;color:var(--dim);padding:9px 13px;font-size:13px;cursor:pointer}
+  .seg button.on{background:var(--card2);color:var(--ink)}
+  .refresh{background:var(--card2);border:1px solid var(--line);color:var(--ink);border-radius:10px;padding:9px 14px;font-size:13px;cursor:pointer}
   .chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
   .chip{background:var(--card);border:1px solid var(--line);color:var(--dim);border-radius:999px;padding:6px 12px;font-size:13px;cursor:pointer;user-select:none}
   .chip.on{background:var(--card2);color:var(--ink);border-color:#3b4552}
-  .seg{display:inline-flex;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}
-  .seg button{background:none;border:0;color:var(--dim);padding:9px 14px;font-size:13px;cursor:pointer}
-  .seg button.on{background:var(--card2);color:var(--ink)}
-  .row{display:flex;gap:12px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:8px}
-  .row .g{font-size:22px;line-height:1.2;width:30px;text-align:center;flex:0 0 auto}
-  .row .body{flex:1;min-width:0}
-  .row .name{font-weight:600}
-  .row .garden{color:var(--dim);font-size:13px}
-  .row .acts{margin-top:6px;font-size:13px;color:var(--ink)}
-  .row .acts span{display:inline-block;background:var(--card2);border:1px solid var(--line);border-radius:8px;padding:3px 8px;margin:3px 4px 0 0}
-  .badge{flex:0 0 auto;font-size:11px;font-weight:700;padding:4px 8px;border-radius:999px;align-self:center}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:10px}
+  .chead{display:flex;gap:12px;align-items:center}
+  .chead .g{font-size:24px;width:32px;text-align:center;flex:0 0 auto}
+  .chead .nm{font-weight:600;font-size:16px;flex:1;min-width:0}
+  .chead .grow{color:var(--dim);font-size:13px}
+  .chead .grow b{color:var(--ink);font-weight:600}
+  .badge{flex:0 0 auto;font-size:11px;font-weight:700;padding:4px 9px;border-radius:999px}
   .badge.started{background:rgba(74,222,128,.15);color:var(--accent)}
   .badge.claimed{background:rgba(245,158,11,.15);color:var(--warn)}
-  .badge.none{background:rgba(100,116,139,.15);color:var(--cold)}
-  .muted{color:var(--dim)}
-  .refresh{background:var(--card2);border:1px solid var(--line);color:var(--ink);border-radius:10px;padding:9px 14px;font-size:13px;cursor:pointer}
+  .badge.none{background:rgba(100,116,139,.18);color:var(--cold)}
+  .block{margin-top:10px;font-size:14px}
+  .block .lab{display:block;font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--dim);margin-bottom:2px}
+  .block.challenge .lab{color:var(--warn)}
+  .block.wants .lab{color:var(--blue)}
+  .block.progress .lab{color:var(--accent)}
+  .acts{margin-top:8px}
+  .acts span{display:inline-block;background:var(--card2);border:1px solid var(--line);border-radius:8px;padding:3px 8px;margin:3px 4px 0 0;font-size:12.5px}
+  .noentry{color:var(--cold);font-size:13px;margin-top:8px;font-style:italic}
   .empty{color:var(--dim);text-align:center;padding:40px 0}
-  a{color:var(--accent)}
+  .muted{color:var(--dim)}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>🌱 30-Day Challenge · Member Goals</h1>
-  <p class="sub">Live from the board. What each member chose to grow this month, and where they are. <a href="/games">open the board →</a></p>
+  <h1>🌱 30-Day Challenge · Member Dashboard</h1>
+  <p class="sub">Goal is live from the board. Challenge + progress are from the Progress Log. <a href="/games">open the board →</a> · <span id="ts" class="muted"></span></p>
 
   <div class="stats" id="stats"></div>
 
@@ -58,6 +66,7 @@
       <button data-s="started">Started</button>
       <button data-s="claimed">Claimed, not logged</button>
       <button data-s="none">Not started</button>
+      <button data-s="haswins">Has progress log</button>
     </span>
     <button class="refresh" id="refresh">↻ Refresh</button>
   </div>
@@ -66,6 +75,30 @@
   <div id="list"></div>
 </div>
 
+<script id="progressData" type="application/json">
+[{"name":"Leanne Jones","challenge":"Intrusive thoughts and asking 'what does this mean about me,' freezing and letting her brain run wild while she watches the horror movies.","wants":"To acknowledge thoughts and move her attention outside her head instead of freezing.","progress":"By 30/07: now takes ~60s to acknowledge a thought and shift attention out of her head, many times a day; surrenders her body, moves attention to her breath; reframing wins as valued actions, not symptom intensity."},
+{"name":"Ghazaal Monir","challenge":"Since 02/06: panic attacks when driving plus intrusive thoughts; was terrified of her sensations, couldn't be alone, called family/emergency during attacks.","wants":"To drive through panic and put herself first, thinking of her tomorrow woman.","progress":"Drives through panic on highways and feared freeways/tunnels; surrenders and sees panic stop; thoughts quieter; going to the gym; by 19/08 less morning anxiety, 'light at the end of the tunnel.'"},
+{"name":"Hosnia Qazi","challenge":"Anxiety, intrusive thoughts, DP/DR, low-mood waves and constantly getting pulled into her head; spent a long time trying to think her way out.","wants":"To change where she places her attention and keep living rather than get rid of every feeling.","progress":"Low waves feel less scary; more presence, energy and contentment; goes most of the day without ruminating; overcame her stickiest hunger-alarm symptom — now leaves the house with no snacks."},
+{"name":"Natalie Krstanoska","challenge":"After years stable with OCD, a 02/05 health scare triggered intense panic and DPDR; couldn't be alone, withdrew from friends, gym, family and driving.","wants":"To keep building a life guided by her values, taking the actions she'd take if anxiety wasn't driving.","progress":"By 30/07: surrenders and welcomes discomfort; now comfortable alone, driving again, back at uni and back at the bigger gym — all things that felt impossible a month earlier."},
+{"name":"Caitlin Fleming","challenge":"OCD, intrusive thoughts and panic attacks for 16 years; hit rock bottom Jan 2024, refused to leave her room, severe anxiety even with family.","wants":"To spend more time outside her brain and be in a healthy, thriving relationship.","progress":"No panic attack in 2 years; did an 8-week improv class and performed for 100 people; lead singer of a DC band, learning ukulele, travels solo often; adding morning meditation and self-worth work."},
+{"name":"Leslie McCoy","challenge":"Anxiety since middle school plus health anxiety linked to her mother's passing; stays in her head overthinking and thinking about death, very self-critical.","wants":"To stay out of her head and live more outside, enjoying life to the fullest.","progress":"Learning tennis with daily stretches and walks; cut back immensely on drinking; breathing techniques; uses the No Brain method to stop ruminating; more motivated on her art career."},
+{"name":"Daniel Vonk","challenge":"10 years ago OCD, anxiety and depression were so bad he couldn't leave the house, used meds and alcohol and felt suicidal.","wants":"To practice being himself again.","progress":"OCD gone, anxiety gone, no more depression; a recent break-up hurts but he's practicing being himself and is proud — 'I am not watching this TV channel anymore.'"},
+{"name":"Amy Page","challenge":"First-ever panic attack on 25/12/25 when her body could no longer hold 2025 trauma, then extreme anxiety, dissociation and a stuck intrusive-thought loop; 'a shell of myself.'","wants":"To keep giving her valued actions energy while the symptoms and fear are still there.","progress":"By 21/08: 11 weeks with no panic attack; barely gets intrusive thoughts and laughs them off; about to fly for the first time since it started and is excited to practice."},
+{"name":"Marlee Phelan","challenge":"Since Jan 2016 (a panic attack at 34 weeks pregnant at the movies), many years of awful panic and intrusive thoughts.","wants":"To travel — a core value — and get on a plane again.","progress":"Since joining July 2026 understands panic is a cycle; learning to sit with the feeling, stay outside her brain and look outwards; feeling more confident about booking a 4-day flight."},
+{"name":"Francesca Rose","challenge":"Since ~2020, panic in big open/travel situations; hasn't flown alone in ~6 years, plus intrusive thoughts and rumination after a 2025 panic attack and the end of a six-year relationship.","wants":"To keep living and travelling, take more territory even with fear, and fly again one day.","progress":"Booked solo train trips to Strasbourg then spontaneously Paris; ran the Adidas Night 10K in 1:08 with no walk breaks; gym 3x/week; started making and sharing videos on Instagram."},
+{"name":"Gagan Chawla","challenge":"April 2026 sudden OCD flare-up targeting the things he loves most, with panic, dread, shame and guilt — hitting while buying his dream car.","wants":"To live outside his head and become the person he's imagining for himself.","progress":"By 13d: after 22 days feels genuinely great, loving his life, practicing techniques moment-to-moment and shifting his measure of success to living."},
+{"name":"Katie Hayman","challenge":"Severe OCD and anxiety since March 2025; stopped doing the things she loved while waiting for perfect feelings, lost herself and all confidence.","wants":"To be confident with any feeling or thought and help others see the light in themselves.","progress":"By 31/07: follows her valued actions instead of chasing relief; symptoms decreased and no longer stop her plans; speaks to herself more lightly, calmer with big emotions."},
+{"name":"Leander von der Hagen","challenge":"Since ~03.08.2025, anxiety and frequent panic attacks; intrusive thoughts with extreme fear of becoming schizophrenic, constant thought-checking; ~3 years of health anxiety.","wants":"Consistency in the gym, waking without dread, going out with friends and enjoying his relationship without overthinking.","progress":"Day one only, no wins logged yet."},
+{"name":"Mona Ouartani","challenge":"Day 1 July 18, 2026: panic attacks for the first time in her life plus severe OCD that had worsened; felt 'in danger' all the time, stuck and a slave to her brain.","wants":"To focus next on her phone addiction and procrastination.","progress":"Aug 5: no longer has panic attacks or physical symptoms and doesn't care if they return; Aug 11: two weeks very consistent with exercise; Aug 13: ruminating far less, not talking back to OCD thoughts."},
+{"name":"Esra Sabedini","challenge":"Since May 1, 2026: panic attacks, insomnia, anxiety and negative thoughts; has struggled in phases for years; two prior years of therapy felt too focused on her past.","wants":"To be free of the negative thoughts that still feel part of her.","progress":"July: found Star Coaching and read the book; by August acting outside her head instead of getting caught in thoughts, small meaningful progress weekly, and genuinely proud of herself for the first time in a long time."},
+{"name":"Jazmin Rodriguez","challenge":"Since March 2026, panic and anxiety that became harm-OCD intrusive thoughts; uncomfortable being home or alone with her kids, leading to depression — one of her lowest points.","wants":"To one day look back proud of herself for being resilient and pushing through her fears.","progress":"Day one only, no wins logged yet — 'still here fighting everyday to move forward,' refusing to give up on herself, her kids and her husband."},
+{"name":"Mel C","challenge":"Past three months of awful panic attacks that started with an out-of-the-blue attack while driving; now scared to drive far or in traffic; long-time high-functioning anxiety.","wants":"To get out of the fear loop and back in her car without a second thought.","progress":"By 01/09 (over two weeks): more meditation, less time in her head, driving much longer and further with minimal anxiety and no major panic; pumped for the 30-day challenge."},
+{"name":"Kelly Karinen","challenge":"Depersonalization for ~2 years; a 46-year-old mom of 3 going through body changes with increased symptoms, can't sit still, intrusive thoughts, waking from sleep; grieves who she was.","wants":"To learn the practices and grow — done letting this take over her life, for her family.","progress":"Day one only, no wins logged yet — just joined a few days ago."},
+{"name":"Nikola Pajovic","challenge":"DPDR for 3 months plus OCD and chest tightness; feels it's taking over his life; a few panic attacks he beats more easily, but the rest sticks and he overthinks it.","wants":"","progress":"Day one only, no wins logged yet — joined 21.08, challenging himself since day one but still struggling."},
+{"name":"Erik Disnard","challenge":"Since June 1, 2026: in and out of gambling addiction, chasing wins and taking high-interest loans; dark thoughts, emotional reactivity, stressed driving with panic (ER 2-3 times), avoidance of socializing.","wants":"To be present, socialize, and build a life that nurtures him rather than gambling.","progress":"By Aug 27: no gambling and no urges; dark thoughts nearly gone; drives calmly, socializes far more; tapered meds; doing kickboxing, drums, exercise, in a beautiful relationship."},
+{"name":"Haris Fida","challenge":"After a month-plus of panic and anxiety became very hypervigilant; intrusive questioning about his visual perception ('does this room look normal?'), hyperaware of how seeing feels.","wants":"To respond to the thoughts without turning the response into reassurance or another compulsion.","progress":"Kept living and stopped giving intrusive sounds attention so they faded; much better with panic; practicing not analysing the perception thoughts while going out, studying, exercising, socializing."}]
+</script>
+
 <script>
 const GARDENS = {
   fit:['💪','Fitness'], art:['🎨','Creative'], content:['📱','Content'], biz:['💼','Business'],
@@ -73,63 +106,69 @@ const GARDENS = {
   courage:['🦁','Courage'], relax:['😌','Relaxation'], nature:['🌳','Nature'],
   wins:['🏅','Wins of the Day'], any:['🃏','Wildcard'], relationship:['💞','Relationship']
 };
+const PROG = {};
+try{ JSON.parse(document.getElementById('progressData').textContent).forEach(p=>{ PROG[p.name]=p; }); }catch(e){}
 let RAW=[], gardenFilter='', statusFilter='all', query='';
 
 function statusOf(m){
   const days=m.days||{};
-  const logged=Object.keys(days).some(k=>/^\d+$/.test(k));
-  if(logged) return 'started';
-  if(m.claimed) return 'claimed';
-  return 'none';
+  if(Object.keys(days).some(k=>/^\d+$/.test(k))) return 'started';
+  return m.claimed ? 'claimed' : 'none';
 }
 function actionsOf(m){
   const plan=(m.days||{}).plan||{}; const out=[];
   for(const k in plan){ if(Array.isArray(plan[k])) for(const it of plan[k]){ if(it&&it.a) out.push(it.a.trim()); } }
   return [...new Set(out)];
 }
-
 async function load(){
   document.getElementById('list').innerHTML='<div class="empty">Loading…</div>';
   try{
     const r=await fetch('/api/games',{cache:'no-store'}); const d=await r.json();
-    RAW=(d.members||[]).map(m=>({name:m.name, garden:(m.days||{}).main||'', status:statusOf(m), actions:actionsOf(m)}));
+    RAW=(d.members||[]).map(m=>({name:m.name, garden:(m.days||{}).main||'', status:statusOf(m), actions:actionsOf(m), prog:PROG[m.name]||null}));
+    document.getElementById('ts').textContent='updated '+new Date().toLocaleTimeString();
     render();
   }catch(e){ document.getElementById('list').innerHTML='<div class="empty">Could not load the board.</div>'; }
 }
-
 function render(){
   const started=RAW.filter(m=>m.status==='started').length;
   const claimed=RAW.filter(m=>m.status==='claimed').length;
   const none=RAW.filter(m=>m.status==='none').length;
-  const withGoal=RAW.filter(m=>m.garden).length;
+  const withProg=RAW.filter(m=>m.prog).length;
   document.getElementById('stats').innerHTML=
-    stat('green',started,'Started (logged)')+
-    stat('warn',claimed,'Claimed, not logged')+
-    stat('cold',none,'Not started')+
-    stat('',withGoal,'Picked a goal');
+    stat('green',started,'Started')+stat('warn',claimed,'Claimed, not logged')+
+    stat('cold',none,'Not started')+stat('blue',withProg,'Progress-log entries');
 
-  // garden chips (counts)
-  const counts={};
-  RAW.forEach(m=>{ if(m.garden) counts[m.garden]=(counts[m.garden]||0)+1; });
+  const counts={}; RAW.forEach(m=>{ if(m.garden) counts[m.garden]=(counts[m.garden]||0)+1; });
   let chips='<span class="chip '+(!gardenFilter?'on':'')+'" data-g="">All gardens</span>';
   Object.keys(GARDENS).forEach(k=>{ if(counts[k]) chips+='<span class="chip '+(gardenFilter===k?'on':'')+'" data-g="'+k+'">'+GARDENS[k][0]+' '+GARDENS[k][1]+' ('+counts[k]+')</span>'; });
   document.getElementById('gardenChips').innerHTML=chips;
 
   let list=RAW.slice();
   if(gardenFilter) list=list.filter(m=>m.garden===gardenFilter);
-  if(statusFilter!=='all') list=list.filter(m=>m.status===statusFilter);
+  if(statusFilter==='haswins') list=list.filter(m=>m.prog);
+  else if(statusFilter!=='all') list=list.filter(m=>m.status===statusFilter);
   if(query) list=list.filter(m=>m.name.toLowerCase().includes(query));
-  list.sort((a,b)=>a.name.localeCompare(b.name));
+  // sort: has-progress first, then started, then name
+  const order={started:0,claimed:1,none:2};
+  list.sort((a,b)=> (b.prog?1:0)-(a.prog?1:0) || order[a.status]-order[b.status] || a.name.localeCompare(b.name));
 
   const badge={started:['started','Started'],claimed:['claimed','Claimed'],none:['none','Not started']};
-  const html=list.map(m=>{
-    const g=GARDENS[m.garden]||['·','No goal set yet'];
-    const acts=m.actions.length?'<div class="acts">'+m.actions.map(a=>'<span>'+esc(a)+'</span>').join('')+'</div>':'';
-    return '<div class="row"><div class="g">'+g[0]+'</div><div class="body"><div class="name">'+esc(m.name)+'</div>'+
-      '<div class="garden">'+(m.garden?g[1]:'<span class="muted">no goal picked yet</span>')+'</div>'+acts+
-      '</div><div class="badge '+badge[m.status][0]+'">'+badge[m.status][1]+'</div></div>';
-  }).join('');
-  document.getElementById('list').innerHTML=html||'<div class="empty">No one matches that filter.</div>';
+  document.getElementById('list').innerHTML = list.map(m=>{
+    const g=GARDENS[m.garden]||['·',''];
+    const grow = m.garden ? '<span class="grow">growing <b>'+g[1]+'</b></span>' : '<span class="grow muted">no goal picked yet</span>';
+    const acts = m.actions.length ? '<div class="acts">'+m.actions.map(a=>'<span>'+esc(a)+'</span>').join('')+'</div>' : '';
+    let body='';
+    if(m.prog){
+      if(m.prog.challenge) body+='<div class="block challenge"><span class="lab">Challenge</span>'+esc(m.prog.challenge)+'</div>';
+      if(m.prog.wants) body+='<div class="block wants"><span class="lab">Wants</span>'+esc(m.prog.wants)+'</div>';
+      if(m.prog.progress) body+='<div class="block progress"><span class="lab">Progress so far</span>'+esc(m.prog.progress)+'</div>';
+    } else {
+      body='<div class="noentry">No progress-log entry yet.</div>';
+    }
+    return '<div class="card"><div class="chead"><div class="g">'+(m.garden?g[0]:'·')+'</div>'+
+      '<div class="nm">'+esc(m.name)+'<br>'+grow+'</div>'+
+      '<div class="badge '+badge[m.status][0]+'">'+badge[m.status][1]+'</div></div>'+acts+body+'</div>';
+  }).join('') || '<div class="empty">No one matches that filter.</div>';
 }
 function stat(cls,n,label){ return '<div class="stat '+cls+'"><b>'+n+'</b><span>'+label+'</span></div>'; }
 function esc(s){ return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
@@ -139,7 +178,7 @@ document.getElementById('gardenChips').addEventListener('click',e=>{ const c=e.t
 document.getElementById('statusSeg').addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b)return; statusFilter=b.dataset.s; [...e.currentTarget.children].forEach(x=>x.classList.toggle('on',x===b)); render(); });
 document.getElementById('refresh').addEventListener('click',load);
 load();
-setInterval(load, 60000); // auto-refresh every minute
+setInterval(load,60000);
 </script>
 </body>
 </html>
