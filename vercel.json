@@ -37,7 +37,7 @@
     { "source": "/speak", "destination": "/speak.html" }
   ],
   "redirects": [
-    { "source": "/welcome", "destination": "https://www.loom.com/share/dfcbc563d0aa4cc8ba93696e05069eab", "permanent": false },
+    { "source": "/welcome", "destination": "https://www.loom.com/share/998d12471dab49e8961ad538956a9a58", "permanent": false },
     { "source": "/join", "destination": "https://www.skool.com/star-jesse-taylor-3703", "permanent": false },
     { "source": "/start", "destination": "https://www.skool.com/star-jesse-taylor-3703?utm_source=book&utm_medium=book", "permanent": false },
     { "source": "/free", "destination": "https://www.skool.com/star-jesse-taylor-3703?utm_source=book&utm_medium=book", "permanent": false },
