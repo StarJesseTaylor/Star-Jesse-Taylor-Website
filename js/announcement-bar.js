@@ -21,7 +21,7 @@
   var bar = document.createElement('a');
   bar.id = 'sjt-announce-bar';
   bar.href = WAITLIST_URL;
-  bar.setAttribute('aria-label', 'The community opens July 1. Get on the list.');
+  bar.setAttribute('aria-label', 'Join the community. Weekly live coaching calls with Star.');
   bar.style.cssText = [
     'position:fixed', 'top:0', 'left:0', 'right:0', 'z-index:1001',
     'display:flex', 'align-items:center', 'justify-content:center',
@@ -33,8 +33,8 @@
   ].join(';');
 
   bar.innerHTML =
-    '<span class="sjt-bar-lead" style="color:#f5d478;font-weight:900;letter-spacing:0.03em;">One free week of live calls with Star</span>' +
-    '<span class="sjt-bar-cta" style="color:#fff;font-weight:800;">Try It Free &rarr;</span>';
+    '<span class="sjt-bar-lead" style="color:#f5d478;font-weight:900;letter-spacing:0.03em;">Weekly live coaching calls with Star</span>' +
+    '<span class="sjt-bar-cta" style="color:#fff;font-weight:800;">Join the Community &rarr;</span>';
 
   function offset() {
     var h = bar.offsetHeight;
@@ -43,9 +43,10 @@
     document.body.style.paddingTop = h + 'px';
   }
 
-  // Countdown code removed 2026-07-08 per Star. Banner now shows the
-  // locked "One free week of live calls with Star." copy full-time,
-  // pointing at the Skool community. No countdown, no launch flip.
+  // Countdown code removed 2026-07-08 per Star. Freebie copy removed
+  // 2026-09-10 per Star (no freebies). Banner now shows the static
+  // "Weekly live coaching calls with Star" copy, pointing at the Skool
+  // community. No countdown, no launch flip.
   function tick() {
     // No-op. Banner content is static.
     return;
