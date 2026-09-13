@@ -88,6 +88,32 @@ export default async function handler(req, res) {
     }
   }
 
+  // ---- reset ONE member's PIN (admin) — keeps their progress ----
+  // Clears only pin_hash so the member can re-claim their row with a NEW pin.
+  // days (their logged progress) is left untouched.
+  if (op === 'resetmember') {
+    if (!process.env.CRON_SECRET || body.key !== process.env.CRON_SECRET) {
+      return res.status(401).json({ error: 'unauthorized' });
+    }
+    const m = typeof body.member === 'string' ? body.member.slice(0, 120) : '';
+    if (!m) return res.status(400).json({ error: 'member required' });
+    try {
+      const r = await fetch(`${REST()}?member_name=eq.${encodeURIComponent(m)}`, {
+        method: 'PATCH',
+        headers: sb({ Prefer: 'return=representation' }),
+        body: JSON.stringify({ pin_hash: null, updated_at: new Date().toISOString() }),
+      });
+      if (!r.ok) return res.status(502).json({ error: 'reset failed', detail: await r.text().catch(() => '') });
+      const rows = await r.json().catch(() => []);
+      if (!rows || !rows.length) return res.status(404).json({ error: 'member not found', member: m });
+      const kept = Object.keys(rows[0].days || {}).length;
+      return res.status(200).json({ ok: true, member: m, reset: true, days_kept: kept });
+    } catch (err) {
+      console.error('games resetmember error', err);
+      return res.status(500).json({ error: 'reset error' });
+    }
+  }
+
   const member = typeof body.member === 'string' ? body.member.slice(0, 120) : '';
   const pin = typeof body.pin === 'string' ? body.pin.trim().slice(0, 12) : '';
   if (!member || !pin) return res.status(400).json({ error: 'member and pin required' });
