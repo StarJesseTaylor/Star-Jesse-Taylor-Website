@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Games — Reset a PIN</title>
+<style>
+  :root{--bg:#0c1420;--panel:#141f30;--ink:#e8eef7;--muted:#8ea0ba;--line:#26344a;--blue:#4b9bff;--gold:#f0b459;--danger:#ff7a54;--ok:#3ace7a}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;padding:0 0 60px}
+  header{position:sticky;top:0;background:#0f1a2b;padding:16px 16px 14px;box-shadow:0 4px 18px rgba(0,0,0,.35)}
+  h1{margin:0;font-size:1.15rem}
+  .sub{color:var(--muted);font-size:.85rem;margin-top:4px}
+  .wrap{max-width:640px;margin:0 auto;padding:16px}
+  .bar{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 16px}
+  button{font:inherit;border:0;border-radius:10px;padding:11px 16px;font-weight:700;cursor:pointer}
+  .backup{background:var(--gold);color:#1a1200}
+  .reload{background:var(--panel);color:var(--ink);border:1px solid var(--line)}
+  .row{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:8px}
+  .name{font-weight:700}
+  .meta{color:var(--muted);font-size:.82rem;margin-top:2px}
+  .rbtn{background:transparent;color:var(--danger);border:1px solid var(--danger);padding:8px 12px;font-size:.85rem;white-space:nowrap}
+  .rbtn:disabled{opacity:.5}
+  .note{color:var(--ok);font-size:.82rem}
+  .err{color:var(--danger);font-size:.82rem}
+  .banner{background:#3a2a12;border:1px solid var(--gold);color:#f6dcae;border-radius:10px;padding:10px 12px;font-size:.85rem;margin-bottom:14px}
+  input[type=search]{width:100%;padding:11px 14px;border-radius:10px;border:1px solid var(--line);background:#0f1826;color:var(--ink);font:inherit;margin-bottom:12px}
+</style>
+</head>
+<body>
+<header>
+  <h1>Audacity Games — Reset a PIN</h1>
+  <div class="sub">Clears one member's PIN so they can set a new one. Their progress is kept.</div>
+</header>
+<div class="wrap">
+  <div id="gate" class="banner" style="display:none">Add <b>?key=YOUR_ADMIN_KEY</b> to the URL to use this page.</div>
+  <div class="banner">Before resetting anyone, tap <b>Download backup</b> once. It saves every member's progress so it can always be added back.</div>
+  <div class="bar">
+    <button class="backup" onclick="backup()">⬇️ Download backup</button>
+    <button class="reload" onclick="load()">↻ Reload</button>
+  </div>
+  <input type="search" id="q" placeholder="Search a member…" oninput="render()" />
+  <div id="list"></div>
+</div>
+<script>
+  var KEY = new URLSearchParams(location.search).get('key') || '';
+  var MEMBERS = [];
+  if(!KEY){ document.getElementById('gate').style.display='block'; }
+
+  async function load(){
+    var r = await fetch('/api/games',{cache:'no-store'});
+    var j = await r.json().catch(function(){return {}});
+    MEMBERS = (j.members||[]).slice().sort(function(a,b){return a.name.localeCompare(b.name)});
+    render();
+  }
+  function daysCount(m){ var d=m.days||{}; var n=0; for(var k in d){ if(/^\d+$/.test(k)) n++; } return n; }
+  function render(){
+    var q=(document.getElementById('q').value||'').toLowerCase();
+    var list=document.getElementById('list'); list.innerHTML='';
+    MEMBERS.filter(function(m){return m.name.toLowerCase().indexOf(q)>=0}).forEach(function(m){
+      var row=document.createElement('div'); row.className='row';
+      var left=document.createElement('div');
+      left.innerHTML='<div class="name">'+esc(m.name)+'</div><div class="meta">'+daysCount(m)+' days logged · '+(m.claimed?'PIN set':'no PIN')+'</div>';
+      var btn=document.createElement('button'); btn.className='rbtn'; btn.textContent='Reset PIN';
+      btn.onclick=function(){ doReset(m.name, btn, left); };
+      row.appendChild(left); row.appendChild(btn); list.appendChild(row);
+    });
+  }
+  async function doReset(name, btn, left){
+    if(!KEY){ alert('Add ?key=YOUR_ADMIN_KEY to the URL first.'); return; }
+    if(!confirm('Reset PIN for '+name+'?\n\nTheir progress is kept. They will need to tap their name and set a new PIN.')) return;
+    btn.disabled=true; btn.textContent='…';
+    try{
+      var r=await fetch('/api/games',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({op:'resetmember',key:KEY,member:name})});
+      var j=await r.json().catch(function(){return {}});
+      var msg=document.createElement('div');
+      if(r.ok && j.ok && j.progress_intact){ msg.className='note'; msg.textContent='✓ PIN cleared · '+j.days_kept+' days kept. They can set a new PIN now.'; btn.textContent='Done'; }
+      else if(r.status===401){ msg.className='err'; msg.textContent='Unauthorized — check your ?key.'; btn.disabled=false; btn.textContent='Reset PIN'; }
+      else if(r.status===404){ msg.className='err'; msg.textContent='Not found by that exact name.'; btn.disabled=false; btn.textContent='Reset PIN'; }
+      else { msg.className='err'; msg.textContent='Error: '+(j.error||r.status); btn.disabled=false; btn.textContent='Reset PIN'; }
+      left.appendChild(msg);
+    }catch(e){ btn.disabled=false; btn.textContent='Reset PIN'; alert('Network error, try again.'); }
+  }
+  function backup(){
+    fetch('/api/games',{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){
+      var data=JSON.stringify({exported_at:new Date().toISOString(), members:(j.members||[]).map(function(m){return {member_name:m.name, days:m.days||{}}})}, null, 2);
+      var blob=new Blob([data],{type:'application/json'});
+      var a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+      a.download='audacity-games-backup-'+new Date().toISOString().slice(0,10)+'.json';
+      document.body.appendChild(a); a.click(); a.remove();
+    }).catch(function(){ alert('Backup failed, try again.'); });
+  }
+  function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]}); }
+  load();
+</script>
+</body>
+</html>

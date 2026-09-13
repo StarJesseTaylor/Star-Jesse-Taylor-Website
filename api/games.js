@@ -72,10 +72,15 @@ export default async function handler(req, res) {
   const body = req.body || {};
   const op = body.op;
 
-  // ---- reset (admin) ----
+  // ---- reset (admin) — DESTRUCTIVE full-board wipe ----
   if (op === 'reset') {
     if (!process.env.CRON_SECRET || body.key !== process.env.CRON_SECRET) {
       return res.status(401).json({ error: 'unauthorized' });
+    }
+    // Safety: a fat-finger must not be able to wipe the whole board. Require an
+    // explicit confirm token ON TOP of the admin key.
+    if (body.confirm !== 'WIPE-ALL-ROWS') {
+      return res.status(400).json({ error: 'destructive: pass confirm:"WIPE-ALL-ROWS" to wipe the entire board. Back it up first.' });
     }
     try {
       // delete every row: filter member_name not equal to an impossible value
@@ -98,20 +103,60 @@ export default async function handler(req, res) {
     const m = typeof body.member === 'string' ? body.member.slice(0, 120) : '';
     if (!m) return res.status(400).json({ error: 'member required' });
     try {
+      // 1. Read the row FIRST and snapshot the progress. Abort on 0 or >1 matches
+      //    so a typo can never reset the wrong person or a batch of people.
+      const before = await fetch(`${REST()}?member_name=eq.${encodeURIComponent(m)}&select=member_name,pin_hash,days`, { headers: sb() });
+      if (!before.ok) return res.status(502).json({ error: 'read failed' });
+      const beforeRows = await before.json();
+      if (!beforeRows || !beforeRows.length) return res.status(404).json({ error: 'member not found', member: m });
+      if (beforeRows.length > 1) return res.status(409).json({ error: 'multiple rows match — aborting', matches: beforeRows.length });
+      const daysBefore = JSON.stringify(beforeRows[0].days || {});
+
+      // 2. Clear ONLY pin_hash. This request never writes to days.
       const r = await fetch(`${REST()}?member_name=eq.${encodeURIComponent(m)}`, {
         method: 'PATCH',
         headers: sb({ Prefer: 'return=representation' }),
         body: JSON.stringify({ pin_hash: null, updated_at: new Date().toISOString() }),
       });
       if (!r.ok) return res.status(502).json({ error: 'reset failed', detail: await r.text().catch(() => '') });
-      const rows = await r.json().catch(() => []);
-      if (!rows || !rows.length) return res.status(404).json({ error: 'member not found', member: m });
-      const kept = Object.keys(rows[0].days || {}).length;
-      return res.status(200).json({ ok: true, member: m, reset: true, days_kept: kept });
+      const afterRows = await r.json().catch(() => []);
+      const daysAfter = JSON.stringify(afterRows[0]?.days || {});
+
+      // 3. SAFETY ASSERTION: progress must be byte-identical, or we do NOT report success.
+      if (daysAfter !== daysBefore) {
+        console.error('games resetmember: progress changed during reset for', m);
+        return res.status(500).json({ error: 'aborted — progress changed unexpectedly', member: m });
+      }
+      return res.status(200).json({ ok: true, member: m, reset: true, progress_intact: true, days_kept: Object.keys(afterRows[0]?.days || {}).length });
     } catch (err) {
       console.error('games resetmember error', err);
       return res.status(500).json({ error: 'reset error' });
     }
+  }
+
+  // ---- restore (admin) — re-import members' progress (days) from a backup ----
+  // Upserts each member's days; pin_hash is left as-is on existing rows.
+  if (op === 'restore') {
+    if (!process.env.CRON_SECRET || body.key !== process.env.CRON_SECRET) {
+      return res.status(401).json({ error: 'unauthorized' });
+    }
+    const items = Array.isArray(body.members) ? body.members : [];
+    if (!items.length) return res.status(400).json({ error: 'members array required' });
+    const results = [];
+    for (const it of items) {
+      const name = typeof it?.member_name === 'string' ? it.member_name.slice(0, 120)
+        : (typeof it?.name === 'string' ? it.name.slice(0, 120) : '');
+      if (!name || typeof it.days !== 'object' || it.days === null) { results.push({ name, ok: false, error: 'bad item' }); continue; }
+      try {
+        const r = await fetch(REST(), {
+          method: 'POST',
+          headers: sb({ Prefer: 'resolution=merge-duplicates,return=minimal' }),
+          body: JSON.stringify({ member_name: name, days: it.days, updated_at: new Date().toISOString() }),
+        });
+        results.push({ name, ok: r.ok, status: r.status });
+      } catch (e) { results.push({ name, ok: false, error: String(e) }); }
+    }
+    return res.status(200).json({ ok: true, restored: results.filter((x) => x.ok).length, of: items.length, results });
   }
 
   const member = typeof body.member === 'string' ? body.member.slice(0, 120) : '';
