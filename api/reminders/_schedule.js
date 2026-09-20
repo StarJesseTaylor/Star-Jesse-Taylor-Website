@@ -51,6 +51,48 @@ const EDGE_BUFFER_MIN = 10;      // don't roll flush against a bucket boundary
  * @param {() => number} rng  injectable for tests. Do NOT use Math.random in tests.
  * @returns {{minutes:number, slot:'morning'|'evening'|'any'}[]} sorted, local minutes-from-midnight
  */
+/**
+ * A random number generator that gives the SAME sequence for the same seed.
+ *
+ * ⭐ THIS IS THE FIX FOR STAR GETTING TWO AND THREE TEXTS A DAY (Sep 19 2026).
+ *
+ * The roll in send.js is "read the schedule, and if there isn't one, make one".
+ * That is not atomic. The cron runs every minute and Vercel can run two
+ * invocations at once, so both can read "no schedule yet" before either writes.
+ *
+ * With Math.random the two runs pick DIFFERENT times, and message_schedule's
+ * primary key is (member_id, type, local_date, send_at_utc) — so different
+ * times are different rows. `resolution=ignore-duplicates` had nothing to
+ * ignore, both sets were inserted, and the member got one text per racing run.
+ * Star: "It was like one a day and now it's two or three sometimes a day."
+ *
+ * Seeding by member and date makes the roll idempotent BY CONSTRUCTION: every
+ * run that rolls Star's Sep 19 picks the identical times, the primary key
+ * collides, and ignore-duplicates finally does its job. No schema change, and
+ * no lock to get wrong.
+ *
+ * Still properly random from the member's side: different every day, different
+ * per person, and not guessable from the outside.
+ *
+ * (mulberry32 — small, fast, well-distributed. Quality matters less here than
+ * determinism, but a bad generator would cluster reminders around the same
+ * minute of each bucket, which people would notice.)
+ */
+export function seededRng(seed) {
+  let h = 2166136261 >>> 0;                       // FNV-1a over the seed string
+  for (let i = 0; i < seed.length; i++) {
+    h ^= seed.charCodeAt(i);
+    h = Math.imul(h, 16777619) >>> 0;
+  }
+  return function () {
+    h = (h + 0x6D2B79F5) >>> 0;
+    let t = h;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
 export function rollDay(member, rng = Math.random) {
   const freq = clamp(Number(member?.frequency) || 1, 1, 6);
 

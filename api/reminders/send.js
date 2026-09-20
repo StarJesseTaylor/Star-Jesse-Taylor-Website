@@ -20,7 +20,7 @@
 //   Why: api/email-writer/send.js sits in this same repo able to mail the whole
 //   database while reporting success. That is what happens without guards.
 
-import { rollDay, dueNow, localDate, localToUtc } from './_schedule.js';
+import { rollDay, dueNow, localDate, localToUtc, seededRng } from './_schedule.js';
 import { LINES, pickLine, render } from './_lines.js';
 import { normalisePhone, pickChannel, sendMessage } from './_channel.js';
 import { healInboundWebhook } from './_webhook-heal.js';
@@ -140,7 +140,12 @@ export default async function handler(req, res) {
         let sched = schedRes.ok ? await schedRes.json() : [];
 
         if (!sched.length) {
-          const picks = rollDay({ ...prefs }, Math.random);
+          // Seeded by member + date, NOT Math.random. Two cron runs racing at
+          // the start of someone's day now roll the IDENTICAL times, so the
+          // primary key collides and ignore-duplicates drops the second set.
+          // With Math.random they rolled different times, both inserted, and
+          // the member got two or three texts. See seededRng in _schedule.js.
+          const picks = rollDay({ ...prefs }, seededRng(`${m.id}:${today}`));
           const rows = picks.map(p => ({
             member_id: m.id, type: 'reminder', local_date: today,
             send_at_utc: localToUtc(today, p.minutes, tz).toISOString(),   // ← DST-safe
