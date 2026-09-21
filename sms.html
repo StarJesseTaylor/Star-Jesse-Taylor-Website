@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Reminders from Star Taylor</title>
-<meta name="description" content="Get practice reminders and tips from Star Taylor by email. Text messages are an optional extra. Reply STOP to unsubscribe, HELP for help. Message frequency varies. Msg &amp; data rates may apply.">
+<meta name="description" content="Short text reminders from Star Taylor, one a day, at a moment you are not expecting one. Adding your mobile number is optional. Reply STOP to unsubscribe, HELP for help. Message frequency varies. Msg &amp; data rates may apply.">
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
   body {
@@ -16,6 +16,14 @@
   }
   .wrap { width:100%; max-width:580px; }
   .brand { text-align:center; margin-bottom:24px; }
+  .portrait {
+    width:112px; height:112px; border-radius:50%; object-fit:cover;
+    /* His face sits left of centre and high in this frame. */
+    object-position:42% 30%;
+    border:3px solid rgba(255,255,255,.35);
+    box-shadow:0 10px 30px rgba(0,0,0,.35);
+    margin-bottom:14px; display:inline-block;
+  }
   .brand-name { font-size:1.15rem; font-weight:800; letter-spacing:.02em; }
   .brand-sub { font-size:.72rem; font-weight:700; letter-spacing:.2em; text-transform:uppercase; opacity:.7; margin-top:4px; }
   .head { text-align:center; margin-bottom:22px; }
@@ -84,6 +92,12 @@
 <body>
   <div class="wrap">
     <div class="brand">
+      <!-- Star, Sep 21: "shouldn't we add a picture of me... to have more trust".
+           A page asking for someone's phone number, from a name they may only
+           half recognise, with no face on it, is a big ask. Same shot as
+           /whats-next so it reads as the same person across the site. -->
+      <img class="portrait" src="images/Beach%20Coaching%20Shoot/star-beach-hero.jpg"
+           alt="Star Jesse Taylor" width="112" height="112" loading="eager" />
       <div class="brand-name">Star Jesse Taylor</div>
       <div class="brand-sub">Emotional Fitness</div>
     </div>
@@ -415,10 +429,10 @@
       if (res.ok && json.success) {
         if (smsOptIn) {
           done('<div style="font-size:1.2rem;font-weight:700;margin-bottom:8px;">You are in.</div>'
-             + '<div style="opacity:.85;font-size:.95rem;">You will get reminders by email and by text. Reply STOP to any text to stop them, and you will still keep the emails.</div>');
+             + '<div style="opacity:.85;font-size:.95rem;">Your first text will land soon. One a day after that, at a moment you are not expecting. Reply STOP any time and they end.</div>');
         } else {
           done('<div style="font-size:1.2rem;font-weight:700;margin-bottom:8px;">You are in.</div>'
-             + '<div style="opacity:.85;font-size:.95rem;">You will get Star\'s reminders and tips by email. You did not sign up for text messages, and you do not need to.</div>');
+             + '<div style="opacity:.85;font-size:.95rem;">You are on Star\'s list and will hear from him by email. The daily reminders are texts, so add your number whenever you want them.</div>');
         }
       } else {
         // json.message is the sentence written for a human; json.error is a
