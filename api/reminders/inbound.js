@@ -238,6 +238,18 @@ export default async function handler(req, res) {
 
     // ── 3. Everything else. Honest, not cold. ──
     await logIt('unhandled');                        // ← the Phase 2 corpus builds itself here
+
+    // ⭐ AND FORWARD IT TO STAR. Added Sep 21, for the tester phase.
+    //    Until now an ordinary reply was written to message_log and nowhere
+    //    else, so Star was never told it existed. During a ten-person feedback
+    //    test that is the most valuable message the system will ever receive,
+    //    sitting in a table nobody opens.
+    //
+    //    Note the tension this creates with AUTO_REPLY above, which tells them
+    //    "I'm not reading replies here". That line is Star's and stays his to
+    //    change; he is telling the testers personally that he IS reading. This
+    //    just makes sure he actually sees what they send.
+    await forwardReplyToStar(from, body, channel);
     return res.status(200).send(TWIML(AUTO_REPLY));
   } catch (err) {
     console.error('inbound error:', err);
@@ -304,4 +316,31 @@ function hash(s) {
   let h = 0;
   for (let i = 0; i < s.length; i++) { h = (h << 5) - h + s.charCodeAt(i); h |= 0; }
   return String(h);
+}
+
+/**
+ * Someone texted back. Put it in front of Star.
+ *
+ * Best effort and never throws: Twilio must always get its TwiML answer, and a
+ * Resend outage is not a reason to fail an inbound webhook.
+ */
+async function forwardReplyToStar(from, body, channel) {
+  const key = process.env.RESEND_API_KEY;
+  if (!key) return;
+  try {
+    await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from: process.env.FROM_EMAIL || 'Star Website <star@starjessetaylor.com>',
+        to: process.env.STAR_NOTIFY_EMAIL || 'star@starjessetaylor.com',
+        subject: `💬 ${from} replied to your reminders`,
+        html:
+          `<p style="font-size:17px;line-height:1.5"><strong>${escapeHtml(body)}</strong></p>` +
+          `<p style="color:#555">From <strong>${escapeHtml(from)}</strong> (${escapeHtml(channel)})</p>` +
+          `<p style="color:#555">They were auto-answered with your standing reply. ` +
+          `If you want to answer properly, text them from your own phone.</p>`,
+      }),
+    }).catch(() => {});
+  } catch { /* the webhook must always answer Twilio */ }
 }
