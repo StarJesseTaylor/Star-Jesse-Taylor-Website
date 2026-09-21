@@ -233,6 +233,20 @@ export default async function handler(req, res) {
       });
     }
 
+    // ⭐ TELL STAR SOMEONE JOINED. Star: "How do we get notifications on who
+    //    signed up?" Until now a SUCCESSFUL signup sent him nothing at all —
+    //    only failures were reported — so he had to go and look in two
+    //    dashboards to find out whether Natalie had actually signed up.
+    //
+    //    One email per signup is right for a ten-person test. If this ever
+    //    becomes twenty a day it should become a daily digest instead; the
+    //    volume, not the code, is what decides that.
+    await notifyStarOfSignup({
+      firstName, lastName, email, normalizedPhone, smsOptIn,
+      timezone: (req.body && req.body.timezone) || null,
+      enrolled: enrol.ok, signupOpen,
+    });
+
     return res.status(200).json({ success: true, sms: smsOptIn, reminders: enrol.ok, crm: true });
   } catch (err) {
     console.error('SMS opt-in error:', err);
@@ -465,4 +479,44 @@ async function sendWelcomeText(toE164) {
   });
   if (!out.sent) console.warn('welcome text not sent:', out.error);
   return out;
+}
+
+
+/**
+ * A new signup landed. Put it in front of Star while it is still news.
+ * Best effort: a notification must never fail a signup that already worked.
+ */
+async function notifyStarOfSignup({ firstName, lastName, email, normalizedPhone, smsOptIn, timezone, enrolled, signupOpen }) {
+  const key = process.env.RESEND_API_KEY;
+  if (!key) return;
+  const esc = (v) => String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const name = [firstName, lastName].filter(Boolean).join(' ') || 'No name given';
+
+  // Say plainly what will actually happen next, so Star never has to work it
+  // out from three switches.
+  let next;
+  if (!smsOptIn)      next = 'They did NOT give a number, so they get no texts. They are on your email list.';
+  else if (enrolled)  next = 'They have been sent the welcome text, and their first reminder comes tomorrow.';
+  else if (!signupOpen) next = 'Signup is CLOSED (REMINDERS_SIGNUP_OPEN is off), so they are consented but not enrolled. Open it and they start.';
+  else                next = 'Something went wrong enrolling them. Check the alert email that should have arrived with this one.';
+
+  try {
+    await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from: process.env.FROM_EMAIL || 'Star Website <star@starjessetaylor.com>',
+        to: process.env.STAR_NOTIFY_EMAIL || 'star@starjessetaylor.com',
+        subject: smsOptIn ? `📲 ${name} signed up for your texts` : `✉️ ${name} joined your list (no number)`,
+        html:
+          `<table cellpadding="6" style="border-collapse:collapse;font-size:15px">` +
+          `<tr><td><strong>Name</strong></td><td>${esc(name)}</td></tr>` +
+          `<tr><td><strong>Email</strong></td><td>${esc(email)}</td></tr>` +
+          `<tr><td><strong>Phone</strong></td><td>${esc(normalizedPhone) || 'not given'}</td></tr>` +
+          `<tr><td><strong>Their timezone</strong></td><td>${esc(timezone) || 'unknown, defaulted to Los Angeles'}</td></tr>` +
+          `</table>` +
+          `<p style="margin-top:14px">${esc(next)}</p>`,
+      }),
+    }).catch(() => {});
+  } catch { /* never fail a signup over a notification */ }
 }
