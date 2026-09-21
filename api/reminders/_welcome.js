@@ -69,21 +69,53 @@ export async function catchUpWelcomes(sb, sendMessage, pickChannel, normalisePho
       const phone = normalisePhone(m.phone, m.country_code);
       if (!phone.ok) { out.detail.push({ id: m.id, skipped: phone.reason }); continue; }
 
+      // 🛑 CLAIM BEFORE SENDING. This is the whole guarantee.
+      //
+      //    Every version of this that sent first and logged after could send
+      //    twice, because anything between the two (a crash, a timeout, a
+      //    status that changed underneath us) leaves no record and the next run
+      //    starts over. That is how five welcomes happened.
+      //
+      //    Writing the row FIRST inverts the failure mode. The worst case stops
+      //    being "texts them repeatedly" and becomes "misses one welcome",
+      //    which is recoverable and which Star is told about.
+      //
+      //    Note the row is written even if the send then fails. That is
+      //    deliberate: a blocked country would otherwise retry every minute
+      //    forever. Star gets an email naming the person, and a retry is a
+      //    decision rather than a loop.
+      const claim = await sb('message_log', {
+        method: 'POST',
+        headers: { Prefer: 'return=representation' },
+        body: JSON.stringify({
+          member_id: m.id, type: 'reminder', direction: 'outbound',
+          status: 'welcome_sending', body: WELCOME,
+          meta: { kind: 'welcome', claimed_at: new Date().toISOString() },
+        }),
+      });
+      if (!claim.ok) { out.detail.push({ name: m.first_name, skipped: 'could not claim' }); continue; }
+      const claimed = (await claim.json().catch(() => []))[0];
+
       const sent = await sendMessage({
         to: phone.e164,
         body: WELCOME,
         channel: m.channel || pickChannel(phone.e164),
       });
 
-      if (sent.sent) {
-        out.greeted++;
-        out.detail.push({ name: m.first_name, sent: true });
-        // Logged as a real sent message, which is what stops it repeating.
-        await log(sb, m, { status: 'sent', body: WELCOME, provider_sid: sent.sid, meta: { kind: 'welcome', catch_up: true } });
-      } else {
-        out.failed++;
-        out.detail.push({ name: m.first_name, error: sent.error });
+      // Settle the row we already own. Never insert a second one.
+      if (claimed?.id) {
+        await sb(`message_log?id=eq.${claimed.id}`, {
+          method: 'PATCH',
+          body: JSON.stringify(
+            sent.sent
+              ? { status: 'sent', provider_sid: sent.sid }
+              : { status: 'error', meta: { kind: 'welcome', error: String(sent.error || '').slice(0, 200) } }
+          ),
+        }).catch(() => {});
       }
+
+      if (sent.sent) { out.greeted++; out.detail.push({ name: m.first_name, sent: true }); }
+      else { out.failed++; out.detail.push({ name: m.first_name, error: sent.error }); }
     }
   } catch (e) {
     out.detail.push({ error: String((e && e.message) || e).slice(0, 160) });
