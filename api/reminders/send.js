@@ -24,6 +24,7 @@ import { rollDay, dueNow, localDate, localToUtc, seededRng } from './_schedule.j
 import { LINES, pickLine, render } from './_lines.js';
 import { normalisePhone, pickChannel, sendMessage } from './_channel.js';
 import { healInboundWebhook } from './_webhook-heal.js';
+import { catchUpWelcomes } from './_welcome.js';
 
 const MAX_MEMBERS = 200;
 const STALE_MIN = 20;        // a "surprise" 4h late isn't a surprise, it's a bug
@@ -109,6 +110,24 @@ export default async function handler(req, res) {
     report.webhook = (await healInboundWebhook()).state;
   } catch {
     report.webhook = 'error';
+  }
+
+  // ── 0. NOBODY MEETS STAR THROUGH A REMINDER. ──
+  //    The welcome is sent at signup by api/sms-optin.js, which is the right
+  //    moment and a single point of failure. Star's first five real members, in
+  //    Austria, the UK, Sweden and Australia, all signed up while their
+  //    countries were switched off on his Twilio account, so every welcome was
+  //    refused and all five sat with zero texts. Tomorrow's reminder would have
+  //    been their first contact, from a number they do not recognise.
+  //
+  //    So the cron catches them up. Only in live mode: greeting someone and
+  //    then sending nothing is worse than staying quiet.
+  if (!dryRun) {
+    try {
+      report.welcomes = await catchUpWelcomes(sb, sendMessage, pickChannel, normalisePhone, log);
+    } catch {
+      report.welcomes = { error: true };
+    }
   }
 
   try {
