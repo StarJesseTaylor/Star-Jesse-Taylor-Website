@@ -116,14 +116,33 @@ export function normalisePhone(raw, countryCode) {
     return { ok: true, e164: '+' + digits };
   }
 
-  // No +. We need a country to be sure. Trunk-zero ("07911...") is meaningless without one.
+  // No +, but they picked their country from the dropdown. That removes the
+  // guess entirely, which is the whole point of the picker.
   if (countryCode) {
     const cc = String(countryCode).replace(/\D/g, '');
-    let nat = s.replace(/^0+/, ''); // drop the national trunk prefix
-    const e164 = '+' + cc + nat;
-    const digits = e164.slice(1);
-    if (digits.length < 8 || digits.length > 15) return { ok: false, reason: `length ${digits.length}` };
-    return { ok: true, e164 };
+    if (!cc || !CC.includes(cc)) return { ok: false, reason: 'unrecognised country code' };
+
+    let nat = s.replace(/^0+/, '');          // drop the national trunk prefix
+
+    // ⭐ THEY OFTEN TYPE THE CODE AS WELL AS PICKING IT.
+    //    Picks "United States (+1)", types "14245998317" -> naive concatenation
+    //    gives "+114245998317", a number that belongs to nobody and fails
+    //    silently at send. Same for an Australian who picks +61 and types
+    //    "61412345678". If the number already starts with the code they chose,
+    //    and removing it still leaves a plausible national number, remove it.
+    if (nat.startsWith(cc) && nat.length - cc.length >= 6) {
+      nat = nat.slice(cc.length);
+    }
+
+    const digits = cc + nat;
+    if (digits.length < 8 || digits.length > 15) {
+      return { ok: false, reason: `that is ${digits.length} digits, which is not a working number` };
+    }
+    // +1 must obey the North American Numbering Plan like any other +1 number.
+    // Without this, picking "United States" bypassed every area-code check.
+    const nanp = validateNANP(digits);
+    if (!nanp.ok) return nanp;
+    return { ok: true, e164: '+' + digits };
   }
 
   // 10 digits, no country, no leading 0 -> almost certainly US/Canada.
