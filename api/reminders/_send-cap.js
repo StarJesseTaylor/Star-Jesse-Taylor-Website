@@ -23,7 +23,15 @@
 // legitimate feature should ever reach.
 //
 //   2 per hour  - a welcome plus a reminder is 2. Anything more is a bug.
-//   4 per day   - the highest frequency Star will ever offer is 3.
+//   2 per day   - Star, after seeing Esra's first real reminder land:
+//                 "Can you make sure that they don't get more than one a day?"
+//                 One reminder is the product. Two is only ever the signup day,
+//                 where the welcome lands and then the day's reminder follows.
+//                 A third in one day cannot be anything but a fault.
+//
+// RAISE IT BY ENV, NEVER BY EDITING THE DEFAULT. If the paid tier ever offers
+// 3 a day, set SMS_MAX_PER_DAY in Vercel to 4 (their three plus a welcome).
+// The default stays at the promise made to a member today.
 //
 // FAILS CLOSED. If the count cannot be read, nothing sends. A missed reminder
 // is recoverable and a member texts once more tomorrow. A burst costs a person.
@@ -34,7 +42,7 @@ const SB_URL = () => (process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABA
 const SB_KEY = () => process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 export const PER_HOUR = Number(process.env.SMS_MAX_PER_HOUR || 2);
-export const PER_DAY = Number(process.env.SMS_MAX_PER_DAY || 4);
+export const PER_DAY = Number(process.env.SMS_MAX_PER_DAY || 2);
 
 const sb = (path) =>
   fetch(`${SB_URL()}/rest/v1/${path}`, {
