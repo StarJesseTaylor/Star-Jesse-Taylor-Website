@@ -195,6 +195,27 @@ export default async function handler(req, res) {
       }).catch(() => {});
     }
 
+    // ⭐ THE WELCOME TEXT. The first message a new member ever gets from Star.
+    //
+    //    WITHOUT THIS, the first text someone receives is a reminder out of
+    //    nowhere, the day after they sign up, from a number they have never
+    //    seen. No name, no context. Best case they work it out. Worst case they
+    //    report it as spam, and spam complaints are what get an A2P campaign
+    //    shut down.
+    //
+    //    Star's words, Sep 21. He added "save this number" himself and he was
+    //    right: a saved contact means every reminder after this shows up as
+    //    "Star" instead of a number nobody recognises.
+    //
+    //    NEW MEMBERS ONLY. Someone re-submitting the form must not get welcomed
+    //    a second time, which is why enrol.existing is checked.
+    //
+    //    Gated on REMINDERS_LIVE too: if sending is disarmed, a welcome that
+    //    promises "one text a day" followed by silence is worse than no welcome.
+    if (enrol.ok && !enrol.existing && process.env.REMINDERS_LIVE === '1') {
+      await sendWelcomeText(normalizedPhone).catch(() => {});
+    }
+
     // 🛑 THE QUIETEST FAILURE IN THE WHOLE SYSTEM, MADE AUDIBLE.
     //    The enrolment at the top of this handler can fail on its own: the
     //    database refuses the insert, or is unreachable. Before this, that
@@ -420,4 +441,28 @@ async function alertStarAboutLostContact({ firstName, lastName, email, normalize
       }),
     });
   } catch { /* the failure path must not fail */ }
+}
+
+
+/**
+ * Star's welcome text. Sent once, to a brand new member, right after they sign
+ * up and while they are still looking at their phone.
+ *
+ * Best effort: a Twilio hiccup here must never fail the signup. They are
+ * already saved in both systems by the time this runs.
+ */
+const WELCOME =
+  "This is Star. You're in. Save this number so you know it's me. " +
+  "One text a day, random time, to get you out of your head and keep you on track. " +
+  "Reply STOP whenever you want out.";
+
+async function sendWelcomeText(toE164) {
+  const { sendMessage, pickChannel } = await import('./reminders/_channel.js');
+  const out = await sendMessage({
+    to: toE164,
+    body: WELCOME,
+    channel: pickChannel(toE164),
+  });
+  if (!out.sent) console.warn('welcome text not sent:', out.error);
+  return out;
 }
