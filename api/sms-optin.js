@@ -86,6 +86,33 @@ export default async function handler(req, res) {
 
   const headers = { 'Api-Token': AC_KEY, 'Content-Type': 'application/json' };
 
+  // ⭐ THE TEXTING DATABASE GOES FIRST. Star: "should it go into ActiveCampaign
+  //    first or Supabase first to make it bulletproof?"
+  //
+  //    Everything else in this file survives either service failing, because a
+  //    failure in one no longer cancels the other. But there is one failure
+  //    NOTHING can rescue: a function timeout. If Vercel kills this request
+  //    mid-run, no catch block executes and no alert email is sent. Whatever
+  //    was already written is all that survives.
+  //
+  //    ActiveCampaign is FOUR sequential calls (sync, list subscribe, tags,
+  //    consent note). Supabase is one insert. Doing ActiveCampaign first meant
+  //    a slow day there could burn the whole time budget before the number was
+  //    ever saved, and the member would be gone with no trace.
+  //
+  //    So the single fastest write, for the thing that delivers the promise,
+  //    happens before anything else. Everything after it is recoverable.
+  const signupOpen = process.env.REMINDERS_SIGNUP_OPEN === '1';
+  let enrol = { ok: false, reason: 'signup door closed' };
+  if (smsOptIn && signupOpen) {
+    enrol = await enrolInReminders({
+      phone: normalizedPhone,
+      firstName: firstName || null,
+      timezone: (req.body && req.body.timezone) || null,
+      source: source || 'website',
+    });
+  }
+
   try {
     // Sync contact with phone field
     const syncRes = await fetch(`${AC_URL}/api/3/contact/sync`, {
@@ -108,34 +135,24 @@ export default async function handler(req, res) {
       const text = await syncRes.text();
       console.error('AC sync error:', syncRes.status, text);
 
-      // 🛑 DO NOT GIVE UP HERE. This used to `return 500`, which meant one bad
-      //    minute at ActiveCampaign lost the signup from EVERY system: the
-      //    enrolment below never ran, so the number never reached Supabase
-      //    either, and the person saw an error and went away. The number is the
-      //    valuable thing and it must survive either service having a bad day.
+      // 🛑 DO NOT GIVE UP HERE. This used to `return 500`, and because the
+      //    enrolment ran AFTER it, one bad minute at ActiveCampaign lost the
+      //    signup from every system at once: the number never reached the
+      //    texting database either, and the person saw an error and went away.
       //
       //    Star, on why both exist: "We collect them into ActiveCampaign
       //    because eventually maybe we use it to send emails." ActiveCampaign is
-      //    the relationship; Supabase is the machine that sends the texts.
+      //    the relationship; the texting database is the machine that sends.
       //    Different jobs, so a failure in one must not cancel the other.
       //
-      //    So: enrol them in the texting engine anyway, then tell Star exactly
-      //    who to add by hand. Nothing disappears quietly.
-      let rescue = { ok: false, reason: 'signup door closed' };
-      if (smsOptIn && process.env.REMINDERS_SIGNUP_OPEN === '1') {
-        rescue = await enrolInReminders({
-          phone: normalizedPhone,
-          firstName: firstName || null,
-          timezone: (req.body && req.body.timezone) || null,
-          source: source || 'website',
-        });
-      }
-      await alertStarAboutLostContact({ firstName, lastName, email, normalizedPhone, smsOptIn, rescued: rescue.ok, detail: text });
+      //    The number is already safe (enrolled above), so all that is left is
+      //    telling Star this person never reached his list.
+      await alertStarAboutLostContact({ firstName, lastName, email, normalizedPhone, smsOptIn, rescued: enrol.ok, detail: text });
 
       // 200, not 500: from their side this DID work. They consented, and if they
       // gave a number they are now in the texting engine. Telling them it failed
       // would make them submit again, or give up.
-      return res.status(200).json({ success: true, sms: smsOptIn, reminders: rescue.ok, crm: false });
+      return res.status(200).json({ success: true, sms: smsOptIn, reminders: enrol.ok, crm: false });
     }
 
     const { contact } = await syncRes.json();
@@ -143,20 +160,11 @@ export default async function handler(req, res) {
     if (!contactId) {
       // Same trap as the failure above: returning 500 here skipped the enrolment
       // entirely, so an odd ActiveCampaign response cost us the phone number.
-      let rescue = { ok: false, reason: 'signup door closed' };
-      if (smsOptIn && process.env.REMINDERS_SIGNUP_OPEN === '1') {
-        rescue = await enrolInReminders({
-          phone: normalizedPhone,
-          firstName: firstName || null,
-          timezone: (req.body && req.body.timezone) || null,
-          source: source || 'website',
-        });
-      }
       await alertStarAboutLostContact({
         firstName, lastName, email, normalizedPhone, smsOptIn,
-        rescued: rescue.ok, detail: 'ActiveCampaign accepted the request but returned no contact id',
+        rescued: enrol.ok, detail: 'ActiveCampaign accepted the request but returned no contact id',
       });
-      return res.status(200).json({ success: true, sms: smsOptIn, reminders: rescue.ok, crm: false });
+      return res.status(200).json({ success: true, sms: smsOptIn, reminders: enrol.ok, crm: false });
     }
 
     // Subscribe to Master Contact List
@@ -187,90 +195,41 @@ export default async function handler(req, res) {
       }).catch(() => {});
     }
 
-    // ── THE DOOR INTO THE TEXTING ENGINE. ──
-    // Before this existed, a member could tick the box, hand over their number,
-    // and land in ActiveCampaign having received exactly zero texts. AC is the
-    // email list; the reminder cron reads member_channel. Nothing joined them.
-    //
-    // Deliberately LAST and deliberately non-fatal: if Supabase is down, the
-    // person still gets their email signup and their consent is still recorded
-    // in AC. A texting outage must not turn into a failed form.
-    //
-    // 🔴 CLOSED BY DEFAULT. REMINDERS_SIGNUP_OPEN=1 in the Vercel dashboard is
-    //    what opens it. Star's call, Aug 21 2026: the texting side is not ready
-    //    for real people yet (no welcome message, webhook not pointed), and a
-    //    member who ticks the box today, hears nothing for three weeks, then
-    //    suddenly starts getting texts from a number they don't recognise is
-    //    the exact bad first impression this whole engine exists to avoid.
-    //
-    //    NOBODY IS LOST WHILE THIS IS CLOSED. The tick is still honoured: the
-    //    contact is still tagged sms:consented in ActiveCampaign and the TCPA
-    //    consent note is still written above. So when Star opens the door, the
-    //    people who already said yes can be enrolled deliberately, together,
-    //    with a welcome message - instead of trickling in half-onboarded.
-    //
-    //    Kept separate from REMINDERS_LIVE on purpose. Two different questions:
-    //      REMINDERS_SIGNUP_OPEN  - may new people join?
-    //      REMINDERS_LIVE         - does the schedule actually send?
-    //    Star will want signup open and sending armed at different moments (the
-    //    Katie/Ghazaal test is exactly that: sending on, signup still shut).
-    const signupOpen = process.env.REMINDERS_SIGNUP_OPEN === '1';
-
-    let enrol = { ok: false, reason: 'signup door closed' };
-    if (smsOptIn && signupOpen) {
-      enrol = await enrolInReminders({
-        phone: normalizedPhone,
-        firstName: firstName || null,
-        timezone: (req.body && req.body.timezone) || null,
-        source: source || 'website',
+    // 🛑 THE QUIETEST FAILURE IN THE WHOLE SYSTEM, MADE AUDIBLE.
+    //    The enrolment at the top of this handler can fail on its own: the
+    //    database refuses the insert, or is unreachable. Before this, that
+    //    returned a bare `false` nobody read. The member consented, landed on
+    //    the list, saw "You are in", and would never receive a single text. No
+    //    error, no alert, no way to discover it except them eventually asking
+    //    why it never worked.
+    //    `stopped` is excluded on purpose: someone who texted STOP is meant to
+    //    stay off, and a website form must never quietly resurrect them.
+    if (smsOptIn && signupOpen && !enrol.ok && !enrol.stopped) {
+      await alertStarAboutLostContact({
+        firstName, lastName, email, normalizedPhone, smsOptIn,
+        rescued: false, onList: true,
+        detail: 'They are on your ActiveCampaign list, but the texting database refused them: ' + enrol.reason,
       });
-
-      // 🛑 THE QUIETEST FAILURE IN THE WHOLE SYSTEM, NOW AUDIBLE.
-      //    This used to return a bare `false` that nobody read. The member
-      //    consented, landed on the list, saw "You are in", and would never
-      //    receive a single text. No error, no log anyone reads, no way to
-      //    discover it except them eventually asking why it never worked.
-      //    `stopped` is excluded: someone who texted STOP is meant to stay off,
-      //    and a website form must never quietly resurrect them.
-      if (!enrol.ok && !enrol.stopped) {
-        await alertStarAboutLostContact({
-          firstName, lastName, email, normalizedPhone, smsOptIn,
-          rescued: false, onList: true,
-          detail: 'They are on your ActiveCampaign list, but the texting database refused them: ' + enrol.reason,
-        });
-      }
     }
 
     return res.status(200).json({ success: true, sms: smsOptIn, reminders: enrol.ok, crm: true });
   } catch (err) {
     console.error('SMS opt-in error:', err);
 
-    // 🛑 LAST LINE OF DEFENCE. Anything unexpected above used to land here and
-    //    return a 500, losing the number from every system with no record that
-    //    the person ever existed. They are not getting retried by a browser
-    //    that has already moved on, so this is the only chance to keep them.
-    //    Try the texting database directly, then tell Star either way.
-    let rescue = { ok: false, reason: 'not attempted' };
-    try {
-      if (smsOptIn && process.env.REMINDERS_SIGNUP_OPEN === '1') {
-        rescue = await enrolInReminders({
-          phone: normalizedPhone,
-          firstName: firstName || null,
-          timezone: (req.body && req.body.timezone) || null,
-          source: source || 'website',
-        });
-      }
-    } catch { /* nothing left to try */ }
-
+    // 🛑 LAST LINE OF DEFENCE. Anything unexpected in the ActiveCampaign work
+    //    used to land here and return a 500. The number is already safe by this
+    //    point, because the texting database is written before the try block,
+    //    so all that is left is to make sure Star knows the contact never
+    //    reached his list.
     await alertStarAboutLostContact({
       firstName, lastName, email, normalizedPhone, smsOptIn,
-      rescued: rescue.ok,
+      rescued: enrol.ok,
       detail: 'Unexpected error during signup: ' + String(err?.message || err).slice(0, 200),
     });
 
-    // They filled the form correctly and we have their details in an email.
-    // Showing them a failure would only make them submit again or give up.
-    return res.status(200).json({ success: true, sms: smsOptIn, reminders: rescue.ok, crm: false });
+    // They filled the form correctly and their number is saved. Showing them a
+    // failure would only make them submit again or give up.
+    return res.status(200).json({ success: true, sms: smsOptIn, reminders: enrol.ok, crm: false });
   }
 }
 
