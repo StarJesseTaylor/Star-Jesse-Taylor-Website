@@ -199,6 +199,8 @@ export function pickChannel(e164) {
   return 'sms';
 }
 
+import { maySend, reportCapHit } from './_send-cap.js';
+
 /* ─────────────────────────────  SEND  ───────────────────────────── */
 
 /**
@@ -222,6 +224,17 @@ export async function sendMessage({ to, body, channel, dryRun = false }) {
   const fromAddr = channel === 'whatsapp' ? `whatsapp:${from}` : from;
 
   if (dryRun) return { sent: false, dryRun: true, channel, sid: undefined };
+
+  // 🛑 THE LAST LINE BEFORE THE WIRE. Every path that texts anyone goes
+  //    through here, so the guard lives here and not in the callers. On
+  //    21 Sep 2026 one wrong word in a welcome dedupe sent four members five
+  //    texts each in five minutes and cost Star a member. No caller has to be
+  //    correct for this to hold. See _send-cap.js.
+  const guard = await maySend(to);
+  if (!guard.allow) {
+    await reportCapHit(to, guard);
+    return { sent: false, channel, blocked: true, error: 'send cap: ' + guard.reason };
+  }
 
   const params = new URLSearchParams({ To: toAddr, From: fromAddr, Body: body });
 
