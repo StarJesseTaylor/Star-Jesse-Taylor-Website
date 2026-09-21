@@ -88,17 +88,32 @@ export async function maySend(toE164) {
     const inList = `in.(${ids.join(',')})`;
     const since = (mins) => new Date(Date.now() - mins * 60_000).toISOString();
 
-    const hour = await countFrom(await sb(
-      `message_log?select=id&member_id=${inList}&direction=eq.outbound&created_at=gte.${encodeURIComponent(since(60))}`
-    ));
+    // 🛑 COUNT ONLY TEXTS THAT ACTUALLY REACHED A PHONE.
+    //    First version counted every outbound row, and every BLOCKED attempt is
+    //    itself logged as an outbound row. So each refusal raised the count,
+    //    which guaranteed the next refusal: the counter ate its own output and
+    //    told Star's members "already had 19 texts in the last hour" when they
+    //    had received five. Hana and Mel had twenty real reminders blocked by
+    //    it before this was caught.
+    //
+    //    EXCLUDE the failures rather than include the successes. Excluding is
+    //    stable: 'sent' becomes 'delivered' when the receipt lands, and an
+    //    include-list would break on that exactly like the welcome dedupe did.
+    //    A status we have never seen before counts as a send, which is the safe
+    //    direction to be wrong in.
+    const NOT_A_SEND = "('error','dropped_stale','dry_run','failed','undelivered')";
+    const realSends = (mins) =>
+      `message_log?select=id&member_id=${inList}&direction=eq.outbound` +
+      `&status=not.in.${NOT_A_SEND}` +
+      `&created_at=gte.${encodeURIComponent(since(mins))}`;
+
+    const hour = await countFrom(await sb(realSends(60)));
     if (hour === null) return { allow: false, reason: 'could not count recent texts, refusing' };
     if (hour >= PER_HOUR) {
       return { allow: false, lastHour: hour, reason: `already had ${hour} texts in the last hour, limit is ${PER_HOUR}` };
     }
 
-    const day = await countFrom(await sb(
-      `message_log?select=id&member_id=${inList}&direction=eq.outbound&created_at=gte.${encodeURIComponent(since(1440))}`
-    ));
+    const day = await countFrom(await sb(realSends(1440)));
     if (day === null) return { allow: false, reason: 'could not count today, refusing' };
     if (day >= PER_DAY) {
       return { allow: false, lastHour: hour, lastDay: day, reason: `already had ${day} texts today, limit is ${PER_DAY}` };
