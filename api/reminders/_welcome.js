@@ -52,8 +52,15 @@ export async function catchUpWelcomes(sb, sendMessage, pickChannel, normalisePho
       if (out.greeted + out.failed >= MAX_PER_RUN) break;
 
       // Has this member EVER been sent anything? One cheap count each.
+      // 🛑 DO NOT FILTER ON status=eq.sent. That is the bug this shipped with,
+      //    and it re-texted five people every sixty seconds.
+      //    api/reminders/status.js moves a row forward through the Twilio
+      //    lifecycle: sent -> delivered. So the moment the delivery receipt
+      //    lands, the row is no longer 'sent', this lookup finds nothing, and
+      //    the member is greeted again. Every minute. Forever.
+      //    ANY outbound row means we have already contacted them.
       const seen = await sb(
-        `message_log?select=id&member_id=eq.${m.id}&direction=eq.outbound&status=eq.sent&limit=1`
+        `message_log?select=id&member_id=eq.${m.id}&direction=eq.outbound&limit=1`
       );
       if (!seen.ok) continue;
       const rows = await seen.json().catch(() => []);
