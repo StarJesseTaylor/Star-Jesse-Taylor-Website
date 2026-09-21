@@ -1,6 +1,7 @@
 // One phone parser for the whole system. The signup door and the sender MUST
 // agree, or we save numbers we can never text. See the note at normalizedPhone.
 import { normalisePhone } from './reminders/_channel.js';
+import { maySendWelcome } from './reminders/_abuse.js';
 
 const LIST_ID = '3'; // Master Contact List
 
@@ -213,7 +214,26 @@ export default async function handler(req, res) {
     //    Gated on REMINDERS_LIVE too: if sending is disarmed, a welcome that
     //    promises "one text a day" followed by silence is worse than no welcome.
     if (enrol.ok && !enrol.existing && process.env.REMINDERS_LIVE === '1') {
-      await sendWelcomeText(normalizedPhone).catch(() => {});
+      // 🛡️ THE ONLY THING HERE THAT SPENDS MONEY. Everything else is a database
+      //    row. So the abuse ceiling sits on the TEXT, not on the signup: under
+      //    a toll-fraud flood people still get signed up and nothing is lost,
+      //    we simply stop sending the hello. The attacker earns nothing, Star
+      //    spends nothing, and no real person is ever turned away by them.
+      const guard = await maySendWelcome(req);
+      if (guard.allow) {
+        const out = await sendWelcomeText(normalizedPhone).catch(() => null);
+
+        // 🛑 AND IT IS NO LONGER SILENT. Star's first two real testers, in
+        //    Sweden and Australia, both failed with "Permission to send an SMS
+        //    has not been enabled" because Twilio ships every account US-only.
+        //    That wrote one line to a log nobody reads, and he found out from
+        //    the testers. A failed send now reaches him the same hour.
+        if (out && !out.sent) {
+          await alertStarAboutFailedText(normalizedPhone, out.error, firstName, lastName);
+        }
+      } else {
+        await alertStarAboutAbuse(guard, normalizedPhone);
+      }
     }
 
     // 🛑 THE QUIETEST FAILURE IN THE WHOLE SYSTEM, MADE AUDIBLE.
@@ -519,4 +539,71 @@ async function notifyStarOfSignup({ firstName, lastName, email, normalizedPhone,
       }),
     }).catch(() => {});
   } catch { /* never fail a signup over a notification */ }
+}
+
+
+/**
+ * A text refused to send. Tell Star the same hour, not never.
+ *
+ * The country-permission case is called out by name because it is the one that
+ * actually happened and the one he can fix himself in thirty seconds.
+ */
+async function alertStarAboutFailedText(phone, error, firstName, lastName) {
+  const key = process.env.RESEND_API_KEY;
+  if (!key) return;
+  const esc = (v) => String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const geo = /Permission to send an SMS has not been enabled/i.test(String(error || ''));
+  try {
+    await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from: process.env.FROM_EMAIL || 'Star Website <star@starjessetaylor.com>',
+        to: process.env.STAR_NOTIFY_EMAIL || 'star@starjessetaylor.com',
+        subject: `⚠️ Could not text ${[firstName, lastName].filter(Boolean).join(' ') || phone}`,
+        html:
+          `<p>The welcome text to <strong>${esc(phone)}</strong> did not send.</p>` +
+          `<p><strong>Twilio said:</strong> ${esc(error)}</p>` +
+          (geo
+            ? `<p><strong>This means their country is switched off on your Twilio account.</strong> ` +
+              `Twilio ships every account US-only and each country has to be enabled by hand. ` +
+              `Fix it at Console &rarr; Messaging &rarr; Settings &rarr; Geo Permissions. ` +
+              `Enabling a country is free, needs no review, and does not affect your A2P registration.</p>` +
+              `<p><strong>Their daily reminders will keep failing until you do.</strong></p>`
+            : `<p>They are still signed up and enrolled. Their reminders will be attempted as normal.</p>`),
+      }),
+    }).catch(() => {});
+  } catch { /* an alert must never break a signup */ }
+}
+
+/**
+ * The abuse ceiling tripped. Star needs to know within the hour, because the
+ * honest alternative is that it was a real surge and the limit needs raising.
+ */
+async function alertStarAboutAbuse(guard, phone) {
+  const key = process.env.RESEND_API_KEY;
+  if (!key) return;
+  const esc = (v) => String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  try {
+    await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from: process.env.FROM_EMAIL || 'Star Website <star@starjessetaylor.com>',
+        to: process.env.STAR_NOTIFY_EMAIL || 'star@starjessetaylor.com',
+        subject: '🛡️ Signup limit hit, welcome texts paused',
+        html:
+          `<p><strong>${esc(guard.reason)}</strong></p>` +
+          `<p>Welcome texts have stopped going out. Nobody has been turned away: they are still ` +
+          `signed up, still on your list, and their daily reminders are unaffected. Only the ` +
+          `one-off hello is paused, because that is the only part that costs money.</p>` +
+          `<p><strong>If this is a real surge</strong> (you posted the link somewhere and it worked), ` +
+          `tell me and I will raise the ceiling.</p>` +
+          `<p><strong>If it is not</strong>, this is what toll fraud looks like and it has just been ` +
+          `stopped. Your balance is capped and there is no auto-recharge, so nothing can be spent ` +
+          `beyond what is already in the account.</p>` +
+          `<p style="color:#666;font-size:13px">Most recent number: ${esc(phone)}</p>`,
+      }),
+    }).catch(() => {});
+  } catch { /* never break a signup */ }
 }
