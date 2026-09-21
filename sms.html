@@ -114,11 +114,10 @@
       <div class="step">Step 1 &middot; Required</div>
       <div class="row">
         <input type="text" name="firstName" placeholder="First name" required />
-        <!-- Last name is OPTIONAL on purpose. Star needs it to tell two Sarahs
-             apart when he looks at the list, but every required field costs
-             signups, and no reminder ever uses it. Optional gets most of the
-             benefit for none of the cost. -->
-        <input type="text" name="lastName" placeholder="Last name (optional)" />
+        <!-- REQUIRED, Star's call Sep 21: "They have to fill that out."
+             He needs to recognise people on the list, and two Sarahs with no
+             surname is useless to him. -->
+        <input type="text" name="lastName" placeholder="Last name" required />
       </div>
       <div class="row row-single">
         <input type="email" name="email" placeholder="Email address" required />
@@ -221,7 +220,12 @@
              + '<div style="opacity:.85;font-size:.95rem;">You will get Star\'s reminders and tips by email. You did not sign up for text messages, and you do not need to.</div>');
         }
       } else {
-        status.textContent = (json && json.error) || 'Something went wrong. Please try again in a moment.';
+        // json.message is the sentence written for a human; json.error is a
+        // short CODE for us. Star submitted a number without a + and this
+        // line printed the single word "phone" under the button, which told
+        // him nothing and looked like the form was broken. Message first.
+        status.textContent = (json && (json.message || json.error))
+          || 'Something went wrong. Please try again in a moment.';
         btn.disabled = false; btn.textContent = orig;
       }
     } catch (err) {

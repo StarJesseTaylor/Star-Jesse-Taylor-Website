@@ -127,9 +127,27 @@ export function normalisePhone(raw, countryCode) {
   }
 
   // 10 digits, no country, no leading 0 -> almost certainly US/Canada.
-  if (/^\d{10}$/.test(s) && !s.startsWith('0')) return { ok: true, e164: '+1' + s };
+  if (/^\d{10}$/.test(s) && !s.startsWith('0')) {
+    const nanp = validateNANP('1' + s);
+    return nanp.ok ? { ok: true, e164: '+1' + s } : nanp;
+  }
 
-  return { ok: false, reason: 'no country code and not a 10-digit US number' };
+  // ⭐ 11 digits starting with 1, no plus: "14245998317".
+  //    Star typed exactly this into the live form on Sep 21 and was refused.
+  //    Almost nobody types the +, and this shape is NOT ambiguous: 1 followed
+  //    by 10 digits is the North American Numbering Plan and nothing else.
+  //    Refusing it was strictness with no safety value, and it would have cost
+  //    a real signup from every American who skips the plus.
+  //    Still validated as NANP, so a mangled 11-digit number is refused.
+  if (/^1\d{10}$/.test(s)) {
+    const nanp = validateNANP(s);
+    return nanp.ok ? { ok: true, e164: '+' + s } : nanp;
+  }
+
+  // Everything else without a + really is ambiguous. 11 digits starting 4 could
+  // be France, Germany, Hungary or a typo, and guessing wrong means texting a
+  // stranger while the member hears nothing. Refuse and say what is missing.
+  return { ok: false, reason: 'add your country code, like +61 for Australia or +44 for the UK' };
 }
 
 /**

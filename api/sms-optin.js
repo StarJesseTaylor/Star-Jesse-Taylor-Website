@@ -32,6 +32,12 @@ export default async function handler(req, res) {
   // A submission with no phone must succeed — that is the non-SMS path a carrier
   // reviewer needs to be able to complete. (A2P 10DLC error 30923.)
   if (!email) return res.status(400).json({ error: 'Email is required' });
+  if (!firstName || !String(firstName).trim()) {
+    return res.status(400).json({ error: 'name', message: 'Please add your first name.' });
+  }
+  if (!lastName || !String(lastName).trim()) {
+    return res.status(400).json({ error: 'name', message: 'Please add your last name.' });
+  }
 
   // SMS is only ever recorded when BOTH a number and an explicit tick are present.
   const smsOptIn = !!(phone && consent);
@@ -65,9 +71,13 @@ export default async function handler(req, res) {
   if (smsOptIn) {
     const parsed = normalisePhone(String(phone), req.body?.countryCode);
     if (!parsed.ok) {
+      // `message` is what the page shows a human; `error` is a short code for us.
+      // The page printed the CODE once (Star saw the single word "phone" under
+      // the button and thought the form was broken), so both are sent and
+      // sms.html now prefers message.
       return res.status(400).json({
         error: 'phone',
-        message: "That number doesn't look right. Please include your country code, like +61 for Australia or +65 for Singapore.",
+        message: 'That number did not go through: ' + parsed.reason + '.',
         detail: parsed.reason,
       });
     }
