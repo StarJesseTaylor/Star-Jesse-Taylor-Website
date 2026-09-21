@@ -67,6 +67,11 @@
     border:1px solid rgba(255,255,255,.25); background:rgba(255,255,255,.96); color:#1a1a1a;
   }
   .phone-row input { flex:1 1 auto; min-width:0; }
+  .optional-warn {
+    font-size:.95rem; font-weight:700; margin-bottom:12px;
+    padding:10px 13px; border-radius:9px;
+    background:rgba(255,255,255,.14); border-left:3px solid rgba(255,255,255,.6);
+  }
   .optional-sub { font-size:.8rem; opacity:.72; margin-bottom:14px; }
   .consent {
     display:flex; align-items:flex-start; gap:12px; font-size:.83rem;
@@ -145,10 +150,21 @@
 
       <div class="optional-block">
         <div class="step">Step 2 &middot; Optional</div>
-        <div class="optional-head">Put them on your phone</div>
+        <div class="optional-head">The reminders are texts. Add your number.</div>
         <div class="optional-why">
           Email finds you at a desk, deciding what to deal with. A text finds you when you are
           actually lost in it. That is the only moment any of this is useful.
+        </div>
+        <!-- ⭐ THE CONSEQUENCE, IN PLAIN WORDS. Star, Sep 22: "some people sign
+             up with their email instead of the phone number... because they
+             think they also get reminders to the email."
+             The legal paragraph below MUST say the number is optional, and that
+             wording reads as "you will still get the reminders, just by email".
+             There is no email version and there is not going to be one, so the
+             cost of leaving it blank is stated ABOVE the small print where it
+             cannot be skimmed past. Do not soften this. -->
+        <div class="optional-warn">
+          Without a number there are no daily reminders. There is no email version of them.
         </div>
         <div class="optional-sub">
           Completely optional. Leave this blank and you will still get email updates from Star.
