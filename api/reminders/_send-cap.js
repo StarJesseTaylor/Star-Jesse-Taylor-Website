@@ -44,6 +44,19 @@ const SB_KEY = () => process.env.SUPABASE_SERVICE_ROLE_KEY;
 export const PER_HOUR = Number(process.env.SMS_MAX_PER_HOUR || 2);
 export const PER_DAY = Number(process.env.SMS_MAX_PER_DAY || 2);
 
+// ONE REMINDER A DAY. Star, three times over two days: "make sure they get one
+// reminder message a day", "just one text a day".
+//
+// Every member is already set to frequency 1, and the schedule table claims a
+// slot per day so a second run cannot resend it. This is the third lock, and
+// the only one that does not depend on any of that being correct.
+//
+// It counts the member's OWN calendar day, passed in by the caller, never a
+// rolling 24 hours. A rolling window would refuse a legitimate text: slots are
+// random between 8am and 9pm, so yesterday's 8:50pm and today's 8:10am are
+// thirteen hours apart and both are right.
+export const REMINDERS_PER_DAY = Number(process.env.SMS_MAX_REMINDERS_PER_DAY || 1);
+
 const sb = (path) =>
   fetch(`${SB_URL()}/rest/v1/${path}`, {
     headers: {
@@ -67,9 +80,13 @@ const countFrom = async (res) => {
  * Counts by PHONE, not by member id, because a number is the thing a human
  * holds. Two member rows pointing at one phone must not double the allowance.
  *
+ * @param {string} toE164
+ * @param {{kind?:string, dayStartISO?:string}} [opts]
+ *        kind 'reminder' adds the one-a-day rule. dayStartISO is midnight in
+ *        THEIR timezone, expressed as UTC, because only the caller knows it.
  * @returns {Promise<{allow:boolean, reason?:string, lastHour?:number, lastDay?:number}>}
  */
-export async function maySend(toE164) {
+export async function maySend(toE164, opts = {}) {
   if (!SB_URL() || !SB_KEY()) {
     return { allow: false, reason: 'cannot check the send history, refusing rather than risking a burst' };
   }
@@ -131,6 +148,26 @@ export async function maySend(toE164) {
     if (day === null) return { allow: false, reason: 'could not count today, refusing' };
     if (day >= PER_DAY) {
       return { allow: false, lastHour: hour, lastDay: day, reason: `already had ${day} texts today, limit is ${PER_DAY}` };
+    }
+
+    // THE ONE-A-DAY RULE, for reminders only. A welcome is not a reminder and
+    // must never be counted as one, or a member who signs up in the morning
+    // would lose their first day's text to their own hello.
+    //
+    // A reminder is a row with a line_id: it names which of the 30 lines was
+    // sent. The welcome has none. That is structural, so it cannot drift the
+    // way a status name or a meta tag can.
+    if (opts.kind === 'reminder') {
+      const from = opts.dayStartISO || since(1440);
+      const q = realSends(0).replace(
+        /&created_at=gte\.[^&]*/,
+        '&created_at=gte.' + encodeURIComponent(from)
+      ) + '&line_id=not.is.null';
+      const today = await countFrom(await sb(q));
+      if (today === null) return { allow: false, reason: "could not count today's reminders, refusing" };
+      if (today >= REMINDERS_PER_DAY) {
+        return { allow: false, lastDay: day, reason: `already had ${today} reminder(s) today, and the promise is ${REMINDERS_PER_DAY} a day` };
+      }
     }
 
     return { allow: true, lastHour: hour, lastDay: day };

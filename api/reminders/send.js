@@ -236,7 +236,12 @@ export default async function handler(req, res) {
             if (!claimed.length) { report.skipped.push({ id: m.id, why: 'slot already claimed — duplicate run avoided' }); continue; }
           }
 
-          const out = await sendMessage({ to: phone.e164, body, channel, dryRun });
+          const out = await sendMessage({
+            to: phone.e164, body, channel, dryRun,
+            // Their midnight, not Star's, so the one-a-day rule counts the day
+            // the member is actually living in. See _send-cap.js.
+            kind: 'reminder', dayStartISO: localToUtc(today, 0, tz).toISOString(),
+          });
 
           report.messages.push({ member: m.first_name || m.id, at: slotRow.send_at_utc, slot: slotRow.slot, line: line.id, body });
 

@@ -221,14 +221,18 @@ export default async function handler(req, res) {
       //    spends nothing, and no real person is ever turned away by them.
       const guard = await maySendWelcome(req);
       if (guard.allow) {
-        const out = await sendWelcomeText(normalizedPhone).catch(() => null);
+        const out = await sendWelcomeText(enrol.id, normalizedPhone).catch(() => null);
 
         // 🛑 AND IT IS NO LONGER SILENT. Star's first two real testers, in
         //    Sweden and Australia, both failed with "Permission to send an SMS
         //    has not been enabled" because Twilio ships every account US-only.
         //    That wrote one line to a log nobody reads, and he found out from
         //    the testers. A failed send now reaches him the same hour.
-        if (out && !out.sent) {
+        //    Only a genuine failure, though. greetOnce also declines when the
+        //    person has already been greeted, and that is the guard working,
+        //    not a fault. Emailing Star about it would teach him to ignore the
+        //    one that matters.
+        if (out && !out.sent && out.error) {
           await alertStarAboutFailedText(normalizedPhone, out.error, firstName, lastName);
         }
       } else {
@@ -375,7 +379,7 @@ async function enrolInReminders({ phone, firstName, timezone, source }) {
         }),
       });
       await ensurePrefs(sb, existing.id);
-      return { ok: true, existing: true };
+      return { ok: true, existing: true, id: existing.id };
     }
 
     // New member. SMS for everyone, everywhere — same rule the sender uses
@@ -406,7 +410,7 @@ async function enrolInReminders({ phone, firstName, timezone, source }) {
     if (!row?.id) return { ok: false, reason: 'database returned no row' };
 
     await ensurePrefs(sb, row.id);
-    return { ok: true, existing: false };
+    return { ok: true, existing: false, id: row.id };
   } catch (e) {
     console.warn('reminder enrol failed (signup itself still succeeded):', e?.message);
     return { ok: false, reason: String(e?.message || e).slice(0, 200) };
@@ -485,19 +489,41 @@ async function alertStarAboutLostContact({ firstName, lastName, email, normalize
  * Best effort: a Twilio hiccup here must never fail the signup. They are
  * already saved in both systems by the time this runs.
  */
-const WELCOME =
-  "This is Star. You're in. Save this number so you know it's me. " +
-  "One text a day, random time, to get you out of your head and keep you on track. " +
-  "Reply STOP whenever you want out.";
-
-async function sendWelcomeText(toE164) {
+// 🛑 THE TEXT ITSELF LIVES IN api/reminders/_welcome.js, AND SO DOES THE SEND.
+//
+//    This file used to hold its own copy of both. It texted the new member
+//    immediately and wrote nothing to message_log. The cron then looked for a
+//    welcome row, found none, and sent its own a minute later. Two hellos, on
+//    the one occasion a new member is deciding whether this is worth staying
+//    in. Neither path knew the other existed.
+//
+//    greetOnce is now the only code that sends a welcome, from anywhere. It
+//    claims the row before it sends, so whichever path gets there first wins
+//    and the other finds the claim and stops.
+async function sendWelcomeText(memberId, toE164) {
   const { sendMessage, pickChannel } = await import('./reminders/_channel.js');
-  const out = await sendMessage({
-    to: toE164,
-    body: WELCOME,
-    channel: pickChannel(toE164),
+  const { greetOnce } = await import('./reminders/_welcome.js');
+
+  const SB_URL = (process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || '').replace(/\/$/, '');
+  const SB_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!SB_URL || !SB_KEY || !memberId) {
+    // No database means no claim, and no claim means we cannot promise this
+    // only happens once. The cron will greet them within the minute instead.
+    return { sent: false, error: 'no database to record the welcome, leaving it to the cron' };
+  }
+  const sb = (path, init = {}) =>
+    fetch(`${SB_URL}/rest/v1/${path}`, {
+      ...init,
+      headers: {
+        apikey: SB_KEY, Authorization: `Bearer ${SB_KEY}`,
+        'Content-Type': 'application/json', ...(init.headers || {}),
+      },
+    });
+
+  const out = await greetOnce(sb, sendMessage, {
+    memberId, toE164, channel: pickChannel(toE164),
   });
-  if (!out.sent) console.warn('welcome text not sent:', out.error);
+  if (!out.sent && out.error) console.warn('welcome text not sent:', out.error);
   return out;
 }
 

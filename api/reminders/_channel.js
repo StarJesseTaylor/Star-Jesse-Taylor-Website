@@ -207,7 +207,7 @@ import { maySend, reportCapHit } from './_send-cap.js';
  * Send one message. Set dryRun to render everything and skip the wire.
  * @returns {Promise<{sent:boolean, sid?:string, dryRun?:boolean, channel:string, error?:string}>}
  */
-export async function sendMessage({ to, body, channel, dryRun = false }) {
+export async function sendMessage({ to, body, channel, dryRun = false, kind, dayStartISO }) {
   const sid = process.env.TWILIO_ACCOUNT_SID;
   const token = process.env.TWILIO_AUTH_TOKEN;
   const fromSms = process.env.TWILIO_FROM_NUMBER;          // <- Star must buy this
@@ -230,7 +230,7 @@ export async function sendMessage({ to, body, channel, dryRun = false }) {
   //    21 Sep 2026 one wrong word in a welcome dedupe sent four members five
   //    texts each in five minutes and cost Star a member. No caller has to be
   //    correct for this to hold. See _send-cap.js.
-  const guard = await maySend(to);
+  const guard = await maySend(to, { kind, dayStartISO });
   if (!guard.allow) {
     await reportCapHit(to, guard);
     return { sent: false, channel, blocked: true, error: 'send cap: ' + guard.reason };
