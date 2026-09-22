@@ -51,20 +51,36 @@ export async function catchUpWelcomes(sb, sendMessage, pickChannel, normalisePho
     for (const m of members) {
       if (out.greeted + out.failed >= MAX_PER_RUN) break;
 
-      // Has this member EVER been sent anything? One cheap count each.
-      // 🛑 DO NOT FILTER ON status=eq.sent. That is the bug this shipped with,
-      //    and it re-texted five people every sixty seconds.
-      //    api/reminders/status.js moves a row forward through the Twilio
-      //    lifecycle: sent -> delivered. So the moment the delivery receipt
-      //    lands, the row is no longer 'sent', this lookup finds nothing, and
-      //    the member is greeted again. Every minute. Forever.
-      //    ANY outbound row means we have already contacted them.
-      const seen = await sb(
-        `message_log?select=id&member_id=eq.${m.id}&direction=eq.outbound&limit=1`
+      // TWO QUESTIONS, IN THIS ORDER.
+      //
+      // 1. Have we already TRIED to welcome them? Any row tagged as a welcome
+      //    counts, whatever became of it. This is what makes a second welcome
+      //    impossible, and it must ignore status entirely: status.js walks a row
+      //    forward through Twilio's lifecycle (sent -> delivered), so the
+      //    original `status=eq.sent` check stopped matching the moment the
+      //    receipt landed and re-texted five people every sixty seconds.
+      //    A welcome that FAILED also counts, deliberately: a blocked country
+      //    would otherwise retry every minute forever. Star gets told instead.
+      const greeted = await sb(
+        `message_log?select=id&member_id=eq.${m.id}&direction=eq.outbound` +
+        `&meta->>kind=eq.welcome&limit=1`
       );
-      if (!seen.ok) continue;
-      const rows = await seen.json().catch(() => []);
-      if (rows.length) continue;                       // already greeted or already texted
+      if (!greeted.ok) continue;
+      if ((await greeted.json().catch(() => [])).length) continue;
+
+      // 2. Have they had a real text from us by some other route? Then a
+      //    welcome now would be odd, so leave them alone.
+      //    🛑 "Any outbound row" is NOT the test, which is how Hana went two
+      //    days with nothing. A jammed send cap wrote her 42 failed rows, every
+      //    one of them looked like contact, and she became permanently
+      //    ineligible for the greeting she had never received. Only a text that
+      //    actually left counts, and only Twilio handing back a SID proves that.
+      const texted = await sb(
+        `message_log?select=id&member_id=eq.${m.id}&direction=eq.outbound` +
+        `&provider_sid=not.is.null&limit=1`
+      );
+      if (!texted.ok) continue;
+      if ((await texted.json().catch(() => [])).length) continue;
 
       const phone = normalisePhone(m.phone, m.country_code);
       if (!phone.ok) { out.detail.push({ id: m.id, skipped: phone.reason }); continue; }

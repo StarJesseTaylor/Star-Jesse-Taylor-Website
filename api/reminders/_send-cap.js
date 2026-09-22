@@ -101,9 +101,23 @@ export async function maySend(toE164) {
     //    include-list would break on that exactly like the welcome dedupe did.
     //    A status we have never seen before counts as a send, which is the safe
     //    direction to be wrong in.
-    const NOT_A_SEND = "('error','dropped_stale','dry_run','failed','undelivered')";
+    //
+    //    🛑 AND MIND THE QUOTES. The first attempt at this fix wrote
+    //    not.in.('error','dropped_stale',...) with SQL-style single quotes.
+    //    PostgREST does not use single quotes: it read them as part of the
+    //    value, matched a status literally called "'error'", excluded nothing,
+    //    and the jam carried straight on. Hana sat at zero texts for another
+    //    full day while the log climbed "already had 19 texts in the last
+    //    hour". Bare words here, or double quotes. Never single.
+    //
+    //    The real test is provider_sid: Twilio hands back a message SID only
+    //    when a text actually left. A blocked attempt has none. That is a fact
+    //    about the send rather than a name we chose, so it cannot drift the way
+    //    a status list can.
+    const NOT_A_SEND = '(error,dropped_stale,dry_run,failed,undelivered)';
     const realSends = (mins) =>
       `message_log?select=id&member_id=${inList}&direction=eq.outbound` +
+      `&provider_sid=not.is.null` +
       `&status=not.in.${NOT_A_SEND}` +
       `&created_at=gte.${encodeURIComponent(since(mins))}`;
 
