@@ -20,7 +20,7 @@
 //   Why: api/email-writer/send.js sits in this same repo able to mail the whole
 //   database while reporting success. That is what happens without guards.
 
-import { rollDay, dueNow, localDate, localToUtc, seededRng } from './_schedule.js';
+import { rollDay, dueNow, localDate, localToUtc, seededRng, localMinutesNow } from './_schedule.js';
 import { LINES, pickLine, render } from './_lines.js';
 import { normalisePhone, pickChannel, sendMessage } from './_channel.js';
 import { healInboundWebhook } from './_webhook-heal.js';
@@ -124,7 +124,7 @@ export default async function handler(req, res) {
   //    then sending nothing is worse than staying quiet.
   if (!dryRun) {
     try {
-      report.welcomes = await catchUpWelcomes(sb, sendMessage, pickChannel, normalisePhone, log);
+      report.welcomes = await catchUpWelcomes(sb, sendMessage, pickChannel, normalisePhone, log, localMinutesNow);
     } catch {
       report.welcomes = { error: true };
     }

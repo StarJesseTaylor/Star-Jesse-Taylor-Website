@@ -26,6 +26,14 @@ export const WELCOME =
 
 const MAX_PER_RUN = 10;   // a burst cap, so a bad day can never become a blast
 
+// NOBODY IS WELCOMED IN THEIR SLEEP.
+// Reminders already obey a local 8am-9pm window. This did not, so Ghazaal's
+// first ever text from Star arrived at 3am in Perth and she opted out. Star,
+// afterwards: "It is not the middle of the night for her. It is the middle of
+// the night for me." A welcome that waits until morning costs nothing.
+const AWAKE_FROM = 8;     // local hour
+const AWAKE_UNTIL = 21;   // local hour
+
 /**
  * Greet anyone active who has never received a single text.
  *
@@ -37,12 +45,12 @@ const MAX_PER_RUN = 10;   // a burst cap, so a bad day can never become a blast
  *
  * @returns {Promise<{greeted:number, failed:number, detail:Array}>}
  */
-export async function catchUpWelcomes(sb, sendMessage, pickChannel, normalisePhone, log) {
+export async function catchUpWelcomes(sb, sendMessage, pickChannel, normalisePhone, log, localMinutesNow) {
   const out = { greeted: 0, failed: 0, detail: [] };
   try {
     // Active, consented, and with no outbound row at all.
     const res = await sb(
-      'member_channel?select=id,first_name,phone,country_code,channel&status=eq.active&consent_at=not.is.null&limit=50'
+      'member_channel?select=id,first_name,phone,country_code,channel,timezone&status=eq.active&consent_at=not.is.null&limit=50'
     );
     if (!res.ok) return out;
     const members = await res.json();
@@ -81,6 +89,16 @@ export async function catchUpWelcomes(sb, sendMessage, pickChannel, normalisePho
       );
       if (!texted.ok) continue;
       if ((await texted.json().catch(() => [])).length) continue;
+
+      // Their clock, never Star's.
+      if (typeof localMinutesNow === 'function') {
+        let hour = null;
+        try { hour = Math.floor(localMinutesNow(m.timezone || 'UTC') / 60); } catch { hour = null; }
+        if (hour !== null && (hour < AWAKE_FROM || hour >= AWAKE_UNTIL)) {
+          out.detail.push({ name: m.first_name, waiting: 'asleep, local hour ' + hour });
+          continue;
+        }
+      }
 
       const phone = normalisePhone(m.phone, m.country_code);
       if (!phone.ok) { out.detail.push({ id: m.id, skipped: phone.reason }); continue; }
