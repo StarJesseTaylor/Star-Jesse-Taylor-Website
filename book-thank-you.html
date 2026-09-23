@@ -131,6 +131,20 @@
       color: #1a1a1a !important;
     }
 
+    .ty-download-btn {
+      display: inline-block;
+      background: #0D2C4F;
+      color: #fff !important;
+      padding: 16px 40px;
+      border-radius: 100px;
+      font-weight: 800;
+      text-decoration: none;
+      font-size: 1.05rem;
+      box-shadow: 0 8px 24px rgba(13,44,79,0.3);
+      transition: transform 0.15s;
+    }
+    .ty-download-btn:hover { transform: translateY(-2px); }
+
     .home-link {
       display: block;
       text-align: center;
@@ -148,11 +162,19 @@
   <div class="ty-check">&#10003;</div>
   <h1>You just got the book.</h1>
   <p class="lead">
-    The download link is on its way to your inbox right now.
-    Save it to your phone and your computer so you can read it anywhere.
+    Your book is ready. Download it right here so you have it no matter what.
+  </p>
+  <div id="ty-download-wrap" style="margin:24px 0 8px" hidden>
+    <a id="ty-download-btn" class="ty-download-btn" href="#">&#128214; Download your book</a>
+  </div>
+  <p class="ty-email-note">
+    We also sent the link to your email. Check your inbox in the next minute or two, including your promotions or spam folder.
+  </p>
+  <p id="ty-download-fallback" class="ty-email-note" hidden>
+    Paid with Apple Pay? Your email may have gone to your Apple ID address. Use the button above to get your book, or email star@starjessetaylor.com and I'll send it straight to you.
   </p>
   <p class="ty-email-note">
-    Check your inbox in the next minute or two. If you don't see it, check your promotions or spam folder.
+    Didn't get the link, or landed here without the button? <a href="/get-my-book" style="color:#0D2C4F;font-weight:700">Get your book here</a> by entering the email you paid with.
   </p>
 </main>
 
@@ -174,6 +196,21 @@
 
   <a href="/" class="home-link">Or go back to the homepage &rarr;</a>
 </section>
+
+<script>
+  // Deliver the book right on this page, keyed to the paid Stripe session in the
+  // URL. This does NOT depend on the email landing — it fixes the Apple Pay case
+  // where the receipt email goes to the buyer's Apple ID address, not the inbox
+  // they check. /api/book-download re-verifies the payment before streaming.
+  (function () {
+    var sid = new URLSearchParams(location.search).get('session_id');
+    if (!sid) return;
+    var btn = document.getElementById('ty-download-btn');
+    btn.href = '/api/book-download?session_id=' + encodeURIComponent(sid);
+    document.getElementById('ty-download-wrap').hidden = false;
+    document.getElementById('ty-download-fallback').hidden = false;
+  })();
+</script>
 
 </body>
 </html>

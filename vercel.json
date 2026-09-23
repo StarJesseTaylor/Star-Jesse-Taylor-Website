@@ -30,6 +30,7 @@
     { "source": "/breakthrough-blueprint", "destination": "/breakthrough-blueprint.html" },
     { "source": "/emotional-fitness-course", "destination": "/emotional-fitness-course.html" },
     { "source": "/workshop-welcome", "destination": "/workshop-welcome.html" },
+    { "source": "/get-my-book", "destination": "/get-my-book.html" },
     { "source": "/event", "destination": "/event.html" },
     { "source": "/qualify", "destination": "/qualify.html" },
     { "source": "/quiz", "destination": "/quiz.html" },

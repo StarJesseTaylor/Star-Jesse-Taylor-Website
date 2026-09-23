@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Get My Book &middot; Resend Your Download Link | Star Jesse Taylor</title>
+  <meta name="description" content="Bought the book but didn't get the download link? Enter your email and we'll resend it." />
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    .gb-section {
+      min-height: 70vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(160deg, #0e3a32 0%, #1a4742 50%, #2d6b5f 100%);
+      color: #fff;
+      padding: 80px 0;
+    }
+    .gb-inner { max-width: 520px; margin: 0 auto; padding: 0 24px; text-align: center; width: 100%; }
+    .gb-inner h1 { color: #fff; font-size: clamp(1.7rem, 4vw, 2.3rem); margin-bottom: 14px; }
+    .gb-inner > p { font-size: 1.05rem; line-height: 1.7; color: rgba(255,255,255,0.88); margin-bottom: 28px; }
+    .gb-form { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.18); border-radius: 16px; padding: 28px 24px; display: flex; flex-direction: column; gap: 12px; text-align: left; }
+    .gb-form input { padding: 14px 16px; border: 1.5px solid rgba(255,255,255,0.24); border-radius: 10px; font-size: 1rem; font-family: inherit; outline: none; background: rgba(255,255,255,0.06); color: #fff; }
+    .gb-form input::placeholder { color: rgba(255,255,255,0.55); }
+    .gb-form input:focus { border-color: #f5d478; }
+    .gb-submit { padding: 16px 22px; background: linear-gradient(90deg,#c9a84c,#f5d478); color: #0e3a32; border: none; border-radius: 50px; font-weight: 800; font-size: 1rem; cursor: pointer; margin-top: 6px; }
+    .gb-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+    .gb-msg { display: none; border-radius: 12px; padding: 16px 18px; font-size: 0.98rem; line-height: 1.6; margin-top: 14px; }
+    .gb-msg.active { display: block; }
+    .gb-msg.ok { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.24); color: #fff; }
+    .gb-msg.warn { background: rgba(245,212,120,0.14); border: 1px solid rgba(245,212,120,0.4); color: #f8e6b0; }
+    .gb-msg.err { background: rgba(220,38,38,0.18); border: 1px solid rgba(248,113,113,0.4); color: #fecaca; }
+    .gb-help { font-size: 0.9rem; color: rgba(255,255,255,0.7); margin-top: 18px; }
+    .gb-help a { color: #b5edff; }
+    .hp-field { position: absolute !important; left: -9999px !important; top: -9999px !important; }
+  </style>
+</head>
+<body>
+
+<section class="gb-section">
+  <div class="gb-inner">
+    <h1>Get your book</h1>
+    <p>Bought the book but the download link never showed up? Enter the email you used at checkout and I'll resend it right now.</p>
+
+    <form id="gbForm" class="gb-form">
+      <div class="hp-field" aria-hidden="true"><label>Website (do not fill): <input type="text" name="website_url" tabindex="-1" autocomplete="off"></label></div>
+      <input type="email" name="email" placeholder="The email you paid with" required autocomplete="email" />
+      <button type="submit" class="gb-submit">Resend My Download Link</button>
+    </form>
+
+    <div class="gb-msg" id="gbMsg"></div>
+
+    <p class="gb-help">Still stuck? Email <a href="mailto:star@starjessetaylor.com">star@starjessetaylor.com</a> and I'll send it straight to you.</p>
+  </div>
+</section>
+
+<script>
+  (function () {
+    var form = document.getElementById('gbForm');
+    var msg = document.getElementById('gbMsg');
+    if (!form) return;
+
+    function showMsg(text, kind) {
+      msg.textContent = text;
+      msg.className = 'gb-msg active ' + kind;
+    }
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      msg.className = 'gb-msg';
+      var data = new FormData(form);
+      var payload = {
+        email: (data.get('email') || '').trim(),
+        website_url: data.get('website_url') || ''
+      };
+      if (!payload.email) { showMsg('Please enter the email you paid with.', 'err'); return; }
+
+      var btn = form.querySelector('.gb-submit');
+      btn.disabled = true;
+      btn.textContent = 'Looking up your purchase...';
+
+      try {
+        var res = await fetch('/api/book-recover', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        var out = await res.json().catch(function () { return {}; });
+        if (res.ok && out.sent) {
+          form.style.display = 'none';
+          showMsg(out.message || 'Your download link is on its way to your email.', 'ok');
+        } else if (res.ok && out.notFound) {
+          showMsg(out.message || "We couldn't find a purchase under that email.", 'warn');
+          btn.disabled = false;
+          btn.textContent = 'Resend My Download Link';
+        } else {
+          showMsg(out.message || out.error || 'Something went wrong. Email star@starjessetaylor.com and I will send it to you.', 'err');
+          btn.disabled = false;
+          btn.textContent = 'Resend My Download Link';
+        }
+      } catch (err) {
+        showMsg('Something went wrong. Email star@starjessetaylor.com and I will send it to you.', 'err');
+        btn.disabled = false;
+        btn.textContent = 'Resend My Download Link';
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>

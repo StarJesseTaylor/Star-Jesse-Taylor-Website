@@ -29,19 +29,33 @@ const COURSE_NAME = 'How to Create a Healthy Relationship';
 const COURSE_ACCESS_URL = 'https://starjessetaylor.com/healthy-relationship-access-3p8x7m9k.html';
 
 // Verify Stripe signature. Raw body verification required.
+// Hardened: collects EVERY v1 signature (Stripe sends more than one during
+// secret rotation), and length-guards before timingSafeEqual — which THROWS on
+// unequal-length buffers, so a malformed signature used to crash this endpoint
+// with a 500 instead of cleanly rejecting. Real Stripe events are unaffected;
+// this just makes a bad request fail closed (return false) instead of throwing.
 function verifyStripeSignature(payload, sigHeader, secret) {
-  if (!sigHeader) return false;
-  const parts = Object.fromEntries(
-    sigHeader.split(',').map(p => p.split('=').map(s => s.trim()))
-  );
-  const timestamp = parts.t;
-  const sigs = [parts.v1].filter(Boolean);
+  if (!sigHeader || !secret) return false;
+  let timestamp = null;
+  const sigs = [];
+  for (const part of sigHeader.split(',')) {
+    const idx = part.indexOf('=');
+    if (idx === -1) continue;
+    const key = part.slice(0, idx).trim();
+    const val = part.slice(idx + 1).trim();
+    if (key === 't') timestamp = val;
+    else if (key === 'v1') sigs.push(val);
+  }
   if (!timestamp || sigs.length === 0) return false;
-  const expected = crypto
+  const expectedBuf = crypto
     .createHmac('sha256', secret)
     .update(`${timestamp}.${payload}`)
-    .digest('hex');
-  return sigs.some(s => crypto.timingSafeEqual(Buffer.from(s, 'hex'), Buffer.from(expected, 'hex')));
+    .digest();
+  return sigs.some(s => {
+    let sBuf;
+    try { sBuf = Buffer.from(s, 'hex'); } catch { return false; }
+    return sBuf.length === expectedBuf.length && crypto.timingSafeEqual(sBuf, expectedBuf);
+  });
 }
 
 async function getRawBody(req) {
