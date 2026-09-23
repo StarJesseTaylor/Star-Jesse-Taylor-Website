@@ -295,6 +295,20 @@ export async function sendMessage({ to, body, channel, dryRun = false, kind, day
   // `from` travels back with every outcome. A failure is only meaningful
   // alongside the number it was attempted from: 21612 says "not from THIS
   // number", and the guard in _send-cap.js lifts itself once that changes.
-  if (!res.ok) return { sent: false, channel, from, error: `Twilio ${res.status}: ${data?.message || 'unknown'}` };
+  //
+  // 🛑 CARRY TWILIO'S ERROR CODE, NOT JUST ITS SENTENCE.
+  //    The first version of the unreachable guard searched the stored error
+  //    text for "21612" and never matched, because Twilio puts the code in
+  //    `data.code` and the prose in `data.message`. The guard looked right,
+  //    shipped, and Hana was still hammered 21 times in twenty minutes the same
+  //    morning. A code is a stable identifier; a sentence is marketing copy
+  //    that can be reworded tomorrow. Match on the code.
+  if (!res.ok) {
+    return {
+      sent: false, channel, from,
+      code: data?.code,
+      error: `Twilio ${res.status} [${data?.code ?? '?'}]: ${data?.message || 'unknown'}`,
+    };
+  }
   return { sent: true, sid: data.sid, channel, from };
 }

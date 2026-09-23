@@ -170,9 +170,22 @@ export async function maySend(toE164, opts = {}) {
     //    their country and TWILIO_FROM_<ISO> is set, `from` differs, the guard
     //    lifts by itself, and they are retried on the next run. No redeploy, no
     //    database surgery, no remembering to undo anything.
+    //    🛑 MATCH ON THE CODE, AND ON THE SENTENCE FOR OLD ROWS.
+    //       The first version of this searched the stored error text for
+    //       "21612". Twilio puts the code in `data.code` and the prose in
+    //       `data.message`, and we only ever stored the prose, so the search
+    //       matched nothing. The guard shipped, looked correct, and Hana was
+    //       still hit 21 times in twenty minutes that same morning.
+    //       Rows written from now on carry meta.code. Rows written before this
+    //       do not, so the phrase is kept as a fallback: it is Twilio's own
+    //       wording for 21612 and it is what is already sitting in Star's table.
+    const UNREACHABLE = 'or=(' + [
+      'meta->>code.eq.21612',
+      'meta->>error.ilike.*current combination*',
+    ].join(',') + ')';
     const walled = await fetch(
       `${SB_URL()}/rest/v1/message_log?select=meta,created_at&member_id=${inList}` +
-      `&meta->>error=like.*21612*&created_at=gte.${encodeURIComponent(since(60 * 24 * 7))}` +
+      `&${UNREACHABLE}&created_at=gte.${encodeURIComponent(since(60 * 24 * 7))}` +
       `&order=created_at.desc&limit=1`,
       { headers: { apikey: SB_KEY(), Authorization: `Bearer ${SB_KEY()}` } }
     ).catch(() => null);
