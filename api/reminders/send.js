@@ -249,7 +249,7 @@ export default async function handler(req, res) {
             body, channel: out.channel, line_id: line.id,
             status: out.sent ? 'sent' : (out.dryRun ? 'dry_run' : 'error'),
             provider_sid: out.sid || null,
-            meta: out.error ? { error: out.error } : null,
+            meta: out.error ? { error: out.error, from: out.from } : null,
           });
 
           if (out.sent) {

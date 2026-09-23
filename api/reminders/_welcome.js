@@ -126,7 +126,7 @@ export async function greetOnce(sb, sendMessage, { memberId, toE164, channel }) 
       body: JSON.stringify(
         out.sent
           ? { status: 'sent', provider_sid: out.sid }
-          : { status: 'error', meta: { kind: 'welcome', error: String(out.error || '').slice(0, 200) } }
+          : { status: 'error', meta: { kind: 'welcome', error: String(out.error || '').slice(0, 200), from: out.from } }
       ),
     }).catch(() => {});
   }

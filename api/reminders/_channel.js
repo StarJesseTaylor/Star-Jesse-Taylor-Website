@@ -207,10 +207,48 @@ import { maySend, reportCapHit } from './_send-cap.js';
  * Send one message. Set dryRun to render everything and skip the wire.
  * @returns {Promise<{sent:boolean, sid?:string, dryRun?:boolean, channel:string, error?:string}>}
  */
+/**
+ * WHICH NUMBER DO WE TEXT THEM FROM?
+ *
+ * For two months the answer was "the one number we own", and that was fine
+ * until Hana. Her UK mobile refused every message with Twilio error 21612,
+ * "cannot be sent with the current combination of To and From". British
+ * networks do not carry automated texts from foreign numbers, because that is
+ * how the fake-bank-text industry works. Austria, Sweden, Australia and India
+ * all accept the US number. The UK does not, and it never will.
+ *
+ * So the sender is now chosen by where the text is going. Buy a number in a
+ * country, add TWILIO_FROM_<ISO> to Vercel, and every member there starts
+ * using it on the next cron run. Nothing else changes, nothing is redeployed,
+ * and the next country that does this is a purchase rather than a rewrite.
+ *
+ *   TWILIO_FROM_GB=+447...   ->  every +44 member
+ *   TWILIO_FROM_NUMBER=+1... ->  everyone else, as before
+ */
+const DIAL_TO_ISO = {
+  '44': 'GB', '61': 'AU', '43': 'AT', '46': 'SE', '91': 'IN', '1': 'US',
+  '49': 'DE', '33': 'FR', '34': 'ES', '39': 'IT', '31': 'NL', '353': 'IE',
+  '64': 'NZ', '27': 'ZA', '65': 'SG', '852': 'HK', '81': 'JP', '82': 'KR',
+  '86': 'CN', '55': 'BR', '52': 'MX', '972': 'IL', '971': 'AE', '48': 'PL',
+};
+
+export function senderFor(toE164) {
+  const digits = String(toE164 || '').replace(/^\+/, '');
+  // Longest dial code first, so 353 beats 35 and 852 beats 85.
+  const codes = Object.keys(DIAL_TO_ISO).sort((a, b) => b.length - a.length);
+  for (const code of codes) {
+    if (digits.startsWith(code)) {
+      const local = process.env['TWILIO_FROM_' + DIAL_TO_ISO[code]];
+      if (local) return { from: local, iso: DIAL_TO_ISO[code], local: true };
+    }
+  }
+  return { from: process.env.TWILIO_FROM_NUMBER, iso: null, local: false };
+}
+
 export async function sendMessage({ to, body, channel, dryRun = false, kind, dayStartISO }) {
   const sid = process.env.TWILIO_ACCOUNT_SID;
   const token = process.env.TWILIO_AUTH_TOKEN;
-  const fromSms = process.env.TWILIO_FROM_NUMBER;          // <- Star must buy this
+  const fromSms = senderFor(to).from;                      // <- country aware
   const fromWa = process.env.TWILIO_WHATSAPP_FROM;         // <- needs Meta sender approval
 
   if (!sid || !token) return { sent: false, channel, error: 'TWILIO creds not set in env' };
@@ -230,10 +268,10 @@ export async function sendMessage({ to, body, channel, dryRun = false, kind, day
   //    21 Sep 2026 one wrong word in a welcome dedupe sent four members five
   //    texts each in five minutes and cost Star a member. No caller has to be
   //    correct for this to hold. See _send-cap.js.
-  const guard = await maySend(to, { kind, dayStartISO });
+  const guard = await maySend(to, { kind, dayStartISO, from });
   if (!guard.allow) {
     await reportCapHit(to, guard);
-    return { sent: false, channel, blocked: true, error: 'send cap: ' + guard.reason };
+    return { sent: false, channel, from, blocked: true, error: 'send cap: ' + guard.reason };
   }
 
   const params = new URLSearchParams({ To: toAddr, From: fromAddr, Body: body });
@@ -254,6 +292,9 @@ export async function sendMessage({ to, body, channel, dryRun = false, kind, day
   });
 
   const data = await res.json().catch(() => ({}));
-  if (!res.ok) return { sent: false, channel, error: `Twilio ${res.status}: ${data?.message || 'unknown'}` };
-  return { sent: true, sid: data.sid, channel };
+  // `from` travels back with every outcome. A failure is only meaningful
+  // alongside the number it was attempted from: 21612 says "not from THIS
+  // number", and the guard in _send-cap.js lifts itself once that changes.
+  if (!res.ok) return { sent: false, channel, from, error: `Twilio ${res.status}: ${data?.message || 'unknown'}` };
+  return { sent: true, sid: data.sid, channel, from };
 }

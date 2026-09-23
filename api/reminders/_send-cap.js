@@ -84,6 +84,8 @@ const countFrom = async (res) => {
  * @param {{kind?:string, dayStartISO?:string}} [opts]
  *        kind 'reminder' adds the one-a-day rule. dayStartISO is midnight in
  *        THEIR timezone, expressed as UTC, because only the caller knows it.
+ *        from is the number we are about to send from, so a sender that has
+ *        changed since a 21612 failure lifts the unreachable block by itself.
  * @returns {Promise<{allow:boolean, reason?:string, lastHour?:number, lastDay?:number}>}
  */
 export async function maySend(toE164, opts = {}) {
@@ -148,6 +150,44 @@ export async function maySend(toE164, opts = {}) {
     if (day === null) return { allow: false, reason: 'could not count today, refusing' };
     if (day >= PER_DAY) {
       return { allow: false, lastHour: hour, lastDay: day, reason: `already had ${day} texts today, limit is ${PER_DAY}` };
+    }
+
+    // 🛑 DO NOT KEEP KNOCKING ON A DOOR THAT IS BRICKED UP.
+    //
+    //    Twilio scores every account on messaging health, and a wall of failed
+    //    sends drags down "sent rate" and "fraud" together, because a US number
+    //    firing repeatedly at unreachable foreign numbers is the exact shape of
+    //    an SMS pumping attack. Star's score fell 31 points in a week, to 66,
+    //    off the back of 60 errors that were all the same error.
+    //
+    //    Error 21612 means the destination cannot be reached FROM THIS NUMBER.
+    //    It is not a glitch and it will not pass. Retrying it daily costs us
+    //    reputation for nothing, and reputation is what decides whether the
+    //    texts that DO work keep landing.
+    //
+    //    So: if this member hit 21612 recently, we stop. But only while the
+    //    sender is the same one that failed. The moment a number is bought in
+    //    their country and TWILIO_FROM_<ISO> is set, `from` differs, the guard
+    //    lifts by itself, and they are retried on the next run. No redeploy, no
+    //    database surgery, no remembering to undo anything.
+    const walled = await fetch(
+      `${SB_URL()}/rest/v1/message_log?select=meta,created_at&member_id=${inList}` +
+      `&meta->>error=like.*21612*&created_at=gte.${encodeURIComponent(since(60 * 24 * 7))}` +
+      `&order=created_at.desc&limit=1`,
+      { headers: { apikey: SB_KEY(), Authorization: `Bearer ${SB_KEY()}` } }
+    ).catch(() => null);
+    if (walled && walled.ok) {
+      const hit = (await walled.json().catch(() => []))[0];
+      const failedFrom = hit && hit.meta && hit.meta.from;
+      // No recorded sender means the row predates this guard. Treat it as the
+      // number we are using now, which is the safe reading: it blocks.
+      if (hit && (!failedFrom || failedFrom === opts.from)) {
+        return {
+          allow: false,
+          reason: 'this number cannot be reached from ' + (opts.from || 'our number') +
+                  ' (Twilio 21612). Buy a number in their country and set TWILIO_FROM_<ISO> to reach them.',
+        };
+      }
     }
 
     // THE ONE-A-DAY RULE, for reminders only. A welcome is not a reminder and
