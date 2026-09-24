@@ -96,7 +96,7 @@ async function notifyStar(name, email) {
     'Email: ' + email,
     'Time: ' + new Date().toISOString(),
     '',
-    'They have been added to ActiveCampaign with tags path:la-workshop, workshop:waitlist, source:website, location:los-angeles.',
+    'They have been added to ActiveCampaign with tags workshop:la-nov-14-2026, path:la-workshop, workshop:waitlist, source:website, location:los-angeles.',
     'Confirmation email already sent to them from hello@starjessetaylor.com.'
   ].join('\n');
   try {
@@ -177,6 +177,7 @@ export default async function handler(req, res) {
     }).catch(err => console.error('List add error:', err));
 
     await Promise.all([
+      applyTag(AC_URL, headers, contactId, 'workshop:la-nov-14-2026'),
       applyTag(AC_URL, headers, contactId, 'path:la-workshop'),
       applyTag(AC_URL, headers, contactId, 'workshop:waitlist'),
       applyTag(AC_URL, headers, contactId, 'source:website'),
