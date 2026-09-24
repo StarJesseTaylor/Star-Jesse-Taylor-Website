@@ -44,12 +44,30 @@ function localTime(iso, tz) {
   }
 }
 
+/* The 30 lines themselves. Star, 24 Sep: "I would like to see what messages
+   they actually get" and "can I have something where I get an understanding of
+   what texts they get".
+
+   They live in api/reminders/_lines.js, which is the right home: version
+   controlled, reviewable, impossible to wipe by a mis-click. But that makes
+   them invisible to the person who wrote them, which is absurd. So they are
+   rendered here, read only, next to the evidence of how each one is doing. */
+async function loadLines() {
+  try {
+    const m = await import('../reminders/_lines.js');
+    return m.LINES || [];
+  } catch {
+    return [];
+  }
+}
+
 export default async function handler(req, res) {
   const expected = process.env.CRON_SECRET;
   if (!expected || (req.query && req.query.key) !== expected) {
     return res.status(401).send('Unauthorized. Add ?key=YOUR_CRON_SECRET to the URL.');
   }
 
+  const LINES = await loadLines();
   const [mRes, lRes, sRes] = await Promise.all([
     sbFetch('member_channel?select=id,first_name,phone,timezone,status,consent_at&order=first_name'),
     sbFetch('message_log?select=member_id,body,status,provider_sid,line_id,created_at,meta,direction,classification&order=created_at.desc&limit=400'),
@@ -144,6 +162,20 @@ export default async function handler(req, res) {
     const id = r.meta && r.meta.replied_to_line;
     if (id != null && perLine[id]) perLine[id].replied++;
   }
+  // Every line, whether or not it has been sent yet, with its evidence beside
+  // it. A line that has never gone out is as worth seeing as a popular one:
+  // it means the picker has not reached it, not that it failed.
+  const allLines = LINES.map((l) => {
+    const v = perLine[l.id] || { sent: 0, replied: 0 };
+    return (
+      '<li><span class="when">#' + l.id +
+      (v.sent ? ' &middot; sent ' + v.sent : ' &middot; <em>not yet</em>') +
+      (v.replied ? ' &middot; <strong>' + v.replied + ' replied</strong>' : '') +
+      (l.when && l.when !== 'any' ? ' &middot; ' + esc(l.when) : '') +
+      '</span><span class="body">' + esc(l.text) + '</span></li>'
+    );
+  }).join('');
+
   const lineRows = Object.entries(perLine)
     .sort((a, b) => (b[1].replied - a[1].replied) || (b[1].sent - a[1].sent))
     .map(([id, v]) =>
@@ -193,6 +225,11 @@ export default async function handler(req, res) {
     '<p class="sub">Every text that actually reached a phone, newest first, shown in each person&rsquo;s own time. ' +
     'Refresh whenever. Nothing here can send or change anything.</p>' +
     rows.map(card).join('') +
+    '<section class="card"><h2>Your ' + LINES.length + ' lines</h2>' +
+    '<p class="meta">Every line that can go out, exactly as it is sent, with how often it has gone and how many people wrote back. ' +
+    'Anything in braces is filled in from that person&rsquo;s own profile.</p>' +
+    (allLines ? '<ul>' + allLines + '</ul>' : '<p class="dim">Could not load the lines.</p>') +
+    '</section>' +
     '<section class="card"><h2>Which lines land</h2>' +
     '<p class="meta">Every line that has gone out, and how many people wrote back to it. Most replied first.</p>' +
     (lineRows ? '<ul>' + lineRows + '</ul>' : '<p class="dim">No lines sent yet.</p>') +
