@@ -40,7 +40,7 @@ async function sendBookEmail(toEmail, firstName, downloadUrl) {
     "It's called the Audacity Community because I want to help you have the audacity to live the life that you want to live.", '',
     "Here's a free one-week trial for you:", '',
     "https://www.skool.com/star-jesse-taylor-3703", '',
-    "Then $49/month. Cancel anytime.", '',
+    "Then $59/month. Cancel anytime.", '',
     "Star"
   ].join('\n');
   const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Your book is ready</title></head>
@@ -60,7 +60,7 @@ async function sendBookEmail(toEmail, firstName, downloadUrl) {
     <div style="text-align:center;margin:0 0 12px">
       <a href="https://www.skool.com/star-jesse-taylor-3703" style="display:inline-block;background:#F2D5A6;color:#0D2C4F;padding:14px 32px;border-radius:100px;font-weight:900;text-decoration:none;font-size:15px;border:2px solid #0D2C4F">Try Audacity Free for 7 Days</a>
     </div>
-    <p style="font-size:13px;color:#718096;text-align:center;margin:0">Then $49/month. Cancel anytime.</p>
+    <p style="font-size:13px;color:#718096;text-align:center;margin:0">Then $59/month. Cancel anytime.</p>
   </div>
   <p style="font-size:16px;margin:36px 0 0">Star</p>
 </div>
