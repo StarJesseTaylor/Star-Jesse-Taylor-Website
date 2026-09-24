@@ -55,6 +55,8 @@ async function sendConfirmation(toEmail, name) {
     '',
     'When seats open, the waitlist hears first and gets first access before anyone else.',
     '',
+    "I'm so excited to see you in person at the LA workshop!",
+    '',
     'Star'
   ].join('\n');
 
