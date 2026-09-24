@@ -53,13 +53,7 @@ async function sendConfirmation(toEmail, name) {
     '',
     'You are on the waitlist for the LA workshop, Saturday, November 14, 2026.',
     '',
-    'Here is what happens next.',
-    '',
-    'This is a full day, in person, in Los Angeles. A room with a wall to wall whiteboard, a small group, and the complete Emotional Fitness work practiced together, not just watched.',
-    '',
-    'When seats open, the waitlist hears first and gets first access before anyone else. The exact location goes out to the list first too.',
-    '',
-    'Looking forward to being in the room with you.',
+    'When seats open, the waitlist hears first and gets first access before anyone else.',
     '',
     'Star'
   ].join('\n');
