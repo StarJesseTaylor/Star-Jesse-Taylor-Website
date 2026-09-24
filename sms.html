@@ -148,6 +148,20 @@
         <input type="email" name="email" placeholder="Email address" required />
       </div>
 
+      <!-- THE YEARLY GATE. Star's call, 24 Sep: the daily reminders are part of
+           the yearly membership.
+
+           Hidden unless the server says a code is set, so this block is simply
+           not there while the annual tier is still being built, and the page is
+           unchanged for everyone currently testing.
+
+           Yearly members normally arrive on a link with the code already in it
+           (/sms?c=THECODE), so they never see this field at all. It exists for
+           the person who typed the address by hand or lost the link. -->
+      <div class="row row-single" id="codeRow" style="display:none">
+        <input type="text" name="accessCode" id="accessCode" placeholder="Your yearly member code" autocomplete="off" />
+      </div>
+
       <div class="optional-block">
         <div class="step">Step 2 &middot; Optional</div>
         <div class="optional-head">The reminders are texts. Add your number.</div>
@@ -379,6 +393,37 @@
   //    Read from the browser's own locale (en-AU -> AU). If that gives us
   //    nothing usable we leave it on the US default, which is still a visible,
   //    changeable answer rather than a silent guess.
+  // ── THE YEARLY GATE ──
+  // Star, 24 Sep: the daily reminders belong to the yearly membership.
+  //
+  // Skool holds who is on yearly and gives us no way to read it, so the gate is
+  // a code. Yearly members get a link with the code already in it, so the form
+  // looks completely normal to them and they type nothing extra.
+  //
+  // The field only appears if the server says a code is actually set. While
+  // SMS_ACCESS_CODE is unset the page is byte for byte what it is today, which
+  // is what lets the current test keep running until annual launches.
+  const CODE_FROM_LINK = (function () {
+    try { return new URLSearchParams(location.search).get('c') || ''; } catch (e) { return ''; }
+  })();
+
+  (async function showCodeFieldIfGated() {
+    try {
+      const r = await fetch('/api/sms-optin');
+      if (!r.ok) return;
+      const { codeRequired } = await r.json();
+      // A code in the link means they were invited properly. Do not make them
+      // look at a field they have already satisfied.
+      if (codeRequired && !CODE_FROM_LINK) {
+        const row = document.getElementById('codeRow');
+        if (row) row.style.display = '';
+      }
+    } catch (e) {
+      // If this check fails the field stays hidden and the server still refuses
+      // a bad code. Failing quiet beats showing a stranger a locked door.
+    }
+  })();
+
   (function preselectCountry() {
     try {
       var sel = form.querySelector('select[name="countryCode"]');
@@ -422,7 +467,8 @@
       countryCode: String(phone).trim().startsWith('+') ? '' : (fd.get('countryCode') || ''),
       consent:   smsOptIn,
       website_url: fd.get('website_url') || '',
-      source: 'sms_optin_page'
+      source: 'sms_optin_page',
+      accessCode: (document.getElementById('accessCode') || {}).value || CODE_FROM_LINK
     };
 
     const btn  = form.querySelector('button[type="submit"]');

@@ -11,6 +11,20 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   if (req.method === 'OPTIONS') return res.status(200).end();
+  /* ── IS THIS PAGE GATED RIGHT NOW? ──
+        Star, 24 Sep: reminders become a yearly benefit.
+
+        Skool holds who is on yearly and gives us no API to read it, so nothing
+        here can check a subscription. The gate is therefore a code that yearly
+        members are given, usually baked into their link.
+
+        The page asks this before it renders, so the code field appears only
+        when a code is actually required. With SMS_ACCESS_CODE unset the page
+        behaves exactly as it does today, which is what keeps the current test
+        running while the annual tier is still being built. */
+  if (req.method === 'GET') {
+    return res.status(200).json({ codeRequired: !!process.env.SMS_ACCESS_CODE });
+  }
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   if (req.body && req.body.health_check === 'health-check-daily') {
@@ -21,7 +35,27 @@ export default async function handler(req, res) {
   const AC_URL = (process.env.ACTIVECAMPAIGN_API_URL || 'https://starjessetaylor92181.api-us1.com').replace(/\/$/, '');
   if (!AC_KEY) return res.status(500).json({ error: 'Server configuration error' });
 
-  const { firstName, lastName, email, phone, consent, website_url, source } = req.body || {};
+  const { firstName, lastName, email, phone, consent, website_url, source, accessCode } = req.body || {};
+
+  /* ── THE YEARLY GATE ──
+        Checked before anything is written anywhere, so a wrong code costs one
+        database read and creates nothing: no contact, no member row, no text.
+
+        Case and spacing are forgiven. Someone typing a code off a Skool post on
+        their phone should not be turned away over a capital letter, and the
+        code is a door, not a password. */
+  const requiredCode = process.env.SMS_ACCESS_CODE;
+  if (requiredCode) {
+    const given = String(accessCode || '').trim().toLowerCase();
+    if (given !== String(requiredCode).trim().toLowerCase()) {
+      return res.status(403).json({
+        error: 'code',
+        message: given
+          ? "That code isn't right. It's in your yearly welcome post on Skool."
+          : 'The daily reminders are part of the yearly membership. Add your code to join.',
+      });
+    }
+  }
 
   // Honeypot
   if (website_url) {
