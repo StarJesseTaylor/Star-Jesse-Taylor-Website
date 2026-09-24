@@ -28,6 +28,7 @@ import { catchUpWelcomes } from './_welcome.js';
 
 const MAX_MEMBERS = 200;
 const STALE_MIN = 20;        // a "surprise" 4h late isn't a surprise, it's a bug
+const MAX_TRIES_PER_SLOT = 3; // see the retry block below: 21 attempts cost Star his Twilio health score
 const RECENT_WINDOW = 25;    // how many past lines to avoid repeating
 
 export default async function handler(req, res) {
@@ -258,12 +259,47 @@ export default async function handler(req, res) {
             // sent_at was already stamped by the claim above — nothing more to do.
           } else if (out.error) {
             report.errors.push({ id: m.id, error: out.error });
-            // We claimed the slot but the send failed — RELEASE it so the next run
-            // can retry, instead of it being stuck "sent" but never actually sent.
+
+            // 🛑 THREE TRIES, THEN STOP. NOT TWENTY.
+            //
+            //    Releasing the slot lets the next run retry, which is right for
+            //    a blip: a timeout, a dropped connection, Twilio having a bad
+            //    minute. The text still lands within a few minutes of the time
+            //    it was meant to.
+            //
+            //    It is wrong for a refusal. On 23 Sep Hana's slot came due and
+            //    this loop called Twilio TWENTY ONE times in six minutes, every
+            //    one refused with the same error, because nothing distinguished
+            //    "try again" from "this will never work". Twenty one failures
+            //    against the account's messaging health, for one text, for one
+            //    person, and it would have done it again every single day.
+            //
+            //    The retry was built assuming failures are temporary. Most are.
+            //    A carrier refusing a route is not, and three attempts is
+            //    plenty to tell the difference without guessing at error codes.
+            const triesQ =
+              `message_log?select=id&member_id=eq.${m.id}&direction=eq.outbound` +
+              `&status=eq.error&created_at=gte.${encodeURIComponent(new Date(Date.now() - STALE_MIN * 60_000).toISOString())}`;
+            let tries = 1;
+            try {
+              const tr = await sb(triesQ);
+              if (tr.ok) tries = ((await tr.json().catch(() => [])) || []).length;
+            } catch { /* counting must never break the loop */ }
+
             if (!dryRun) {
-              await sb(`message_schedule?${slotFilter}`, {
-                method: 'PATCH', body: JSON.stringify({ sent_at: null, line_id: null }),
-              }).catch(() => {});
+              if (tries >= MAX_TRIES_PER_SLOT) {
+                // Give the slot up for today. Tomorrow's is untouched, and Star
+                // is told, because a member silently getting nothing is the
+                // failure mode this whole engine keeps falling into.
+                report.dropped_stale++;
+                await sb(`message_schedule?${slotFilter}`, {
+                  method: 'PATCH', body: JSON.stringify({ sent_at: new Date().toISOString(), line_id: -1 }),
+                }).catch(() => {});
+              } else {
+                await sb(`message_schedule?${slotFilter}`, {
+                  method: 'PATCH', body: JSON.stringify({ sent_at: null, line_id: null }),
+                }).catch(() => {});
+              }
             }
           }
         }
