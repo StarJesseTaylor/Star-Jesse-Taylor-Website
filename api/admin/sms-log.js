@@ -52,14 +52,16 @@ export default async function handler(req, res) {
 
   const [mRes, lRes, sRes] = await Promise.all([
     sbFetch('member_channel?select=id,first_name,phone,timezone,status,consent_at&order=first_name'),
-    sbFetch('message_log?select=member_id,body,status,provider_sid,line_id,created_at,meta,direction&direction=eq.outbound&order=created_at.desc&limit=300'),
+    sbFetch('message_log?select=member_id,body,status,provider_sid,line_id,created_at,meta,direction,classification&order=created_at.desc&limit=400'),
     sbFetch('message_schedule?select=member_id,local_date,send_at_utc,sent_at,line_id&order=send_at_utc.desc&limit=200'),
   ]);
 
   if (!mRes || !mRes.ok) return res.status(502).send('Could not read the database.');
 
   const members = await mRes.json().catch(() => []);
-  const logs = lRes && lRes.ok ? await lRes.json().catch(() => []) : [];
+  const all = lRes && lRes.ok ? await lRes.json().catch(() => []) : [];
+  const logs = all.filter((l) => l.direction === 'outbound');
+  const replies = all.filter((l) => l.direction === 'inbound');
   const slots = sRes && sRes.ok ? await sRes.json().catch(() => []) : [];
   const byId = Object.fromEntries(members.map((m) => [m.id, m]));
 
@@ -104,13 +106,51 @@ export default async function handler(req, res) {
         ? '<p class="next">Next: <strong>' + esc(localTime(nextSlot.send_at_utc, m.timezone)) + '</strong> their time</p>'
         : '<p class="next dim">No text scheduled yet. It gets rolled at the start of their day.</p>') +
       (real.length
-        ? '<ul>' + real.slice(0, 6).map((l) =>
-            '<li><span class="when">' + esc(localTime(l.created_at, m.timezone)) + '</span>' +
-            '<span class="body">' + esc(l.body || '(no text recorded)') + '</span></li>').join('') + '</ul>'
+        ? '<ul>' + real.slice(0, 6).map((l) => {
+            // Did this one get an answer? That is the only real measure of
+            // whether a line landed, so show it against the line itself rather
+            // than in a separate list nobody cross references.
+            const answer = replies.find((r) => r.member_id === m.id && r.meta && r.meta.replied_to_line === l.line_id
+              && new Date(r.created_at) > new Date(l.created_at));
+            return '<li><span class="when">' + esc(localTime(l.created_at, m.timezone)) + '</span>' +
+              '<span class="body">' + esc(l.body || '(no text recorded)') +
+              (answer
+                ? '<span class="reply">&#8618; ' + esc(answer.body) +
+                  (answer.meta && answer.meta.minutes_after != null
+                    ? ' <em>(' + answer.meta.minutes_after + ' min later)</em>' : '') + '</span>'
+                : '') +
+              '</span></li>';
+          }).join('') + '</ul>'
         : '<p class="dim">Nothing has ever reached this phone.</p>') +
       '</section>'
     );
   };
+
+  /* ── WHICH LINES LAND ──
+        Star, 24 Sep: "We have to track what messages they get to see what they
+        resonate with."
+
+        Replies per line, against sends per line. It is a small sample and it
+        will stay small for a while, so the count is shown raw rather than as a
+        percentage: 1 reply out of 2 sends is not a 50% hit rate, it is one
+        person, and a bar chart would lie about that. */
+  const perLine = {};
+  for (const l of logs) {
+    if (!landed(l) || l.line_id == null || l.line_id < 0) continue;
+    perLine[l.line_id] = perLine[l.line_id] || { sent: 0, replied: 0, text: l.body };
+    perLine[l.line_id].sent++;
+  }
+  for (const r of replies) {
+    const id = r.meta && r.meta.replied_to_line;
+    if (id != null && perLine[id]) perLine[id].replied++;
+  }
+  const lineRows = Object.entries(perLine)
+    .sort((a, b) => (b[1].replied - a[1].replied) || (b[1].sent - a[1].sent))
+    .map(([id, v]) =>
+      '<li><span class="when">#' + esc(id) + ' &middot; sent ' + v.sent +
+      (v.replied ? ' &middot; <strong>' + v.replied + ' replied</strong>' : '') + '</span>' +
+      '<span class="body">' + esc(String(v.text || '').slice(0, 120)) + '</span></li>')
+    .join('');
 
   // Failures get their own section. They are the thing worth looking at, and
   // burying them under the successes is how Hana went two days unnoticed.
@@ -144,6 +184,8 @@ export default async function handler(req, res) {
     'ul{list-style:none;padding:0;margin:0}' +
     'li{display:flex;gap:10px;padding:7px 0;border-top:1px solid #e5e7eb33;font-size:14px;align-items:baseline}' +
     '.when{flex:0 0 118px;color:#6b7280;font-size:12.5px}' +
+    '.reply{display:block;margin-top:4px;padding-left:10px;border-left:2px solid #6366f1;color:#4338ca}' +
+    '@media(prefers-color-scheme:dark){.reply{color:#a5b4fc}}' +
     '.body{flex:1}' +
     '.err{color:#b91c1c}' +
     '</style>' +
@@ -151,6 +193,10 @@ export default async function handler(req, res) {
     '<p class="sub">Every text that actually reached a phone, newest first, shown in each person&rsquo;s own time. ' +
     'Refresh whenever. Nothing here can send or change anything.</p>' +
     rows.map(card).join('') +
+    '<section class="card"><h2>Which lines land</h2>' +
+    '<p class="meta">Every line that has gone out, and how many people wrote back to it. Most replied first.</p>' +
+    (lineRows ? '<ul>' + lineRows + '</ul>' : '<p class="dim">No lines sent yet.</p>') +
+    '</section>' +
     (failures
       ? '<section class="card"><h2>Recent failures</h2><ul>' + failures + '</ul></section>'
       : '<section class="card"><h2>Recent failures</h2><p class="dim">None.</p></section>')

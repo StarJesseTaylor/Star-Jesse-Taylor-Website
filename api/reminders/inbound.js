@@ -196,6 +196,40 @@ export default async function handler(req, res) {
       headers: { apikey: SB_KEY, Authorization: `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', ...(init.headers || {}) },
     });
 
+  /* ── WHO IS THIS, AND WHAT WERE THEY ANSWERING? ──
+        Star, 24 Sep: "We have to track what messages they get to see what they
+        resonate with."
+
+        An inbound row used to carry only a hash of the number, so a reply was
+        an anonymous sentence in a table. It could not be attached to a person
+        and it could not be attached to the line that prompted it, which means
+        the one signal worth having, WHICH OF THE 30 LINES MAKES SOMEONE WRITE
+        BACK, was being thrown away on arrival.
+
+        Both lookups are best effort and neither can block the crisis branch
+        below: on any failure they return null and the message is still logged,
+        still classified, still escalated. The hash stays for numbers we do not
+        recognise, so a stranger texting in is still not stored in the clear. */
+  let who = null;
+  let answering = null;
+  if (SB_URL && SB_KEY) {
+    try {
+      const r = await sb(`member_channel?phone=eq.${encodeURIComponent(from)}&select=id,first_name`);
+      if (r.ok) who = ((await r.json().catch(() => [])) || [])[0] || null;
+    } catch { /* an unknown sender is not an error */ }
+
+    if (who) {
+      try {
+        const r = await sb(
+          `message_log?select=line_id,body,created_at&member_id=eq.${who.id}` +
+          `&direction=eq.outbound&line_id=not.is.null&provider_sid=not.is.null` +
+          `&order=created_at.desc&limit=1`
+        );
+        if (r.ok) answering = ((await r.json().catch(() => [])) || [])[0] || null;
+      } catch { /* resonance is nice to have, never required */ }
+    }
+  }
+
   // 🛑 LOG FIRST, ALWAYS, BEFORE ANY BRANCH.
   // If this function throws later, the message must still exist somewhere.
   // An unlogged inbound from someone in crisis is the whole nightmare.
@@ -205,7 +239,17 @@ export default async function handler(req, res) {
       method: 'POST',
       body: JSON.stringify({
         direction: 'inbound', body, channel, classification,
-        meta: { from_hash: hash(from), ...extra },
+        member_id: who ? who.id : null,
+        meta: {
+          from_hash: hash(from),
+          ...(answering ? {
+            replied_to_line: answering.line_id,
+            // How long they sat with it before answering. A reply four minutes
+            // later is a different signal from one the next morning.
+            minutes_after: Math.round((Date.now() - new Date(answering.created_at).getTime()) / 60000),
+          } : {}),
+          ...extra,
+        },
       }),
     }).catch(() => {});
   };
