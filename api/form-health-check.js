@@ -140,10 +140,20 @@ const CHECKS = [
     description: 'Quiz funnel submission (primary funnel entry)'
   },
   {
+    // 🛑 200, NOT 405, AND THAT IS CORRECT.
+    //    Every other form here refuses a GET, so 405 proves the function is
+    //    alive. This one answers GET on purpose: the page asks it whether the
+    //    yearly access code is required before deciding to show that field.
+    //    See api/sms-optin.js.
+    //
+    //    That change fired this alert at 5am on 25 Sep with "got HTTP 200,
+    //    expected 405" and told Star his signup form was down when it was
+    //    working perfectly. A monitor that cries wolf is worse than no monitor,
+    //    because the next real alert gets ignored.
     name: 'sms-optin',
     method: 'GET',
     url: `${SITE_URL}/api/sms-optin`,
-    expectStatus: 405,
+    expectStatus: 200,
     critical: true,
     description: 'SMS opt-in form'
   },
