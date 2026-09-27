@@ -119,12 +119,77 @@ export default async function handler(req, res) {
     // ── The one time this endpoint is allowed to interrupt Star. ──
     // Not "a text failed" — texts fail, phones die. Only when the failure rate
     // over the last 24h crosses a line that means something is actually wrong.
-    if (BAD.has(status)) await maybeAlertOnFailureRate(errorCode);
+    if (BAD.has(status)) {
+      await maybeAlertOnFailureRate(errorCode);
+      if (rows.length && rows[0].member_id) {
+        await maybeAlertAboutPerson(rows[0].member_id, errorCode);
+      }
+    }
   } catch {
     // Never throw at Twilio. A 500 here just makes Twilio retry into the same wall.
   }
 
   return res.status(204).end();
+}
+
+/**
+ * ONE PERSON QUIETLY GETTING NOTHING.
+ *
+ * 🛑 THE RATE CHECK BELOW CANNOT SEE THIS, BY DESIGN, AND THAT IS THE HOLE.
+ *    It needs 20 texts in 24 hours before it will judge anything. With seven
+ *    members that is about six a day, so it has never once been able to fire
+ *    and it will not fire until roughly 20 members are on it.
+ *
+ *    Meanwhile Esra's texts came back "undelivered" on 23, 24, 25 and 26 Sep,
+ *    every single one, error 30008. Four days of silence from her phone's point
+ *    of view, and nobody was told. Star asked "is everything going well" and the
+ *    honest answer was no, because nothing was watching the case that actually
+ *    happens at this size: not a bad rate across everyone, but ONE person whose
+ *    texts stop arriving.
+ *
+ *    Two in a row is the trigger. One is a dead spot or a phone in a lift.
+ *    Two to the same person is a pattern worth a human looking at it, and the
+ *    alert names them so Star can just ask her.
+ *
+ *    It does NOT stop sending. 30008 is "unknown carrier error" and it can
+ *    clear on its own, so switching her off would turn a maybe into a
+ *    certainty. Tell the human, keep trying.
+ */
+async function maybeAlertAboutPerson(memberId, latestErrorCode) {
+  try {
+    const r = await sb(
+      `message_log?select=status,created_at&member_id=eq.${memberId}` +
+      `&direction=eq.outbound&provider_sid=not.is.null&order=created_at.desc&limit=2`
+    );
+    if (!r.ok) return;
+    const last = await r.json().catch(() => []);
+    if (last.length < 2) return;
+    if (!last.every((x) => BAD.has(x.status))) return;
+
+    const who = await sb(`member_channel?select=first_name,phone,timezone&id=eq.${memberId}`);
+    const m = who.ok ? ((await who.json().catch(() => []))[0] || {}) : {};
+
+    await alertStarThrottled({
+      // Throttled per member, so a person failing every day produces one email a
+      // day rather than one per text.
+      kind: 'member_not_receiving:' + memberId,
+      subject: `📵 ${m.first_name || 'A member'} is not receiving their texts`,
+      html:
+        `<p><strong>${escapeHtml(m.first_name || 'A member')}</strong> (${escapeHtml(m.phone || '')}) ` +
+        `has had at least two texts in a row come back as not delivered.</p>` +
+        `<p>They were sent. Twilio accepted them. Their phone carrier did not hand them over, ` +
+        `so from their side the reminders have simply stopped.</p>` +
+        (latestErrorCode
+          ? `<p><strong>Reason given (${escapeHtml(latestErrorCode)}):</strong> ` +
+            `${escapeHtml(WHY[latestErrorCode] || 'unrecognised code')}</p>`
+          : '') +
+        `<p><strong>Worth asking them directly:</strong> are the texts arriving? Did they block the number, ` +
+        `or mark one as spam? On some networks that is silent and looks exactly like this.</p>` +
+        `<p>Sending continues. This kind of error can clear on its own, and stopping would guarantee ` +
+        `the silence instead of maybe.</p>`,
+      detail: { memberId, name: m.first_name, latestErrorCode },
+    });
+  } catch { /* an alert must never break a Twilio callback */ }
 }
 
 /**

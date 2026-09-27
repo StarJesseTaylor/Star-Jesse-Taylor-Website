@@ -57,6 +57,11 @@ export const PER_DAY = Number(process.env.SMS_MAX_PER_DAY || 2);
 // thirteen hours apart and both are right.
 export const REMINDERS_PER_DAY = Number(process.env.SMS_MAX_REMINDERS_PER_DAY || 1);
 
+// How long to wait between probes once someone's phone has stopped answering.
+// Long enough to stop hurting the delivery rate, short enough that a person
+// landing back home waits at most three days rather than forever.
+const PROBE_EVERY_HOURS = Number(process.env.SMS_PROBE_HOURS || 72);
+
 const sb = (path) =>
   fetch(`${SB_URL()}/rest/v1/${path}`, {
     headers: {
@@ -200,6 +205,49 @@ export async function maySend(toE164, opts = {}) {
           reason: 'this number cannot be reached from ' + (opts.from || 'our number') +
                   ' (Twilio 21612). Buy a number in their country and set TWILIO_FROM_<ISO> to reach them.',
         };
+      }
+    }
+
+    // ── A PHONE THAT IS NOT ANSWERING: BACK OFF, DO NOT SWITCH OFF ──
+    //
+    //    Esra's texts were delivered on 21 and 22 Sep and then came back
+    //    "undelivered" on the 23rd, 24th, 25th and 26th. Error 30008, which is
+    //    what a carrier returns when it cannot find the handset. Star's read:
+    //    she is travelling. That fits the data far better than anything else,
+    //    because the cut is a clean calendar line rather than a decline.
+    //
+    //    Sending daily into that is not free. Every undelivered message counts
+    //    against the account's delivery rate, and at this size one person
+    //    failing every day IS the failure rate: four of the last thirty six.
+    //
+    //    But switching her off is worse. Someone then has to remember to switch
+    //    her back on, and this engine already has one person sitting in exactly
+    //    that state. A pause that needs a human to undo it is a pause that
+    //    becomes permanent.
+    //
+    //    So: after three failures in a row, drop from daily to one probe every
+    //    three days. That cuts the damage by about eighty per cent, costs a
+    //    fraction of a cent, and the moment ONE lands the run of failures is
+    //    broken and she is back to daily by herself. Nobody has to notice.
+    const recent = await fetch(
+      `${SB_URL()}/rest/v1/message_log?select=status,created_at&member_id=${inList}` +
+      `&direction=eq.outbound&provider_sid=not.is.null&order=created_at.desc&limit=3`,
+      { headers: { apikey: SB_KEY(), Authorization: `Bearer ${SB_KEY()}` } }
+    ).catch(() => null);
+    if (recent && recent.ok) {
+      const rows = await recent.json().catch(() => []);
+      const DEAD = new Set(['undelivered', 'failed']);
+      if (rows.length === 3 && rows.every((r) => DEAD.has(r.status))) {
+        const lastAttempt = new Date(rows[0].created_at).getTime();
+        const hoursSince = (Date.now() - lastAttempt) / 3600_000;
+        if (hoursSince < PROBE_EVERY_HOURS) {
+          return {
+            allow: false,
+            reason: `their last 3 texts were not delivered, so we are only trying every ` +
+                    `${Math.round(PROBE_EVERY_HOURS / 24)} days until one lands ` +
+                    `(${Math.round(hoursSince)}h since the last try)`,
+          };
+        }
       }
     }
 
