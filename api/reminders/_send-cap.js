@@ -202,6 +202,11 @@ export async function maySend(toE164, opts = {}) {
       if (hit && (!failedFrom || failedFrom === opts.from)) {
         return {
           allow: false,
+          // EXPECTED, not a fault. Star already knows the UK needs its own
+          // number and there is nothing for him to do about it today. Emailing
+          // him about it every single day trains him to ignore these, and the
+          // next one might be the real thing.
+          expected: true,
           reason: 'this number cannot be reached from ' + (opts.from || 'our number') +
                   ' (Twilio 21612). Buy a number in their country and set TWILIO_FROM_<ISO> to reach them.',
         };
@@ -243,6 +248,8 @@ export async function maySend(toE164, opts = {}) {
         if (hoursSince < PROBE_EVERY_HOURS) {
           return {
             allow: false,
+            // Also expected. Someone travelling is not a problem to report.
+            expected: true,
             reason: `their last 3 texts were not delivered, so we are only trying every ` +
                     `${Math.round(PROBE_EVERY_HOURS / 24)} days until one lands ` +
                     `(${Math.round(hoursSince)}h since the last try)`,
@@ -286,6 +293,17 @@ const told = new Map();
 export async function reportCapHit(toE164, guard) {
   const key = process.env.RESEND_API_KEY;
   if (!key) return;
+
+  // 🛑 ONLY SHOUT ABOUT THE UNEXPECTED.
+  //    Star, 1 Oct: "I got some emails where there were some problems."
+  //    Two of the refusals below are not problems at all. Hana's UK number is
+  //    unreachable until he buys one, and Esra's phone is abroad. Both were
+  //    emailing him a red alert every single day about a thing he already knows
+  //    and cannot act on today.
+  //    That is the cry-wolf failure, and this engine has already cost him one
+  //    5am panic over a healthy form. An alert that fires daily for a known
+  //    state is noise, and noise is how a real alert gets missed.
+  if (guard && guard.expected) return;
   const last = told.get(toE164) || 0;
   if (Date.now() - last < 3600_000) return;
   told.set(toE164, Date.now());
