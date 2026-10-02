@@ -197,6 +197,34 @@ export async function maySend(toE164, opts = {}) {
     if (walled && walled.ok) {
       const hit = (await walled.json().catch(() => []))[0];
       const failedFrom = hit && hit.meta && hit.meta.from;
+
+      /* 🛑 A ROUTE THAT HAS NEVER WORKED IS NOT THE SAME AS ONE THAT HICCUPED.
+            On 1 Oct Esra's Austrian number returned 21612 once. This guard, which
+            was written for Hana's UK number, treated that as a permanent wall and
+            stopped texting her for a week. She had already received eight texts
+            on that exact route. Eight.
+
+            Hana has never received one. That is the real difference, and the
+            guard could not see it because it only looked at the failure.
+
+            So the wall now applies ONLY to a number that has never had a single
+            text delivered from this sender. If it has worked before, a 21612 is
+            treated as the blip it almost certainly is: the day's normal three
+            attempts apply, Star is told by the per-member alert if it keeps up,
+            and nobody gets locked out of a route that was working yesterday. */
+      let everWorked = false;
+      try {
+        const ok = await fetch(
+          `${SB_URL()}/rest/v1/message_log?select=id&member_id=${inList}` +
+          `&status=eq.delivered&limit=1`,
+          { headers: { apikey: SB_KEY(), Authorization: `Bearer ${SB_KEY()}` } }
+        );
+        if (ok.ok) everWorked = ((await ok.json().catch(() => [])) || []).length > 0;
+      } catch { /* if we cannot tell, fall through to the wall: safer for a new member */ }
+      if (everWorked) {
+        // Fall past the wall. The three-tries-per-slot cap in send.js still
+        // bounds the damage to three attempts a day rather than twenty one.
+      } else
       // No recorded sender means the row predates this guard. Treat it as the
       // number we are using now, which is the safe reading: it blocks.
       if (hit && (!failedFrom || failedFrom === opts.from)) {
