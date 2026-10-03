@@ -22,7 +22,7 @@
 
 import { rollDay, dueNow, localDate, localToUtc, seededRng, localMinutesNow } from './_schedule.js';
 import { LINES, pickLine, render } from './_lines.js';
-import { normalisePhone, pickChannel, sendMessage } from './_channel.js';
+import { normalisePhone, pickChannel, sendMessage, senderFor } from './_channel.js';
 import { healInboundWebhook } from './_webhook-heal.js';
 import { catchUpWelcomes } from './_welcome.js';
 
@@ -125,7 +125,7 @@ export default async function handler(req, res) {
   //    then sending nothing is worse than staying quiet.
   if (!dryRun) {
     try {
-      report.welcomes = await catchUpWelcomes(sb, sendMessage, pickChannel, normalisePhone, log, localMinutesNow);
+      report.welcomes = await catchUpWelcomes(sb, sendMessage, pickChannel, normalisePhone, log, localMinutesNow, senderFor);
     } catch {
       report.welcomes = { error: true };
     }

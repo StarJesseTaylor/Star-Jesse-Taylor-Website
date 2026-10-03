@@ -59,7 +59,7 @@ const AWAKE_UNTIL = 21;   // local hour
  *
  * @returns {Promise<{sent:boolean, skipped?:string, error?:string}>}
  */
-export async function greetOnce(sb, sendMessage, { memberId, toE164, channel }) {
+export async function greetOnce(sb, sendMessage, { memberId, toE164, channel, currentFrom }) {
   // TWO QUESTIONS, IN THIS ORDER.
   //
   // 1. Have we already TRIED to welcome them? Any row tagged as a welcome
@@ -70,12 +70,36 @@ export async function greetOnce(sb, sendMessage, { memberId, toE164, channel }) 
   //    and re-texted five people every sixty seconds.
   //    A welcome that FAILED also counts, deliberately: a blocked country would
   //    otherwise retry every minute forever. Star gets told instead.
+  //
+  //    🛑 WITH ONE EXCEPTION: a welcome that FAILED from a number we no longer
+  //       use. Hana's welcome was refused on 22 Sep because a US number cannot
+  //       reach a UK phone. That failed row makes her permanently ineligible,
+  //       so the day Star buys a UK number she would get a daily reminder as her
+  //       FIRST EVER text, from a number she has never seen, with no name on it.
+  //       That is precisely what the welcome exists to prevent, and it would
+  //       have happened silently.
+  //
+  //       So a failed welcome stops counting once the sender changes. Same rule
+  //       as the unreachable guard in _send-cap.js: the block lifts itself when
+  //       the thing that caused it is gone. Nobody has to remember Hana.
   const greeted = await sb(
-    `message_log?select=id&member_id=eq.${memberId}&direction=eq.outbound` +
-    `&meta->>kind=eq.welcome&limit=1`
+    `message_log?select=id,status,meta&member_id=eq.${memberId}&direction=eq.outbound` +
+    `&meta->>kind=eq.welcome&order=created_at.desc&limit=5`
   );
   if (!greeted.ok) return { sent: false, skipped: 'could not check the history' };
-  if ((await greeted.json().catch(() => [])).length) return { sent: false, skipped: 'already greeted' };
+  // Defensive: a malformed or unexpected body must not throw inside a path
+  // that decides whether to text a human. Anything that is not a list is
+  // treated as no history, and the claim-before-send below still makes a
+  // second welcome impossible.
+  const priorWelcomes = await greeted.json().catch(() => []);
+  if (!Array.isArray(priorWelcomes)) return { sent: false, skipped: 'unreadable history' };
+  const stillCounts = priorWelcomes.filter((row) => {
+    if (row.status !== 'error') return true;                  // it went out, or is in flight
+    const failedFrom = row.meta && row.meta.from;
+    if (!failedFrom) return true;                             // predates the recording: assume it counts
+    return failedFrom === currentFrom;                        // same dead sender, still blocked
+  });
+  if (stillCounts.length) return { sent: false, skipped: 'already greeted' };
 
   // 2. Have they had a real text from us by some other route? Then a welcome
   //    now would be odd, so leave them alone.
@@ -141,7 +165,7 @@ export async function greetOnce(sb, sendMessage, { memberId, toE164, channel }) 
  *
  * @returns {Promise<{greeted:number, failed:number, detail:Array}>}
  */
-export async function catchUpWelcomes(sb, sendMessage, pickChannel, normalisePhone, log, localMinutesNow) {
+export async function catchUpWelcomes(sb, sendMessage, pickChannel, normalisePhone, log, localMinutesNow, senderFor) {
   const out = { greeted: 0, failed: 0, detail: [] };
   try {
     const res = await sb(
@@ -172,6 +196,7 @@ export async function catchUpWelcomes(sb, sendMessage, pickChannel, normalisePho
         memberId: m.id,
         toE164: phone.e164,
         channel: m.channel || pickChannel(phone.e164),
+        currentFrom: senderFor ? senderFor(phone.e164).from : undefined,
       });
 
       if (r.sent) { out.greeted++; out.detail.push({ name: m.first_name, sent: true }); }

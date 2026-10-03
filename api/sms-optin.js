@@ -535,7 +535,7 @@ async function alertStarAboutLostContact({ firstName, lastName, email, normalize
 //    claims the row before it sends, so whichever path gets there first wins
 //    and the other finds the claim and stops.
 async function sendWelcomeText(memberId, toE164) {
-  const { sendMessage, pickChannel } = await import('./reminders/_channel.js');
+  const { sendMessage, pickChannel, senderFor } = await import('./reminders/_channel.js');
   const { greetOnce } = await import('./reminders/_welcome.js');
 
   const SB_URL = (process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || '').replace(/\/$/, '');
@@ -556,6 +556,7 @@ async function sendWelcomeText(memberId, toE164) {
 
   const out = await greetOnce(sb, sendMessage, {
     memberId, toE164, channel: pickChannel(toE164),
+    currentFrom: senderFor(toE164).from,
   });
   if (!out.sent && out.error) console.warn('welcome text not sent:', out.error);
   return out;
