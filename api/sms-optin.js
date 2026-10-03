@@ -247,6 +247,22 @@ export default async function handler(req, res) {
     //
     //    Gated on REMINDERS_LIVE too: if sending is disarmed, a welcome that
     //    promises "one text a day" followed by silence is worse than no welcome.
+    /* ── A COUNTRY WE CANNOT REACH: SAY SO NOW, NOT IN TWELVE DAYS ──
+          Hana signed up from the UK on 22 Sep. Twilio's own guidelines say
+          "Long code international: Not Supported" for the UK, so her texts were
+          never going to arrive, and nobody knew until Star asked me about it on
+          3 Oct. Esra's Austrian number was the same story with a delay.
+          The signup itself still succeeds: she is enrolled, consented, and
+          starts receiving the moment a sender exists for her country. The only
+          thing that changes is that Star finds out within minutes. */
+    if (enrol.ok && normalizedPhone) {
+      try {
+        const { canReach } = await import('./reminders/_channel.js');
+        const reach = canReach(normalizedPhone);
+        if (!reach.ok) await alertStarAboutUnreachableCountry(normalizedPhone, reach, firstName, lastName);
+      } catch { /* a warning must never break a signup */ }
+    }
+
     if (enrol.ok && !enrol.existing && process.env.REMINDERS_LIVE === '1') {
       // 🛡️ THE ONLY THING HERE THAT SPENDS MONEY. Everything else is a database
       //    row. So the abuse ceiling sits on the TEXT, not on the signup: under
@@ -609,6 +625,35 @@ async function notifyStarOfSignup({ firstName, lastName, email, normalizedPhone,
  * The country-permission case is called out by name because it is the one that
  * actually happened and the one he can fix himself in thirty seconds.
  */
+/**
+ * Someone signed up from a country a US number cannot text at all.
+ * Not a failure of theirs and not a bug: a wall that needs one purchase or one
+ * environment variable, and the only cost of not knowing is their silence.
+ */
+async function alertStarAboutUnreachableCountry(phone, reach, firstName, lastName) {
+  const key = process.env.RESEND_API_KEY;
+  if (!key) return;
+  const esc = (v) => String(v == null ? '' : v).replace(/[<>&]/g, '');
+  try {
+    await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from: process.env.FROM_EMAIL || 'Star Website <star@starjessetaylor.com>',
+        to: process.env.STAR_NOTIFY_EMAIL || 'star@starjessetaylor.com',
+        subject: `🌍 ${esc(firstName)} signed up from ${esc(reach.iso)} and cannot receive texts yet`,
+        html:
+          `<p><strong>${esc(firstName)} ${esc(lastName)}</strong> (${esc(phone)}) just signed up.</p>` +
+          `<p>They are enrolled and consented, and they will start receiving the moment ` +
+          `${esc(reach.iso)} has a sender. Right now they will get nothing.</p>` +
+          `<p><strong>Why:</strong> ${esc(reach.why)}</p>` +
+          `<p>This is not a bug and nothing is broken. It is one purchase or one setting, ` +
+          `and the system picks it up by itself on the next run.</p>`,
+      }),
+    }).catch(() => {});
+  } catch { /* never let an alert break a signup */ }
+}
+
 async function alertStarAboutFailedText(phone, error, firstName, lastName) {
   const key = process.env.RESEND_API_KEY;
   if (!key) return;

@@ -232,13 +232,52 @@ const DIAL_TO_ISO = {
   '86': 'CN', '55': 'BR', '52': 'MX', '972': 'IL', '971': 'AE', '48': 'PL',
 };
 
+/* COUNTRIES A US NUMBER CANNOT TEXT, FROM TWILIO'S OWN GUIDELINES.
+   Checked 3 Oct 2026 at twilio.com/en-us/guidelines/<iso>/sms, which lists
+   "Long code international" as Supported or Not Supported per country.
+
+   This list is the difference between knowing in two minutes and finding out in
+   twelve days. Hana signed up from the UK on 22 Sep and has never received a
+   single text. Esra's Austrian number worked for eleven days and then the route
+   closed, and both times the only way anyone found out was Star asking me.
+
+   Verified Not Supported:  GB, AT
+   Verified Supported:      AU, SE, IN, US
+
+   Everything else is unverified and simply not warned about: a wrong warning
+   would be worse than none. Check the guidelines page and add the country here
+   when a member from somewhere new signs up. */
+export const NO_INTERNATIONAL_LONG_CODE = new Set(['GB', 'AT']);
+
+/** Can we actually reach this number with what is configured right now? */
+export function canReach(toE164) {
+  const s = senderFor(toE164);
+  if (s.local || s.alpha) return { ok: true, how: s.alpha ? 'alphanumeric sender' : 'local number' };
+  if (s.iso && NO_INTERNATIONAL_LONG_CODE.has(s.iso)) {
+    return {
+      ok: false,
+      iso: s.iso,
+      why: `Twilio lists "Long code international: Not Supported" for ${s.iso}. ` +
+           `A US number cannot text ${s.iso} phones at all. ` +
+           `Set TWILIO_FROM_${s.iso} to a number bought there, or TWILIO_ALPHA_${s.iso} to a sender name.`,
+    };
+  }
+  return { ok: true, how: 'the US number' };
+}
+
 export function senderFor(toE164) {
   const digits = String(toE164 || '').replace(/^\+/, '');
   // Longest dial code first, so 353 beats 35 and 852 beats 85.
   const codes = Object.keys(DIAL_TO_ISO).sort((a, b) => b.length - a.length);
+  let matchedIso = null;
   for (const code of codes) {
     if (digits.startsWith(code)) {
       const iso = DIAL_TO_ISO[code];
+      // 🛑 REMEMBER THE COUNTRY EVEN WHEN WE FALL THROUGH.
+      //    The first version only reported the country when a local sender was
+      //    found, so canReach() saw iso:null for Hana and happily reported the
+      //    UK as reachable. The one case the whole thing exists for.
+      matchedIso = iso;
 
       // A real local number is always better: it is two way, so STOP works,
       // replies work, and the member can talk back.
@@ -261,7 +300,7 @@ export function senderFor(toE164) {
       if (alpha) return { from: alpha, iso, local: false, alpha: true };
     }
   }
-  return { from: process.env.TWILIO_FROM_NUMBER, iso: null, local: false, alpha: false };
+  return { from: process.env.TWILIO_FROM_NUMBER, iso: matchedIso, local: false, alpha: false };
 }
 
 export async function sendMessage({ to, body, channel, dryRun = false, kind, dayStartISO }) {
