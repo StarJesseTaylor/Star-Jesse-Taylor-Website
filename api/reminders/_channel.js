@@ -238,11 +238,30 @@ export function senderFor(toE164) {
   const codes = Object.keys(DIAL_TO_ISO).sort((a, b) => b.length - a.length);
   for (const code of codes) {
     if (digits.startsWith(code)) {
-      const local = process.env['TWILIO_FROM_' + DIAL_TO_ISO[code]];
-      if (local) return { from: local, iso: DIAL_TO_ISO[code], local: true };
+      const iso = DIAL_TO_ISO[code];
+
+      // A real local number is always better: it is two way, so STOP works,
+      // replies work, and the member can talk back.
+      const local = process.env['TWILIO_FROM_' + iso];
+      if (local) return { from: local, iso, local: true, alpha: false };
+
+      /* ── THE NO-PURCHASE FALLBACK ──
+            Twilio's own UK guidelines say it plainly: "Long code international:
+            Not Supported". A US number can NEVER text a UK phone. It is policy,
+            not a fault, and no amount of retrying changes it.
+            The UK does accept an alphanumeric sender, a name instead of a
+            number, which costs nothing and needs no number bought.
+            🛑 IT IS ONE WAY. A name cannot receive anything, so the member
+            cannot reply and CANNOT TEXT STOP. That is why this is opt-in by
+            env var and never a default: the welcome text promises "Reply STOP
+            whenever you want out", and sending that from a sender that cannot
+            hear STOP would be a lie to the member. Set the alpha sender only
+            alongside wording that tells them how to actually opt out. */
+      const alpha = process.env['TWILIO_ALPHA_' + iso];
+      if (alpha) return { from: alpha, iso, local: false, alpha: true };
     }
   }
-  return { from: process.env.TWILIO_FROM_NUMBER, iso: null, local: false };
+  return { from: process.env.TWILIO_FROM_NUMBER, iso: null, local: false, alpha: false };
 }
 
 export async function sendMessage({ to, body, channel, dryRun = false, kind, dayStartISO }) {
