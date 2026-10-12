@@ -7,10 +7,13 @@
  *
  * Mirrors api/la-meetup-waitlist.js. To segment these separately in AC,
  * set AC_LA_WORKSHOP_LIST_ID to a dedicated list id; otherwise it falls
- * back to the shared event waitlist list (5).
+ * back to the Master Contact List (3), the main email list, so signups
+ * are always mailable. (The old default, list 5, no longer exists in the
+ * account, so the list-add was failing silently and signups landed on no
+ * list and could not be emailed.)
  */
 
-const DEFAULT_LIST_ID = '5';
+const DEFAULT_LIST_ID = '3';
 const SITE_URL = 'https://starjessetaylor.com';
 
 async function applyTag(AC_URL, headers, contactId, tagName) {

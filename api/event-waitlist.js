@@ -6,7 +6,7 @@
  * sends a confirmation email via Resend, and notifies Star.
  */
 
-const DEFAULT_LIST_ID = '5';
+const DEFAULT_LIST_ID = '3'; // Master Contact List. Old default (5) no longer exists, so signups landed on no list and could not be emailed.
 const SITE_URL = 'https://starjessetaylor.com';
 
 async function applyTag(AC_URL, headers, contactId, tagName) {
