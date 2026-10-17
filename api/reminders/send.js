@@ -26,7 +26,11 @@ import { normalisePhone, pickChannel, sendMessage, senderFor } from './_channel.
 import { healInboundWebhook } from './_webhook-heal.js';
 import { catchUpWelcomes } from './_welcome.js';
 
-const MAX_MEMBERS = 200;
+// Raised from 200 for the community-wide rollout. This is a blast-radius
+// guard, NOT a roster size: it must stay comfortably above the real number of
+// members so it never silently truncates. If it is ever REACHED, that is a bug
+// or a rollout we did not plan for, and the run below says so out loud.
+const MAX_MEMBERS = 400;
 const STALE_MIN = 20;        // a "surprise" 4h late isn't a surprise, it's a bug
 const MAX_TRIES_PER_SLOT = 3; // see the retry block below: 21 attempts cost Star his Twilio health score
 const RECENT_WINDOW = 25;    // how many past lines to avoid repeating
@@ -146,6 +150,31 @@ export default async function handler(req, res) {
     }
     const members = await listRes.json();
     report.considered = members.length;
+
+    // ── THE SILENT TRUNCATION. ──
+    //    PostgREST applies `limit` with no ORDER BY, so if the roster ever
+    //    outgrows MAX_MEMBERS the extra members are not skipped-with-a-reason,
+    //    they are never returned at all. No error, no failed send, no row in
+    //    message_log. They would simply stop receiving texts and nothing in
+    //    this system would know. Star found this before the rollout, not after.
+    if (members.length >= MAX_MEMBERS) {
+      try {
+        const { alertStarThrottled } = await import('./_notify.js');
+        await alertStarThrottled({
+          kind: 'roster_at_cap',
+          subject: `🚨 Reminders: the roster hit the ${MAX_MEMBERS} limit`,
+          html:
+            `<p>The reminder run just loaded <b>${members.length}</b> members, which is the ` +
+            `hard limit in <code>send.js</code>.</p>` +
+            `<p>Anyone past that limit is <b>not being loaded at all</b>, so they are ` +
+            `receiving nothing and no error is being recorded against them.</p>` +
+            `<p>Raise <code>MAX_MEMBERS</code> and redeploy.</p>`,
+          detail: { considered: members.length, cap: MAX_MEMBERS },
+          throttleMinutes: 720,
+        });
+      } catch { /* an alert must never stop the send */ }
+      report.at_cap = true;
+    }
 
     for (const m of members) {
       try {
