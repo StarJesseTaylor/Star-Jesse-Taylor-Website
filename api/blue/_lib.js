@@ -160,28 +160,42 @@ export async function fetchTotalEventTicketSales() {
   const apiKey = process.env.STRIPE_SECRET_KEY;
   if (!apiKey) throw new Error('STRIPE_SECRET_KEY not set');
 
-  // Fetch last 90 days (event opened April 28, event May 30)
-  const since = Math.floor((Date.now() - 90 * 86400000) / 1000);
-  const url = `https://api.stripe.com/v1/charges?created[gte]=${since}&limit=100`;
+  // Nov 14 2026 LA workshop. Tickets sell via two Stripe Payment Links:
+  //   General Admission $297 (29700 cents)
+  //   General Admission Plus / 1-on-1 $797 (79700 cents)
+  // Count paid checkout sessions that came from a payment link at those amounts.
+  const GA_AMOUNT = 29700;
+  const PLUS_AMOUNT = 79700;
+  const since = Math.floor((Date.now() - 120 * 86400000) / 1000);
 
-  const res = await fetch(url, {
-    headers: { 'Authorization': `Bearer ${apiKey}` }
-  });
+  let sessions = [];
+  let starting_after = '';
+  for (let page = 0; page < 10; page++) {
+    const parts = [`created[gte]=${since}`, 'limit=100'];
+    if (starting_after) parts.push(`starting_after=${starting_after}`);
+    const res = await fetch(`https://api.stripe.com/v1/checkout/sessions?${parts.join('&')}`, {
+      headers: { 'Authorization': `Bearer ${apiKey}` }
+    });
+    if (!res.ok) throw new Error(`Stripe API error ${res.status}`);
+    const data = await res.json();
+    const rows = data.data || [];
+    sessions.push(...rows);
+    if (!data.has_more) break;
+    starting_after = rows[rows.length - 1]?.id;
+    if (!starting_after) break;
+  }
 
-  if (!res.ok) throw new Error(`Stripe API error ${res.status}`);
-  const data = await res.json();
-
-  const tickets = (data.data || []).filter(c =>
-    c.status === 'succeeded' &&
-    !c.refunded &&
-    (c.amount === 9700 || c.amount === 34700)
+  const tickets = sessions.filter(s =>
+    s.payment_status === 'paid' &&
+    s.payment_link &&
+    (s.amount_total === GA_AMOUNT || s.amount_total === PLUS_AMOUNT)
   );
 
   return {
     total: tickets.length,
-    ga: tickets.filter(c => c.amount === 9700).length,
-    vip: tickets.filter(c => c.amount === 34700).length,
-    revenue: tickets.reduce((sum, c) => sum + c.amount, 0) / 100
+    ga: tickets.filter(s => s.amount_total === GA_AMOUNT).length,
+    vip: tickets.filter(s => s.amount_total === PLUS_AMOUNT).length,
+    revenue: tickets.reduce((sum, s) => sum + (s.amount_total || 0), 0) / 100
   };
 }
 
