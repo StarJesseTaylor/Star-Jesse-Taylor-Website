@@ -90,20 +90,31 @@ export default async function handler(req, res) {
   const bookPrice = parseInt(process.env.BOOK_PRICE_USD || '2999', 10);
 
   if (req.method === 'GET') {
-    // Pull recent checkout sessions (last few hundred), keep the paid book ones.
+    // Pull paid checkout sessions and keep the book ones.
+    // ?days=N widens the window back N days (default = just the recent ~300 sessions).
+    // ?email=X returns every paid session for that email in the window (any product),
+    //   so an older or oddly-priced order can still be hunted down.
+    const days = Math.min(parseInt(req.query?.days || '0', 10) || 0, 400);
+    const sinceTs = days > 0 ? Math.floor(Date.now() / 1000) - days * 86400 : 0;
+    const emailFilter = (req.query?.email || '').trim().toLowerCase();
+    const maxPages = (days > 0 || emailFilter) ? 40 : 3;
     let orders = [];
     let starting_after = '';
-    for (let page = 0; page < 3; page++) {
-      const q = `/checkout/sessions?limit=100${starting_after ? `&starting_after=${starting_after}` : ''}`;
-      const { status, body } = await stripeGet(q);
+    for (let page = 0; page < maxPages; page++) {
+      const parts = ['limit=100'];
+      if (sinceTs) parts.push(`created[gte]=${sinceTs}`);
+      if (starting_after) parts.push(`starting_after=${starting_after}`);
+      const { status, body } = await stripeGet(`/checkout/sessions?${parts.join('&')}`);
       if (status >= 300 || !body.data) break;
       for (const s of body.data) {
         if (s.payment_status !== 'paid') continue;
+        const email = s.customer_details?.email || s.customer_email || null;
         const isBook = s.amount_total === bookPrice || s.metadata?.product === 'emotional-fitness-book';
-        if (!isBook) continue;
+        const matchEmail = emailFilter && email && email.toLowerCase().includes(emailFilter);
+        if (!isBook && !matchEmail) continue;
         orders.push({
           id: s.id,
-          email: s.customer_details?.email || s.customer_email || null,
+          email,
           name: s.customer_details?.name || null,
           amount: (s.amount_total || 0) / 100,
           created: new Date(s.created * 1000).toISOString()
