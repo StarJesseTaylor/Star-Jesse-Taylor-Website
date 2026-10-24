@@ -98,6 +98,44 @@
   .reminder-bubble { position:absolute; top:25%; left:46%; width:50%; padding:14px; background:#fffaf3; color:#10253e; border-radius:18px; font-size:clamp(14px,2.8vw,20px); line-height:1.3; font-weight:650; box-shadow:0 5px 20px #071c3326; }
   .reminder-bubble::after { content:""; position:absolute; bottom:0; left:-7px; border-width:0 0 14px 16px; border-style:solid; border-color:transparent transparent #fffaf3 transparent; }
   @media(max-width:460px) { .reminder-photo img { width:140%; max-width:none; } .reminder-bubble { top:12%; left:49%; width:47%; padding:11px; font-size:14px; border-radius:13px; } }
+
+  /* Integrated photo layout; the form and consent flow remain unchanged. */
+  body { background:radial-gradient(ellipse at 18% 45%, #174773 0%, #102f50 45%, #0a1f3a 100%); align-items:flex-start; padding:40px 28px; }
+  .wrap { max-width:1200px; display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,1fr); column-gap:42px; align-items:start; }
+  .brand { grid-column:1/-1; text-align:left; margin-bottom:36px; }
+  .head { grid-column:1; grid-row:2; text-align:left; margin-bottom:10px; }
+  h1 { font-size:clamp(2rem,3.3vw,2.8rem); max-width:560px; }
+  .lead { max-width:570px; font-size:1rem; }
+  .reminder-photo { grid-column:1; grid-row:3; border-radius:0; overflow:visible; background:none; margin:8px -18px 12px; }
+  .reminder-photo img { width:100%; mask-image:linear-gradient(to right,transparent 0%,#000 5%,#000 75%,transparent 100%); }
+  .reminder-bubble { left:48%; width:49%; top:20%; font-size:clamp(15px,1.6vw,20px); }
+  .sample { grid-column:1; grid-row:4; background:none; border:0; padding:8px 0; margin-bottom:0; }
+  .sample-label { margin-bottom:8px; }
+  .sample-foot { margin-top:10px; }
+  form { grid-column:2; grid-row:2/5; background:rgba(255,255,255,.07); box-shadow:0 20px 70px #0002; }
+  .leave { grid-column:2; grid-row:5; }
+  .phone-row select { min-width:0; width:118px; }
+  @media(max-width:850px) {
+    body { padding:26px 20px; }
+    .wrap { display:block; max-width:580px; }
+    .brand { text-align:center; margin-bottom:22px; }
+    .head { text-align:center; }
+    h1 { font-size:2rem; }
+    .reminder-photo { margin:16px 0; overflow:hidden; }
+    .sample { padding:0 0 20px; }
+    .leave { margin-top:18px; }
+  }
+  @media(max-width:460px) {
+    h1 { font-size:1.7rem; }
+    .reminder-photo img { width:140%; mask-image:linear-gradient(to right,transparent 0%,#000 4%,#000 78%,transparent 100%); }
+    .reminder-bubble { top:12%; left:49%; width:47%; font-size:14px; }
+    form { padding:20px 16px; }
+    .optional-block { padding:16px 12px; }
+    .phone-row { flex-direction:column; }
+    .phone-row select { flex:auto; width:100%; }
+  }
+
+  .reminder-photo img { mask-image:linear-gradient(to right,transparent,#000 5%,#000 77%,transparent),linear-gradient(to bottom,transparent,#000 12%,#000 90%,transparent); mask-composite:intersect; }
 </style>
 </head>
 <body>
