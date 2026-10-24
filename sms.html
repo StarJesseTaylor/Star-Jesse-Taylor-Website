@@ -114,31 +114,16 @@
   .sample-foot { margin-top:10px; }
   form { grid-column:2; grid-row:2/5; background:rgba(255,255,255,.07); box-shadow:0 20px 70px #0002; }
   .leave { grid-column:2; grid-row:5; }
-  .phone-row select { min-width:0; width:auto; max-width:46%; flex:0 1 auto; }
-  /* ⭐ MOBILE IS THE DEVICE THAT MATTERS. Star, 24 Oct: "optimize it for mobile".
-        Measured before this: at 390px the form began 762px down, so a member had
-        to scroll past the photo AND the "What arrives" box before they could type
-        a single character. On a 390x844 phone that is the very bottom edge.
-        Star had spent two days asking for signup to be EASIER and the desktop
-        two-column win had quietly made the phone worse.
-        Fix is ordering only, no markup touched: flex column so the FORM can be
-        pulled above "What arrives", and the photo is capped so it stops eating
-        half the first screen. The photo still comes before the form, because it
-        is what makes the page worth signing up to. */
+  .phone-row select { min-width:0; width:118px; }
   @media(max-width:850px) {
     body { padding:26px 20px; }
-    .wrap { display:flex; flex-direction:column; max-width:580px; }
-    .brand  { order:1; text-align:center; margin-bottom:22px; }
-    .head   { order:2; text-align:center; }
-    .reminder-photo { order:3; margin:16px 0; overflow:hidden; }
-    form    { order:4; }
-    .sample { order:5; padding:20px 0 0; }
-    .leave  { order:6; margin-top:18px; }
+    .wrap { display:block; max-width:580px; }
+    .brand { text-align:center; margin-bottom:22px; }
+    .head { text-align:center; }
     h1 { font-size:2rem; }
-
-    /* Cap the photo so it cannot push the first field off the screen. The image
-       is 1747x900; letting it run full height costs ~100px of fold on a phone. */
-    .reminder-photo img { aspect-ratio:2.45/1; object-fit:cover; object-position:30% 32%; }
+    .reminder-photo { margin:16px 0; overflow:hidden; }
+    .sample { padding:0 0 20px; }
+    .leave { margin-top:18px; }
   }
   @media(max-width:460px) {
     h1 { font-size:1.7rem; }
@@ -151,13 +136,24 @@
   }
 
   .reminder-photo img { mask-image:linear-gradient(to right,transparent,#000 5%,#000 77%,transparent),linear-gradient(to bottom,transparent,#000 12%,#000 90%,transparent); mask-composite:intersect; }
+
+  /* Mobile reading order: introduction, signup, then the example photo. */
+  @media(max-width:850px) {
+    .brand { margin-bottom:18px; }
+    .head { margin-bottom:20px; }
+    .reminder-photo { margin-top:26px; }
+    .sample { padding-bottom:0; }
+  }
 </style>
 </head>
 <body>
   <div class="wrap">
     <div class="brand">
-      <!-- The larger phone photo below supplies the personal portrait. -->
-      <div class="brand-name">Star Jesse Taylor</div>
+      <!-- Star, Sep 21: "shouldn't we add a picture of me... to have more trust".
+           A page asking for someone's phone number, from a name they may only
+           half recognise, with no face on it, is a big ask. Same shot as
+           /whats-next so it reads as the same person across the site. -->
+<div class="brand-name">Star Jesse Taylor</div>
       <div class="brand-sub">Emotional Fitness</div>
     </div>
 
@@ -169,24 +165,6 @@
            speech into sentences and with the spoken scaffolding cut. NOTHING
            HAS BEEN ADDED OR REWORDED. Do not "improve" it. -->
       <p class="lead">Hours disappear inside your head and you do not get them back. Your brain can trick you. You can get lost in thoughts. These reminders wake you up and remind you to go in a different direction, and with that, give you more progress.</p>
-    </div>
-
-    <!-- SAMPLE POLICY: Sep 21, Star removed the printed list of four reminders:
-         "The prize is the surprise, which is the whole fun."
-         Random send times preserve that surprise; see sql/message_channel.sql.
-         Do not add a list of examples for conversion.
-         Oct 24: Star explicitly approved exactly ONE reminder bubble with his
-         phone photo. This supersedes the no-sample rule only for this single
-         bubble, not for a printed list. Copy line 2 verbatim from _lines.js. -->
-    <figure class="reminder-photo">
-      <img src="/images/star-sms-phone.webp" alt="Star smiling while looking at his phone" width="1747" height="900" fetchpriority="high" />
-      <figcaption class="reminder-bubble">Are you inside of your head? It's time to get outside of your head now!</figcaption>
-    </figure>
-
-    <div class="sample">
-      <div class="sample-label">What arrives</div>
-      <p class="sample-line">One line from Star, once a day, at a moment you are not expecting it.</p>
-      <div class="sample-foot">You will not know when it is coming, or which one you will get. The prize is the surprise.</div>
     </div>
 
     <form id="sms-form">
@@ -432,6 +410,20 @@
       <button type="submit">Get my reminders</button>
       <p class="status" id="sms-status"></p>
 </form>
+
+    <!-- Star approved one reminder bubble with his phone photo, Oct 24 2026. -->
+    <figure class="reminder-photo">
+      <img src="/images/star-sms-phone.webp" alt="Star smiling while looking at his phone" width="1747" height="900" fetchpriority="high" />
+      <figcaption class="reminder-bubble">Are you inside of your head? It's time to get outside of your head now!</figcaption>
+    </figure>
+
+    <div class="sample">
+      <div class="sample-label">What arrives</div>
+      <p class="sample-line">One line from Star, once a day, at a moment you are not expecting it.</p>
+      <div class="sample-foot">You will not know when it is coming, or which one you will get. The prize is the surprise.</div>
+    </div>
+
+
 
 
     <p class="leave"><a href="https://starjessetaylor.com">Not interested? Return to Star's site</a></p>
