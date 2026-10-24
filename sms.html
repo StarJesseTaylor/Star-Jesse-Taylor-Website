@@ -73,10 +73,10 @@
     background:rgba(255,255,255,.14); border-left:3px solid rgba(255,255,255,.6);
   }
   .optional-sub { font-size:.8rem; opacity:.72; margin-bottom:14px; }
-  .email-warn {
-    margin-top:13px; padding:11px 14px; border-radius:10px;
-    font-size:.9rem; font-weight:700; line-height:1.45;
-    background:rgba(255,255,255,.13); border-left:3px solid rgba(255,255,255,.65);
+  .head-warn {
+    margin-top:18px; padding:13px 16px; border-radius:11px;
+    font-size:1rem; font-weight:800; line-height:1.45; text-align:left;
+    background:rgba(255,255,255,.15); border-left:4px solid rgba(255,255,255,.75);
   }
   .consent {
     display:flex; align-items:flex-start; gap:12px; font-size:.83rem;
@@ -187,6 +187,24 @@
            speech into sentences and with the spoken scaffolding cut. NOTHING
            HAS BEEN ADDED OR REWORDED. Do not "improve" it. -->
       <p class="lead">Hours disappear inside your head and you do not get them back. Your brain can trick you. You can get lost in thoughts. These reminders wake you up and remind you to go in a different direction, and with that, give you more progress.</p>
+
+      <!-- ⭐ FIRST THING THEY READ. Star, 24 Oct, after a SECOND person signed
+           up with an email and no number: "should we just let them know in the
+           message way above the first thing that they read?"
+           History, so nobody undoes this a third time:
+             22 Sep - the consequence was written into Step 2. Someone missed it.
+             24 Oct - I put it under the email field. Better, still reactive: it
+                      is read AFTER they have decided the form looks complete.
+             24 Oct - moved HERE, above the form entirely. They cannot begin
+                      filling anything in without having passed it.
+           SAME SENTENCE, Star's words, not new copy. The copy in Step 2 stays
+           as well, because that one is doing a different job: it sits directly
+           above the legal "optional" wording, which on its own reads as "you
+           will still get the reminders, just by email".
+           TWO PLACEMENTS, ON PURPOSE. Do not merge them. -->
+      <div class="head-warn">
+        Without a phone number there are no daily reminders. There's no email version of them.
+      </div>
     </div>
 
     <form id="sms-form">
@@ -213,23 +231,6 @@
         <input type="email" name="email" placeholder="Email address" required />
       </div>
 
-      <!-- ⭐ THE WARNING MOVED TO WHERE THE MISTAKE IS MADE. Star, 24 Oct:
-           "someone signed up again with their email instead of the number
-           because clearly they also see the email field."
-           It happened AGAIN, after the Sep 22 fix. Why that fix did not work:
-           the consequence was written inside Step 2, which is the part the
-           person has not scrolled to yet. They complete Step 1, see a filled-in
-           form, and press the button. The words were right and the position was
-           wrong.
-           This is the SAME SENTENCE, Star's words, repeated at the email field.
-           Not new copy, and deliberately duplicated rather than moved, because
-           it still has to sit above the small print in Step 2 for the reason
-           recorded there.
-           DO NOT "tidy" this away as a duplicate. It is a duplicate on purpose
-           and the duplication is the fix. -->
-      <div class="email-warn">
-        Without a phone number there are no daily reminders. There's no email version of them.
-      </div>
 
       <!-- THE YEARLY GATE. Star's call, 24 Sep: the daily reminders are part of
            the yearly membership.
