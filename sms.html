@@ -141,8 +141,25 @@
   @media(max-width:850px) {
     .brand { margin-bottom:18px; }
     .head { margin-bottom:20px; }
-    .reminder-photo { margin-top:26px; }
     .sample { padding-bottom:0; }
+
+    /* ⭐ PHOTO BACK ON TOP, BUT PAYING ITS OWN WAY. Star, 24 Oct: "I think we
+          should put the picture on top somewhere, right?"
+          The markup keeps the form FIRST (so screen readers and keyboard order
+          still reach the signup before the decoration). This moves the photo
+          above it VISUALLY only, and crops it hard so it costs the fold as
+          little as possible. Uncropped it is 241px tall at 390px wide, which
+          pushed the first field to 605. Cropped to a 3:1 band it is ~112px.
+          If this ever needs to come back out, delete this block: the form-first
+          markup underneath is the correct default and does not depend on it. */
+    .wrap { display:flex; flex-direction:column; }
+    .brand          { order:1; }
+    .head           { order:2; }
+    .reminder-photo { order:3; margin:0 0 22px; }
+    #sms-form       { order:4; }
+    .sample         { order:5; padding-top:20px; }
+    .leave          { order:6; }
+    .reminder-photo img { aspect-ratio:3/1; object-fit:cover; object-position:38% 30%; }
   }
 </style>
 </head>
