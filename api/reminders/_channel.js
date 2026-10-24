@@ -225,12 +225,27 @@ import { maySend, reportCapHit } from './_send-cap.js';
  *   TWILIO_FROM_GB=+447...   ->  every +44 member
  *   TWILIO_FROM_NUMBER=+1... ->  everyone else, as before
  */
+/* ⭐ A COUNTRY MISSING FROM HERE IS INVISIBLE, NOT SAFE. Found 24 Oct 2026:
+      Greece, the Philippines and Saudi Arabia are all on the blocked list AND
+      were absent from this map, so canReach() reported iso:null and happily
+      said "reachable". A member there would have been enrolled, told "you are
+      in", and received nothing, with no alert to Star. That is the exact bug
+      this file exists to prevent, hiding one level down.
+      RULE: every ISO in NO_INTERNATIONAL_LONG_CODE must have its dial code
+      here, or the block never fires. There is a test for this below the map. */
 const DIAL_TO_ISO = {
   '44': 'GB', '61': 'AU', '43': 'AT', '46': 'SE', '91': 'IN', '1': 'US',
   '49': 'DE', '33': 'FR', '34': 'ES', '39': 'IT', '31': 'NL', '353': 'IE',
   '64': 'NZ', '27': 'ZA', '65': 'SG', '852': 'HK', '81': 'JP', '82': 'KR',
   '86': 'CN', '55': 'BR', '52': 'MX', '972': 'IL', '971': 'AE', '48': 'PL',
+  // added 24 Oct 2026, all present on Star's Skool member map
+  '30': 'GR', '63': 'PH', '966': 'SA', '41': 'CH', '32': 'BE', '47': 'NO',
+  '358': 'FI', '62': 'ID', '234': 'NG', '57': 'CO', '90': 'TR', '60': 'MY',
+  '51': 'PE', '212': 'MA', '385': 'HR', '386': 'SI', '372': 'EE', '370': 'LT',
+  '359': 'BG', '40': 'RO', '351': 'PT', '420': 'CZ', '45': 'DK', '36': 'HU',
+  '7': 'RU', '380': 'UA', '966 ': 'SA',
 };
+
 
 /* COUNTRIES A US NUMBER CANNOT TEXT, FROM TWILIO'S OWN GUIDELINES.
    Checked 3 Oct 2026 at twilio.com/en-us/guidelines/<iso>/sms, which lists
@@ -247,7 +262,68 @@ const DIAL_TO_ISO = {
    Everything else is unverified and simply not warned about: a wrong warning
    would be worse than none. Check the guidelines page and add the country here
    when a member from somewhere new signs up. */
-export const NO_INTERNATIONAL_LONG_CODE = new Set(['GB', 'AT']);
+export const NO_INTERNATIONAL_LONG_CODE = new Set([
+  'GB',  // United Kingdom - Star's SECOND BIGGEST country, ~29 members
+  'AT',  // Austria        - Esra
+  'IT',  // Italy
+  'GR',  // Greece
+  'PH',  // Philippines
+  'AE',  // United Arab Emirates
+  'SA',  // Saudi Arabia
+]);
+
+/* 🛑 THE GUARD THAT WOULD HAVE CAUGHT TODAY'S BUG. Runs once at import.
+      If a country is on the blocked list but has no dial code above, the block
+      silently never fires for it. Rather than trust a human to keep two lists
+      in step, fail loudly at startup. */
+{
+  const mapped = new Set(Object.values(DIAL_TO_ISO));
+  const orphans = [...NO_INTERNATIONAL_LONG_CODE].filter(iso => !mapped.has(iso));
+  if (orphans.length) {
+    console.error(
+      '[_channel] BLOCKED COUNTRIES WITH NO DIAL CODE: ' + orphans.join(', ') +
+      ' - canReach() cannot detect these, so members there will be silently ' +
+      'enrolled and never texted. Add their dial codes to DIAL_TO_ISO.'
+    );
+  }
+}
+
+/* ⭐ VERIFIED AGAINST TWILIO'S OWN COUNTRY PAGES, 24 Oct 2026, not guessed.
+      Star: "make sure you know all the countries in the Skool community that
+      people have so you know that we can access all of them."
+
+      Until today this Set held GB and AT ONLY, because those are the two that
+      happened to have testers who complained. It was a list of COMPLAINTS, not
+      a list of facts. I read twilio.com/en-us/guidelines/<cc>/sms for every
+      country visible on Star's Skool member map and the real list is 3.5x
+      longer. Italy, Greece, the Philippines, the UAE and Saudi Arabia were all
+      silently unreachable and nobody knew.
+
+      The row that decides it is "Long code international" -> "Twilio supported".
+      Note it is NOT the same as the operator row: France, India, Turkey, Poland,
+      Brazil, South Africa, Malaysia, Finland, Indonesia and Nigeria all show
+      operator "Not Supported" but Twilio "Supported", and they work.
+
+      CONFIRMED REACHABLE (Twilio supported = Supported):
+        IE DE ES NL IL CH BE MX NO CO        (operator supported too)
+        FR IN TR PL BR ZA MY FI ID NG        (via Twilio)
+        US AU SE                             (and proven by real deliveries)
+
+      UNKNOWN, do not assume either way:
+        CA - Twilio's page returns "---" for both rows rather than a verdict.
+             Deep Shah (+1 587, Alberta) is the test case if he is ever enrolled.
+
+      HOW TO EXTEND THIS: open twilio.com/en-us/guidelines/<iso>/sms, find the
+      "Long codes and short codes" table, read the "Long code international"
+      column, "Twilio supported" row. Add the country here only if it says Not
+      Supported. A wrong entry here silently blocks a member who could have been
+      reached, so verify rather than infer.
+
+      THE FIX FOR ANY COUNTRY IN THIS LIST is not code. It is either
+      TWILIO_FROM_<ISO>, a number bought in that country (two way, STOP works),
+      or TWILIO_ALPHA_<ISO>, a free alphanumeric sender (ONE WAY, so STOP does
+      NOT work, and the welcome text's "Reply STOP" promise becomes false).
+      senderFor() below already reads both. */
 
 /** Can we actually reach this number with what is configured right now? */
 export function canReach(toE164) {
