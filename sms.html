@@ -104,69 +104,58 @@
   .reminder-bubble::after { content:""; position:absolute; bottom:0; left:-7px; border-width:0 0 14px 16px; border-style:solid; border-color:transparent transparent #fffaf3 transparent; }
   @media(max-width:460px) { .reminder-photo img { width:140%; max-width:none; } .reminder-bubble { top:12%; left:49%; width:47%; padding:11px; font-size:14px; border-radius:13px; } }
 
-  /* Integrated photo layout; the form and consent flow remain unchanged. */
-  body { background:radial-gradient(ellipse at 18% 45%, #174773 0%, #102f50 45%, #0a1f3a 100%); align-items:flex-start; padding:40px 28px; }
-  .wrap { max-width:1200px; display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,1fr); column-gap:42px; align-items:start; }
-  .brand { grid-column:1/-1; text-align:left; margin-bottom:36px; }
-  .head { grid-column:1; grid-row:2; text-align:left; margin-bottom:10px; }
-  h1 { font-size:clamp(2rem,3.3vw,2.8rem); max-width:560px; }
-  .lead { max-width:570px; font-size:1rem; }
-  .reminder-photo { grid-column:1; grid-row:3; border-radius:0; overflow:visible; background:none; margin:8px -18px 12px; }
-  .reminder-photo img { width:100%; mask-image:linear-gradient(to right,transparent 0%,#000 5%,#000 75%,transparent 100%); }
-  .reminder-bubble { left:48%; width:49%; top:20%; font-size:clamp(15px,1.6vw,20px); }
-  .sample { grid-column:1; grid-row:4; background:none; border:0; padding:8px 0; margin-bottom:0; }
-  .sample-label { margin-bottom:8px; }
-  .sample-foot { margin-top:10px; }
-  form { grid-column:2; grid-row:2/5; background:rgba(255,255,255,.07); box-shadow:0 20px 70px #0002; }
-  .leave { grid-column:2; grid-row:5; }
-  .phone-row select { min-width:0; width:118px; }
-  @media(max-width:850px) {
-    body { padding:26px 20px; }
-    .wrap { display:block; max-width:580px; }
-    .brand { text-align:center; margin-bottom:22px; }
-    .head { text-align:center; }
-    h1 { font-size:2rem; }
-    .reminder-photo { margin:16px 0; overflow:hidden; }
-    .sample { padding:0 0 20px; }
-    .leave { margin-top:18px; }
-  }
+  /* ⭐ ONE COLUMN, EVERY WIDTH. Star, 24 Oct: "Don't you think the website,
+        also the regular website, was easier to read when it was stacked on top
+        of each other?"
+
+        He is right, and there was concrete evidence rather than taste. His
+        warning line deliberately appears TWICE, once under the headline and
+        once in Step 2. On a phone those are far apart, so the second reads as
+        reinforcement at the moment of decision. Side by side in two columns
+        they were visible on the same screen and simply looked like a mistake.
+
+        Every problem we chased today came from desktop and mobile diverging:
+        the form ending up below the fold, the photo in the wrong place, the
+        ordering fight with Codex, the country select clipping to "United Stat"
+        because the column was too narrow. One layout, one set of behaviour,
+        one thing to test.
+
+        What this gives up: the form no longer sits on screen without
+        scrolling at desktop width. On a page this short that is one flick, and
+        this link goes to members who already know Star, not cold traffic that
+        has to be converted in a single screen. */
+  body { background:radial-gradient(ellipse at 50% 0%, #174773 0%, #102f50 45%, #0a1f3a 100%); align-items:flex-start; padding:40px 24px; }
+
+  /* MARKUP ORDER IS form-then-photo, deliberately, so screen readers and
+     keyboard tabbing reach the signup before the decoration. These `order`
+     values move the photo above the form VISUALLY only. The photo has nothing
+     focusable in it, so nothing is lost. Do not "fix" this by reordering the
+     HTML. */
+  .wrap { max-width:580px; display:flex; flex-direction:column; }
+  .brand          { order:1; text-align:center; margin-bottom:20px; }
+  .head           { order:2; text-align:center; margin-bottom:4px; }
+  .reminder-photo { order:3; margin:18px 0 22px; overflow:hidden; border-radius:16px; }
+  #sms-form       { order:4; }
+  .sample         { order:5; margin:22px 0 0; }
+  .leave          { order:6; margin-top:18px; }
+
+  h1 { font-size:2rem; }
+  .head-warn { margin:18px 0 0; }
+  .lead { margin-top:16px; }
+
+  /* Cropped to a band so the photo never pushes the form off the screen. */
+  .reminder-photo img { aspect-ratio:3/1; object-fit:cover; object-position:38% 30%; width:100%; }
+  .reminder-bubble { top:16%; left:48%; width:48%; font-size:clamp(14px,3.4vw,17px); padding:12px; border-radius:15px; }
+
   @media(max-width:460px) {
+    body { padding:26px 18px; }
     h1 { font-size:1.7rem; }
-    .reminder-photo img { width:140%; mask-image:linear-gradient(to right,transparent 0%,#000 4%,#000 78%,transparent 100%); }
-    .reminder-bubble { top:12%; left:49%; width:47%; font-size:14px; }
+    .reminder-bubble { top:12%; left:49%; width:47%; font-size:13px; padding:10px; border-radius:12px; }
     form { padding:20px 16px; }
     .optional-block { padding:16px 12px; }
     .phone-row { flex-direction:column; }
     .phone-row select { flex:auto; width:100%; }
   }
-
-  .reminder-photo img { mask-image:linear-gradient(to right,transparent,#000 5%,#000 77%,transparent),linear-gradient(to bottom,transparent,#000 12%,#000 90%,transparent); mask-composite:intersect; }
-
-  /* Mobile reading order: introduction, signup, then the example photo. */
-  @media(max-width:850px) {
-    .brand { margin-bottom:18px; }
-    .head { margin-bottom:20px; }
-    .sample { padding-bottom:0; }
-
-    /* ⭐ PHOTO BACK ON TOP, BUT PAYING ITS OWN WAY. Star, 24 Oct: "I think we
-          should put the picture on top somewhere, right?"
-          The markup keeps the form FIRST (so screen readers and keyboard order
-          still reach the signup before the decoration). This moves the photo
-          above it VISUALLY only, and crops it hard so it costs the fold as
-          little as possible. Uncropped it is 241px tall at 390px wide, which
-          pushed the first field to 605. Cropped to a 3:1 band it is ~112px.
-          If this ever needs to come back out, delete this block: the form-first
-          markup underneath is the correct default and does not depend on it. */
-    .wrap { display:flex; flex-direction:column; }
-    .brand          { order:1; }
-    .head           { order:2; }
-    .reminder-photo { order:3; margin:0 0 22px; }
-    #sms-form       { order:4; }
-    .sample         { order:5; padding-top:20px; }
-    .leave          { order:6; }
-    .reminder-photo img { aspect-ratio:3/1; object-fit:cover; object-position:38% 30%; }
-  }
-  .head-warn { margin:16px 0; }
 </style>
 </head>
 <body>
