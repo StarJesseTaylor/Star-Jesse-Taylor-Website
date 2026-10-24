@@ -73,6 +73,11 @@
     background:rgba(255,255,255,.14); border-left:3px solid rgba(255,255,255,.6);
   }
   .optional-sub { font-size:.8rem; opacity:.72; margin-bottom:14px; }
+  .email-warn {
+    margin-top:13px; padding:11px 14px; border-radius:10px;
+    font-size:.9rem; font-weight:700; line-height:1.45;
+    background:rgba(255,255,255,.13); border-left:3px solid rgba(255,255,255,.65);
+  }
   .consent {
     display:flex; align-items:flex-start; gap:12px; font-size:.83rem;
     opacity:.92; line-height:1.55; margin-top:14px; cursor:pointer;
@@ -206,6 +211,24 @@
       </div>
       <div class="row row-single">
         <input type="email" name="email" placeholder="Email address" required />
+      </div>
+
+      <!-- ⭐ THE WARNING MOVED TO WHERE THE MISTAKE IS MADE. Star, 24 Oct:
+           "someone signed up again with their email instead of the number
+           because clearly they also see the email field."
+           It happened AGAIN, after the Sep 22 fix. Why that fix did not work:
+           the consequence was written inside Step 2, which is the part the
+           person has not scrolled to yet. They complete Step 1, see a filled-in
+           form, and press the button. The words were right and the position was
+           wrong.
+           This is the SAME SENTENCE, Star's words, repeated at the email field.
+           Not new copy, and deliberately duplicated rather than moved, because
+           it still has to sit above the small print in Step 2 for the reason
+           recorded there.
+           DO NOT "tidy" this away as a duplicate. It is a duplicate on purpose
+           and the duplication is the fix. -->
+      <div class="email-warn">
+        Without a phone number there are no daily reminders. There's no email version of them.
       </div>
 
       <!-- THE YEARLY GATE. Star's call, 24 Sep: the daily reminders are part of
