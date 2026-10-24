@@ -397,6 +397,42 @@ export async function sendMessage({ to, body, channel, dryRun = false, kind, day
 
   if (dryRun) return { sent: false, dryRun: true, channel, sid: undefined };
 
+  /* 🛑 THE ROUTE GUARD. Added 24 Oct 2026, and it should have existed from
+        the day NO_INTERNATIONAL_LONG_CODE did.
+
+        THE BUG IT FIXES. canReach() has existed since 3 Oct and Austria has
+        been on the blocked list since then. But canReach() was called in
+        exactly ONE place in the whole codebase: api/sms-optin.js, at SIGNUP.
+        Nothing on the sending path ever asked. So the system emailed Star the
+        minute Esra signed up, and then cheerfully tried her anyway, three
+        times a day, every day, for a month. 67 refusals in October alone,
+        every one error 21612, every one guaranteed before it was sent.
+
+        Star, 24 Oct: "This should never happen. How does this happen?"
+        It happened because a guard that is not on the path is not a guard.
+
+        So it goes HERE, at the wire, next to the send cap, for the same stated
+        reason: every path that texts anyone comes through this function, and
+        no caller has to be correct for it to hold.
+
+        21612 IS PERMANENT. It is not a temporary failure and retrying it
+        tomorrow cannot help, because the route does not exist. The caller is
+        told `blocked: true` and `permanent: true` so it can log this as
+        BLOCKED rather than as an error, and so the retry logic in send.js does
+        not treat a wall as a hiccup.
+
+        It does NOT touch consent. The member stays subscribed and starts
+        receiving the moment a sender for their country is configured, which
+        is a one-line env var. Nobody is unsubscribed for living somewhere. */
+  const reach = canReach(to);
+  if (!reach.ok) {
+    return {
+      sent: false, channel, from, blocked: true, permanent: true,
+      iso: reach.iso,
+      error: `route unavailable for ${reach.iso}: ${reach.why}`,
+    };
+  }
+
   // 🛑 THE LAST LINE BEFORE THE WIRE. Every path that texts anyone goes
   //    through here, so the guard lives here and not in the callers. On
   //    21 Sep 2026 one wrong word in a welcome dedupe sent four members five
