@@ -129,46 +129,15 @@
          Do not "show a few examples to help conversion". -->
     <div class="sample">
       <div class="sample-label">What arrives</div>
-      <p class="sample-line">One line from Star, once a day, at a moment you are not expecting it. No advice, no analysis, nothing to reply to.</p>
+      <p class="sample-line">One line from Star, once a day, at a moment you are not expecting it.</p>
       <div class="sample-foot">You will not know when it is coming, or which one you will get. The prize is the surprise.</div>
     </div>
 
     <form id="sms-form">
       <input type="text" name="website_url" tabindex="-1" autocomplete="off" class="hp" />
 
-      <div class="step">Step 1 &middot; Required</div>
-      <div class="row">
-        <input type="text" name="firstName" placeholder="First name" required />
-        <!-- REQUIRED, Star's call Sep 21: "They have to fill that out."
-             He needs to recognise people on the list, and two Sarahs with no
-             surname is useless to him. -->
-        <input type="text" name="lastName" placeholder="Last name" required />
-      </div>
-      <div class="row row-single">
-        <input type="email" name="email" placeholder="Email address" required />
-      </div>
-
-      <!-- THE YEARLY GATE. Star's call, 24 Sep: the daily reminders are part of
-           the yearly membership.
-
-           Hidden unless the server says a code is set, so this block is simply
-           not there while the annual tier is still being built, and the page is
-           unchanged for everyone currently testing.
-
-           Yearly members normally arrive on a link with the code already in it
-           (/sms?c=THECODE), so they never see this field at all. It exists for
-           the person who typed the address by hand or lost the link. -->
-      <div class="row row-single" id="codeRow" style="display:none">
-        <input type="text" name="accessCode" id="accessCode" placeholder="Your yearly member code" autocomplete="off" />
-      </div>
-
       <div class="optional-block">
-        <div class="step">Step 2 &middot; Optional</div>
         <div class="optional-head">The reminders are texts. Add your number.</div>
-        <div class="optional-why">
-          Email finds you at a desk, deciding what to deal with. A text finds you when you are
-          actually lost in it. That is the only moment any of this is useful.
-        </div>
         <!-- ⭐ THE CONSEQUENCE, IN PLAIN WORDS. Star, Sep 22: "some people sign
              up with their email instead of the phone number... because they
              think they also get reminders to the email."
@@ -178,10 +147,16 @@
              cost of leaving it blank is stated ABOVE the small print where it
              cannot be skimmed past. Do not soften this. -->
         <div class="optional-warn">
-          Without a number there are no daily reminders. There is no email version of them.
+          Without a phone number there are no daily reminders. There's no email version of them.
         </div>
+        <!-- ⭐ WHAT IS LEFT HERE IS THE LAW, AND ONLY THE LAW. Star, Oct 24,
+             asked why this paragraph existed. "Completely optional. Leave this
+             blank and you will still get email updates from Star." was CUT: it
+             is not required by anything, and it is the exact sentence that made
+             people believe there is an email version of the reminders. The
+             sentence below IS required (consent must never be a condition) and
+             must not be cut or softened. -->
         <div class="optional-sub">
-          Completely optional. Leave this blank and you will still get email updates from Star.
           You do not need to give a phone number to receive anything from Star, to buy anything,
           or to use any part of this site.
         </div>
@@ -362,16 +337,36 @@
         </label>
       </div>
 
+
+      <div class="row">
+        <input type="text" name="firstName" placeholder="First name" required />
+        <!-- REQUIRED, Star's call Sep 21: "They have to fill that out."
+             He needs to recognise people on the list, and two Sarahs with no
+             surname is useless to him. -->
+        <input type="text" name="lastName" placeholder="Last name" required />
+      </div>
+      <div class="row row-single">
+        <input type="email" name="email" placeholder="Email address" required />
+      </div>
+
+      <!-- THE YEARLY GATE. Star's call, 24 Sep: the daily reminders are part of
+           the yearly membership.
+
+           Hidden unless the server says a code is set, so this block is simply
+           not there while the annual tier is still being built, and the page is
+           unchanged for everyone currently testing.
+
+           Yearly members normally arrive on a link with the code already in it
+           (/sms?c=THECODE), so they never see this field at all. It exists for
+           the person who typed the address by hand or lost the link. -->
+      <div class="row row-single" id="codeRow" style="display:none">
+        <input type="text" name="accessCode" id="accessCode" placeholder="Your yearly member code" autocomplete="off" />
+      </div>
+
       <button type="submit">Get my reminders</button>
       <p class="status" id="sms-status"></p>
     </form>
 
-    <p class="fineprint">
-      Email updates are the service on this page. SMS is an optional add-on and is never required.
-      Consent to receive text messages is not a condition of any purchase, service, account, or access
-      to any content on this site. Message frequency varies. Message and data rates may apply.
-      Reply STOP to cancel, HELP for help.
-    </p>
 
     <p class="leave"><a href="https://starjessetaylor.com">Not interested? Return to Star's site</a></p>
   </div>
