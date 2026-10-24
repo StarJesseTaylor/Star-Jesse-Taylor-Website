@@ -136,7 +136,43 @@
     <form id="sms-form">
       <input type="text" name="website_url" tabindex="-1" autocomplete="off" class="hp" />
 
+      <!-- THESE TWO LABELS ARE IN THE A2P FILING, WORD FOR WORD.
+           A2P_3_how_do_end_users_consent.txt (23 Sep): "Step 1 (first name and
+           email address) is required. Step 2 is clearly labelled 'Optional'".
+           Star asked for them gone on 24 Oct and I removed them, telling him
+           they were not a compliance element. I was WRONG: the filing cites
+           them as how a reviewer identifies the optional structure. Restored
+           the same day, along with the email-before-phone order the filing
+           also describes.
+           THESE COME OUT WHEN THE FILING IS UPDATED, NOT BEFORE. -->
+      <div class="step">Step 1 &middot; Required</div>
+      <div class="row">
+        <input type="text" name="firstName" placeholder="First name" required />
+        <!-- REQUIRED, Star's call Sep 21: "They have to fill that out."
+             He needs to recognise people on the list, and two Sarahs with no
+             surname is useless to him. -->
+        <input type="text" name="lastName" placeholder="Last name" required />
+      </div>
+      <div class="row row-single">
+        <input type="email" name="email" placeholder="Email address" required />
+      </div>
+
+      <!-- THE YEARLY GATE. Star's call, 24 Sep: the daily reminders are part of
+           the yearly membership.
+
+           Hidden unless the server says a code is set, so this block is simply
+           not there while the annual tier is still being built, and the page is
+           unchanged for everyone currently testing.
+
+           Yearly members normally arrive on a link with the code already in it
+           (/sms?c=THECODE), so they never see this field at all. It exists for
+           the person who typed the address by hand or lost the link. -->
+      <div class="row row-single" id="codeRow" style="display:none">
+        <input type="text" name="accessCode" id="accessCode" placeholder="Your yearly member code" autocomplete="off" />
+      </div>
+
       <div class="optional-block">
+        <div class="step">Step 2 &middot; Optional</div>
         <div class="optional-head">The reminders are texts. Add your number.</div>
         <!-- ⭐ THE CONSEQUENCE, IN PLAIN WORDS. Star, Sep 22: "some people sign
              up with their email instead of the phone number... because they
@@ -337,35 +373,9 @@
         </label>
       </div>
 
-
-      <div class="row">
-        <input type="text" name="firstName" placeholder="First name" required />
-        <!-- REQUIRED, Star's call Sep 21: "They have to fill that out."
-             He needs to recognise people on the list, and two Sarahs with no
-             surname is useless to him. -->
-        <input type="text" name="lastName" placeholder="Last name" required />
-      </div>
-      <div class="row row-single">
-        <input type="email" name="email" placeholder="Email address" required />
-      </div>
-
-      <!-- THE YEARLY GATE. Star's call, 24 Sep: the daily reminders are part of
-           the yearly membership.
-
-           Hidden unless the server says a code is set, so this block is simply
-           not there while the annual tier is still being built, and the page is
-           unchanged for everyone currently testing.
-
-           Yearly members normally arrive on a link with the code already in it
-           (/sms?c=THECODE), so they never see this field at all. It exists for
-           the person who typed the address by hand or lost the link. -->
-      <div class="row row-single" id="codeRow" style="display:none">
-        <input type="text" name="accessCode" id="accessCode" placeholder="Your yearly member code" autocomplete="off" />
-      </div>
-
       <button type="submit">Get my reminders</button>
       <p class="status" id="sms-status"></p>
-    </form>
+</form>
 
 
     <p class="leave"><a href="https://starjessetaylor.com">Not interested? Return to Star's site</a></p>
@@ -489,7 +499,7 @@
              + '<div style="opacity:.85;font-size:.95rem;">Your first text will land soon. One a day after that, at a moment you are not expecting. Reply STOP any time and they end.</div>');
         } else {
           done('<div style="font-size:1.2rem;font-weight:700;margin-bottom:8px;">You are in.</div>'
-             + '<div style="opacity:.85;font-size:.95rem;">You are on Star\'s list and will hear from him by email. The daily reminders are texts, so add your number whenever you want them.</div>');
+             + '<div style="opacity:.85;font-size:.95rem;">You will get Star\'s reminders and tips by email. You did not sign up for text messages, and you do not need to.</div>');
         }
       } else {
         // json.message is the sentence written for a human; json.error is a
