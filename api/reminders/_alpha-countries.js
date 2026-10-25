@@ -23,3 +23,6 @@ export function alphaTimeAllowed(iso, now=new Date()) {
   }).formatToParts(now).map(p=>[p.type,p.value]));
   return parts.weekday!=='Sun' && Number(parts.hour)>=8 && Number(parts.hour)<21;
 }
+
+export const ALPHA_CONSENT_VERSIONS = Object.freeze({GB:'uk-one-way-2026-10-25',IT:'it-one-way-2026-10-25',GR:'gr-one-way-2026-10-25'});
+export const alphaConsentVersion = iso => ALPHA_CONSENT_VERSIONS[iso] || process.env.SMS_ALPHA_CONSENT_VERSION;

@@ -1,6 +1,6 @@
 // Country-gated pilot. Configuration is inert until explicit launch approval.
 import { createHash, createHmac } from 'node:crypto';
-import { alphaCountryApproved, alphaTimeAllowed } from './_alpha-countries.js';
+import { alphaCountryApproved, alphaTimeAllowed, alphaConsentVersion } from './_alpha-countries.js';
 
 export const tokenHash = token => createHash('sha256').update(token).digest('hex');
 export const validToken = token => typeof token === 'string' && /^[A-Za-z0-9_-]{24}$/.test(token);
@@ -21,7 +21,7 @@ export function alphaReady(sender) {
   return alphaCountryApproved(sender.iso)
     && /^[A-Za-z0-9 ]{1,11}$/.test(sender.from || '') && /[A-Za-z]/.test(sender.from || '')
     && (process.env.SMS_UNSUBSCRIBE_SECRET || '').length >= 32
-    && !!process.env.SMS_ALPHA_CONSENT_VERSION
+    && !!alphaConsentVersion(sender.iso)
     && !!process.env.SMS_ALPHA_WELCOME
     && (process.env.SMS_ALPHA_FOOTER || '').split('{url}').length === 2;
 }
@@ -30,7 +30,7 @@ export async function prepareAlpha({ to, body, kind, sender }) {
   if (!alphaTimeAllowed(sender.iso)) throw new Error('alpha destination quiet time; no send');
   if (!['welcome', 'reminder'].includes(kind)) throw new Error('alpha is outbound reminders only');
   const eligibility = await alphaRpc('sms_alpha_eligible', {
-    p_phone: to, p_version: process.env.SMS_ALPHA_CONSENT_VERSION,
+    p_phone: to, p_version: alphaConsentVersion(sender.iso),
   });
   if (eligibility !== true) throw new Error('alpha consent or paid eligibility unverified');
   // Opaque 144-bit bearer token, no phone number in the URL. Only its hash is stored.

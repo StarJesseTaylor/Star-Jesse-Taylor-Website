@@ -1,6 +1,7 @@
+import { ALPHA_CONSENT_VERSIONS } from './reminders/_alpha-countries.js';
 // One phone parser for the whole system. The signup door and the sender MUST
 // agree, or we save numbers we can never text. See the note at normalizedPhone.
-import { normalisePhone } from './reminders/_channel.js';
+import { normalisePhone, senderFor } from './reminders/_channel.js';
 import { maySendWelcome } from './reminders/_abuse.js';
 
 const LIST_ID = '3'; // Master Contact List
@@ -119,9 +120,11 @@ export default async function handler(req, res) {
     normalizedPhone = parsed.e164;
   }
 
-  const ukConsent = normalizedPhone.startsWith('+44');
-  if (ukConsent && req.body?.alphaConsentVersion !== 'uk-one-way-2026-10-25') {
-    return res.status(400).json({error:'consent', message:'UK texts are one way. You cannot reply or text STOP. Use the Stop anytime link in each message to unsubscribe.'});
+  const alphaISO = normalizedPhone ? senderFor(normalizedPhone).iso : null;
+  const requiredAlphaConsent = ALPHA_CONSENT_VERSIONS[alphaISO];
+  const alphaConsent = !!requiredAlphaConsent;
+  if (alphaConsent && req.body?.alphaConsentVersion !== requiredAlphaConsent) {
+    return res.status(400).json({error:'consent', message:'Texts are one way. You cannot reply or text STOP. Use the Stop anytime link in each message to unsubscribe.'});
   }
 
   const headers = { 'Api-Token': AC_KEY, 'Content-Type': 'application/json' };
@@ -164,16 +167,16 @@ export default async function handler(req, res) {
     });
   }
 
-  let ukConsentRecorded = !ukConsent;
-  if (ukConsent && enrol.ok) {
+  let alphaConsentRecorded = !alphaConsent;
+  if (alphaConsent && enrol.ok) {
     try {
       const {alphaRpc} = await import('./reminders/_alpha.js');
-      ukConsentRecorded = await alphaRpc('record_uk_sms_consent',{p_phone:normalizedPhone}) === true;
-    } catch { ukConsentRecorded = false; }
-    if (!ukConsentRecorded) await alertStarAboutLostContact({firstName,lastName,email,normalizedPhone,smsOptIn,rescued:true,detail:'UK one-way consent recording failed. SMS remains held. ActiveCampaign sync will still be attempted.'});
+      alphaConsentRecorded = await alphaRpc('record_alpha_sms_consent',{p_phone:normalizedPhone,p_version:requiredAlphaConsent}) === true;
+    } catch { alphaConsentRecorded = false; }
+    if (!alphaConsentRecorded) await alertStarAboutLostContact({firstName,lastName,email,normalizedPhone,smsOptIn,rescued:true,detail:'One-way consent recording failed. SMS remains held. ActiveCampaign sync will still be attempted.'});
   }
   // Preserve CRM phone sync even if the separate consent write failed.
-  const finishSignup = crm => ukConsent && !ukConsentRecorded
+  const finishSignup = crm => alphaConsent && !alphaConsentRecorded
     ? res.status(503).json({success:false,error:'We could not save that yet. Please try again.',crm})
     : res.status(200).json({success:true,sms:smsOptIn,reminders:enrol.ok,crm});
 
@@ -251,7 +254,7 @@ export default async function handler(req, res) {
         headers,
         body: JSON.stringify({
           note: {
-            note: `SMS consent recorded ${new Date().toISOString()}. Source: ${source || 'website'}. Phone: ${normalizedPhone}. Opt-in was optional: user completed the form's email service and separately ticked an unchecked SMS consent box. Disclosure: practice reminders, tips, updates about Star's offerings including workshops, cohorts, courses, coaching, books, and live events. ${ukConsent ? 'UK one-way disclosure uk-one-way-2026-10-25: cannot reply or text STOP; Stop anytime link in each message. One daily reminder.' : 'Message frequency varies. Reply STOP to unsubscribe, HELP for help.'}`,
+            note: `SMS consent recorded ${new Date().toISOString()}. Source: ${source || 'website'}. Phone: ${normalizedPhone}. Opt-in was optional: user completed the form's email service and separately ticked an unchecked SMS consent box. Disclosure: practice reminders, tips, updates about Star's offerings including workshops, cohorts, courses, coaching, books, and live events. ${alphaConsent ? `One-way disclosure ${requiredAlphaConsent}: cannot reply or text STOP; Stop anytime link in each message.` : 'Message frequency varies. Reply STOP to unsubscribe, HELP for help.'}`,
             relid: contactId,
             reltype: 'Subscriber'
           }
@@ -292,7 +295,7 @@ export default async function handler(req, res) {
       } catch { /* a warning must never break a signup */ }
     }
 
-    if (ukConsentRecorded && enrol.ok && !enrol.existing && process.env.REMINDERS_LIVE === '1') {
+    if (alphaConsentRecorded && enrol.ok && !enrol.existing && process.env.REMINDERS_LIVE === '1') {
       // 🛡️ THE ONLY THING HERE THAT SPENDS MONEY. Everything else is a database
       //    row. So the abuse ceiling sits on the TEXT, not on the signup: under
       //    a toll-fraud flood people still get signed up and nothing is lost,
