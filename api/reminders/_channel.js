@@ -201,7 +201,8 @@ export function pickChannel(e164) {
 
 import { maySend, reportCapHit } from './_send-cap.js';
 import { reserveSend, settleSend } from './_spend.js';
-import { alphaReady, prepareAlpha, alphaPreflight, redactUnsubscribe } from './_alpha.js';
+import { alphaReady, oneWayRoute, oneWayReady, prepareOneWay, alphaPreflight, redactUnsubscribe } from './_alpha.js';
+import { oneWayPolicy } from './_alpha-countries.js';
 
 /* ─────────────────────────────  SEND  ───────────────────────────── */
 
@@ -246,6 +247,8 @@ const DIAL_TO_ISO = {
   '51': 'PE', '212': 'MA', '385': 'HR', '386': 'SI', '372': 'EE', '370': 'LT',
   '359': 'BG', '40': 'RO', '351': 'PT', '420': 'CZ', '45': 'DK', '36': 'HU',
   '7': 'RU', '380': 'UA',
+  // added 25 Oct 2026, member countries reviewed for one-way routes
+  '355': 'AL', '382': 'ME', '389': 'MK', '356': 'MT', '357': 'CY',
 };
 
 // NANP shares +1. Do not price Canadian members as US destinations.
@@ -337,6 +340,12 @@ export function canReach(toE164) {
   if (!s.iso) return {ok:false,iso:null,why:'unverified destination; route review required'};
   if (s.alpha && !alphaReady(s)) return {ok:false,iso:s.iso,why:'alpha launch has not been approved and configured'};
   if (s.local || s.alpha) return { ok: true, how: s.alpha ? 'alphanumeric sender' : 'local number' };
+  // One-way numeric routes (alpha unavailable, sender rewritten). Never the
+  // ordinary two-way path: ready only with its own launch flag, geo gate,
+  // link opt-out and approved one-way consent configuration.
+  if (s.oneWay === 'numeric') return oneWayReady(s)
+    ? { ok: true, how: 'one-way numeric route with link opt-out' }
+    : { ok: false, iso: s.iso, why: 'one-way numeric launch has not been approved and configured' };
   if (s.iso && NO_INTERNATIONAL_LONG_CODE.has(s.iso)) {
     return {
       ok: false,
@@ -393,12 +402,16 @@ export function senderFor(toE164) {
             whenever you want out", and sending that from a sender that cannot
             hear STOP would be a lie to the member. Set the alpha sender only
             alongside wording that tells them how to actually opt out. */
+      // Only countries whose policy is the alpha route may use an alpha sender.
+      const policy = oneWayPolicy(iso);
       const alpha = process.env['TWILIO_ALPHA_' + iso];
-      if (alpha) return { from: alpha, iso, local: false, alpha: true };
+      if (alpha && policy?.route === 'alpha') return { from: alpha, iso, local: false, alpha: true };
     break;
     }
   }
-  return { from: process.env.TWILIO_FROM_NUMBER, iso: matchedIso, local: false, alpha: false };
+  const numericOneWay = oneWayPolicy(matchedIso)?.route === 'numeric';
+  return { from: process.env.TWILIO_FROM_NUMBER, iso: matchedIso, local: false, alpha: false,
+    ...(numericOneWay ? { oneWay: 'numeric' } : {}) };
 }
 
 export async function sendMessage({ to, body, channel, dryRun = false, kind, dayStartISO, dispatchKey }) {
@@ -462,7 +475,7 @@ export async function sendMessage({ to, body, channel, dryRun = false, kind, day
       }
       return {
         sent: false, channel, from, blocked: true, permanent: true,
-        deferred: senderFor(to).alpha && !alphaReady(senderFor(to)),
+        deferred: !!oneWayRoute(senderFor(to)) && !oneWayReady(senderFor(to)),
         iso: reach.iso,
         error: `route unavailable for ${reach.iso}: ${reach.why}`,
       };
@@ -524,12 +537,16 @@ export async function sendMessage({ to, body, channel, dryRun = false, kind, day
   }
 
   const selected = senderFor(to);
-  const alpha = channel === 'sms' && selected.alpha;
-  if (alpha) {
-    try { body = await prepareAlpha({to, body, kind, sender:selected}); }
+  // One-way routes (alpha or rewritten numeric) are SMS only; WhatsApp never takes them.
+  const oneWay = channel === 'sms' ? oneWayRoute(selected) : null;
+  if (oneWay) {
+    try { body = await prepareOneWay({to, body, kind, sender:selected}); }
     catch (e) { return {sent:false,blocked:true,permanent:true,deferred:true,channel,from,error:e.message}; }
   }
-  const reservation = await reserveSend({dispatchKey,to,from,channel,kind,body,iso:selected.iso,alpha});
+  // Full rendered body (identity, reminder, footer) is priced. Alpha uses the
+  // provider's alphanumeric price; one-way numeric uses its numeric price.
+  const reservation = await reserveSend({dispatchKey,to,from,channel,kind,body,iso:selected.iso,
+    alpha:oneWay==='alpha', oneWayNumeric:oneWay==='numeric'});
   if (!reservation.allow) return {sent:false,blocked:true,permanent:true,channel,from,error:'budget hold: '+reservation.reason};
 
   // Recheck after reservation; an unsubscribe can cancel a pending dispatch.

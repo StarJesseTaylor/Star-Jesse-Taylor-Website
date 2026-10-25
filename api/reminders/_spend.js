@@ -1,6 +1,6 @@
 import { alertStarThrottled } from './_notify.js';
 import { alphaRpc } from './_alpha.js';
-import { alphaCountryApproved } from './_alpha-countries.js';
+import { alphaCountryApproved, numericOneWayApproved } from './_alpha-countries.js';
 
 // Reviewed 2026-10-24 against Twilio country pricing (Claude handover).
 // Refresh account-specific prices before sending; retain a conservative fee buffer.
@@ -42,9 +42,14 @@ async function currentRate(iso, alpha=false) {
   const price=Math.max(RATES[iso] || 0,Math.max(...prices)+carrier);
   priceCache.set(cacheKey,{at:Date.now(),price});return price;
 }
-export async function reserveAmount(body, iso, channel, alpha=false) {
-  if (channel !== 'sms' || (!alpha && !RATES[iso])) throw new Error('unverified destination price');
+export async function reserveAmount(body, iso, channel, alpha=false, oneWayNumeric=false) {
+  if (channel !== 'sms') throw new Error('unverified destination price');
+  if (alpha && oneWayNumeric) throw new Error('conflicting route pricing');
   if (alpha && !alphaCountryApproved(iso)) throw new Error('alpha pricing not approved for destination');
+  // One-way numeric routes have no static floor: the authenticated provider
+  // price is the only source, and an unavailable price fails closed.
+  if (oneWayNumeric && !numericOneWayApproved(iso)) throw new Error('one-way numeric pricing not approved for destination');
+  if (!alpha && !oneWayNumeric && !RATES[iso]) throw new Error('unverified destination price');
   return Math.ceil((await currentRate(iso,alpha)) * 1.1 * smsSegments(body) * 1e6);
 }
 const root = () => (process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || '').replace(/\/$/,'');
@@ -59,7 +64,7 @@ async function db(path, body, method='POST') {
   if (!r.ok) throw new Error('budget database refused operation');
   return r.status===204 ? null : r.json();
 }
-export async function reserveSend({dispatchKey,to,from,channel,kind,body,iso,alpha=false}) {
+export async function reserveSend({dispatchKey,to,from,channel,kind,body,iso,alpha=false,oneWayNumeric=false}) {
   let result;
   try {
     if (!dispatchKey) throw new Error('missing dispatch key');
@@ -68,7 +73,7 @@ export async function reserveSend({dispatchKey,to,from,channel,kind,body,iso,alp
     if ((await alphaRpc('sms_phone_not_suppressed',{p_phone:to})) !== true)
       return {allow:false,reason:'global_suppression'};
     result = await db('rpc/reserve_sms_dispatch', {p_key:dispatchKey,p_phone:to,
-      p_sender:from,p_channel:channel,p_kind:kind,p_micro:await reserveAmount(body,iso,channel,alpha)});
+      p_sender:from,p_channel:channel,p_kind:kind,p_micro:await reserveAmount(body,iso,channel,alpha,oneWayNumeric)});
     if (result?.allow===true) return result;
   } catch (e) { result={allow:false,reason:e.message}; }
   if (!['duplicate','welcome_already_reserved','phone_daily_limit','route_held'].includes(result?.reason)) {

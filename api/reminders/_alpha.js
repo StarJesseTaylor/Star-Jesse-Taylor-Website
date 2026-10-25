@@ -1,6 +1,6 @@
 // Country-gated pilot. Configuration is inert until explicit launch approval.
 import { createHash, createHmac } from 'node:crypto';
-import { alphaCountryApproved, alphaTimeAllowed, alphaConsentVersion } from './_alpha-countries.js';
+import { alphaCountryApproved, numericOneWayApproved, oneWayPolicy, alphaTimeAllowed, alphaConsentVersion } from './_alpha-countries.js';
 
 export const tokenHash = token => createHash('sha256').update(token).digest('hex');
 export const validToken = token => typeof token === 'string' && /^[A-Za-z0-9_-]{24}$/.test(token);
@@ -17,16 +17,35 @@ export async function alphaRpc(name, args) {
   if (!r.ok) throw new Error('unsubscribe database refused operation');
   return r.json();
 }
-export function alphaReady(sender) {
-  return alphaCountryApproved(sender.iso)
-    && /^[A-Za-z0-9 ]{1,11}$/.test(sender.from || '') && /[A-Za-z]/.test(sender.from || '')
+const senderName = name => /^[A-Za-z0-9 ]{1,11}$/.test(name || '') && /[A-Za-z]/.test(name || '');
+// Which one-way route this sender is on: 'alpha', 'numeric', or null (normal two-way).
+export function oneWayRoute(sender) {
+  if (!sender || sender.local) return null;
+  if (sender.alpha) return 'alpha';
+  return sender.oneWay === 'numeric' ? 'numeric' : null;
+}
+function sharedOneWayConfig(iso) {
+  const policy = oneWayPolicy(iso);
+  return !!policy
     && (process.env.SMS_UNSUBSCRIBE_SECRET || '').length >= 32
-    && !!alphaConsentVersion(sender.iso)
+    && !!alphaConsentVersion(iso)
     && !!process.env.SMS_ALPHA_WELCOME
-    && (process.env.SMS_ALPHA_FOOTER || '').split('{url}').length === 2;
+    && (process.env.SMS_ALPHA_FOOTER || '').split('{url}').length === 2
+    && (!policy.bodyIdentity || senderName(process.env.SMS_ONEWAY_IDENTITY));
+}
+export function alphaReady(sender) {
+  return alphaCountryApproved(sender.iso) && senderName(sender.from) && sharedOneWayConfig(sender.iso);
+}
+export function numericOneWayReady(sender) {
+  return sender?.oneWay === 'numeric' && !sender.alpha && !sender.local
+    && numericOneWayApproved(sender.iso) && sharedOneWayConfig(sender.iso);
+}
+export function oneWayReady(sender) {
+  const route = oneWayRoute(sender);
+  return route === 'alpha' ? alphaReady(sender) : route === 'numeric' ? numericOneWayReady(sender) : false;
 }
 export async function prepareAlpha({ to, body, kind, sender }) {
-  if (!alphaReady(sender)) throw new Error('alpha launch configuration incomplete');
+  if (!oneWayReady(sender)) throw new Error('one-way launch configuration incomplete');
   if (!alphaTimeAllowed(sender.iso)) throw new Error('alpha destination quiet time; no send');
   if (!['welcome', 'reminder'].includes(kind)) throw new Error('alpha is outbound reminders only');
   const eligibility = await alphaRpc('sms_alpha_eligible', {
@@ -42,8 +61,13 @@ export async function prepareAlpha({ to, body, kind, sender }) {
   const url = 'https://starjessetaylor.com/api/u?t=' + token;
   const footer = process.env.SMS_ALPHA_FOOTER.replace('{url}', url);
   // Never rewrite Star's reminder. The approved footer is appended before pricing.
-  return (kind === 'welcome' ? process.env.SMS_ALPHA_WELCOME : body) + '\n' + footer;
+  const text = kind === 'welcome' ? process.env.SMS_ALPHA_WELCOME : body;
+  // Where the network rewrites the sender, the approved sender name leads the text
+  // so the member can still tell who it is from. The reminder itself is unchanged.
+  const identified = oneWayPolicy(sender.iso)?.bodyIdentity ? `${process.env.SMS_ONEWAY_IDENTITY}: ${text}` : text;
+  return identified + '\n' + footer;
 }
+export const prepareOneWay = prepareAlpha;
 export async function alphaPreflight(dispatchKey, phone) {
   return (await alphaRpc('sms_dispatch_still_allowed', { p_key: dispatchKey, p_phone: phone })) === true;
 }
