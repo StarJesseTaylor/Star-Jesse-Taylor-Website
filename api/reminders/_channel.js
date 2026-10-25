@@ -424,13 +424,63 @@ export async function sendMessage({ to, body, channel, dryRun = false, kind, day
         It does NOT touch consent. The member stays subscribed and starts
         receiving the moment a sender for their country is configured, which
         is a one-line env var. Nobody is unsubscribed for living somewhere. */
-  const reach = canReach(to);
-  if (!reach.ok) {
-    return {
-      sent: false, channel, from, blocked: true, permanent: true,
-      iso: reach.iso,
-      error: `route unavailable for ${reach.iso}: ${reach.why}`,
-    };
+  /* ⚠️ SMS ONLY. WhatsApp does not use long-code routing at all, so the
+        blocked-country list is meaningless to it and applying it would refuse
+        a perfectly good WhatsApp message to a UK number. Caught by Codex's
+        independent audit of 3b44762, where I had applied it to every channel.
+        A guard in the wrong place is its own bug. */
+  if (channel !== 'whatsapp') {
+    const reach = canReach(to);
+    if (!reach.ok) {
+      return {
+        sent: false, channel, from, blocked: true, permanent: true,
+        iso: reach.iso,
+        error: `route unavailable for ${reach.iso}: ${reach.why}`,
+      };
+    }
+
+    /* 🛑 UNKNOWN IS NOT SAFE. Codex's audit: a Pakistani number (+92) sailed
+          straight through, because the guard only blocks countries ON the list
+          and +92 is not in DIAL_TO_ISO. "Not known to be bad" was being treated
+          as "known to be good", which is exactly the hole that let Greece, the
+          Philippines and Saudi Arabia through earlier today.
+
+          So an unrecognised country now FAILS CLOSED. The honest cost: a member
+          in a country we simply have not mapped yet gets held back even though
+          their route might be fine. That is the right way round. A held message
+          is one email away from being fixed; a silently dead member goes unnoticed
+          for a month, which is precisely what happened to Hana.
+
+          It TELLS STAR, so held is never silent. Add the dial code to
+          DIAL_TO_ISO after checking twilio.com/en-us/guidelines/<cc>/sms and
+          the member starts receiving. */
+    /* canReach() only reports `iso` when it BLOCKS; on the happy path it
+       returns {ok:true} with no country. So ask senderFor() directly, which
+       always reports the country it matched. Caught by my own test: the first
+       version of this check held the US and Canada as "unrecognised". */
+    const matched = senderFor(to).iso;
+    if (!matched) {
+      try {
+        const { alertStarThrottled } = await import('./_notify.js');
+        await alertStarThrottled({
+          kind: 'unknown_country',
+          subject: '❓ Reminders: a member is in a country we have not checked',
+          html:
+            `<p>A text was held back because this number's country is not in ` +
+            `<code>DIAL_TO_ISO</code>, so we cannot tell whether Twilio can reach it.</p>` +
+            `<p>Number ends <b>${String(to).slice(-4)}</b>. Nothing was sent and nothing was charged.</p>` +
+            `<p>Check <code>twilio.com/en-us/guidelines/&lt;cc&gt;/sms</code>, then add the dial ` +
+            `code to <code>DIAL_TO_ISO</code> (and to the blocked list if it is Not Supported).</p>`,
+          detail: { last4: String(to).slice(-4) },
+          throttleMinutes: 720,
+        });
+      } catch { /* an alert must never be why a guard fails */ }
+      return {
+        sent: false, channel, from, blocked: true, permanent: false,
+        iso: null,
+        error: 'country not recognised, holding rather than guessing (Star has been told)',
+      };
+    }
   }
 
   // 🛑 THE LAST LINE BEFORE THE WIRE. Every path that texts anyone goes
