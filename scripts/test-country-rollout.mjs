@@ -15,6 +15,8 @@ globalThis.fetch=async url=>{
 const {reserveAmount}=await import('../api/reminders/_spend.js');
 for(const phone of ['+351912345678','+4512345678','+37251234567','+37061234567','+4791234567','+31612345678'])assert.equal(canReach(phone).ok,true);
 for(const phone of ['+64211234567','+6591234567','+40712345678','+359881234567','+51912345678','+447700900000'])assert.equal(canReach(phone).ok,false);
+// These must stay held even if a price or Geo Permission is added later.
+for(const phone of ['+3212345678','+521234567890','+571234567890','+27123456789','+60123456789','+358401234567','+628123456789','+2348012345678','+972501234567'])assert.equal(canReach(phone).ok,false);
 assert.equal(await reserveAmount('Check','PT','sms'),221101);
 mode='fail';await assert.rejects(()=>reserveAmount('Check','DK','sms'),/pricing unavailable/);
 mode='currency';await assert.rejects(()=>reserveAmount('Check','EE','sms'),/currency/);

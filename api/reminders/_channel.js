@@ -346,7 +346,9 @@ export function canReach(toE164) {
   }
   // 2026-10-25: PT/DK/EE/LT reviewed for international sender preservation,
   // two-way support and use-case restrictions, not only the Supported row.
-  const verified=new Set('US CA AU SE IN IE DE ES NL IL CH BE MX NO CO FR TR PL BR ZA MY FI ID NG PT DK EE LT'.split(' '));
+  // Hold sender-rewriting/restricted destinations explicitly, rather than
+  // relying on missing prices or disabled account permissions to stop them.
+  const verified=new Set('US CA AU SE IN IE DE ES NL CH NO FR TR PL BR PT DK EE LT'.split(' '));
   if(!verified.has(s.iso)) return {ok:false,iso:s.iso,why:'destination route has not been verified'};
   return { ok: true, how: 'the US number' };
 }
