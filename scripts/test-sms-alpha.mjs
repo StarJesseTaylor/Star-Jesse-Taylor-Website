@@ -4,7 +4,8 @@ for (const k of Object.keys(process.env)) if (/^(TWILIO_|SMS_|SUPABASE_|NEXT_PUB
 Object.assign(process.env,{TWILIO_ACCOUNT_SID:'offline',TWILIO_AUTH_TOKEN:'offline',TWILIO_FROM_NUMBER:'+12025550100',TWILIO_ALPHA_GB:'TestStar',SUPABASE_URL:'https://offline.invalid',SUPABASE_SERVICE_ROLE_KEY:'offline'});
 const {sendMessage,canReach}=await import('../api/reminders/_channel.js');
 const {smsSegments,reserveAmount}=await import('../api/reminders/_spend.js');
-const {tokenHash}=await import('../api/reminders/_alpha.js');
+const {tokenHash,welcomeForCountry}=await import('../api/reminders/_alpha.js');
+assert.equal(welcomeForCountry('IT'),"You're in.");
 const {alphaCountryApproved,alphaTimeAllowed}=await import('../api/reminders/_alpha-countries.js');
 const {default:unsubscribe}=await import('../api/u.js');
 let eligible=true,stopped=false,finalCheck=true,dbDown=false,posts=0,bodySent='',reserved=0,closedState='',missingPrice=true,missingPrecheck=false;
@@ -28,6 +29,8 @@ const send=(key,kind='reminder')=>sendMessage({to:'+447700900000',body:'Are you 
 assert.equal(canReach('+447700900000').ok,false,'sender env alone must not enable alpha');
 Object.assign(process.env,{SMS_ALPHA_GB_ENABLED:'true',SMS_UNSUBSCRIBE_SECRET:'x'.repeat(48),SMS_ALPHA_CONSENT_VERSION:'test-only',SMS_ALPHA_WELCOME:'TEST ONLY: Star. One way reminders. Cannot reply. Use the link to unsubscribe.',SMS_ALPHA_FOOTER:'Unsubscribe: {url}'});
 assert.equal(canReach('+447700900000').ok,true);
+assert.equal(welcomeForCountry('GB'),process.env.SMS_ALPHA_WELCOME);
+assert.equal(welcomeForCountry('GR'),process.env.SMS_ALPHA_WELCOME);
 eligible=false;assert.equal((await send('ineligible')).sent,false);assert.equal(posts,0);
 eligible=true;assert.equal((await send('missing-alpha-price')).sent,false);assert.equal(posts,0);assert.equal(keys.size,0);
 missingPrice=false;missingPrecheck=true;assert.equal((await send('missing-migration')).sent,false);assert.equal(keys.size,0);

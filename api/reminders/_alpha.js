@@ -44,6 +44,9 @@ export function oneWayReady(sender) {
   const route = oneWayRoute(sender);
   return route === 'alpha' ? alphaReady(sender) : route === 'numeric' ? numericOneWayReady(sender) : false;
 }
+// Italy's restricted schedule cannot promise a text every calendar day.
+// Use only the first, verbatim sentence of Star's approved welcome there.
+export const welcomeForCountry = iso => iso === 'IT' ? "You're in." : process.env.SMS_ALPHA_WELCOME;
 export async function prepareAlpha({ to, body, kind, sender }) {
   if (!oneWayReady(sender)) throw new Error('one-way launch configuration incomplete');
   if (!alphaTimeAllowed(sender.iso)) throw new Error('alpha destination quiet time; no send');
@@ -61,7 +64,7 @@ export async function prepareAlpha({ to, body, kind, sender }) {
   const url = 'https://starjessetaylor.com/api/u?t=' + token;
   const footer = process.env.SMS_ALPHA_FOOTER.replace('{url}', url);
   // Never rewrite Star's reminder. The approved footer is appended before pricing.
-  const text = kind === 'welcome' ? process.env.SMS_ALPHA_WELCOME : body;
+  const text = kind === 'welcome' ? welcomeForCountry(sender.iso) : body;
   // Where the network rewrites the sender, the approved sender name leads the text
   // so the member can still tell who it is from. The reminder itself is unchanged.
   const identified = oneWayPolicy(sender.iso)?.bodyIdentity ? `${process.env.SMS_ONEWAY_IDENTITY}: ${text}` : text;
