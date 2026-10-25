@@ -201,6 +201,7 @@ export function pickChannel(e164) {
 
 import { maySend, reportCapHit } from './_send-cap.js';
 import { reserveSend, settleSend } from './_spend.js';
+import { alphaReady, prepareAlpha, alphaPreflight, redactUnsubscribe } from './_alpha.js';
 
 /* ─────────────────────────────  SEND  ───────────────────────────── */
 
@@ -334,6 +335,7 @@ export const NO_INTERNATIONAL_LONG_CODE = new Set([
 export function canReach(toE164) {
   const s = senderFor(toE164);
   if (!s.iso) return {ok:false,iso:null,why:'unverified destination; route review required'};
+  if (s.alpha && !alphaReady(s)) return {ok:false,iso:s.iso,why:'alpha launch has not been approved and configured'};
   if (s.local || s.alpha) return { ok: true, how: s.alpha ? 'alphanumeric sender' : 'local number' };
   if (s.iso && NO_INTERNATIONAL_LONG_CODE.has(s.iso)) {
     return {
@@ -460,6 +462,7 @@ export async function sendMessage({ to, body, channel, dryRun = false, kind, day
       }
       return {
         sent: false, channel, from, blocked: true, permanent: true,
+        deferred: senderFor(to).alpha && !alphaReady(senderFor(to)),
         iso: reach.iso,
         error: `route unavailable for ${reach.iso}: ${reach.why}`,
       };
@@ -520,8 +523,23 @@ export async function sendMessage({ to, body, channel, dryRun = false, kind, day
     return { sent: false, channel, from, blocked: true, permanent:!!guard.permanent, error: 'send cap: ' + guard.reason };
   }
 
-  const reservation = await reserveSend({dispatchKey,to,from,channel,kind,body,iso:senderFor(to).iso});
+  const selected = senderFor(to);
+  const alpha = channel === 'sms' && selected.alpha;
+  if (alpha) {
+    try { body = await prepareAlpha({to, body, kind, sender:selected}); }
+    catch (e) { return {sent:false,blocked:true,permanent:true,deferred:true,channel,from,error:e.message}; }
+  }
+  const reservation = await reserveSend({dispatchKey,to,from,channel,kind,body,iso:selected.iso,alpha});
   if (!reservation.allow) return {sent:false,blocked:true,permanent:true,channel,from,error:'budget hold: '+reservation.reason};
+
+  // Recheck after reservation; an unsubscribe can cancel a pending dispatch.
+  // This cannot recall a request already submitted to the provider.
+  try {
+    if (!await alphaPreflight(dispatchKey,to)) throw new Error('dispatch stopped before submission');
+  } catch {
+    await settleSend(dispatchKey,{state:'cancelled_preflight',from,to,channel});
+    return {sent:false,blocked:true,permanent:true,channel,from,error:'final suppression check failed or dispatch stopped'};
+  }
 
   const params = new URLSearchParams({ To: toAddr, From: fromAddr, Body: body });
 
@@ -573,5 +591,5 @@ export async function sendMessage({ to, body, channel, dryRun = false, kind, day
     return {sent:false,unknown:true,permanent:true,channel,from,error:'provider response missing valid SID; no automatic retry'};
   }
   await settleSend(dispatchKey,{state:'accepted',sid:data.sid,from,to,channel});
-  return { sent: true, sid: data.sid, channel, from };
+  return { sent: true, sid: data.sid, channel, from, body: redactUnsubscribe(body) };
 }

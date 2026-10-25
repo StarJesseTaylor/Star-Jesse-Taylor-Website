@@ -435,7 +435,7 @@
 
         <label class="consent">
           <input type="checkbox" name="consent" />
-          <span>Yes, text me too. I agree to receive recurring automated SMS reminders, tips and updates from Star Taylor at the number above. Message frequency varies. Msg &amp; data rates may apply. Reply STOP to unsubscribe, HELP for help. Consent is not a condition of any purchase. See our <a href="/privacy" target="_blank">Privacy Policy</a> and <a href="/terms" target="_blank">Terms</a>.</span>
+          <span>Yes, text me too. I agree to receive recurring automated SMS reminders, tips and updates from Star Taylor at the number above. Message frequency varies. Msg &amp; data rates may apply. <span id="sms-reply-help">Reply STOP to unsubscribe, HELP for help.</span><span id="sms-uk-notice" hidden>UK texts are one way. You cannot reply or text STOP. Use the Stop anytime link in each message to unsubscribe.</span> Consent is not a condition of any purchase. See our <a href="/privacy" target="_blank">Privacy Policy</a> and <a href="/terms" target="_blank">Terms</a>.</span>
         </label>
       </div>
 
@@ -524,8 +524,26 @@
     } catch (err) { /* default stays */ }
   })();
 
+  function isUKNumber() {
+    const raw = form.querySelector('[name="phone"]').value.trim();
+    const digits = raw.replace(/[^0-9]/g, '');
+    return raw.startsWith('+') ? digits.startsWith('44') : form.querySelector('[name="countryCode"]').value.replace(/[^0-9]/g, '') === '44';
+  }
+  let lastUK = null;
+  function updateUKDisclosure() {
+    const uk = isUKNumber();
+    document.getElementById('sms-reply-help').hidden = uk;
+    document.getElementById('sms-uk-notice').hidden = !uk;
+    if (lastUK !== null && lastUK !== uk) form.querySelector('[name="consent"]').checked = false;
+    lastUK = uk;
+  }
+  form.querySelector('[name="phone"]').addEventListener('input', updateUKDisclosure);
+  form.querySelector('[name="countryCode"]').addEventListener('change', updateUKDisclosure);
+  updateUKDisclosure();
+
   form.addEventListener('submit', async function (e) {
     e.preventDefault();
+    updateUKDisclosure();
     const fd = new FormData(form);
     const phone   = (fd.get('phone') || '').trim();
     const consent = fd.get('consent') === 'on';
@@ -550,6 +568,7 @@
       // mangled into "+1 61412..." by a stale dropdown value.
       countryCode: String(phone).trim().startsWith('+') ? '' : (fd.get('countryCode') || ''),
       consent:   smsOptIn,
+      alphaConsentVersion: smsOptIn && isUKNumber() ? 'uk-one-way-2026-10-25' : '',
       website_url: fd.get('website_url') || '',
       source: 'sms_optin_page',
       accessCode: (document.getElementById('accessCode') || {}).value || CODE_FROM_LINK

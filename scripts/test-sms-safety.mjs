@@ -12,6 +12,8 @@ let posts = 0;
 let mode = 'normal';
 let reservations=new Set();
 globalThis.fetch = async (url, init = {}) => {
+  if(String(url).includes('/rpc/sms_dispatch_still_allowed')) return Response.json(true);
+  if(String(url).includes('/rpc/sms_phone_not_suppressed')) return Response.json(true);
   if(String(url).startsWith('https://pricing.twilio.com/')) return Response.json({price_unit:'usd',outbound_sms_prices:[{prices:[{number_type:'local',current_price:'.0083'}]}]});
   if(String(url).includes('/message_log')) return Response.json([]);
   if (String(url).includes('api.twilio.com')) {

@@ -94,7 +94,7 @@ export async function greetOnce(sb, sendMessage, { memberId, toE164, channel, cu
   const priorWelcomes = await greeted.json().catch(() => []);
   if (!Array.isArray(priorWelcomes)) return { sent: false, skipped: 'unreadable history' };
   const stillCounts = priorWelcomes.filter((row) => {
-    if(row.status==='blocked' && String(row.meta?.error||'').startsWith('budget hold:')) {
+    if(row.status==='blocked' && (row.meta?.deferred === true || String(row.meta?.error||'').startsWith('budget hold:'))) {
       // No provider call occurred. Recheck after an hour so a reset budget can
       // eventually admit the welcome without writing a new claim every minute.
       return Date.now()-Date.parse(row.created_at||'')<3600000;
@@ -155,8 +155,8 @@ export async function greetOnce(sb, sendMessage, { memberId, toE164, channel, cu
       method: 'PATCH',
       body: JSON.stringify(
         out.sent
-          ? { status: 'sent', provider_sid: out.sid, meta:{kind:'welcome',from:out.from} }
-          : { status: out.unknown?'unknown':out.blocked?'blocked':'error', meta: { kind: 'welcome', error: String(out.error || '').slice(0, 200), from: out.from, code: out.code, permanent:!!out.permanent } }
+          ? { status: 'sent', body: out.body || WELCOME, provider_sid: out.sid, meta:{kind:'welcome',from:out.from} }
+          : { status: out.unknown?'unknown':out.blocked?'blocked':'error', meta: { kind: 'welcome', error: String(out.error || '').slice(0, 200), from: out.from, code: out.code, permanent:!!out.permanent, deferred:!!out.deferred } }
       ),
     }).catch(() => {});
   }

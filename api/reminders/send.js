@@ -277,7 +277,7 @@ export default async function handler(req, res) {
           report.messages.push({ member: m.first_name || m.id, at: slotRow.send_at_utc, slot: slotRow.slot, line: line.id, body });
 
           await log(sb, m, {
-            body, channel: out.channel, line_id: line.id,
+            body: out.body || body, channel: out.channel, line_id: line.id,
             status: out.sent ? 'sent' : (out.dryRun ? 'dry_run' : out.unknown ? 'unknown' : out.blocked ? 'blocked' : 'error'),
             provider_sid: out.sid || null,
             meta: { error: out.error, from: out.from, code: out.code, permanent:!!out.permanent },

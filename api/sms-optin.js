@@ -119,6 +119,11 @@ export default async function handler(req, res) {
     normalizedPhone = parsed.e164;
   }
 
+  const ukConsent = normalizedPhone.startsWith('+44');
+  if (ukConsent && req.body?.alphaConsentVersion !== 'uk-one-way-2026-10-25') {
+    return res.status(400).json({error:'consent', message:'UK texts are one way. You cannot reply or text STOP. Use the Stop anytime link in each message to unsubscribe.'});
+  }
+
   const headers = { 'Api-Token': AC_KEY, 'Content-Type': 'application/json' };
 
   // ⭐ THE TEXTING DATABASE GOES FIRST. Star: "should it go into ActiveCampaign
@@ -138,6 +143,17 @@ export default async function handler(req, res) {
   //    So the single fastest write, for the thing that delivers the promise,
   //    happens before anything else. Everything after it is recoverable.
   const signupOpen = process.env.REMINDERS_SIGNUP_OPEN === '1';
+  // Link opt outs survive every route and accidental row reactivation.
+  // A fresh subscription requires reviewed consent; this form does not erase it.
+  if (smsOptIn && signupOpen) {
+    try {
+      const {alphaRpc} = await import('./reminders/_alpha.js');
+      if (await alphaRpc('sms_phone_not_suppressed',{p_phone:normalizedPhone}) !== true)
+        return res.status(409).json({success:false,error:'SMS reminders are stopped for this number. Contact Star to request a new subscription.'});
+    } catch {
+      return res.status(503).json({success:false,error:'We could not check your SMS preferences. Please try again.'});
+    }
+  }
   let enrol = { ok: false, reason: 'signup door closed' };
   if (smsOptIn && signupOpen) {
     enrol = await enrolInReminders({
@@ -147,6 +163,19 @@ export default async function handler(req, res) {
       source: source || 'website',
     });
   }
+
+  let ukConsentRecorded = !ukConsent;
+  if (ukConsent && enrol.ok) {
+    try {
+      const {alphaRpc} = await import('./reminders/_alpha.js');
+      ukConsentRecorded = await alphaRpc('record_uk_sms_consent',{p_phone:normalizedPhone}) === true;
+    } catch { ukConsentRecorded = false; }
+    if (!ukConsentRecorded) await alertStarAboutLostContact({firstName,lastName,email,normalizedPhone,smsOptIn,rescued:true,detail:'UK one-way consent recording failed. SMS remains held. ActiveCampaign sync will still be attempted.'});
+  }
+  // Preserve CRM phone sync even if the separate consent write failed.
+  const finishSignup = crm => ukConsent && !ukConsentRecorded
+    ? res.status(503).json({success:false,error:'We could not save that yet. Please try again.',crm})
+    : res.status(200).json({success:true,sms:smsOptIn,reminders:enrol.ok,crm});
 
   try {
     // Sync contact with phone field
@@ -187,7 +216,7 @@ export default async function handler(req, res) {
       // 200, not 500: from their side this DID work. They consented, and if they
       // gave a number they are now in the texting engine. Telling them it failed
       // would make them submit again, or give up.
-      return res.status(200).json({ success: true, sms: smsOptIn, reminders: enrol.ok, crm: false });
+      return finishSignup(false);
     }
 
     const { contact } = await syncRes.json();
@@ -199,7 +228,7 @@ export default async function handler(req, res) {
         firstName, lastName, email, normalizedPhone, smsOptIn,
         rescued: enrol.ok, detail: 'ActiveCampaign accepted the request but returned no contact id',
       });
-      return res.status(200).json({ success: true, sms: smsOptIn, reminders: enrol.ok, crm: false });
+      return finishSignup(false);
     }
 
     // Subscribe to Master Contact List
@@ -222,7 +251,7 @@ export default async function handler(req, res) {
         headers,
         body: JSON.stringify({
           note: {
-            note: `SMS consent recorded ${new Date().toISOString()}. Source: ${source || 'website'}. Phone: ${normalizedPhone}. Opt-in was optional: user completed the form's email service and separately ticked an unchecked SMS consent box. Disclosure: practice reminders, tips, updates about Star's offerings including workshops, cohorts, courses, coaching, books, and live events. Max 5/week. Reply STOP to unsubscribe.`,
+            note: `SMS consent recorded ${new Date().toISOString()}. Source: ${source || 'website'}. Phone: ${normalizedPhone}. Opt-in was optional: user completed the form's email service and separately ticked an unchecked SMS consent box. Disclosure: practice reminders, tips, updates about Star's offerings including workshops, cohorts, courses, coaching, books, and live events. ${ukConsent ? 'UK one-way disclosure uk-one-way-2026-10-25: cannot reply or text STOP; Stop anytime link in each message. One daily reminder.' : 'Message frequency varies. Reply STOP to unsubscribe, HELP for help.'}`,
             relid: contactId,
             reltype: 'Subscriber'
           }
@@ -263,7 +292,7 @@ export default async function handler(req, res) {
       } catch { /* a warning must never break a signup */ }
     }
 
-    if (enrol.ok && !enrol.existing && process.env.REMINDERS_LIVE === '1') {
+    if (ukConsentRecorded && enrol.ok && !enrol.existing && process.env.REMINDERS_LIVE === '1') {
       // 🛡️ THE ONLY THING HERE THAT SPENDS MONEY. Everything else is a database
       //    row. So the abuse ceiling sits on the TEXT, not on the signup: under
       //    a toll-fraud flood people still get signed up and nothing is lost,
@@ -321,7 +350,7 @@ export default async function handler(req, res) {
       enrolled: enrol.ok, signupOpen,
     });
 
-    return res.status(200).json({ success: true, sms: smsOptIn, reminders: enrol.ok, crm: true });
+    return finishSignup(true);
   } catch (err) {
     console.error('SMS opt-in error:', err);
 
@@ -338,7 +367,7 @@ export default async function handler(req, res) {
 
     // They filled the form correctly and their number is saved. Showing them a
     // failure would only make them submit again or give up.
-    return res.status(200).json({ success: true, sms: smsOptIn, reminders: enrol.ok, crm: false });
+    return finishSignup(false);
   }
 }
 

@@ -1,4 +1,6 @@
 import { alertStarThrottled } from './_notify.js';
+import { alphaRpc } from './_alpha.js';
+import { alphaCountryApproved } from './_alpha-countries.js';
 
 // Reviewed 2026-10-24 against Twilio country pricing (Claude handover).
 // Refresh account-specific prices before sending; retain a conservative fee buffer.
@@ -22,8 +24,9 @@ export function smsSegments(body) {
   return Math.ceil(septets / (septets <= 160 ? 160 : 153));
 }
 const priceCache=new Map();
-async function currentRate(iso) {
-  const cached=priceCache.get(iso);
+async function currentRate(iso, alpha=false) {
+  const cacheKey=iso+':'+(alpha?'alpha':'number');
+  const cached=priceCache.get(cacheKey);
   if(cached && Date.now()-cached.at<900000)return cached.price;
   const r=await fetch('https://pricing.twilio.com/v1/Messaging/Countries/'+iso,{
     headers:{Authorization:'Basic '+Buffer.from(process.env.TWILIO_ACCOUNT_SID+':'+process.env.TWILIO_AUTH_TOKEN).toString('base64')},
@@ -32,16 +35,17 @@ async function currentRate(iso) {
   const data=await r.json();
   if(String(data.price_unit).toLowerCase()!=='usd')throw new Error('unverified pricing currency');
   const prices=(data.outbound_sms_prices||[]).flatMap(x=>x.prices||[])
-    .filter(x=>['local','mobile','international'].includes(x.number_type))
+    .filter(x=> (alpha ? ['alphanumeric'] : ['local','mobile','international']).includes(x.number_type))
     .map(x=>Number(x.current_price)).filter(x=>Number.isFinite(x)&&x>0);
   if(!prices.length)throw new Error('current destination price unavailable');
   const carrier=iso==='US'?.006:iso==='CA'?.009:.001;
-  const price=Math.max(RATES[iso],Math.max(...prices)+carrier);
-  priceCache.set(iso,{at:Date.now(),price});return price;
+  const price=Math.max(RATES[iso] || 0,Math.max(...prices)+carrier);
+  priceCache.set(cacheKey,{at:Date.now(),price});return price;
 }
-export async function reserveAmount(body, iso, channel) {
-  if (channel !== 'sms' || !RATES[iso]) throw new Error('unverified destination price');
-  return Math.ceil((await currentRate(iso)) * 1.1 * smsSegments(body) * 1e6);
+export async function reserveAmount(body, iso, channel, alpha=false) {
+  if (channel !== 'sms' || (!alpha && !RATES[iso])) throw new Error('unverified destination price');
+  if (alpha && !alphaCountryApproved(iso)) throw new Error('alpha pricing not approved for destination');
+  return Math.ceil((await currentRate(iso,alpha)) * 1.1 * smsSegments(body) * 1e6);
 }
 const root = () => (process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || '').replace(/\/$/,'');
 async function db(path, body, method='POST') {
@@ -55,12 +59,16 @@ async function db(path, body, method='POST') {
   if (!r.ok) throw new Error('budget database refused operation');
   return r.status===204 ? null : r.json();
 }
-export async function reserveSend({dispatchKey,to,from,channel,kind,body,iso}) {
+export async function reserveSend({dispatchKey,to,from,channel,kind,body,iso,alpha=false}) {
   let result;
   try {
     if (!dispatchKey) throw new Error('missing dispatch key');
+    // Verify migration availability and suppression before creating any reservation.
+    // A missing RPC cannot strand all existing recipients with pending dispatches.
+    if ((await alphaRpc('sms_phone_not_suppressed',{p_phone:to})) !== true)
+      return {allow:false,reason:'global_suppression'};
     result = await db('rpc/reserve_sms_dispatch', {p_key:dispatchKey,p_phone:to,
-      p_sender:from,p_channel:channel,p_kind:kind,p_micro:await reserveAmount(body,iso,channel)});
+      p_sender:from,p_channel:channel,p_kind:kind,p_micro:await reserveAmount(body,iso,channel,alpha)});
     if (result?.allow===true) return result;
   } catch (e) { result={allow:false,reason:e.message}; }
   if (!['duplicate','welcome_already_reserved','phone_daily_limit','route_held'].includes(result?.reason)) {
