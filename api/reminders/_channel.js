@@ -344,7 +344,9 @@ export function canReach(toE164) {
            `Set TWILIO_FROM_${s.iso} to a number bought there, or TWILIO_ALPHA_${s.iso} to a sender name.`,
     };
   }
-  const verified=new Set('US CA AU SE IN IE DE ES NL IL CH BE MX NO CO FR TR PL BR ZA MY FI ID NG'.split(' '));
+  // 2026-10-25: PT/DK/EE/LT reviewed for international sender preservation,
+  // two-way support and use-case restrictions, not only the Supported row.
+  const verified=new Set('US CA AU SE IN IE DE ES NL IL CH BE MX NO CO FR TR PL BR ZA MY FI ID NG PT DK EE LT'.split(' '));
   if(!verified.has(s.iso)) return {ok:false,iso:s.iso,why:'destination route has not been verified'};
   return { ok: true, how: 'the US number' };
 }

@@ -14,7 +14,7 @@ export default async function handler(req,res) {
     const versionReply=await fetch(root+'/rest/v1/rpc/sms_safety_version',{
       method:'POST',headers:{apikey:process.env.SUPABASE_SERVICE_ROLE_KEY,Authorization:'Bearer '+process.env.SUPABASE_SERVICE_ROLE_KEY},signal:AbortSignal.timeout(10000)});
     const databaseVersion=versionReply.ok?await versionReply.json():null;
-    const pricing = await Promise.all(['US','CA','AU','SE','IN','GB'].map(async iso=>{
+    const pricing = await Promise.all(['US','CA','AU','SE','IN','GB','PT','DK','EE','LT','NO','NL'].map(async iso=>{
       try {return {iso,reservedMicro:await reserveAmount('Verification',iso,'sms')};}
       catch {return {iso,error:'pricing unavailable'};}
     }));

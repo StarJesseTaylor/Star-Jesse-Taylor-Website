@@ -5,7 +5,10 @@ import { alertStarThrottled } from './_notify.js';
 // This bounds this application's reservations, not the whole Twilio invoice.
 const RATES = {US:.0128,CA:.017,TR:.0305,PL:.0457,AU:.0515,GB:.056,
   BR:.0599,SE:.0646,CH:.0769,IE:.0779,FR:.0798,IN:.0832,ES:.0875,
-  IT:.0927,DE:.112,NL:.1143,IL:.2575};
+  IT:.0927,DE:.112,NL:.1143,IL:.2575,
+  // Public pricing floors checked 2026-10-25. Authenticated pricing below
+  // remains mandatory before reserving or submitting any message.
+  PT:.0501,DK:.0592,EE:.0958,LT:.0578,NO:.0697};
 const BASIC = new Set('@£$¥èéùìòÇ\nØø\rÅåΔ_ΦΓΛΩΠΨΣΘΞÆæßÉ !"#¤%&\'()*+,-./0123456789:;<=>?¡ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÑÜ§¿abcdefghijklmnopqrstuvwxyzäöñüà');
 const EXT = new Set('\f^{}\\[~]|€');
 export function smsSegments(body) {
@@ -29,7 +32,7 @@ async function currentRate(iso) {
   const data=await r.json();
   if(String(data.price_unit).toLowerCase()!=='usd')throw new Error('unverified pricing currency');
   const prices=(data.outbound_sms_prices||[]).flatMap(x=>x.prices||[])
-    .filter(x=>['local','mobile'].includes(x.number_type))
+    .filter(x=>['local','mobile','international'].includes(x.number_type))
     .map(x=>Number(x.current_price)).filter(x=>Number.isFinite(x)&&x>0);
   if(!prices.length)throw new Error('current destination price unavailable');
   const carrier=iso==='US'?.006:iso==='CA'?.009:.001;
