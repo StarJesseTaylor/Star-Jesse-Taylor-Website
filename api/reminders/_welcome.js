@@ -83,7 +83,7 @@ export async function greetOnce(sb, sendMessage, { memberId, toE164, channel, cu
   //       as the unreachable guard in _send-cap.js: the block lifts itself when
   //       the thing that caused it is gone. Nobody has to remember Hana.
   const greeted = await sb(
-    `message_log?select=id,status,meta&member_id=eq.${memberId}&direction=eq.outbound` +
+    `message_log?select=id,status,meta,created_at&member_id=eq.${memberId}&direction=eq.outbound` +
     `&meta->>kind=eq.welcome&order=created_at.desc&limit=5`
   );
   if (!greeted.ok) return { sent: false, skipped: 'could not check the history' };
@@ -94,6 +94,12 @@ export async function greetOnce(sb, sendMessage, { memberId, toE164, channel, cu
   const priorWelcomes = await greeted.json().catch(() => []);
   if (!Array.isArray(priorWelcomes)) return { sent: false, skipped: 'unreadable history' };
   const stillCounts = priorWelcomes.filter((row) => {
+    if(row.status==='blocked' && String(row.meta?.error||'').startsWith('budget hold:')) {
+      // No provider call occurred. Recheck after an hour so a reset budget can
+      // eventually admit the welcome without writing a new claim every minute.
+      return Date.now()-Date.parse(row.created_at||'')<3600000;
+    }
+    if(row.status==='blocked' && row.meta?.from && row.meta.from!==currentFrom)return false;
     if (row.status !== 'error') return true;                  // it went out, or is in flight
     const failedFrom = row.meta && row.meta.from;
     if (!failedFrom) return true;                             // predates the recording: assume it counts
@@ -141,7 +147,7 @@ export async function greetOnce(sb, sendMessage, { memberId, toE164, channel, cu
   if (!claim.ok) return { sent: false, skipped: 'could not claim' };
   const claimed = (await claim.json().catch(() => []))[0];
 
-  const out = await sendMessage({ to: toE164, body: WELCOME, channel, kind: 'welcome' });
+  const out = await sendMessage({ to: toE164, body: WELCOME, channel, kind: 'welcome', dispatchKey:`welcome:${toE164}` });
 
   // Settle the row we already own. Never insert a second one.
   if (claimed?.id) {
@@ -149,8 +155,8 @@ export async function greetOnce(sb, sendMessage, { memberId, toE164, channel, cu
       method: 'PATCH',
       body: JSON.stringify(
         out.sent
-          ? { status: 'sent', provider_sid: out.sid }
-          : { status: 'error', meta: { kind: 'welcome', error: String(out.error || '').slice(0, 200), from: out.from, code: out.code } }
+          ? { status: 'sent', provider_sid: out.sid, meta:{kind:'welcome',from:out.from} }
+          : { status: out.unknown?'unknown':out.blocked?'blocked':'error', meta: { kind: 'welcome', error: String(out.error || '').slice(0, 200), from: out.from, code: out.code, permanent:!!out.permanent } }
       ),
     }).catch(() => {});
   }

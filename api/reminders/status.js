@@ -29,6 +29,7 @@
 
 import { verifyTwilio } from './_twilio-sig.js';
 import { alertStarThrottled, escapeHtml } from './_notify.js';
+import { settleSend } from './_spend.js';
 
 const SB_URL = () => (process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || '').replace(/\/$/, '');
 const SB_KEY = () => process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -49,6 +50,7 @@ const BAD = new Set(['undelivered', 'failed']);
 
 // Plain-English cause, so Star's inbox doesn't say "30007".
 const WHY = {
+  '21612': 'this sender cannot reach this destination; the route is held for review',
   '30003': 'their phone is off, out of range, or blocking us',
   '30005': 'that number is unknown or no longer active',
   '30006': "it's a landline, or can't receive texts",
@@ -103,6 +105,14 @@ export default async function handler(req, res) {
       }
     );
     const rows = r.ok ? await r.json().catch(() => []) : [];
+    // A callback can arrive before message_log gets its SID. Reservations exist
+    // before dispatch, and the To/From fields are covered by Twilio's signature.
+    if (['21612','21610','30034'].includes(String(errorCode))) {
+      const to=String(req.body?.To || rows[0]?.phone || '');
+      const from=String(req.body?.From || rows[0]?.meta?.from || '');
+      if (to && from) await settleSend('callback:'+sid,{state:'failed',code:errorCode,
+        to,from,channel:to.startsWith('whatsapp:')?'whatsapp':'sms'});
+    }
 
     // Record the error code separately so we never clobber the meta written at
     // send time (line id, slot, channel). PostgREST has no JSON merge, so read

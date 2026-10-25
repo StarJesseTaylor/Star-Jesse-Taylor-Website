@@ -1,0 +1,54 @@
+SMS safeguards, approved 2026-10-24
+
+Scope
+Every outbound welcome and reminder passes through sendMessage, then the
+database reserve_sms_dispatch function. Star approved USD 5 per day and USD 50
+per calendar month. Accounting uses America/Los_Angeles. The counter starts
+when this protection is activated; earlier invoice charges are not reservations.
+This is an application sending ceiling, not a cap on the Twilio account invoice.
+Rentals, registrations, inbound messages, console sends and other applications
+are outside this counter. Do not describe it as protection against stolen keys.
+
+Rates
+Before reserving, read account-specific Twilio destination pricing, cached for
+15 minutes. Use the highest local/mobile network rate, a carrier fee allowance,
+the reviewed rate floor, and a 10 percent margin. Unknown prices fail closed.
+Count the actual rendered GSM septets or Unicode code units. Reservations are
+conservative and are not automatically refunded, so sending may stop before
+the billed total reaches the ceiling. Do not raise limits for rollout without
+Star's approval. The current small pilot is seven active SMS members; no active
+WhatsApp members were present when checked in the live database.
+
+Failure handling
+A dispatch key is unique per phone and local reminder date, or per phone welcome.
+No blind resubmission after a provider timeout, missing SID or rejected request.
+21612 holds the phone/sender route. 30034 holds the sender for all phones.
+21610 holds the route without overwriting consent. Unknown outcomes require
+reconciliation. Earlier successful delivery does not override a later failure.
+
+Recovery
+First inspect Twilio's authoritative message record and fix the reason for the
+failure. Never release a hold just to see whether a paid attempt will work.
+Using service-role/admin access, release the specific sms_route_holds row by
+setting released_at=now(). For an unknown/crashed dispatch, also mark that
+specific sms_dispatch_reservations row state='reconciled' after confirming what
+happened. Keep its reserved_micro amount and dispatch_key. This preserves the
+audit trail and prevents replay. A future reminder has a new date key; a welcome
+does not automatically retry. Never change a member's stopped consent status as
+part of route repair. A newly verified sender is a separate route.
+
+Deployment
+Install sql/sms_safety.sql before deploying the functions. It is additive and
+repeatable. No secrets in SQL or this repository. The service role alone can
+access the new tables/function. Keep checks on every sending path.
+GET /api/reminders/safety with CRON_SECRET bearer authentication is read-only:
+it returns the deployed safety version, database limits and a pricing probe.
+Never call /send to check deployment: REMINDERS_LIVE can make it send.
+
+Validation
+Local offline tests cover all seven blocked countries, unmapped countries,
+Canadian classification, permanent errors, malformed success, timeout replay,
+concurrent mock dispatch, Unicode/GSM counts, and budget boundaries.
+PGlite tests execute real SQL but its single connection is not a proof of
+parallel production database transactions. Serialization relies on Postgres
+FOR UPDATE of the single shared policy row, not a JavaScript counter.

@@ -200,6 +200,7 @@ export function pickChannel(e164) {
 }
 
 import { maySend, reportCapHit } from './_send-cap.js';
+import { reserveSend, settleSend } from './_spend.js';
 
 /* ─────────────────────────────  SEND  ───────────────────────────── */
 
@@ -243,8 +244,12 @@ const DIAL_TO_ISO = {
   '358': 'FI', '62': 'ID', '234': 'NG', '57': 'CO', '90': 'TR', '60': 'MY',
   '51': 'PE', '212': 'MA', '385': 'HR', '386': 'SI', '372': 'EE', '370': 'LT',
   '359': 'BG', '40': 'RO', '351': 'PT', '420': 'CZ', '45': 'DK', '36': 'HU',
-  '7': 'RU', '380': 'UA', '966 ': 'SA',
+  '7': 'RU', '380': 'UA',
 };
+
+// NANP shares +1. Do not price Canadian members as US destinations.
+const CANADA_NPA = new Set('204 226 236 249 250 257 263 289 306 343 354 365 367 368 382 403 416 418 428 431 437 438 450 468 474 506 514 519 548 579 581 584 587 600 604 613 639 647 672 683 705 709 742 753 778 780 782 807 819 825 867 873 879 902 905 942'.split(' '));
+const OTHER_NANP = new Set('242 246 264 268 284 340 345 441 473 649 658 664 670 671 684 721 758 767 784 787 809 829 849 868 869 876 939'.split(' '));
 
 
 /* COUNTRIES A US NUMBER CANNOT TEXT, FROM TWILIO'S OWN GUIDELINES.
@@ -328,6 +333,7 @@ export const NO_INTERNATIONAL_LONG_CODE = new Set([
 /** Can we actually reach this number with what is configured right now? */
 export function canReach(toE164) {
   const s = senderFor(toE164);
+  if (!s.iso) return {ok:false,iso:null,why:'unverified destination; route review required'};
   if (s.local || s.alpha) return { ok: true, how: s.alpha ? 'alphanumeric sender' : 'local number' };
   if (s.iso && NO_INTERNATIONAL_LONG_CODE.has(s.iso)) {
     return {
@@ -338,11 +344,20 @@ export function canReach(toE164) {
            `Set TWILIO_FROM_${s.iso} to a number bought there, or TWILIO_ALPHA_${s.iso} to a sender name.`,
     };
   }
+  const verified=new Set('US CA AU SE IN IE DE ES NL IL CH BE MX NO CO FR TR PL BR ZA MY FI ID NG'.split(' '));
+  if(!verified.has(s.iso)) return {ok:false,iso:s.iso,why:'destination route has not been verified'};
   return { ok: true, how: 'the US number' };
 }
 
 export function senderFor(toE164) {
   const digits = String(toE164 || '').replace(/^\+/, '');
+  if (digits.startsWith('1')) {
+    const npa=digits.slice(1,4);
+    const iso=CANADA_NPA.has(npa)?'CA':OTHER_NANP.has(npa)?null:'US';
+    const local=iso && process.env[`TWILIO_FROM_${iso}`];
+    const alpha=iso && process.env[`TWILIO_ALPHA_${iso}`];
+    return {from:local||alpha||process.env.TWILIO_FROM_NUMBER,iso,local:!!local,alpha:!local&&!!alpha};
+  }
   // Longest dial code first, so 353 beats 35 and 852 beats 85.
   const codes = Object.keys(DIAL_TO_ISO).sort((a, b) => b.length - a.length);
   let matchedIso = null;
@@ -374,12 +389,13 @@ export function senderFor(toE164) {
             alongside wording that tells them how to actually opt out. */
       const alpha = process.env['TWILIO_ALPHA_' + iso];
       if (alpha) return { from: alpha, iso, local: false, alpha: true };
+    break;
     }
   }
   return { from: process.env.TWILIO_FROM_NUMBER, iso: matchedIso, local: false, alpha: false };
 }
 
-export async function sendMessage({ to, body, channel, dryRun = false, kind, dayStartISO }) {
+export async function sendMessage({ to, body, channel, dryRun = false, kind, dayStartISO, dispatchKey }) {
   const sid = process.env.TWILIO_ACCOUNT_SID;
   const token = process.env.TWILIO_AUTH_TOKEN;
   const fromSms = senderFor(to).from;                      // <- country aware
@@ -432,6 +448,12 @@ export async function sendMessage({ to, body, channel, dryRun = false, kind, day
   if (channel !== 'whatsapp') {
     const reach = canReach(to);
     if (!reach.ok) {
+      if (!reach.iso) {
+        const {alertStarThrottled}=await import('./_notify.js');
+        await alertStarThrottled({kind:'unknown_country',throttleMinutes:1440,
+          subject:'SMS held for an unverified destination',
+          html:'<p>A reminder was held because its destination has not been verified. Review the route before enabling it.</p>'}).catch(()=>{});
+      }
       return {
         sent: false, channel, from, blocked: true, permanent: true,
         iso: reach.iso,
@@ -491,8 +513,11 @@ export async function sendMessage({ to, body, channel, dryRun = false, kind, day
   const guard = await maySend(to, { kind, dayStartISO, from });
   if (!guard.allow) {
     await reportCapHit(to, guard);
-    return { sent: false, channel, from, blocked: true, error: 'send cap: ' + guard.reason };
+    return { sent: false, channel, from, blocked: true, permanent:!!guard.permanent, error: 'send cap: ' + guard.reason };
   }
+
+  const reservation = await reserveSend({dispatchKey,to,from,channel,kind,body,iso:senderFor(to).iso});
+  if (!reservation.allow) return {sent:false,blocked:true,permanent:true,channel,from,error:'budget hold: '+reservation.reason};
 
   const params = new URLSearchParams({ To: toAddr, From: fromAddr, Body: body });
 
@@ -502,14 +527,21 @@ export async function sendMessage({ to, body, channel, dryRun = false, kind, day
   // See api/reminders/status.js.
   const site = (process.env.SITE_URL || 'https://starjessetaylor.com').replace(/\/$/, '');
   params.set('StatusCallback', `${site}/api/reminders/status`);
-  const res = await fetch(`https://api.twilio.com/2010-04-01/Accounts/${sid}/Messages.json`, {
+  let res;
+  try {
+  res = await fetch(`https://api.twilio.com/2010-04-01/Accounts/${sid}/Messages.json`, {
     method: 'POST',
     headers: {
       Authorization: 'Basic ' + Buffer.from(`${sid}:${token}`).toString('base64'),
       'Content-Type': 'application/x-www-form-urlencoded',
     },
     body: params.toString(),
+    signal: AbortSignal.timeout(15000),
   });
+  } catch {
+    await settleSend(dispatchKey,{state:'unknown',from,to,channel});
+    return {sent:false,unknown:true,permanent:true,channel,from,error:'provider outcome unknown; manual reconciliation required'};
+  }
 
   const data = await res.json().catch(() => ({}));
   // `from` travels back with every outcome. A failure is only meaningful
@@ -524,11 +556,18 @@ export async function sendMessage({ to, body, channel, dryRun = false, kind, day
   //    morning. A code is a stable identifier; a sentence is marketing copy
   //    that can be reworded tomorrow. Match on the code.
   if (!res.ok) {
+    await settleSend(dispatchKey,{state:'rejected',code:data?.code,from,to,channel});
     return {
       sent: false, channel, from,
+      permanent: true,
       code: data?.code,
       error: `Twilio ${res.status} [${data?.code ?? '?'}]: ${data?.message || 'unknown'}`,
     };
   }
+  if (!/^SM[0-9a-f]{32}$/i.test(data.sid || '')) {
+    await settleSend(dispatchKey,{state:'unknown',from,to,channel});
+    return {sent:false,unknown:true,permanent:true,channel,from,error:'provider response missing valid SID; no automatic retry'};
+  }
+  await settleSend(dispatchKey,{state:'accepted',sid:data.sid,from,to,channel});
   return { sent: true, sid: data.sid, channel, from };
 }

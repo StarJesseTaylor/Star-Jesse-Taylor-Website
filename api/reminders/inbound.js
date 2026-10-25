@@ -29,6 +29,8 @@ import { verifyTwilio } from './_twilio-sig.js';
 // but this file already has its own at the bottom — importing both is a redeclare
 // and the function crashes on cold start.
 import { alertStarThrottled } from './_notify.js';
+import {reserveSend,settleSend} from './_spend.js';
+import {senderFor,canReach} from './_channel.js';
 
 const TWIML = (msg) =>
   `<?xml version="1.0" encoding="UTF-8"?><Response>${msg ? `<Message>${escapeXml(msg)}</Message>` : ''}</Response>`;
@@ -187,6 +189,18 @@ export default async function handler(req, res) {
   const body = String(req.body?.Body ?? '').trim();
   const from = String(req.body?.From ?? '').replace(/^whatsapp:/, '');
   const channel = String(req.body?.From ?? '').startsWith('whatsapp:') ? 'whatsapp' : 'sms';
+  const budgetedReply = async (message) => {
+    const inboundSid=String(req.body?.MessageSid || req.body?.SmsSid || '');
+    if(!/^SM[0-9a-f]{32}$/i.test(inboundSid)) return res.status(200).send(TWIML());
+    if(channel==='sms' && !canReach(from).ok) return res.status(200).send(TWIML());
+    const sender=String(req.body?.To||'').replace(/^whatsapp:/,'');
+    const key='reply:'+inboundSid;
+    const reserved=await reserveSend({dispatchKey:key,to:from,from:sender,channel,
+      kind:'reply',body:message,iso:senderFor(from).iso});
+    if(!reserved.allow) return res.status(200).send(TWIML());
+    await settleSend(key,{state:'twiml_returned',from:sender,to:from,channel});
+    return res.status(200).send(TWIML(message));
+  };
 
   const SB_URL = (process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || '').replace(/\/$/, '');
   const SB_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -264,7 +278,7 @@ export default async function handler(req, res) {
       await flagMember(sb, from, { crisis_flagged: true, needs_human: true });
       await alertStar(body, from, channel);          // Star hears about this within seconds
       const prefix = DRIVING.test(body) ? 'Pull over safely first. ' : '';
-      return res.status(200).send(TWIML(prefix + CRISIS_REPLY));
+      return await budgetedReply(prefix + CRISIS_REPLY);
     }
 
     // ── 2. STOP / START. Legally required. ──
@@ -277,7 +291,7 @@ export default async function handler(req, res) {
     if (START_WORDS.test(body)) {
       await logIt('start');
       await setStatus(sb, from, 'active');
-      return res.status(200).send(TWIML("You're back on. Two choices. Go outside of your head."));
+      return await budgetedReply("You're back on. Two choices. Go outside of your head.");
     }
 
     // ── 3. Everything else. Honest, not cold. ──
@@ -294,11 +308,11 @@ export default async function handler(req, res) {
     //    change; he is telling the testers personally that he IS reading. This
     //    just makes sure he actually sees what they send.
     await forwardReplyToStar(from, body, channel);
-    return res.status(200).send(TWIML(AUTO_REPLY));
+    return await budgetedReply(AUTO_REPLY);
   } catch (err) {
     console.error('inbound error:', err);
-    // NEVER leave a human with nothing. Even on a total failure, answer.
-    return res.status(200).send(TWIML(AUTO_REPLY));
+    // A failure must not bypass the spending guard with an unreserved reply.
+    return res.status(200).send(TWIML());
   }
 }
 
@@ -307,6 +321,11 @@ async function setStatus(sb, phone, status) {
     method: 'PATCH',
     body: JSON.stringify({ status, updated_at: new Date().toISOString() }),
   }).catch(() => {});
+  // Only an authenticated inbound START releases an opt-out-related hold.
+  // Route failures and uncertain outcomes remain held for separate review.
+  if(status==='active') await sb(`sms_route_holds?phone=eq.${encodeURIComponent(phone)}&error_code=eq.21610`,{
+    method:'PATCH',body:JSON.stringify({released_at:new Date().toISOString()})
+  }).catch(()=>{});
 
   // Mirror it into ActiveCampaign, which is Star's system of record and the
   // thing he segments and writes from. Without this, someone who texted STOP
@@ -341,7 +360,7 @@ async function alertStar(body, from, channel) {
       to: process.env.STAR_NOTIFY_EMAIL || 'star@starjessetaylor.com',
       subject: '🚨 CRISIS TEXT — a member needs a human NOW',
       html:
-        `<p><strong>A member texted something the crisis filter caught.</strong> They have been sent 988/999/911 automatically.</p>` +
+        `<p><strong>A member texted something the crisis filter caught.</strong> Check on this person directly. An automatic reply may be held by a route or spending safeguard.</p>` +
         `<p><strong>Message:</strong><br>${escapeHtml(body)}</p>` +
         `<p><strong>From:</strong> ${escapeHtml(from)} (${channel})</p>` +
         `<p>They are flagged <code>needs_human</code>. Reminders keep running unless you pause them.</p>`,

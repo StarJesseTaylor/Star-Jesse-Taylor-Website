@@ -271,15 +271,16 @@ export default async function handler(req, res) {
             // Their midnight, not Star's, so the one-a-day rule counts the day
             // the member is actually living in. See _send-cap.js.
             kind: 'reminder', dayStartISO: localToUtc(today, 0, tz).toISOString(),
+            dispatchKey: `reminder:${phone.e164}:${today}`,
           });
 
           report.messages.push({ member: m.first_name || m.id, at: slotRow.send_at_utc, slot: slotRow.slot, line: line.id, body });
 
           await log(sb, m, {
             body, channel: out.channel, line_id: line.id,
-            status: out.sent ? 'sent' : (out.dryRun ? 'dry_run' : 'error'),
+            status: out.sent ? 'sent' : (out.dryRun ? 'dry_run' : out.unknown ? 'unknown' : out.blocked ? 'blocked' : 'error'),
             provider_sid: out.sid || null,
-            meta: out.error ? { error: out.error, from: out.from, code: out.code } : null,
+            meta: { error: out.error, from: out.from, code: out.code, permanent:!!out.permanent },
           });
 
           if (out.sent) {
@@ -288,6 +289,9 @@ export default async function handler(req, res) {
             // sent_at was already stamped by the claim above — nothing more to do.
           } else if (out.error) {
             report.errors.push({ id: m.id, error: out.error });
+            // The dispatch reservation is retained on refusals and uncertain outcomes.
+            // Never release a claimed slot into an automatic resubmission loop.
+            if (out.permanent || out.blocked || out.unknown) continue;
 
             // 🛑 THREE TRIES, THEN STOP. NOT TWENTY.
             //
