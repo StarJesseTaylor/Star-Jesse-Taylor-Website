@@ -3,6 +3,7 @@ import { ALPHA_CONSENT_VERSIONS } from './reminders/_alpha-countries.js';
 // agree, or we save numbers we can never text. See the note at normalizedPhone.
 import { normalisePhone, senderFor } from './reminders/_channel.js';
 import { maySendWelcome } from './reminders/_abuse.js';
+import { admitSmsSignup } from './reminders/_signup-limit.js';
 
 const LIST_ID = '3'; // Master Contact List
 
@@ -76,8 +77,8 @@ export default async function handler(req, res) {
   }
 
   // SMS is only ever recorded when BOTH a number and an explicit tick are present.
-  const smsOptIn = !!(phone && consent);
-  if (phone && !consent) {
+  const smsOptIn = !!phone && consent === true;
+  if (phone && consent !== true) {
     return res.status(400).json({ error: 'To receive texts, please tick the SMS consent box.' });
   }
 
@@ -146,6 +147,17 @@ export default async function handler(req, res) {
   //    So the single fastest write, for the thing that delivers the promise,
   //    happens before anything else. Everything after it is recoverable.
   const signupOpen = process.env.REMINDERS_SIGNUP_OPEN === '1';
+  if (smsOptIn && signupOpen) {
+    const admission=await admitSmsSignup(req);
+    if(!admission.allow) {
+      res.setHeader('Retry-After',admission.unavailable?'60':'3600');
+      return res.status(admission.unavailable?503:429).json({success:false,
+        error:admission.unavailable?'signup_unavailable':'signup_limit',
+        message:admission.unavailable
+          ? 'We could not save your signup right now. Please try again shortly.'
+          : 'We are receiving many signup requests. Please try again in an hour, or message Star for help.'});
+    }
+  }
   // Link opt outs survive every route and accidental row reactivation.
   // A fresh subscription requires reviewed consent; this form does not erase it.
   if (smsOptIn && signupOpen) {
@@ -737,9 +749,9 @@ async function alertStarAboutAbuse(guard, phone) {
           `one-off hello is paused, because that is the only part that costs money.</p>` +
           `<p><strong>If this is a real surge</strong> (you posted the link somewhere and it worked), ` +
           `tell me and I will raise the ceiling.</p>` +
-          `<p><strong>If it is not</strong>, this is what toll fraud looks like and it has just been ` +
-          `stopped. Your balance is capped and there is no auto-recharge, so nothing can be spent ` +
-          `beyond what is already in the account.</p>` +
+          `<p><strong>If it is not</strong>, investigate possible automated signup abuse. ` +
+          `The application spending limits still apply to its sends. They do not cap the entire ` +
+          `Twilio invoice or charges made through other tools or stolen credentials.</p>` +
           `<p style="color:#666;font-size:13px">Most recent number: ${esc(phone)}</p>`,
       }),
     }).catch(() => {});

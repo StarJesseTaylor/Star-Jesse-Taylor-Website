@@ -1,5 +1,18 @@
 SMS safeguards, approved 2026-10-24
 
+Signup flood protection, 2026-10-26
+Apply sql/sms_signup_limit.sql BEFORE deploying the signup handler.
+SMS enrollment requests pass admit_sms_signup before any member or CRM write.
+Rolling limits: 5 accepted attempts per IP and 40 globally per hour, serialized
+on one database row across application instances. IP addresses are HMAC hashed
+using the existing server-only database key; raw addresses are not stored.
+An unavailable check returns 503; a limit returns 429 with a retry message.
+Existing enrolled members and their scheduled reminders are not changed.
+This limits floods; it does NOT prove membership or ownership of a phone.
+Slow/distributed abuse, stolen credentials, and other Twilio products still
+require provider/account security. Auto-recharge is not an invoice cap.
+Keep MFA enabled. Do not broaden geographic permissions without route review.
+
 Scope
 Every outbound welcome and reminder passes through sendMessage, then the
 database reserve_sms_dispatch function. Star approved USD 5 per day and USD 50

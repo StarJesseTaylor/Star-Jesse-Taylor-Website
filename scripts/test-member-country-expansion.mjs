@@ -127,6 +127,7 @@ process.env.ACTIVECAMPAIGN_API_KEY='offline';process.env.ACTIVECAMPAIGN_API_URL=
 const {default:optin}=await import('../api/sms-optin.js');
 let calls=[];
 globalThis.fetch=async(url,init={})=>{calls.push([String(url),init]);const u=String(url);
+  if(u.includes('/rpc/admit_sms_signup'))return Response.json({allow:true});
   if(u.includes('/rpc/sms_phone_not_suppressed'))return Response.json(true);
   if(u.includes('/rpc/record_alpha_sms_consent'))return Response.json(true);
   if(u.includes('member_channel?phone='))return Response.json([{id:'offline-member',status:'active',consent_at:new Date().toISOString()}]);
