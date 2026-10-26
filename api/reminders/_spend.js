@@ -37,7 +37,14 @@ async function currentRate(iso, alpha=false) {
   const prices=(data.outbound_sms_prices||[]).flatMap(x=>x.prices||[])
     .filter(x=> (alpha ? ['alphanumeric'] : ['local','mobile','international']).includes(x.number_type))
     .map(x=>Number(x.current_price)).filter(x=>Number.isFinite(x)&&x>0);
-  if(!prices.length)throw new Error('current destination price unavailable');
+  if(!prices.length) {
+    // Diagnose provider schema mismatches without exposing credentials, phone
+    // numbers, or the raw account response. Keep the budget-hold error prefix.
+    const types=[...new Set((data.outbound_sms_prices||[]).flatMap(x=>x.prices||[])
+      .map(x=>String(x.number_type||'missing').replace(/[^a-zA-Z0-9_-]/g,'').slice(0,32)))]
+      .sort().slice(0,12).join(',') || 'none';
+    throw new Error('current destination price unavailable ('+iso+'; '+(alpha?'alpha':'number')+'; types='+types+')');
+  }
   const carrier=iso==='US'?.006:iso==='CA'?.009:.001;
   const price=Math.max(RATES[iso] || 0,Math.max(...prices)+carrier);
   priceCache.set(cacheKey,{at:Date.now(),price});return price;
