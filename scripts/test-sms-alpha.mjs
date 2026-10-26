@@ -12,7 +12,7 @@ let eligible=true,stopped=false,finalCheck=true,dbDown=false,posts=0,bodySent=''
 const tokens=new Set(); const keys=new Set();
 globalThis.fetch=async(url,init={})=>{
   const u=String(url), b=init.body && init.headers?.['Content-Type']==='application/json'?JSON.parse(init.body):{};
-  if(u.includes('pricing.twilio.com'))return Response.json({price_unit:'usd',outbound_sms_prices:[{prices:[{number_type:'mobile',current_price:'.056'},...(missingPrice?[]:[{number_type:'alphanumeric',current_price:'.070'}])]}]});
+  if(u.includes('pricing.twilio.com'))return Response.json({price_unit:'usd',outbound_sms_prices:[{prices:missingPrice?[]:[{number_type:'mobile',current_price:'.056'},{number_type:'alphanumeric',current_price:'.070'}]}]});
   if(u.includes('api.twilio.com')){posts++;bodySent=new URLSearchParams(init.body).get('Body');return Response.json({sid:'SM'+'b'.repeat(32)});}
   if(dbDown)throw new Error('offline database');
   if(u.includes('/rpc/sms_phone_not_suppressed')){if(missingPrecheck)return new Response('missing RPC',{status:404});return Response.json(!stopped);}

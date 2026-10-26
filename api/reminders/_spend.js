@@ -34,8 +34,15 @@ async function currentRate(iso, alpha=false) {
   if(!r.ok)throw new Error('current pricing unavailable');
   const data=await r.json();
   if(String(data.price_unit).toLowerCase()!=='usd')throw new Error('unverified pricing currency');
+  // GB/CY account API inspected 2026-10-26: alpha's destination rate is
+  // represented by local/mobile (GB .056, CY .0864), matching Twilio's alpha
+  // pricing pages. Keep this mapping scoped to those verified countries.
+  // Include an explicit alpha entry if supplied; always reserve the highest.
+  const typesForRoute=alpha
+    ? (['GB','CY'].includes(iso)?['alphanumeric','local','mobile']:['alphanumeric'])
+    : ['local','mobile','international'];
   const prices=(data.outbound_sms_prices||[]).flatMap(x=>x.prices||[])
-    .filter(x=> (alpha ? ['alphanumeric'] : ['local','mobile','international']).includes(x.number_type))
+    .filter(x=>typesForRoute.includes(x.number_type))
     .map(x=>Number(x.current_price)).filter(x=>Number.isFinite(x)&&x>0);
   if(!prices.length) {
     // Diagnose provider schema mismatches without exposing credentials, phone
