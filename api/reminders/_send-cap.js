@@ -151,7 +151,18 @@ export async function maySend(toE164, opts = {}) {
       return { allow: false, lastHour: hour, reason: `already had ${hour} texts in the last hour, limit is ${PER_HOUR}` };
     }
 
-    const day = await countFrom(await sb(realSends(1440)));
+    // Scheduled reminders supply midnight in the member's own timezone.
+    // Use that same boundary for BOTH daily caps, or yesterday's welcome
+    // plus reminder can prevent today's reminder. Callers without a local
+    // day retain the conservative rolling window.
+    const dayStart = opts.dayStartISO || since(1440);
+    if (!Number.isFinite(Date.parse(dayStart)) || Date.parse(dayStart) > Date.now()) {
+      return { allow: false, reason: 'invalid local day boundary, refusing' };
+    }
+    const dayQuery = realSends(0).replace(
+      /&created_at=gte\.[^&]*/, '&created_at=gte.' + encodeURIComponent(dayStart)
+    );
+    const day = await countFrom(await sb(dayQuery));
     if (day === null) return { allow: false, reason: 'could not count today, refusing' };
     if (day >= PER_DAY) {
       return { allow: false, lastHour: hour, lastDay: day, reason: `already had ${day} texts today, limit is ${PER_DAY}` };
@@ -275,11 +286,7 @@ export async function maySend(toE164, opts = {}) {
     // sent. The welcome has none. That is structural, so it cannot drift the
     // way a status name or a meta tag can.
     if (opts.kind === 'reminder') {
-      const from = opts.dayStartISO || since(1440);
-      const q = realSends(0).replace(
-        /&created_at=gte\.[^&]*/,
-        '&created_at=gte.' + encodeURIComponent(from)
-      ) + '&line_id=not.is.null';
+      const q = dayQuery + '&line_id=not.is.null';
       const today = await countFrom(await sb(q));
       if (today === null) return { allow: false, reason: "could not count today's reminders, refusing" };
       if (today >= REMINDERS_PER_DAY) {
