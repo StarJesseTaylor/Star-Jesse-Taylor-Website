@@ -530,7 +530,7 @@
     const international = raw.startsWith('+') || digits.startsWith('00');
     const dial = international ? (digits.startsWith('00') ? digits.slice(2) : digits)
       : form.querySelector('[name="countryCode"]').value.replace(/[^0-9]/g, '');
-    const match = [['355','al'],['382','me'],['389','mk'],['386','si'],['385','hr'],['356','mt'],['357','cy'],['44','uk'],['39','it'],['30','gr'],['36','hu'],['51','pe'],['32','be'],['57','co']].find(([prefix]) => international ? dial.startsWith(prefix) : dial === prefix);
+    const match = [['355','al'],['382','me'],['389','mk'],['386','si'],['385','hr'],['356','mt'],['357','cy'],['44','uk'],['39','it'],['30','gr'],['36','hu'],['51','pe'],['32','be'],['57','co'],['972','il']].find(([prefix]) => international ? dial.startsWith(prefix) : dial === prefix);
     return match ? match[1] + '-one-way-2026-10-25' : '';
   }
   let lastAlphaVersion = null;

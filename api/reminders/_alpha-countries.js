@@ -32,6 +32,13 @@ export const ALPHA_COUNTRIES = Object.freeze({
   MT: newAlpha(),
   CY: newAlpha(),
   HR: newAlpha({ bodyIdentity: true }),   // alpha may be rewritten on A1
+  // Israel, added 28 Oct 2026. twilio.com/en-us/guidelines/il/sms: dynamic
+  // alphanumeric senders are supported with NO pre-registration and the sender
+  // ID is preserved. The US long code cannot reach Israel at all, because
+  // Israeli operators actively block international long codes, which is the
+  // 'route unavailable' Noa has been hitting since she signed up on 25 Oct.
+  // Alpha is the only route into Israel, exactly as it is for Greece.
+  IL: newAlpha(),
   HU: newAlpha({ bodyIdentity: true }),   // numeric and alpha senders rewritten
   PE: newAlpha({ bodyIdentity: true }),   // numeric and alpha senders overwritten
   // Alpha unavailable: US long code, rewritten sender, one-way link opt-out.
@@ -71,5 +78,6 @@ export const ALPHA_CONSENT_VERSIONS = Object.freeze({
   SI:'si-one-way-2026-10-25', HR:'hr-one-way-2026-10-25', HU:'hu-one-way-2026-10-25',
   MT:'mt-one-way-2026-10-25', PE:'pe-one-way-2026-10-25', CY:'cy-one-way-2026-10-25',
   BE:'be-one-way-2026-10-25', CO:'co-one-way-2026-10-25',
+  IL:'il-one-way-2026-10-25',
 });
 export const alphaConsentVersion = iso => ALPHA_CONSENT_VERSIONS[iso] || process.env.SMS_ALPHA_CONSENT_VERSION;
