@@ -75,9 +75,12 @@ begin
    consent_evidence=excluded.consent_evidence,
    -- Never shorten a window that is already longer, so a hand-made owner
    -- attestation is not quietly cut back by a later re-consent.
-   paid_verified_until=greatest(public.sms_alpha_permissions.paid_verified_until,excluded.paid_verified_until),
-   paid_evidence=case when public.sms_alpha_permissions.paid_verified_until>=excluded.paid_verified_until
-                      then public.sms_alpha_permissions.paid_evidence else excluded.paid_evidence end;
+   -- Unqualified table name on purpose. Inside ON CONFLICT DO UPDATE the
+   -- existing row is addressed by the table's own name, and schema-qualifying
+   -- it is the documented way to get a FROM-clause reference error.
+   paid_verified_until=greatest(sms_alpha_permissions.paid_verified_until,excluded.paid_verified_until),
+   paid_evidence=case when sms_alpha_permissions.paid_verified_until>=excluded.paid_verified_until
+                      then sms_alpha_permissions.paid_evidence else excluded.paid_evidence end;
  return true;
 end $fn$;
 revoke all on function public.record_alpha_sms_consent(text,text) from public,anon,authenticated;
