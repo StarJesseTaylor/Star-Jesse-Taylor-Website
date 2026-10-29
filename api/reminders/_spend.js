@@ -7,7 +7,7 @@ import { alphaCountryApproved, numericOneWayApproved } from './_alpha-countries.
 // This bounds this application's reservations, not the whole Twilio invoice.
 const RATES = {US:.0128,CA:.017,TR:.0305,PL:.0457,AU:.0515,GB:.056,
   BR:.0599,SE:.0646,CH:.0769,IE:.0779,FR:.0798,IN:.0832,ES:.0875,
-  IT:.0927,DE:.112,NL:.1143,IL:.2575,
+  IT:.0927,DE:.112,NL:.1143,IL:.2575,GR:.0657,HR:.1379,
   // Public pricing floors checked 2026-10-25. Authenticated pricing below
   // remains mandatory before reserving or submitting any message.
   PT:.0501,DK:.0592,EE:.0958,LT:.0578,NO:.0697};
@@ -24,6 +24,16 @@ export function smsSegments(body) {
   return Math.ceil(septets / (septets <= 160 ? 160 : 153));
 }
 const priceCache=new Map();
+// Explicit destination mappings, not a fallback across every product type.
+// GB/CY: authenticated account inspection on 2026-10-26.
+// GR/HR/IT/IL: Twilio published SMS pricing reviewed 2026-10-28 shows
+// identical alpha and named numeric rates. See docs/alpha-pricing-evidence.md.
+// Runtime authenticated pricing is still mandatory; public floors alone NEVER send.
+const ALPHA_PRICE_TYPES = Object.freeze({
+  GB:['alphanumeric','local','mobile'], CY:['alphanumeric','local','mobile'],
+  GR:['alphanumeric','international'], HR:['alphanumeric','international'],
+  IT:['alphanumeric','mobile'], IL:['alphanumeric','mobile'],
+});
 async function currentRate(iso, alpha=false) {
   const cacheKey=iso+':'+(alpha?'alpha':'number');
   const cached=priceCache.get(cacheKey);
@@ -34,12 +44,10 @@ async function currentRate(iso, alpha=false) {
   if(!r.ok)throw new Error('current pricing unavailable');
   const data=await r.json();
   if(String(data.price_unit).toLowerCase()!=='usd')throw new Error('unverified pricing currency');
-  // GB/CY account API inspected 2026-10-26: alpha's destination rate is
-  // represented by local/mobile (GB .056, CY .0864), matching Twilio's alpha
-  // pricing pages. Keep this mapping scoped to those verified countries.
-  // Include an explicit alpha entry if supplied; always reserve the highest.
+  // Include explicit alpha prices if supplied; reserve the highest eligible
+  // carrier price. Unknown destinations still require an explicit alpha row.
   const typesForRoute=alpha
-    ? (['GB','CY'].includes(iso)?['alphanumeric','local','mobile']:['alphanumeric'])
+    ? (ALPHA_PRICE_TYPES[iso] || ['alphanumeric'])
     : ['local','mobile','international'];
   const prices=(data.outbound_sms_prices||[]).flatMap(x=>x.prices||[])
     .filter(x=>typesForRoute.includes(x.number_type))
