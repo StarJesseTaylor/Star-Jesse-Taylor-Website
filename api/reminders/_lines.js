@@ -62,6 +62,10 @@ export const LINES = [
   { id: 28, when: 'any',     text: "Are you standing outside the playing field of life, trying to be perfect, or are you playing and throwing yourself in the mud? Splashing in the rain, when there's rain on the ground." },
   { id: 29, when: 'any',     text: "If you don't set intentions for your life, other people will set them for you." },
   { id: 30, when: 'morning', text: "If you don't set intentions for your day, your brain will set them for you." },
+  // Added 28 Oct 2026. Star's words, given in chat, unedited apart from the
+  // capital at the front so they match the other 30.
+  { id: 31, when: 'any',     text: "You don't have to believe your thoughts." },
+  { id: 32, when: 'any',     text: "Don't make your life smaller because of uncomfortable emotions. Make your life bigger while allowing any emotions and thoughts, and then celebrate yourself for doing actions that support you." },
 ];
 
 // Lines with an {action} variant. Star's book names the action in the No Brain
