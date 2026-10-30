@@ -22,14 +22,20 @@ await assert.rejects(()=>reserve('GB',[]),/price unavailable/);
 await assert.rejects(()=>reserve('GB',[row('shortcode','.0524')]),/price unavailable/);
 await assert.rejects(()=>reserve('GB',[row('mobile','garbage')]),/price unavailable/);
 await assert.rejects(()=>reserve('GB',[row('mobile','.056')],'EUR'),/currency/);
-for (const [iso,type,price] of [['GR','international',.0657],['HR','international',.1379],['IT','mobile',.0927],['IL','mobile',.2575]]) {
+for (const [iso,type,price] of [['GR','mobile',.0657],['HR','mobile',.1379],['IT','mobile',.0927],['IL','mobile',.2575]]) {
   assert.equal(await reserve(iso,[row(type,String(price))]),Math.ceil((price+.001)*1.1*1e6));
   // Published floor cannot replace missing authenticated account data.
   await assert.rejects(()=>reserve(iso,[]),/price unavailable/);
   await assert.rejects(()=>reserve(iso,[row('shortcode','.01')]),/price unavailable/);
   assert.equal(await reserve(iso,[row(type,'.4'),row('alphanumeric','.5')]),Math.ceil(.501*1.1*1e6));
 }
-await assert.rejects(()=>reserve('GR',[row('mobile','.056')]),/price unavailable/);
+for (const [iso,floor] of [['GR',.0657],['HR',.1379]]) {
+  for (const type of ['local','mobile']) {
+    assert.equal(await reserve(iso,[row(type,'.056')]),Math.ceil(floor*1.1*1e6));
+  }
+  assert.equal(await reserve(iso,[row('local','.2'),row('mobile','.3')]),Math.ceil(.301*1.1*1e6));
+  await assert.rejects(()=>reserve(iso,[row('international','.1')]),/price unavailable/);
+}
 await assert.rejects(()=>reserve('MT',[row('international','.1')]),/price unavailable/);
 payload=fixture([row('international','.15')]);
 const numeric=await import('../api/reminders/_spend.js?numeric=BE');

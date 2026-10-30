@@ -28,10 +28,12 @@ const priceCache=new Map();
 // GB/CY: authenticated account inspection on 2026-10-26.
 // GR/HR/IT/IL: Twilio published SMS pricing reviewed 2026-10-28 shows
 // identical alpha and named numeric rates. See docs/alpha-pricing-evidence.md.
+// GR/HR production diagnostics on 2026-10-29 report local/mobile API rows;
+// published category headings are not API number_type values.
 // Runtime authenticated pricing is still mandatory; public floors alone NEVER send.
 const ALPHA_PRICE_TYPES = Object.freeze({
   GB:['alphanumeric','local','mobile'], CY:['alphanumeric','local','mobile'],
-  GR:['alphanumeric','international'], HR:['alphanumeric','international'],
+  GR:['alphanumeric','local','mobile'], HR:['alphanumeric','local','mobile'],
   IT:['alphanumeric','mobile'], IL:['alphanumeric','mobile'],
 });
 async function currentRate(iso, alpha=false) {

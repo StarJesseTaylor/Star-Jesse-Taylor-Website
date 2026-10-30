@@ -76,10 +76,10 @@ for (const [iso,to] of Object.entries(ALL)) {
   assert(p.body.startsWith(expectStart+'\nStop anytime: https://starjessetaylor.com/api/u?t='),iso+' body '+p.body);
   assert(!p.body.includes('Reply STOP'),iso+' never promises STOP');
   assert(out.body.includes('[redacted]'),iso+' token redacted in logs');
-  // Independent expectations for this fixture: HR also admits international
-  // pricing; the reviewed HR destination floor exceeds its synthetic price.
+  // Independent expectations: the reviewed HR destination floor exceeds
+  // its synthetic local/mobile/alpha price.
   // Keep floors explicit here so removing a production floor fails this test.
-  const fixtureRate = (!ALPHA[iso] || iso === 'HR') ? .09 : .07;
+  const fixtureRate = !ALPHA[iso] ? .09 : .07;
   const reviewedFloor = ({HR:.1379})[iso] || 0;
   const unit=Math.max(reviewedFloor,fixtureRate+.001);
   assert.equal(reserved['k'+n],Math.ceil(unit*1.1*smsSegments(p.body)*1e6),iso+' prices full body on its own route type');
