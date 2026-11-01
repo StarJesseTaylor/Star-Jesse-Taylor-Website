@@ -414,7 +414,7 @@ export function senderFor(toE164) {
     ...(numericOneWay ? { oneWay: 'numeric' } : {}) };
 }
 
-export async function sendMessage({ to, body, channel, dryRun = false, kind, dayStartISO, dispatchKey }) {
+export async function sendMessage({ to, body, channel, dryRun = false, kind, dayStartISO, dispatchKey, lineId, timezone }) {
   const sid = process.env.TWILIO_ACCOUNT_SID;
   const token = process.env.TWILIO_AUTH_TOKEN;
   const fromSms = senderFor(to).from;                      // <- country aware
@@ -431,6 +431,14 @@ export async function sendMessage({ to, body, channel, dryRun = false, kind, day
   const fromAddr = channel === 'whatsapp' ? `whatsapp:${from}` : from;
 
   if (dryRun) return { sent: false, dryRun: true, channel, sid: undefined };
+  let waTemplate;
+  if (channel === 'whatsapp') {
+    try {
+      const {waPrepare} = await import('./_whatsapp.js');
+      waTemplate = await waPrepare({to,lineId,timezone,kind});
+      body = waTemplate.rendered;
+    } catch (e) { return {sent:false,blocked:true,permanent:true,channel,from,error:e.message}; }
+  }
 
   /* 🛑 THE ROUTE GUARD. Added 24 Oct 2026, and it should have existed from
         the day NO_INTERNATIONAL_LONG_CODE did.
@@ -553,12 +561,21 @@ export async function sendMessage({ to, body, channel, dryRun = false, kind, day
   // This cannot recall a request already submitted to the provider.
   try {
     if (!await alphaPreflight(dispatchKey,to)) throw new Error('dispatch stopped before submission');
+    if (channel === 'whatsapp') {
+      const {alphaRpc} = await import('./_alpha.js');
+      if (await alphaRpc('wa_has_consent',{p_phone:to}) !== true) throw new Error('WhatsApp consent revoked');
+    }
   } catch {
     await settleSend(dispatchKey,{state:'cancelled_preflight',from,to,channel});
     return {sent:false,blocked:true,permanent:true,channel,from,error:'final suppression check failed or dispatch stopped'};
   }
 
   const params = new URLSearchParams({ To: toAddr, From: fromAddr, Body: body });
+  if (waTemplate) {
+    params.delete('Body');
+    params.set('ContentSid',waTemplate.sid);
+    if (Object.keys(waTemplate.variables).length) params.set('ContentVariables',JSON.stringify(waTemplate.variables));
+  }
 
   // THE RECEIPT. Without this Twilio tells us "queued" and never speaks again —
   // and "queued" is not "a human received it". Carriers drop A2P messages

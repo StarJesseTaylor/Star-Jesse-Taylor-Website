@@ -244,8 +244,12 @@ export default async function handler(req, res) {
           // message_prefs, not member_channel, so render(line, m) silently left
           // #13's {action} unpersonalised. tomorrow_word/timezone stay on m —
           // message_prefs has neither column, so the spread can't clobber them.
-          const body = render(line, { ...m, ...prefs });
+          let body = render(line, { ...m, ...prefs });
           const channel = m.channel || pickChannel(phone.e164);
+          if (channel === 'whatsapp') {
+            const {waRender} = await import('./_whatsapp.js');
+            body = waRender(line.id,m.timezone).rendered;
+          }
           const slotFilter = `member_id=eq.${m.id}&type=eq.reminder&local_date=eq.${today}&send_at_utc=eq.${encodeURIComponent(slotRow.send_at_utc)}`;
 
           // ── DEDUPE CLAIM (live only) — the fix for DOUBLE-TEXTING. ──
@@ -267,7 +271,7 @@ export default async function handler(req, res) {
           }
 
           const out = await sendMessage({
-            to: phone.e164, body, channel, dryRun,
+            to: phone.e164, body, channel, dryRun, lineId:line.id, timezone:m.timezone,
             // Their midnight, not Star's, so the one-a-day rule counts the day
             // the member is actually living in. See _send-cap.js.
             kind: 'reminder', dayStartISO: localToUtc(today, 0, tz).toISOString(),

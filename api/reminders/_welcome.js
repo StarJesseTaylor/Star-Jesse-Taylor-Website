@@ -60,6 +60,8 @@ const AWAKE_UNTIL = 21;   // local hour
  * @returns {Promise<{sent:boolean, skipped?:string, error?:string}>}
  */
 export async function greetOnce(sb, sendMessage, { memberId, toE164, channel, currentFrom }) {
+  // WhatsApp confirms opt-in in the member-initiated session, not with the SMS welcome.
+  if (channel === 'whatsapp') return {sent:false,skipped:'WhatsApp confirmed at signup'};
   // TWO QUESTIONS, IN THIS ORDER.
   //
   // 1. Have we already TRIED to welcome them? Any row tagged as a welcome
@@ -182,6 +184,7 @@ export async function catchUpWelcomes(sb, sendMessage, pickChannel, normalisePho
     if (!members.length) return out;
 
     for (const m of members) {
+      if (m.channel === 'whatsapp') continue;
       if (out.greeted + out.failed >= MAX_PER_RUN) break;
 
       // Their clock, never Star's. Checked before anything else so a sleeping

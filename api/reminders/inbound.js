@@ -136,7 +136,7 @@ const CRISIS_REPLY =
 // ⚠️ NARROW ON PURPOSE. v1 was /^stop\b/ and unsubscribed "stop the anxiety" —
 //    someone ASKING FOR HELP got silently removed. Bare "stop" must be alone or
 //    followed by a word about the messages, never about their feelings.
-const STOP_WORDS = new RegExp(
+export const STOP_WORDS = new RegExp(
   '^\\s*(?:' +
     'stop\\s*$' +                                                  // "STOP"
     '|stop\\s+(?:sending|these|those|them|texts?|messages?|reminders?|it|all)\\b' +

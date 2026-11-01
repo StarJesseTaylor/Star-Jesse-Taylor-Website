@@ -105,10 +105,10 @@ const eligibleBefore=eligibilityCalls.length;assert.equal((await send(NUMERIC19.
 assert.equal(posts.at(-1).body,REMINDER,'two-way body unchanged');assert.equal(posts.at(-1).from,'+12025550100');
 assert.equal(eligibilityCalls.length,eligibleBefore,'two-way route skips one-way eligibility');
 
-// 8. WhatsApp behaviour unchanged from HEAD: no verified price, so the spend guard
-// blocks it before any post, and it never takes a one-way route or footer.
+// 8. WhatsApp remains disabled without its explicit launch configuration.
+// It never takes an SMS one-way route or footer.
 const waBefore=posts.length;const wa=await send(NUMERIC.BE,'reminder','whatsapp');
-assert.equal(wa.sent,false);assert.match(wa.error,/unverified destination price/);assert.equal(posts.length,waBefore);
+assert.equal(wa.sent,false);assert.match(wa.error,/WhatsApp not enabled/);assert.equal(posts.length,waBefore);
 
 // 9. Excluded countries stay closed even with every flag a typo could set.
 const EXCLUDED={ZA:'+27821234567',MX:'+525512345678',CZ:'+420601123456',NZ:'+64211234567',ID:'+628123456789',AE:'+971501234567',SA:'+966501234567',AT:'+436641234567',PH:'+639171234567'};

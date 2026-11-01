@@ -67,6 +67,10 @@ async function currentRate(iso, alpha=false) {
   priceCache.set(cacheKey,{at:Date.now(),price});return price;
 }
 export async function reserveAmount(body, iso, channel, alpha=false, oneWayNumeric=false) {
+  if (channel === 'whatsapp') {
+    const {waReserveMicro} = await import('./_whatsapp.js');
+    return waReserveMicro(iso);
+  }
   if (channel !== 'sms') throw new Error('unverified destination price');
   if (alpha && oneWayNumeric) throw new Error('conflicting route pricing');
   if (alpha && !alphaCountryApproved(iso)) throw new Error('alpha pricing not approved for destination');

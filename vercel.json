@@ -1,5 +1,6 @@
 {
   "rewrites": [
+    { "source": "/whatsapp", "destination": "/whatsapp.html" },
     { "source": "/tour", "destination": "/tour.html" },
     { "source": "/letter", "destination": "/letter.html" },
     { "source": "/app", "destination": "/app.html" },
