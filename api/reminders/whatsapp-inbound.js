@@ -34,7 +34,7 @@ export default async function handler(req,res) {
       if(payload.phone !== phone) return reply('Please use the same WhatsApp number you entered on the signup page.');
       // Only admit destinations with reviewed costs. No silent SMS fallback.
       try { waReserveMicro(senderFor(phone).iso); } catch { return res.status(200).send(xml()); }
-      const result=await alphaRpc('wa_confirm',{p_phone:phone,p_timezone:payload.tz,p_sid:sid,p_version:WA_CONSENT,p_name:String(req.body?.ProfileName || '').slice(0,80),p_nonce:payload.nonce});
+      const result=await alphaRpc('wa_confirm',{p_phone:phone,p_timezone:payload.tz,p_sid:sid,p_version:WA_CONSENT,p_name:String(payload.name || req.body?.ProfileName || '').slice(0,80),p_nonce:payload.nonce});
       if(result?.duplicate) return res.status(200).send(xml());
       if(!result?.ok) return res.status(200).send(xml());
       return reply('You are signed up for daily Audacity reminders on WhatsApp. Future reminders will use WhatsApp. An SMS already sent may still arrive. One reminder a day, between 8am and 9pm in your time zone. Reply STOP to stop. This is an automated reminder line. For support, visit the community: https://www.skool.com/starjessetaylor');

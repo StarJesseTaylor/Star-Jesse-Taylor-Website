@@ -41,3 +41,6 @@ signed();await inbound(req,res);assert.equal(stops,1);assert.equal(consent,false
 assert.equal((await sendMessage({...args,dispatchKey:'test:2'})).blocked,true);
 req.body.Body='I agree to one daily Audacity practice reminder on WhatsApp from Star Jesse Taylor. Reply STOP to stop. JOIN '+tok;req.body.MessageSid='SM'+'c'.repeat(32);signed();await inbound(req,res);assert.equal(confirmed,1);
 console.log('WhatsApp tests passed: 32 mappings, signed consent, approval and content guards, template payload, duplicate prevention, STOP, forged webhook rejection.');
+
+assert.equal(readWaToken(makeWaToken('Europe/London','+447700900999','Test Member')).name,'Test Member');
+assert.equal(readWaToken(makeWaToken('Europe/London','+447700900999','\u754c'.repeat(80))).name,'\u754c'.repeat(80));

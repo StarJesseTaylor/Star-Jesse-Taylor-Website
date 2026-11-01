@@ -56,14 +56,14 @@ function secret() {
   return s;
 }
 const mac = data => createHmac('sha256', secret()).update('wa-optin-v1:' + data).digest('base64url');
-export function makeWaToken(timezone,phone) {
+export function makeWaToken(timezone,phone,name='') {
   new Intl.DateTimeFormat('en', {timeZone:timezone}).format();
   if (!/^\+[1-9]\d{7,14}$/.test(phone || '')) throw new Error('Invalid phone');
-  const data = Buffer.from(JSON.stringify({tz:timezone,phone,nonce:randomBytes(16).toString('hex'), exp:Date.now()+1800000, v:WA_CONSENT})).toString('base64url');
+  const data = Buffer.from(JSON.stringify({tz:timezone,phone,name,nonce:randomBytes(16).toString('hex'), exp:Date.now()+1800000, v:WA_CONSENT})).toString('base64url');
   return data + '.' + mac(data);
 }
 export function readWaToken(token) {
-  if (typeof token !== 'string' || token.length > 600) throw new Error('Invalid confirmation');
+  if (typeof token !== 'string' || token.length > 1200) throw new Error('Invalid confirmation');
   const [data, signature, extra] = token.split('.');
   const expected = mac(data || '');
   if (extra || !signature || signature.length !== expected.length || !timingSafeEqual(Buffer.from(signature),Buffer.from(expected))) throw new Error('Invalid confirmation');
