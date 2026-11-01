@@ -1,9 +1,9 @@
-import { readFileSync } from 'node:fs';
+import templates from './_whatsapp-template-data.js';
 import { createHmac, timingSafeEqual, randomBytes } from 'node:crypto';
 import { secondsLeftToday } from './_lines.js';
 import { alphaRpc } from './_alpha.js';
 
-export const WA_TEMPLATES = JSON.parse(readFileSync(new URL('./_whatsapp-templates.json', import.meta.url), 'utf8').replace(/^\uFEFF/, ''));
+export const WA_TEMPLATES = templates;
 export const WA_CONSENT = 'wa-reminders-v1';
 export const WA_SENDER = '+14246229513';
 export const waEnabled = () => process.env.WHATSAPP_ENABLED === 'true' && process.env.TWILIO_WHATSAPP_FROM === WA_SENDER;
