@@ -34,19 +34,20 @@ async function checkTemplate(t) {
   const headers = {Authorization: 'Basic ' + Buffer.from(process.env.TWILIO_ACCOUNT_SID + ':' + process.env.TWILIO_AUTH_TOKEN).toString('base64')};
   const read = async suffix => {
     const r = await fetch('https://content.twilio.com/v1/Content/' + t.sid + suffix, {headers, signal:AbortSignal.timeout(10000)});
-    if (!r.ok) throw new Error('WhatsApp approval check unavailable');
+    if (!r.ok) throw new Error('WhatsApp approval check unavailable: ' + r.status);
     return r.json();
   };
   const [approval, content] = await Promise.all([read('/ApprovalRequests'), read('')]);
-  if (approval.whatsapp?.status !== 'approved' || approval.whatsapp?.category !== 'MARKETING') throw new Error('WhatsApp template not approved as marketing');
-  if (content.types?.['twilio/text']?.body !== t.body || content.language !== 'en') throw new Error('WhatsApp template differs from reviewed copy');
+  if (approval.whatsapp?.status !== 'approved' || approval.whatsapp?.category !== 'MARKETING') throw new Error('WhatsApp template not approved as marketing: ' + String(approval.whatsapp?.status) + '/' + String(approval.whatsapp?.category));
+  if (content.types?.['twilio/text']?.body !== t.body) throw new Error('WhatsApp template differs from reviewed copy');
+  if (content.language !== 'en') throw new Error('WhatsApp template language mismatch: ' + String(content.language));
 }
 // Re-check the whole rotation before enrollment; never move someone onto pending templates.
 export async function waApprovalsReady() {
   if (!waEnabled()) return false;
   try {
     for (let i=0;i<WA_TEMPLATES.length;i+=8)
-      await Promise.all(WA_TEMPLATES.slice(i,i+8).map(checkTemplate));
+      await Promise.all(WA_TEMPLATES.slice(i,i+8).map(async t => { try { await checkTemplate(t); } catch (e) { console.warn('WhatsApp readiness:', t.name, e.message); throw e; } }));
     return true;
   } catch { return false; }
 }
