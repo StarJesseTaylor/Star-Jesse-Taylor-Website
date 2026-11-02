@@ -40,7 +40,7 @@ async function checkTemplate(t) {
   const [approval, content] = await Promise.all([read('/ApprovalRequests'), read('')]);
   if (approval.whatsapp?.status !== 'approved' || approval.whatsapp?.category !== 'MARKETING') throw new Error('WhatsApp template not approved as marketing: ' + String(approval.whatsapp?.status) + '/' + String(approval.whatsapp?.category));
   if (content.types?.['twilio/text']?.body !== t.body) throw new Error('WhatsApp template differs from reviewed copy');
-  if (content.language !== 'en') throw new Error('WhatsApp template language mismatch: ' + String(content.language));
+  if (content.language !== 'en_US') throw new Error('WhatsApp template language mismatch: ' + String(content.language));
 }
 // Re-check the whole rotation before enrollment; never move someone onto pending templates.
 export async function waApprovalsReady() {

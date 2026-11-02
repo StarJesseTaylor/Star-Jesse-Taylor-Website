@@ -12,7 +12,7 @@ const {default:inbound}=await import('../api/reminders/whatsapp-inbound.js');
 let approved=true,consent=true,changed=false,sends=[],stops=0,confirmed=0,seen=new Set();
 globalThis.fetch=async(url,init={})=>{
  const u=String(url);
- if(u.includes('/Content/')){const sid=u.split('/Content/')[1].split('/')[0];const t=WA_TEMPLATES.find(x=>x.sid===sid);return Response.json(u.endsWith('/ApprovalRequests')?{whatsapp:{status:approved?'approved':'received',category:'MARKETING'}}:{language:'en',types:{'twilio/text':{body:changed?'changed':t.body}}});}
+ if(u.includes('/Content/')){const sid=u.split('/Content/')[1].split('/')[0];const t=WA_TEMPLATES.find(x=>x.sid===sid);return Response.json(u.endsWith('/ApprovalRequests')?{whatsapp:{status:approved?'approved':'received',category:'MARKETING'}}:{language:'en_US',types:{'twilio/text':{body:changed?'changed':t.body}}});}
  if(u.includes('/rpc/wa_has_consent'))return Response.json(consent);
  if(u.includes('/rpc/wa_stop')){consent=false;stops++;return Response.json(true);}
  if(u.includes('/rpc/wa_confirm')){confirmed++;return Response.json({ok:true});}
