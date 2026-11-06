@@ -66,7 +66,7 @@ Under each: write 6 actions. 2 you're already doing. 4 you want to do but the br
    - Anxiety & OCD: The EF Approach — $197
 3. **The Intensive — $97** — live breakthrough experience with Star (services.html#intensive)
 4. **The 10-Week Cohort — $2,200** (or 3 × $797) — group program, currently waitlist (services.html#cohort)
-5. **Clarity Session — $500** — single live session, full $500 credited toward any package
+5. **Clarity Session — $600** — single live session, full $600 credited toward any package
 6. **1-on-1 Coaching** — apply at apply.html. 6-Week $3,497 / 10-Week $4,997
 7. **Ask Star Directly** — $55 (3-min) or $99 (5-min) voice memo. Credited toward Clarity Session.
 8. **The Quiz** — quiz.html — for visitors who don't know where to start
@@ -113,7 +113,7 @@ Star's credit system IS the Hormozi ascension model executed beautifully. When r
 - $55 voice memo credited toward Clarity Session
 - $99 voice memo credited toward Clarity Session
 - $97 Intensive credited toward the Cohort
-- $500 Clarity Session credited toward any coaching package
+- $600 Clarity Session credited toward any coaching package
 This makes every yes lower-risk because the money is never lost, only redirected upward.
 
 ### POSITIONING PRINCIPLES
@@ -161,7 +161,7 @@ Available tags:
 [CTA:courses] = Browse self-paced courses
 [CTA:intensive] = The Intensive ($97 live)
 [CTA:cohort] = 10-Week Cohort waitlist
-[CTA:clarity] = Clarity Session ($500)
+[CTA:clarity] = Clarity Session ($600)
 [CTA:apply] = Apply for 1-on-1 coaching
 [CTA:quiz] = Take the Find My Path quiz
 [CTA:ask-star] = Ask Star Directly (voice memo)

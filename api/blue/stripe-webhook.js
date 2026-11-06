@@ -43,11 +43,13 @@ export default async function handler(req, res) {
     const isPayment =
       event.type === 'charge.succeeded' || event.type === 'payment_intent.succeeded';
 
-    // Branch 1: $500 Clarity Session ($50000 cents).
+    // Branch 1: Intro Session. $500 (50000 cents) or $600 (60000 cents).
     // Star June 18 2026: webhook used to ignore everything but $97/$347 event
-    // tickets, so $500 coaching buyers got silence after payment. Fix sends
+    // tickets, so coaching buyers got silence after payment. Fix sends
     // Star a buyer notification + customer a "DM me to schedule" confirmation.
-    const isClaritySession = isPayment && obj?.amount === 50000;
+    // Nov 6 2026: price raised to $600, accept BOTH during the transition
+    // (old $500 link may still be live, Afterpay installments land at 50000).
+    const isClaritySession = isPayment && (obj?.amount === 50000 || obj?.amount === 60000);
     if (isClaritySession) {
       const buyerEmail =
         obj?.receipt_email ||
@@ -60,7 +62,7 @@ export default async function handler(req, res) {
         obj?.charges?.data?.[0]?.billing_details?.name ||
         obj?.customer_details?.name ||
         '';
-      await sendClaritySessionEmails(buyerEmail, buyerName);
+      await sendClaritySessionEmails(buyerEmail, buyerName, obj?.amount);
       return res.status(200).json({ status: 'sent', type: 'clarity-session', buyerEmail });
     }
 
@@ -124,7 +126,7 @@ Write Star a milestone email. Structure:
 // instruction: bookings happen via DM. Failures are logged but never
 // returned to Stripe, otherwise Stripe retries forever.
 
-async function sendClaritySessionEmails(buyerEmail, buyerName) {
+async function sendClaritySessionEmails(buyerEmail, buyerName, amountCents) {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
     console.error('[clarity-session] RESEND_API_KEY missing, skipping emails');
@@ -134,6 +136,7 @@ async function sendClaritySessionEmails(buyerEmail, buyerName) {
   const firstName = (buyerName || '').trim().split(/\s+/)[0] || '';
   const safeEmail = buyerEmail || '(no email captured)';
   const safeName = buyerName || '(no name captured)';
+  const priceLabel = amountCents ? `$${Math.round(amountCents / 100)}` : '$600';
 
   // 1. Buyer confirmation (only if we actually have their email)
   if (buyerEmail) {
@@ -141,7 +144,7 @@ async function sendClaritySessionEmails(buyerEmail, buyerName) {
     const text = [
       greeting,
       '',
-      'Got your $500 Clarity Session payment. Looking forward to working with you.',
+      `Got your ${priceLabel} Clarity Session payment. Looking forward to working with you.`,
       '',
       'To schedule, DM me on Instagram @starjessetaylor (preferred). If you do not have Instagram, message me on TikTok @starjessetaylor instead. You can also just reply to this email at star@starjessetaylor.com.',
       '',
@@ -177,7 +180,7 @@ async function sendClaritySessionEmails(buyerEmail, buyerName) {
 
   // 2. Star notification
   const starText = [
-    'New $500 Clarity Session just paid.',
+    `New ${priceLabel} Clarity Session just paid.`,
     '',
     `Name: ${safeName}`,
     `Email: ${safeEmail}`,
@@ -195,7 +198,7 @@ async function sendClaritySessionEmails(buyerEmail, buyerName) {
         from: 'Clarity Session <hello@starjessetaylor.com>',
         to: ['star@starjessetaylor.com'],
         reply_to: buyerEmail || undefined,
-        subject: `New $500 Clarity Session paid: ${safeName || safeEmail}`,
+        subject: `New ${priceLabel} Clarity Session paid: ${safeName || safeEmail}`,
         text: starText,
       }),
     });

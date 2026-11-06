@@ -58,7 +58,7 @@ async function sendConfirmation(toEmail, name) {
     'If you want to start moving before the next cohort opens, the fastest path is the book or a Clarity Session.',
     '',
     'Book: ' + SITE_URL + '#book',
-    'Clarity Session ($500, fully credits toward any package): ' + SITE_URL + '/services.html',
+    'Clarity Session ($600, fully credits toward any package): ' + SITE_URL + '/services.html',
     '',
     'I will be in touch the moment doors open.',
     '',
