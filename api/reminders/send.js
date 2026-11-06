@@ -21,6 +21,9 @@
 //   database while reporting success. That is what happens without guards.
 
 import { rollDay, dueNow, localDate, localToUtc, seededRng, localMinutesNow } from './_schedule.js';
+import { WA_TEMPLATES } from './_whatsapp.js';
+const WA_LINE_IDS = new Set(WA_TEMPLATES.map(t => t.id));
+
 import { LINES, pickLine, render } from './_lines.js';
 import { normalisePhone, pickChannel, sendMessage, senderFor } from './_channel.js';
 import { healInboundWebhook } from './_webhook-heal.js';
@@ -237,7 +240,8 @@ export default async function handler(req, res) {
         if (!phone.ok) { report.skipped.push({ id: m.id, why: `bad phone: ${phone.reason}` }); continue; }
 
         for (const slotRow of due) {
-          const line = pickLine({ ...m, ...prefs }, recent, slotRow.slot);
+          const channel = m.channel || pickChannel(phone.e164);
+          const line = pickLine({ ...m, ...prefs }, recent, slotRow.slot, channel === 'whatsapp' ? WA_LINE_IDS : null);
           if (!line) { report.skipped.push({ id: m.id, why: `no eligible line for slot ${slotRow.slot}` }); continue; }
 
           // {...m, ...prefs} to mirror pickLine above: valued_action lives on
@@ -245,7 +249,6 @@ export default async function handler(req, res) {
           // #13's {action} unpersonalised. tomorrow_word/timezone stay on m —
           // message_prefs has neither column, so the spread can't clobber them.
           let body = render(line, { ...m, ...prefs });
-          const channel = m.channel || pickChannel(phone.e164);
           if (channel === 'whatsapp') {
             const {waRender} = await import('./_whatsapp.js');
             body = waRender(line.id,m.timezone).rendered;

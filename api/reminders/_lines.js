@@ -175,8 +175,8 @@ const weightOf = (line) => WEIGHT[line.id] || 1;
  * @param {number[]} recentIds  line ids already sent recently (most recent first)
  * @param {'morning'|'evening'|'any'} slot
  */
-export function pickLine(member, recentIds = [], slot = 'any') {
-  const pool = LINES.filter(l => eligible(l, member, slot));
+export function pickLine(member, recentIds = [], slot = 'any', allowedIds = null) {
+  const pool = LINES.filter(l => (!allowedIds || allowedIds.has(l.id)) && eligible(l, member, slot));
   if (!pool.length) return null;
 
   const unseen = pool.filter(l => !recentIds.includes(l.id));

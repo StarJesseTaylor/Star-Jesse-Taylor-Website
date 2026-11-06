@@ -1,196 +1,189 @@
-// Exact reviewed template registry, bundled for the server runtime.
+// Approved short Utility rotation. Pending reminder 20 is intentionally excluded.
 export default [
   {
     "id": 1,
-    "sid": "HX77dfc7467ed1dfd5dc816446efb0eeab",
-    "name": "audacity_practice_01",
-    "body": "Remember, you only have two choices. You can be inside of your head or outside of your head. Now go outside of your head!"
+    "sid": "HXbe90d173509929f2c76f2bc46c254206",
+    "name": "audacity_requested_short_01",
+    "body": "This is the daily Audacity practice reminder you requested.\n\nToday's practice: Remember, you only have two choices. You can be inside of your head or outside of your head. Now go outside of your head!"
   },
   {
     "id": 2,
-    "sid": "HXb59073a8fbb9296e36abb026138c505a",
-    "name": "audacity_practice_02",
-    "body": "Are you inside of your head? It's time to get outside of your head now!"
+    "sid": "HX504029565d9b105b79dccc82e2b5ea5d",
+    "name": "audacity_requested_short_02",
+    "body": "This is the daily Audacity practice reminder you requested.\n\nToday's practice: Are you inside of your head? It's time to get outside of your head now!"
   },
   {
     "id": 3,
-    "sid": "HX43ad41d6814c94e59f230079009fc214",
-    "name": "audacity_practice_03",
-    "body": "What do you want to spend your time on?"
+    "sid": "HXe165e99faafc9da01b6aed43593a169c",
+    "name": "audacity_requested_short_03",
+    "body": "This is the daily Audacity practice reminder you requested.\n\nToday's practice: What do you want to spend your time on?"
   },
   {
     "id": 4,
-    "sid": "HX7eca9ec50a7da25b600b27810d1a1d07",
-    "name": "audacity_practice_04",
-    "body": "What is the most impactful action to support you right now?"
+    "sid": "HX398a4cec381613a2530decae9ea4f2ed",
+    "name": "audacity_requested_short_04",
+    "body": "This is the daily Audacity practice reminder you requested.\n\nToday's practice: What is the most impactful action to support you right now?"
   },
   {
     "id": 5,
-    "sid": "HX0cd4935810a9bddff19e44ad7434a2b7",
-    "name": "audacity_practice_05",
-    "body": "Remember your tomorrow you! What actions will support them?"
+    "sid": "HX303032b9e243e9eff51b026e7be2f922",
+    "name": "audacity_requested_short_05",
+    "body": "This is the daily Audacity practice reminder you requested.\n\nToday's practice: Remember your tomorrow you! What actions will support them?"
   },
   {
     "id": 6,
-    "sid": "HXb61034c758eec741e6b8f7522824523d",
-    "name": "audacity_practice_06",
-    "body": "Move forward with the wrong feeling."
+    "sid": "HX044d36e64b554409a3191c044255479a",
+    "name": "audacity_requested_short_06",
+    "body": "This is the daily Audacity practice reminder you requested.\n\nToday's practice: Move forward with the wrong feeling."
   },
   {
     "id": 7,
-    "sid": "HX3f8a9a352b5b6025d135d64ea1c68569",
-    "name": "audacity_practice_07",
-    "body": "Stop trying to do it perfectly! Make it messy."
+    "sid": "HXcfb49a90f54fa6cddfa1a573c2b96a81",
+    "name": "audacity_requested_short_07",
+    "body": "This is the daily Audacity practice reminder you requested.\n\nToday's practice: Stop trying to do it perfectly! Make it messy."
   },
   {
     "id": 8,
-    "sid": "HX9e289993bb687c20787218af577f8c65",
-    "name": "audacity_practice_08",
-    "body": "Stop trying to get results! Make it about exploring."
+    "sid": "HX54c5942f7d2be0cb44811323a799bd07",
+    "name": "audacity_requested_short_08",
+    "body": "This is the daily Audacity practice reminder you requested.\n\nToday's practice: Stop trying to get results! Make it about exploring."
   },
   {
     "id": 9,
-    "sid": "HX620848cc93a27de896bee71fed73fade",
-    "name": "audacity_practice_09",
-    "body": "Follow your excitement with no insistence on the outcome."
+    "sid": "HX9f3bb7b3f785bf955be2f91a1cc3fe1e",
+    "name": "audacity_requested_short_09",
+    "body": "This is the daily Audacity practice reminder you requested.\n\nToday's practice: Follow your excitement with no insistence on the outcome."
   },
   {
     "id": 10,
-    "sid": "HX4cfbb3f5f5ba42c59e082d94e29e2c27",
-    "name": "audacity_practice_10",
-    "body": "Your day is not bad because of uncomfortable feelings. Your day is good when you support yourself with valued actions."
+    "sid": "HXfcae0fb4acc6faba41eb058b490d4182",
+    "name": "audacity_requested_short_10",
+    "body": "This is the daily Audacity practice reminder you requested.\n\nToday's practice: Your day is not bad because of uncomfortable feelings. Your day is good when you support yourself with valued actions."
   },
   {
     "id": 11,
-    "sid": "HXdcbb9908827f92ff7ad9118952f37f42",
-    "name": "audacity_practice_11",
-    "body": "Minimize your freak-outs and maximize your successes!"
+    "sid": "HXc28eec00f38ffccbe14b8488c4b24646",
+    "name": "audacity_requested_short_11",
+    "body": "This is the daily Audacity practice reminder you requested.\n\nToday's practice: Minimize your freak-outs and maximize your successes!"
   },
   {
     "id": 12,
-    "sid": "HX128f0a3edfe446eeb7bda4faa1951436",
-    "name": "audacity_practice_12",
-    "body": "Short-term relief gives you long-term pain."
+    "sid": "HXc54d6526a2dcc53e6e505008025b09d3",
+    "name": "audacity_requested_short_12",
+    "body": "This is the daily Audacity practice reminder you requested.\n\nToday's practice: Short-term relief gives you long-term pain."
   },
   {
     "id": 13,
-    "sid": "HX0202d14f4c12440a7174848365b6fa4f",
-    "name": "audacity_practice_13",
-    "body": "No brain. We're doing this right now."
+    "sid": "HX476bd457b8ed69d5785f9f402d2599af",
+    "name": "audacity_requested_short_13",
+    "body": "This is the daily Audacity practice reminder you requested.\n\nToday's practice: No brain. We're doing this right now."
   },
   {
     "id": 14,
-    "sid": "HX20b89380057d77ce6a73bf193ed2b2e5",
-    "name": "audacity_practice_14",
-    "body": "What are you excited about?"
+    "sid": "HXf2774b5226d81ffc2644afb9e2cd6099",
+    "name": "audacity_requested_short_14",
+    "body": "This is the daily Audacity practice reminder you requested.\n\nToday's practice: What are you excited about?"
   },
   {
     "id": 15,
-    "sid": "HX06a5e70fe16dc8dc1a50c59d6eb328a9",
-    "name": "audacity_practice_15",
-    "body": "Do you wanna spend your time inside of your head or outside of your head?"
+    "sid": "HX4909f4f35e3c2a434637be8a64e73dfc",
+    "name": "audacity_requested_short_15",
+    "body": "This is the daily Audacity practice reminder you requested.\n\nToday's practice: Do you wanna spend your time inside of your head or outside of your head?"
   },
   {
     "id": 16,
-    "sid": "HX3ca9e0e78bed95b045efac98e27d9880",
-    "name": "audacity_practice_16",
-    "body": "How can you support your tomorrow you?"
+    "sid": "HX73f87bb214cd41bfdfbd7655a9b939c8",
+    "name": "audacity_requested_short_16",
+    "body": "This is the daily Audacity practice reminder you requested.\n\nToday's practice: How can you support your tomorrow you?"
   },
   {
     "id": 17,
-    "sid": "HX71267fff89640433cd0744a9f326e719",
-    "name": "audacity_practice_17",
-    "body": "How can you set yourself up for success for tomorrow?"
+    "sid": "HX058fc656b6c6be2f9c28ee6c250cf98a",
+    "name": "audacity_requested_short_17",
+    "body": "This is the daily Audacity practice reminder you requested.\n\nToday's practice: How can you set yourself up for success for tomorrow?"
   },
   {
     "id": 18,
-    "sid": "HX87f0166ad9b61e6ebe705e2f04d22917",
-    "name": "audacity_practice_18",
-    "body": "To find your balance, you need to keep moving forward."
+    "sid": "HXb09e59245257b86e0fac8e0c5b78665d",
+    "name": "audacity_requested_short_18",
+    "body": "This is the daily Audacity practice reminder you requested.\n\nToday's practice: To find your balance, you need to keep moving forward."
   },
   {
     "id": 19,
-    "sid": "HXc70082895f55a290ac527bf7d5a809fa",
-    "name": "audacity_practice_19",
-    "body": "Get off your phone and do the valued actions!"
-  },
-  {
-    "id": 20,
-    "sid": "HX976ac81c6194bd831173e0bd985ae9b2",
-    "name": "audacity_practice_20",
-    "body": "You have {{1}} seconds left in the day. How many of those do you want to spend inside of your head?"
+    "sid": "HX0c0f84030907aa1b6de8b21f1f388f56",
+    "name": "audacity_requested_short_19",
+    "body": "This is the daily Audacity practice reminder you requested.\n\nToday's practice: Get off your phone and do the valued actions!"
   },
   {
     "id": 21,
-    "sid": "HX3ea3a4b9d5868bb68930f9378e7ce1de",
-    "name": "audacity_practice_21",
-    "body": "You can't control the thoughts that come inside of your head, but you can control if you're talking back to them."
+    "sid": "HXfd25df74e0e134d2e9feabe967097440",
+    "name": "audacity_requested_short_21",
+    "body": "This is the daily Audacity practice reminder you requested.\n\nToday's practice: You can't control the thoughts that come inside of your head, but you can control if you're talking back to them."
   },
   {
     "id": 22,
-    "sid": "HXc77bd3a0f910ca4973b8351804e6e8f8",
-    "name": "audacity_practice_22",
-    "body": "I love meditating wrong, brain!"
+    "sid": "HX9778299e9ca85befeb949dccf681b243",
+    "name": "audacity_requested_short_22",
+    "body": "This is the daily Audacity practice reminder you requested.\n\nToday's practice: I love meditating wrong, brain!"
   },
   {
     "id": 23,
-    "sid": "HX264b1983c7a0d3c6b34c3f6e7324d72b",
-    "name": "audacity_practice_23",
-    "body": "I love doing it wrong, brain!"
+    "sid": "HXdf9e547eb38b4f3efe2ef664e853b361",
+    "name": "audacity_requested_short_23",
+    "body": "This is the daily Audacity practice reminder you requested.\n\nToday's practice: I love doing it wrong, brain!"
   },
   {
     "id": 24,
-    "sid": "HX6894a5f1caa6bb1496d091f684b87cc9",
-    "name": "audacity_practice_24",
-    "body": "Make it a badge of honor that you can have any feelings and do your valued actions."
+    "sid": "HX7d1d5bc206b37c1579891e1eeaf2d5ba",
+    "name": "audacity_requested_short_24",
+    "body": "This is the daily Audacity practice reminder you requested.\n\nToday's practice: Make it a badge of honor that you can have any feelings and do your valued actions."
   },
   {
     "id": 25,
-    "sid": "HX2a40c04bf91eae555a8b3c06d61b5300",
-    "name": "audacity_practice_25",
-    "body": "What are you giving your attention to?"
+    "sid": "HX21f284be8b364049cd98d82921604f4d",
+    "name": "audacity_requested_short_25",
+    "body": "This is the daily Audacity practice reminder you requested.\n\nToday's practice: What are you giving your attention to?"
   },
   {
     "id": 26,
-    "sid": "HXdac32856bba72dcd2b2627ccbfa25cb2",
-    "name": "audacity_practice_26",
-    "body": "Confidence comes after the action."
+    "sid": "HXc43a06de043713a7815d76f341580620",
+    "name": "audacity_requested_short_26",
+    "body": "This is the daily Audacity practice reminder you requested.\n\nToday's practice: Confidence comes after the action."
   },
   {
     "id": 27,
-    "sid": "HX71458d54f9267163dca220e649e76998",
-    "name": "audacity_practice_27",
-    "body": "What are you showing your brain that you care about right now?"
+    "sid": "HX80e8a3369783c51ba76f7947114f6bbb",
+    "name": "audacity_requested_short_27",
+    "body": "This is the daily Audacity practice reminder you requested.\n\nToday's practice: What are you showing your brain that you care about right now?"
   },
   {
     "id": 28,
-    "sid": "HXda0994da2cccc126da359e4f978f6786",
-    "name": "audacity_practice_28",
-    "body": "Are you standing outside the playing field of life, trying to be perfect, or are you playing and throwing yourself in the mud? Splashing in the rain, when there's rain on the ground."
+    "sid": "HXe6004396d22bb101ee590ab2fb4d7cf3",
+    "name": "audacity_requested_short_28",
+    "body": "This is the daily Audacity practice reminder you requested.\n\nToday's practice: Are you standing outside the playing field of life, trying to be perfect, or are you playing and throwing yourself in the mud? Splashing in the rain, when there's rain on the ground."
   },
   {
     "id": 29,
-    "sid": "HX55772e537b84eef3a4a8225b58466f7a",
-    "name": "audacity_practice_29",
-    "body": "If you don't set intentions for your life, other people will set them for you."
+    "sid": "HXe02faf4409af350d4472778dc31afd78",
+    "name": "audacity_requested_short_29",
+    "body": "This is the daily Audacity practice reminder you requested.\n\nToday's practice: If you don't set intentions for your life, other people will set them for you."
   },
   {
     "id": 30,
-    "sid": "HX2cebc11075ebf59392440028b99cb66f",
-    "name": "audacity_practice_30",
-    "body": "If you don't set intentions for your day, your brain will set them for you."
+    "sid": "HX616355af81d16a56e24b00b377134247",
+    "name": "audacity_requested_short_30",
+    "body": "This is the daily Audacity practice reminder you requested.\n\nToday's practice: If you don't set intentions for your day, your brain will set them for you."
   },
   {
     "id": 31,
-    "sid": "HX38e133ee6e115891c80bb339eaf6a0f1",
-    "name": "audacity_practice_31",
-    "body": "You don't have to believe your thoughts."
+    "sid": "HXd8993cb560e64f3d73d1c04ffda81bd9",
+    "name": "audacity_requested_short_31",
+    "body": "This is the daily Audacity practice reminder you requested.\n\nToday's practice: You don't have to believe your thoughts."
   },
   {
     "id": 32,
-    "sid": "HX153244064f8cfc006d128eb60657f984",
-    "name": "audacity_practice_32",
-    "body": "Don't make your life smaller because of uncomfortable emotions. Make your life bigger while allowing any emotions and thoughts, and then celebrate yourself for doing actions that support you."
+    "sid": "HXa8ae153d0fa25ddd743a847fd3b2418b",
+    "name": "audacity_requested_short_32",
+    "body": "This is the daily Audacity practice reminder you requested.\n\nToday's practice: Don't make your life smaller because of uncomfortable emotions. Make your life bigger while allowing any emotions and thoughts, and then celebrate yourself for doing actions that support you."
   }
-]
-;
+];

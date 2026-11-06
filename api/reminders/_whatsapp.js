@@ -1,4 +1,5 @@
 import templates from './_whatsapp-template-data.js';
+import utilityPricing from './_whatsapp-utility-rates.js';
 import { createHmac, timingSafeEqual, randomBytes } from 'node:crypto';
 import { secondsLeftToday } from './_lines.js';
 import { alphaRpc } from './_alpha.js';
@@ -7,14 +8,13 @@ export const WA_TEMPLATES = templates;
 export const WA_CONSENT = 'wa-reminders-v1';
 export const WA_SENDER = '+14246229513';
 export const waEnabled = () => process.env.WHATSAPP_ENABLED === 'true' && process.env.TWILIO_WHATSAPP_FROM === WA_SENDER;
-// Explicit reviewed USD totals (Twilio + Meta), with an expiry. Never borrow SMS or utility rates.
+// Reviewed Meta Utility rates plus Twilio outbound and inbound allowance. Fail closed on expiry.
 export function waReserveMicro(iso) {
-  const pricing = JSON.parse(process.env.WHATSAPP_PRICING_JSON || '{}');
+  const pricing = utilityPricing;
   const rate = pricing.rates?.[iso];
   if (pricing.currency !== 'USD' || !(Date.parse(pricing.validUntil) > Date.now()) || typeof rate !== 'number' || rate <= 0 || rate > 1)
     throw new Error('WhatsApp destination pricing needs review');
-  if (iso === 'US') throw new Error('WhatsApp marketing unavailable for US numbers');
-  return Math.ceil((rate + .005) * 1.15 * 1e6); // reserve inbound handling allowance too
+  return Math.ceil((rate + .005 + .005) * 1.15 * 1e6); // reserve inbound handling allowance too
 }
 export function waRender(lineId, timezone) {
   const template = WA_TEMPLATES.find(t => t.id === Number(lineId));
@@ -38,7 +38,7 @@ async function checkTemplate(t) {
     return r.json();
   };
   const [approval, content] = await Promise.all([read('/ApprovalRequests'), read('')]);
-  if (approval.whatsapp?.status !== 'approved' || approval.whatsapp?.category !== 'MARKETING') throw new Error('WhatsApp template not approved as marketing: ' + String(approval.whatsapp?.status) + '/' + String(approval.whatsapp?.category));
+  if (approval.whatsapp?.status !== 'approved' || approval.whatsapp?.category !== 'UTILITY') throw new Error('WhatsApp template not approved as utility: ' + String(approval.whatsapp?.status) + '/' + String(approval.whatsapp?.category));
   if (content.types?.['twilio/text']?.body !== t.body) throw new Error('WhatsApp template differs from reviewed copy');
   if (content.language !== 'en_US') throw new Error('WhatsApp template language mismatch: ' + String(content.language));
 }

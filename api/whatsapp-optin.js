@@ -1,9 +1,9 @@
-import {waEnabled, waApprovalsReady, makeWaToken, waReserveMicro, WA_SENDER} from './reminders/_whatsapp.js';
+import {waEnabled, waApprovalsReady, makeWaToken, waReserveMicro, WA_SENDER, WA_TEMPLATES} from './reminders/_whatsapp.js';
 import {normalisePhone,senderFor} from './reminders/_channel.js';
 import {admitSmsSignup} from './reminders/_signup-limit.js';
 export default async function handler(req,res) {
   res.setHeader('Cache-Control','no-store');
-  if (req.method === 'GET') return res.status(200).json({available:await waApprovalsReady(),codeRequired:!!process.env.SMS_ACCESS_CODE});
+  if (req.method === 'GET') return res.status(200).json({available:await waApprovalsReady(),codeRequired:!!process.env.SMS_ACCESS_CODE,templateVersion:"short-utility-20261106",templateCount:WA_TEMPLATES.length});
   if (req.method !== 'POST') return res.status(405).end();
   if (!waEnabled()) return res.status(503).json({message:'WhatsApp reminders are not ready yet. Please use SMS for now.'});
   if (process.env.SMS_ACCESS_CODE && req.body?.accessCode !== process.env.SMS_ACCESS_CODE) return res.status(403).json({message:'Please enter the community access code.'});
