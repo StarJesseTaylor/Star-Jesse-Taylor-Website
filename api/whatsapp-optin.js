@@ -1,3 +1,4 @@
+import {selfServeEnrollmentAllowed} from './reminders/_enrollment.js';
 import {waEnabled, waApprovalsReady, makeWaToken, waReserveMicro, WA_SENDER, WA_TEMPLATES} from './reminders/_whatsapp.js';
 import {normalisePhone,senderFor} from './reminders/_channel.js';
 import {admitSmsSignup} from './reminders/_signup-limit.js';
@@ -22,9 +23,12 @@ export default async function handler(req,res) {
     number='+'+country+national;
   }
   const phone=normalisePhone(number);
-  if(!phone.ok) return res.status(400).json({message:'Choose your phone number’s country and enter your usual WhatsApp number, or paste the full number starting with +.'});
+  if(!phone.ok) return res.status(400).json({message:'Choose your phone numberâ€™s country and enter your usual WhatsApp number, or paste the full number starting with +.'});
   try { waReserveMicro(senderFor(phone.e164).iso); }
   catch { return res.status(400).json({message:'WhatsApp practice reminders are not available for this country yet. Please use SMS or contact us in Skool.'}); }
+  try {
+    if(!await selfServeEnrollmentAllowed(phone.e164)) return res.status(409).json({message:'Reminders for this number require review. Please contact Star in Skool before signing up again.'});
+  } catch { return res.status(503).json({message:'We could not check your reminder preferences. Please try again later.'}); }
   const admission=await admitSmsSignup(req);
   if(!admission.allow) return res.status(admission.unavailable?503:429).json({message:'Signup is temporarily unavailable. Please try again later.'});
   if (!(await waApprovalsReady())) return res.status(503).json({message:'WhatsApp reminders are awaiting approval. Your existing reminders have not changed.'});

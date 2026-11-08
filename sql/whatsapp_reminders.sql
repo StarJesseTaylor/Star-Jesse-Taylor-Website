@@ -30,11 +30,18 @@ begin
  perform 1 from public.sms_budget_policy where id=true for update;
  if exists(select 1 from public.wa_inbound_events where provider_sid=p_sid or nonce=p_nonce) then return jsonb_build_object('ok',true,'duplicate',true); end if;
  if exists(select 1 from public.sms_global_suppressions where phone=p_phone) then return jsonb_build_object('ok',false,'reason','suppressed'); end if;
+ -- A new web signup/WhatsApp JOIN must never undo an operator hold or opt-out.
+ perform 1 from public.member_channel where phone=p_phone for update;
+ if exists(select 1 from public.member_channel where phone=p_phone and status is distinct from 'active') then
+   return jsonb_build_object('ok',false,'reason','operator_review_required');
+ end if;
  insert into public.wa_inbound_events(provider_sid,phone,event,nonce) values(p_sid,p_phone,'consent',p_nonce);
  insert into public.member_channel(phone,first_name,channel,timezone,consent_at,consent_source,status)
  values(p_phone,left(p_name,80),'whatsapp',p_timezone,now(),'whatsapp-confirmed-v1','active')
- on conflict(phone) do update set channel='whatsapp',timezone=excluded.timezone,status='active',updated_at=now()
+ on conflict(phone) do update set channel='whatsapp',timezone=excluded.timezone,updated_at=now()
+ where member_channel.status='active'
  returning id into mid;
+ if mid is null then raise exception 'Enrollment requires operator review'; end if;
  insert into public.wa_consent(phone,consent_at,version,timezone,revoked_at)
  values(p_phone,now(),p_version,p_timezone,null)
  on conflict(phone) do update set consent_at=excluded.consent_at,version=excluded.version,timezone=excluded.timezone,revoked_at=null;

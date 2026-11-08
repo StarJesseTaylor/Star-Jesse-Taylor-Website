@@ -460,12 +460,12 @@ async function enrolInReminders({ phone, firstName, timezone, source }) {
 
     if (existing) {
       // 🛑 They replied STOP at some point. A website form does not undo that.
-      if (existing.status === 'stopped') return { ok: false, reason: 'they previously texted STOP', stopped: true };
+      if (existing.status !== 'active') return { ok: false, reason: 'existing reminder status requires operator review', stopped: true };
 
       await sb(`member_channel?id=eq.${existing.id}`, {
         method: 'PATCH',
         body: JSON.stringify({
-          status: 'active',
+          // Existing active status is never rewritten by a web form.
           first_name: firstName || undefined,
           // Only stamp consent if we somehow never had one. Never replace it.
           consent_at: existing.consent_at || new Date().toISOString(),

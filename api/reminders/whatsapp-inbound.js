@@ -1,3 +1,4 @@
+import {selfServeEnrollmentAllowed} from './_enrollment.js';
 import inbound, {STOP_WORDS} from './inbound.js';
 import {verifyTwilio} from './_twilio-sig.js';
 import {alphaRpc} from './_alpha.js';
@@ -32,11 +33,12 @@ export default async function handler(req,res) {
       let payload;
       try { payload=readWaToken(join[1]); } catch { return reply('Please open starjessetaylor.com/whatsapp again to confirm your reminders.'); }
       if(payload.phone !== phone) return reply('Please use the same WhatsApp number you entered on the signup page.');
+      if(!await selfServeEnrollmentAllowed(phone)) return reply('Reminders for this number require review. Please contact Star in Skool before signing up again.');
       // Only admit destinations with reviewed costs. No silent SMS fallback.
       try { waReserveMicro(senderFor(phone).iso); } catch { return res.status(200).send(xml()); }
       const result=await alphaRpc('wa_confirm',{p_phone:phone,p_timezone:payload.tz,p_sid:sid,p_version:WA_CONSENT,p_name:String(payload.name || req.body?.ProfileName || '').slice(0,80),p_nonce:payload.nonce});
       if(result?.duplicate) return res.status(200).send(xml());
-      if(!result?.ok) return res.status(200).send(xml());
+      if(!result?.ok) return reply('We could not activate reminders for this number. Please contact Star in Skool for help.');
       return reply('You are signed up for daily Audacity reminders on WhatsApp. Future reminders will use WhatsApp. An SMS already sent may still arrive. One reminder a day, between 8am and 9pm in your time zone. Reply STOP to stop. This is an automated reminder line. For support, visit the community: https://www.skool.com/starjessetaylor');
     }
     if (/^(start|unstop|resume|yes please)\b/i.test(body)) return reply('To restart WhatsApp reminders, confirm at https://starjessetaylor.com/whatsapp');
