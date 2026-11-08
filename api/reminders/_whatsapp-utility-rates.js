@@ -2,10 +2,17 @@
 export default {
   "currency": "USD",
   "category": "UTILITY",
-  "reviewedAt": "2026-11-06",
+  "reviewedAt": "2026-11-08",
   "validUntil": "2027-02-01T00:00:00Z",
   "source": "https://www.twilio.com/content/dam/twilio-com/pricing-data/en/WhatsAppPricing-pricing-details.csv",
+  // These ISO codes are omitted from the source CSV and use its explicit Other rate.
   "rates": {
+    "CY": 0.0077,
+    "MT": 0.0077,
+    "ME": 0.0077,
+    "LU": 0.0077,
+    "IS": 0.0077,
+    "EE": 0.0077,
     "AF": 0.0113,
     "AL": 0.0212,
     "DZ": 0.004,
