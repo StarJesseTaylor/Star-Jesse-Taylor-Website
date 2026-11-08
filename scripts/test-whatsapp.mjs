@@ -9,6 +9,7 @@ assert.equal(STOP_WORDS.test('Stop overthinking'),false);
 assert.equal(STOP_WORDS.test('End of my day was great'),false);
 assert.equal(STOP_WORDS.test('stop sending reminders'),true);
 const {default:inbound}=await import('../api/reminders/whatsapp-inbound.js');
+let responseSid='SM'+'a'.repeat(32);
 let category="UTILITY",approved=true,consent=true,changed=false,sends=[],stops=0,confirmed=0,seen=new Set();
 globalThis.fetch=async(url,init={})=>{
  const u=String(url);
@@ -18,7 +19,7 @@ globalThis.fetch=async(url,init={})=>{
  if(u.includes('/rpc/wa_confirm')){confirmed++;return Response.json({ok:true});}
  if(u.includes('/rpc/sms_dispatch_still_allowed')||u.includes('/rpc/sms_phone_not_suppressed'))return Response.json(true);
  if(u.includes('/rpc/reserve_sms_dispatch')){const b=JSON.parse(init.body);if(seen.has(b.p_key))return Response.json({allow:false,reason:'duplicate'});seen.add(b.p_key);return Response.json({allow:true});}
- if(u.includes('api.twilio.com')){sends.push(new URLSearchParams(init.body));return Response.json({sid:'SM'+'a'.repeat(32)});}
+ if(u.includes('api.twilio.com')){sends.push(new URLSearchParams(init.body));return Response.json({sid:responseSid});}
  if(u.startsWith('https://offline.invalid/'))return Response.json([]);
  throw Error('Unexpected network '+u);
 };
@@ -38,6 +39,13 @@ approved=true;category='MARKETING';assert.equal((await sendMessage(args)).blocke
 consent=false;assert.equal((await sendMessage(args)).blocked,true);consent=true;
 await sendMessage(args);assert.equal(sends.length,1);assert.equal(sends[0].has('Body'),false);assert.equal(sends[0].get('ContentSid'),WA_TEMPLATES.find(t=>t.id===13).sid);assert.equal(sends[0].has('ContentVariables'),false);
 await sendMessage(args);assert.equal(sends.length,1);
+// Twilio's Message resource permits MM as well as SM; WhatsApp can return MM.
+responseSid='MM'+'d'.repeat(32);
+const mm=await sendMessage({...args,dispatchKey:'test:mm'});
+assert.equal(mm.sent,true);assert.equal(mm.sid,responseSid);
+responseSid='AC'+'e'.repeat(32);
+const malformed=await sendMessage({...args,dispatchKey:'test:bad-sid'});
+assert.equal(malformed.sent,false);assert.equal(malformed.unknown,true);
 const req={method:'POST',url:'/api/reminders/whatsapp-inbound',headers:{host:'starjessetaylor.com'},body:{From:'whatsapp:+447911123456',To:'whatsapp:+14246229513',MessageSid:'SM'+'b'.repeat(32),Body:'STOP'}};
 function signed(){let s='https://starjessetaylor.com'+req.url;for(const k of Object.keys(req.body).sort())s+=k+req.body[k];req.headers['x-twilio-signature']=createHmac('sha1',process.env.TWILIO_AUTH_TOKEN).update(s).digest('base64');}
 const res={setHeader(){},status(n){this.code=n;return this},send(s){this.body=s;return this}};

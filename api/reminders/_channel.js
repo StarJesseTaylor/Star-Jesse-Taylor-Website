@@ -620,7 +620,7 @@ export async function sendMessage({ to, body, channel, dryRun = false, kind, day
       error: `Twilio ${res.status} [${data?.code ?? '?'}]: ${data?.message || 'unknown'}`,
     };
   }
-  if (!/^SM[0-9a-f]{32}$/i.test(data.sid || '')) {
+  if (!/^(SM|MM)[0-9a-f]{32}$/i.test(data.sid || '')) {
     await settleSend(dispatchKey,{state:'unknown',from,to,channel});
     return {sent:false,unknown:true,permanent:true,channel,from,error:'provider response missing valid SID; no automatic retry'};
   }
