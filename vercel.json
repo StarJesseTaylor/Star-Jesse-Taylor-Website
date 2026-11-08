@@ -46,8 +46,6 @@
     { "source": "/free", "destination": "https://www.skool.com/star-jesse-taylor-3703?utm_source=book&utm_medium=book", "permanent": false },
     { "source": "/event", "destination": "/community", "permanent": false },
     { "source": "/event.html", "destination": "/community", "permanent": false },
-    { "source": "/la-workshop", "destination": "/community", "permanent": false },
-    { "source": "/la-workshop.html", "destination": "/community", "permanent": false },
     { "source": "/cohort", "destination": "/community", "permanent": false },
     { "source": "/cohort.html", "destination": "/community", "permanent": false },
     { "source": "/courses", "destination": "/book", "permanent": false },

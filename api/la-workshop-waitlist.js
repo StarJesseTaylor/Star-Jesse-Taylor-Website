@@ -1,8 +1,8 @@
 /**
  * LA Workshop Waitlist handler.
  *
- * Captures someone who wants first access to the in-person LA workshop
- * (Saturday, November 14, 2026). Adds to ActiveCampaign, applies workshop
+ * Captures someone who wants first access to the next in-person LA workshop
+ * (date to be announced, early 2027). Adds to ActiveCampaign, applies workshop
  * tags, sends a confirmation email via Resend, and notifies Star.
  *
  * Mirrors api/la-meetup-waitlist.js. To segment these separately in AC,
@@ -54,9 +54,9 @@ async function sendConfirmation(toEmail, name) {
   const text = [
     greeting,
     '',
-    'You are on the waitlist for the LA workshop, Saturday, November 14, 2026.',
+    'You are on the waitlist for the next in-person LA workshop.',
     '',
-    'When seats open, the waitlist hears first and gets first access before anyone else.',
+    'As soon as the date is set, the waitlist hears first and gets first access to a seat before anyone else.',
     '',
     "I'm so excited to see you in person at the LA workshop!",
     '',
@@ -95,7 +95,7 @@ async function notifyStar(name, email) {
     'Email: ' + email,
     'Time: ' + new Date().toISOString(),
     '',
-    'They have been added to ActiveCampaign with tags workshop:la-nov-14-2026, path:la-workshop, workshop:waitlist, source:website, location:los-angeles.',
+    'They have been added to ActiveCampaign with tags workshop:la-2027, path:la-workshop, workshop:waitlist, source:website, location:los-angeles.',
     'Confirmation email already sent to them from hello@starjessetaylor.com.'
   ].join('\n');
   try {
@@ -176,7 +176,7 @@ export default async function handler(req, res) {
     }).catch(err => console.error('List add error:', err));
 
     await Promise.all([
-      applyTag(AC_URL, headers, contactId, 'workshop:la-nov-14-2026'),
+      applyTag(AC_URL, headers, contactId, 'workshop:la-2027'),
       applyTag(AC_URL, headers, contactId, 'path:la-workshop'),
       applyTag(AC_URL, headers, contactId, 'workshop:waitlist'),
       applyTag(AC_URL, headers, contactId, 'source:website'),
