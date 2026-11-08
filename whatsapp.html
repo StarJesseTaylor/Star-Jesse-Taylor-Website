@@ -1,7 +1,162 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>WhatsApp Reminders | Audacity</title><style>
 [hidden]{display:none!important}*{box-sizing:border-box}body{margin:0;background:#fffaf0;color:#153d43;font-family:system-ui,sans-serif;line-height:1.6}main{max-width:560px;margin:6vh auto;padding:28px}h1{font-family:Georgia,serif;font-size:42px;line-height:1.12}label{display:block;margin:20px 0 8px}input:not([type=checkbox]),select{width:100%;padding:13px;border:1px solid #aabbbb;border-radius:8px;font:inherit}button,.button{display:block;width:100%;background:#164b50;color:white;padding:16px;border:0;border-radius:9px;font:inherit;font-weight:700;cursor:pointer;text-align:center}a{color:#164b50}small{display:block;margin:18px 0;color:#496467}.brand{letter-spacing:.22em;color:#9c752c;font-weight:700}#status{padding:14px 0}#open{margin-top:16px}button:disabled{opacity:.55;cursor:wait}.name-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}.name-row>div{min-width:0}.reminder-photo{position:relative;margin:24px 0 12px;border-radius:16px;overflow:hidden;background:#102f50}.reminder-photo img{display:block;width:100%;height:auto}.reminder-bubble{position:absolute;top:20%;left:48%;width:48%;margin:0;padding:12px;background:#fffaf3;color:#10253e;border-radius:15px;font-size:16px;font-weight:650;line-height:1.3;box-shadow:0 5px 20px #071c3326}.reminder-bubble::after{content:"";position:absolute;bottom:0;left:-7px;border-width:0 0 14px 16px;border-style:solid;border-color:transparent transparent #fffaf3 transparent}@media(max-width:460px){main{padding:20px;margin:20px auto}h1{font-size:32px}.reminder-bubble{font-size:13px;padding:10px;top:15%}.name-row{gap:10px}} </style></head><body><main>
 <div class="brand">AUDACITY</div><h1>WhatsApp Reminders to Stay on Track</h1><p>Hours disappear inside your head and you do not get them back. Your brain can trick you. You can get lost in thoughts. These reminders wake you up and remind you to go in a different direction, and with that, give you more progress.</p><p>One a day, at a moment you are not expecting.</p><p>Private messages, not a group. If you already get SMS reminders on this number, WhatsApp will replace them.</p>
-<figure class="reminder-photo"><img src="/images/star-sms-phone.webp" alt="Star smiling while looking at his phone" width="1747" height="900" fetchpriority="high"><figcaption class="reminder-bubble">Are you inside of your head? It's time to get outside of your head now!</figcaption></figure><form id="form"><div class="name-row"><div><label for="firstName">First name</label><input id="firstName" autocomplete="given-name" maxlength="39" required></div><div><label for="lastName">Last name</label><input id="lastName" autocomplete="family-name" maxlength="40" required></div></div><label for="phone">Your WhatsApp number (with country code)</label><input id="phone" type="tel" placeholder="+44 7911 123456" required><label for="timezone">Your time zone</label><select id="timezone" required></select><div id="code-wrap" hidden><label for="code">Community access code</label><input id="code" autocomplete="off"></div>
+<figure class="reminder-photo"><img src="/images/star-sms-phone.webp" alt="Star smiling while looking at his phone" width="1747" height="900" fetchpriority="high"><figcaption class="reminder-bubble">Are you inside of your head? It's time to get outside of your head now!</figcaption></figure><form id="form"><div class="name-row"><div><label for="firstName">First name</label><input id="firstName" autocomplete="given-name" maxlength="39" required></div><div><label for="lastName">Last name</label><input id="lastName" autocomplete="family-name" maxlength="40" required></div></div><label for="countryCode">Country your phone number is from</label><select id="countryCode" required><option value="" selected disabled>Choose your country</option>
+            <option value="93" data-iso="AF">Afghanistan (+93)</option>
+            <option value="355" data-iso="AL">Albania (+355)</option>
+            <option value="213" data-iso="DZ">Algeria (+213)</option>
+            <option value="376" data-iso="AD">Andorra (+376)</option>
+            <option value="244" data-iso="AO">Angola (+244)</option>
+            <option value="54" data-iso="AR">Argentina (+54)</option>
+            <option value="374" data-iso="AM">Armenia (+374)</option>
+            <option value="297" data-iso="AW">Aruba (+297)</option>
+            <option value="61" data-iso="AU">Australia (+61)</option>
+            <option value="43" data-iso="AT">Austria (+43)</option>
+            <option value="994" data-iso="AZ">Azerbaijan (+994)</option>
+            <option value="1" data-iso="BS">Bahamas (+1)</option>
+            <option value="973" data-iso="BH">Bahrain (+973)</option>
+            <option value="880" data-iso="BD">Bangladesh (+880)</option>
+            <option value="1" data-iso="BB">Barbados (+1)</option>
+            <option value="375" data-iso="BY">Belarus (+375)</option>
+            <option value="32" data-iso="BE">Belgium (+32)</option>
+            <option value="501" data-iso="BZ">Belize (+501)</option>
+            <option value="229" data-iso="BJ">Benin (+229)</option>
+            <option value="975" data-iso="BT">Bhutan (+975)</option>
+            <option value="591" data-iso="BO">Bolivia (+591)</option>
+            <option value="387" data-iso="BA">Bosnia and Herzegovina (+387)</option>
+            <option value="267" data-iso="BW">Botswana (+267)</option>
+            <option value="55" data-iso="BR">Brazil (+55)</option>
+            <option value="673" data-iso="BN">Brunei (+673)</option>
+            <option value="359" data-iso="BG">Bulgaria (+359)</option>
+            <option value="226" data-iso="BF">Burkina Faso (+226)</option>
+            <option value="257" data-iso="BI">Burundi (+257)</option>
+            <option value="855" data-iso="KH">Cambodia (+855)</option>
+            <option value="237" data-iso="CM">Cameroon (+237)</option>
+            <option value="1" data-iso="CA">Canada (+1)</option>
+            <option value="238" data-iso="CV">Cape Verde (+238)</option>
+            <option value="235" data-iso="TD">Chad (+235)</option>
+            <option value="56" data-iso="CL">Chile (+56)</option>
+            <option value="86" data-iso="CN">China (+86)</option>
+            <option value="57" data-iso="CO">Colombia (+57)</option>
+            <option value="506" data-iso="CR">Costa Rica (+506)</option>
+            <option value="385" data-iso="HR">Croatia (+385)</option>
+            <option value="53" data-iso="CU">Cuba (+53)</option>
+            <option value="357" data-iso="CY">Cyprus (+357)</option>
+            <option value="420" data-iso="CZ">Czechia (+420)</option>
+            <option value="45" data-iso="DK">Denmark (+45)</option>
+            <option value="1" data-iso="DO">Dominican Republic (+1)</option>
+            <option value="593" data-iso="EC">Ecuador (+593)</option>
+            <option value="20" data-iso="EG">Egypt (+20)</option>
+            <option value="503" data-iso="SV">El Salvador (+503)</option>
+            <option value="372" data-iso="EE">Estonia (+372)</option>
+            <option value="251" data-iso="ET">Ethiopia (+251)</option>
+            <option value="679" data-iso="FJ">Fiji (+679)</option>
+            <option value="358" data-iso="FI">Finland (+358)</option>
+            <option value="33" data-iso="FR">France (+33)</option>
+            <option value="241" data-iso="GA">Gabon (+241)</option>
+            <option value="995" data-iso="GE">Georgia (+995)</option>
+            <option value="49" data-iso="DE">Germany (+49)</option>
+            <option value="233" data-iso="GH">Ghana (+233)</option>
+            <option value="350" data-iso="GI">Gibraltar (+350)</option>
+            <option value="30" data-iso="GR">Greece (+30)</option>
+            <option value="502" data-iso="GT">Guatemala (+502)</option>
+            <option value="592" data-iso="GY">Guyana (+592)</option>
+            <option value="509" data-iso="HT">Haiti (+509)</option>
+            <option value="504" data-iso="HN">Honduras (+504)</option>
+            <option value="852" data-iso="HK">Hong Kong (+852)</option>
+            <option value="36" data-iso="HU">Hungary (+36)</option>
+            <option value="354" data-iso="IS">Iceland (+354)</option>
+            <option value="91" data-iso="IN">India (+91)</option>
+            <option value="62" data-iso="ID">Indonesia (+62)</option>
+            <option value="98" data-iso="IR">Iran (+98)</option>
+            <option value="964" data-iso="IQ">Iraq (+964)</option>
+            <option value="353" data-iso="IE">Ireland (+353)</option>
+            <option value="972" data-iso="IL">Israel (+972)</option>
+            <option value="39" data-iso="IT">Italy (+39)</option>
+            <option value="1" data-iso="JM">Jamaica (+1)</option>
+            <option value="81" data-iso="JP">Japan (+81)</option>
+            <option value="962" data-iso="JO">Jordan (+962)</option>
+            <option value="7" data-iso="KZ">Kazakhstan (+7)</option>
+            <option value="254" data-iso="KE">Kenya (+254)</option>
+            <option value="965" data-iso="KW">Kuwait (+965)</option>
+            <option value="996" data-iso="KG">Kyrgyzstan (+996)</option>
+            <option value="856" data-iso="LA">Laos (+856)</option>
+            <option value="371" data-iso="LV">Latvia (+371)</option>
+            <option value="961" data-iso="LB">Lebanon (+961)</option>
+            <option value="218" data-iso="LY">Libya (+218)</option>
+            <option value="423" data-iso="LI">Liechtenstein (+423)</option>
+            <option value="370" data-iso="LT">Lithuania (+370)</option>
+            <option value="352" data-iso="LU">Luxembourg (+352)</option>
+            <option value="853" data-iso="MO">Macau (+853)</option>
+            <option value="261" data-iso="MG">Madagascar (+261)</option>
+            <option value="265" data-iso="MW">Malawi (+265)</option>
+            <option value="60" data-iso="MY">Malaysia (+60)</option>
+            <option value="960" data-iso="MV">Maldives (+960)</option>
+            <option value="356" data-iso="MT">Malta (+356)</option>
+            <option value="230" data-iso="MU">Mauritius (+230)</option>
+            <option value="52" data-iso="MX">Mexico (+52)</option>
+            <option value="373" data-iso="MD">Moldova (+373)</option>
+            <option value="377" data-iso="MC">Monaco (+377)</option>
+            <option value="976" data-iso="MN">Mongolia (+976)</option>
+            <option value="382" data-iso="ME">Montenegro (+382)</option>
+            <option value="212" data-iso="MA">Morocco (+212)</option>
+            <option value="258" data-iso="MZ">Mozambique (+258)</option>
+            <option value="95" data-iso="MM">Myanmar (+95)</option>
+            <option value="264" data-iso="NA">Namibia (+264)</option>
+            <option value="977" data-iso="NP">Nepal (+977)</option>
+            <option value="31" data-iso="NL">Netherlands (+31)</option>
+            <option value="64" data-iso="NZ">New Zealand (+64)</option>
+            <option value="505" data-iso="NI">Nicaragua (+505)</option>
+            <option value="234" data-iso="NG">Nigeria (+234)</option>
+            <option value="389" data-iso="MK">North Macedonia (+389)</option>
+            <option value="47" data-iso="NO">Norway (+47)</option>
+            <option value="968" data-iso="OM">Oman (+968)</option>
+            <option value="92" data-iso="PK">Pakistan (+92)</option>
+            <option value="507" data-iso="PA">Panama (+507)</option>
+            <option value="675" data-iso="PG">Papua New Guinea (+675)</option>
+            <option value="595" data-iso="PY">Paraguay (+595)</option>
+            <option value="51" data-iso="PE">Peru (+51)</option>
+            <option value="63" data-iso="PH">Philippines (+63)</option>
+            <option value="48" data-iso="PL">Poland (+48)</option>
+            <option value="351" data-iso="PT">Portugal (+351)</option>
+            <option value="1" data-iso="PR">Puerto Rico (+1)</option>
+            <option value="974" data-iso="QA">Qatar (+974)</option>
+            <option value="40" data-iso="RO">Romania (+40)</option>
+            <option value="7" data-iso="RU">Russia (+7)</option>
+            <option value="250" data-iso="RW">Rwanda (+250)</option>
+            <option value="378" data-iso="SM">San Marino (+378)</option>
+            <option value="966" data-iso="SA">Saudi Arabia (+966)</option>
+            <option value="221" data-iso="SN">Senegal (+221)</option>
+            <option value="381" data-iso="RS">Serbia (+381)</option>
+            <option value="248" data-iso="SC">Seychelles (+248)</option>
+            <option value="65" data-iso="SG">Singapore (+65)</option>
+            <option value="421" data-iso="SK">Slovakia (+421)</option>
+            <option value="386" data-iso="SI">Slovenia (+386)</option>
+            <option value="27" data-iso="ZA">South Africa (+27)</option>
+            <option value="82" data-iso="KR">South Korea (+82)</option>
+            <option value="34" data-iso="ES">Spain (+34)</option>
+            <option value="94" data-iso="LK">Sri Lanka (+94)</option>
+            <option value="46" data-iso="SE">Sweden (+46)</option>
+            <option value="41" data-iso="CH">Switzerland (+41)</option>
+            <option value="886" data-iso="TW">Taiwan (+886)</option>
+            <option value="255" data-iso="TZ">Tanzania (+255)</option>
+            <option value="66" data-iso="TH">Thailand (+66)</option>
+            <option value="1" data-iso="TT">Trinidad and Tobago (+1)</option>
+            <option value="216" data-iso="TN">Tunisia (+216)</option>
+            <option value="90" data-iso="TR">Turkey (+90)</option>
+            <option value="256" data-iso="UG">Uganda (+256)</option>
+            <option value="380" data-iso="UA">Ukraine (+380)</option>
+            <option value="971" data-iso="AE">United Arab Emirates (+971)</option>
+            <option value="44" data-iso="GB">United Kingdom (+44)</option>
+            <option value="1" data-iso="US">United States (+1)</option>
+            <option value="598" data-iso="UY">Uruguay (+598)</option>
+            <option value="998" data-iso="UZ">Uzbekistan (+998)</option>
+            <option value="58" data-iso="VE">Venezuela (+58)</option>
+            <option value="84" data-iso="VN">Vietnam (+84)</option>
+            <option value="260" data-iso="ZM">Zambia (+260)</option>
+            <option value="263" data-iso="ZW">Zimbabwe (+263)</option>
+
+          </select><label for="phone">Your WhatsApp number</label><input id="phone" type="tel" autocomplete="tel-national" inputmode="tel" placeholder="Your usual phone number" aria-describedby="phone-help" required><small id="phone-help">Choose your country above, then enter your number as you normally would. We’ll add the country code for you. A full number starting with + also works.</small><label for="timezone">Your time zone</label><select id="timezone" required></select><div id="code-wrap" hidden><label for="code">Community access code</label><input id="code" autocomplete="off"></div>
 <label><input id="consent" type="checkbox" required> I agree to receive one daily automated Audacity practice reminder on WhatsApp from Star Jesse Taylor. I can reply STOP at any time.</label>
 <small>WhatsApp and data charges may apply. This automated line is not personal coaching or urgent support. Join the conversation in Skool.</small><button id="submit" type="submit">Continue to WhatsApp</button></form>
 <p id="status" role="status"></p><a id="open" class="button" hidden>Open WhatsApp and send confirmation</a><small>Send the prefilled message in WhatsApp to finish. You are not subscribed until you send it and receive confirmation.</small><p><a href="/sms">Prefer text messages?</a> · <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a></p></main><script>
@@ -9,5 +164,5 @@ const zone=document.getElementById('timezone'), button=document.getElementById('
 const local=Intl.DateTimeFormat().resolvedOptions().timeZone;
 for(const z of [...new Set([local,...Intl.supportedValuesOf('timeZone')])]){const o=document.createElement('option');o.value=z;o.textContent=z.replaceAll('_',' ');o.selected=z===local;zone.append(o)}
 fetch('/api/whatsapp-optin').then(r=>r.json()).then(d=>{document.getElementById('code-wrap').hidden=!d.codeRequired;if(!d.available){button.disabled=true;status.textContent='WhatsApp reminders are being set up. You can use text reminders meanwhile.'}}).catch(()=>{button.disabled=true;status.textContent='Unable to load signup. Please try again.'});
-document.getElementById('form').addEventListener('submit',async e=>{e.preventDefault();button.disabled=true;try{const r=await fetch('/api/whatsapp-optin',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:[document.getElementById('firstName').value.trim(),document.getElementById('lastName').value.trim()].join(' '),phone:document.getElementById('phone').value,timezone:zone.value,consent:document.getElementById('consent').checked,accessCode:document.getElementById('code').value})});const d=await r.json();if(!r.ok)throw Error(d.message);const link=document.getElementById('open');link.href=d.url;link.hidden=false;status.textContent='One more step: open WhatsApp below and send the confirmation message.';}catch(e){status.textContent=e.message||'Please try again.'}finally{button.disabled=false}});
+document.getElementById('form').addEventListener('submit',async e=>{e.preventDefault();button.disabled=true;try{const r=await fetch('/api/whatsapp-optin',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:[document.getElementById('firstName').value.trim(),document.getElementById('lastName').value.trim()].join(' '),phone:document.getElementById('phone').value,countryCode:document.getElementById('countryCode').value,timezone:zone.value,consent:document.getElementById('consent').checked,accessCode:document.getElementById('code').value})});const d=await r.json();if(!r.ok)throw Error(d.message);const link=document.getElementById('open');link.href=d.url;link.hidden=false;status.textContent='One more step: open WhatsApp below and send the confirmation message.';}catch(e){status.textContent=e.message||'Please try again.'}finally{button.disabled=false}});
 </script></body></html>

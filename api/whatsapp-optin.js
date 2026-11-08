@@ -10,8 +10,19 @@ export default async function handler(req,res) {
   if (req.body?.consent !== true) return res.status(400).json({message:'Please confirm that you want WhatsApp reminders.'});
   const name=String(req.body?.name || '').trim();
   if(!name || name.length>80 || /[\x00-\x1f\x7f]/.test(name)) return res.status(400).json({message:'Please enter your name as it appears in Skool.'});
-  const phone=normalisePhone(req.body?.phone || '');
-  if(!phone.ok) return res.status(400).json({message:'Enter your WhatsApp number with its country code, for example +44.'});
+  const raw=String(req.body?.phone || '').trim();
+  const country=String(req.body?.countryCode || '');
+  let number=raw;
+  if (/^\d{1,3}$/.test(country) && !raw.startsWith('+') && !raw.startsWith('00')) {
+    let national=raw.replace(/[\s().-]/g,'');
+    // Italy keeps significant leading zeros; NANP accepts the domestic 1 prefix.
+    if(country !== '39') national=national.replace(/^0+/,'');
+    if(country === '1' && /^1\d{10}$/.test(national)) national=national.slice(1);
+    if(country === '7' && /^8\d{10}$/.test(national)) national=national.slice(1);
+    number='+'+country+national;
+  }
+  const phone=normalisePhone(number);
+  if(!phone.ok) return res.status(400).json({message:'Choose your phone number’s country and enter your usual WhatsApp number, or paste the full number starting with +.'});
   try { waReserveMicro(senderFor(phone.e164).iso); }
   catch { return res.status(400).json({message:'WhatsApp practice reminders are not available for this country yet. Please use SMS or contact us in Skool.'}); }
   const admission=await admitSmsSignup(req);
