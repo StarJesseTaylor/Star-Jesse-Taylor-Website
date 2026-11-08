@@ -22,8 +22,7 @@ begin
  end if;
  if exists(select 1 from public.sms_global_suppressions where phone=p_phone)
  or exists(select 1 from public.member_channel where phone=p_phone and status is distinct from 'active') then return false; end if;
- -- Opportunistic cleanup: expired codes cannot be confirmed even before deletion.
- delete from public.wa_pending_signups where expires_at<=now();
+ -- Retain expired signup records; confirmation enforces expires_at directly.
  insert into public.wa_pending_signups(code_hash,phone,name,timezone,nonce,expires_at)
  values(p_hash,p_phone,p_name,p_timezone,p_nonce,now()+interval '30 minutes');
  return true;
