@@ -1,5 +1,6 @@
+import {createWaSignupCode} from './reminders/_whatsapp-signup.js';
 import {selfServeEnrollmentAllowed} from './reminders/_enrollment.js';
-import {waEnabled, waApprovalsReady, makeWaToken, waReserveMicro, WA_SENDER, WA_TEMPLATES} from './reminders/_whatsapp.js';
+import {waEnabled, waApprovalsReady, waReserveMicro, WA_SENDER, WA_TEMPLATES} from './reminders/_whatsapp.js';
 import {normalisePhone,senderFor} from './reminders/_channel.js';
 import {admitSmsSignup} from './reminders/_signup-limit.js';
 export default async function handler(req,res) {
@@ -32,9 +33,11 @@ export default async function handler(req,res) {
   const admission=await admitSmsSignup(req);
   if(!admission.allow) return res.status(admission.unavailable?503:429).json({message:'Signup is temporarily unavailable. Please try again later.'});
   if (!(await waApprovalsReady())) return res.status(503).json({message:'WhatsApp reminders are awaiting approval. Your existing reminders have not changed.'});
+  try { new Intl.DateTimeFormat('en',{timeZone:req.body?.timezone}).format(); }
+  catch { return res.status(400).json({message:'Please choose a valid time zone.'}); }
   try {
-    const token = makeWaToken(req.body?.timezone,phone.e164,name);
-    const text = 'I agree to one daily Audacity practice reminder on WhatsApp from Star Jesse Taylor. Reply STOP to stop. JOIN ' + token;
+    const code = await createWaSignupCode(req.body?.timezone,phone.e164,name);
+    const text = 'JOIN ' + code;
     return res.status(200).json({url:'https://wa.me/'+WA_SENDER.slice(1)+'?text='+encodeURIComponent(text)});
-  } catch { return res.status(400).json({message:'Please choose a valid time zone.'}); }
+  } catch { return res.status(503).json({message:'We could not prepare your WhatsApp signup. Please try again later or contact Star in Skool.'}); }
 }

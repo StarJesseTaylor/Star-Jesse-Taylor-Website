@@ -1,3 +1,4 @@
+import {confirmWaSignupCode} from './_whatsapp-signup.js';
 import {selfServeEnrollmentAllowed} from './_enrollment.js';
 import inbound, {STOP_WORDS} from './inbound.js';
 import {verifyTwilio} from './_twilio-sig.js';
@@ -27,6 +28,17 @@ export default async function handler(req,res) {
       await alphaRpc('wa_stop',{p_phone:phone,p_sid:sid});
       return reply('Your WhatsApp reminders are stopped. To sign up again, visit https://starjessetaylor.com/whatsapp');
     }
+    const shortJoin=body.match(/^JOIN ([A-Za-z0-9_-]{11})$/);
+    if(shortJoin) {
+      if(!waEnabled() || !(await waApprovalsReady())) return reply('WhatsApp reminders are not ready yet. Your existing SMS preference has not changed. Please try again later.');
+      if(!await selfServeEnrollmentAllowed(phone)) return reply('Reminders for this number require review. Please contact Star in Skool before signing up again.');
+      try { waReserveMicro(senderFor(phone).iso); } catch { return res.status(200).send(xml()); }
+      const result=await confirmWaSignupCode(shortJoin[1],phone,sid);
+      if(result?.duplicate) return res.status(200).send(xml());
+      if(!result?.ok) return reply('Your signup code is expired or cannot be used. Please open starjessetaylor.com/whatsapp again, or contact Star in Skool for help.');
+      return reply('You are signed up for daily Audacity reminders on WhatsApp. Future reminders will use WhatsApp. An SMS already sent may still arrive. One reminder a day, between 8am and 9pm in your time zone. Reply STOP to stop. This is an automated reminder line. For support, visit the community: https://www.skool.com/starjessetaylor');
+    }
+    // Accept previously issued signed links until their existing 30-minute expiry.
     const join=body.match(/^I agree to one daily Audacity practice reminder on WhatsApp from Star Jesse Taylor\. Reply STOP to stop\. JOIN ([A-Za-z0-9_.-]+)$/);
     if (join) {
       if (!waEnabled() || !(await waApprovalsReady())) return reply('WhatsApp reminders are not ready yet. Your existing SMS preference has not changed. Please try again later.');
