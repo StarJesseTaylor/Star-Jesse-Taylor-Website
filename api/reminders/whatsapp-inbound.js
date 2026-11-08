@@ -39,7 +39,7 @@ export default async function handler(req,res) {
       const result=await alphaRpc('wa_confirm',{p_phone:phone,p_timezone:payload.tz,p_sid:sid,p_version:WA_CONSENT,p_name:String(payload.name || req.body?.ProfileName || '').slice(0,80),p_nonce:payload.nonce});
       if(result?.duplicate) return res.status(200).send(xml());
       if(!result?.ok) return reply('We could not activate reminders for this number. Please contact Star in Skool for help.');
-      return reply('You are signed up for daily Audacity reminders on WhatsApp. Future reminders will use WhatsApp. An SMS already sent may still arrive. One reminder a day. Reply STOP to stop. This is an automated reminder line.');
+      return reply('You are signed up for daily Audacity reminders on WhatsApp. Future reminders will use WhatsApp. An SMS already sent may still arrive. One reminder a day. Reply STOP to stop.');
     }
     if (/^(start|unstop|resume|yes please)\b/i.test(body)) return reply('To restart WhatsApp reminders, confirm at https://starjessetaylor.com/whatsapp');
     return inbound(req,res);
