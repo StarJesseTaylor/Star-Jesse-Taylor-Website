@@ -3,38 +3,23 @@
  *
  * Loads on every page that includes this script (21 pages). Slim top bar.
  *
- * Oct 2 2026: date-aware. UNTIL Nov 14 2026 it promotes the in-person LA
- * workshop and links to /la-workshop. On/after Nov 14 it automatically
- * reverts to the evergreen "Weekly live coaching calls" bar pointing at the
- * Skool community. No manual switch needed.
+ * Nov 8 2026: the cancelled Nov 14 workshop promotion was removed. The bar
+ * now promotes the waitlist for the next in-person LA workshop (January 2027)
+ * and links to /la-workshop.
  */
 
 (function () {
   'use strict';
 
-  var WORKSHOP = new Date('2026-11-14T23:59:00-08:00').getTime(); // LA workshop day (Pacific)
-  var now = Date.now();
-  var workshopMode = now < WORKSHOP;
-
-  var HREF, LEAD, CTA, GRAD;
-  if (workshopMode) {
-    HREF = '/la-workshop';
-    LEAD = 'LA WORKSHOP &middot; SATURDAY NOV 14';
-    CTA  = 'In person in Los Angeles. Reserve your spot &rarr;';
-    GRAD = 'linear-gradient(90deg,#0a1929,#0d2540)';
-  } else {
-    HREF = 'community.html';
-    LEAD = 'Weekly live coaching calls with Star';
-    CTA  = 'Join the Community &rarr;';
-    GRAD = 'linear-gradient(90deg,#0a1929,#0d2540)';
-  }
+  var HREF = '/la-workshop';
+  var LEAD = 'LA WORKSHOP &middot; JANUARY 2027';
+  var CTA  = 'In person in Los Angeles. Join the waitlist &rarr;';
+  var GRAD = 'linear-gradient(90deg,#0a1929,#0d2540)';
 
   var bar = document.createElement('a');
   bar.id = 'sjt-announce-bar';
   bar.href = HREF;
-  bar.setAttribute('aria-label', workshopMode
-    ? 'LA Workshop, Saturday November 14, in person in Los Angeles. Reserve your spot.'
-    : 'Join the community. Weekly live coaching calls with Star.');
+  bar.setAttribute('aria-label', 'LA Workshop, January 2027, in person in Los Angeles. Join the waitlist.');
   bar.style.cssText = [
     'position:fixed', 'top:0', 'left:0', 'right:0', 'z-index:1001',
     'display:flex', 'align-items:center', 'justify-content:center',
