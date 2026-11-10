@@ -67,7 +67,7 @@ Under each: write 6 actions. 2 you're already doing. 4 you want to do but the br
 3. **The Intensive — $97** — live breakthrough experience with Star (services.html#intensive)
 4. **The 10-Week Cohort — $2,200** (or 3 × $797) — group program, currently waitlist (services.html#cohort)
 5. **Clarity Session — $600** — single live session, full $600 credited toward any package
-6. **1-on-1 Coaching** — apply at apply.html. 6-Week $3,497 / 10-Week $4,997
+6. **1-on-1 Coaching** — apply at apply.html. 6-Week $3,997 total ($3,397 remaining after intro credit; 6 new sessions after intro) / 10-Week $5,497 total ($4,897 remaining after intro credit; 10 new sessions after intro). Intro Session: $600 for 50 minutes, fully credited toward either package
 7. **Ask Star Directly** — $55 (3-min) or $99 (5-min) voice memo. Credited toward Clarity Session.
 8. **The Quiz** — quiz.html — for visitors who don't know where to start
 
